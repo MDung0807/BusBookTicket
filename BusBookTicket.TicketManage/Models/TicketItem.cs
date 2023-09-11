@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.TicketManage.Models
 {
-    internal class TicketItem
+    public class TicketItem
     {
+        public int ticketItemID { get; set; }
     }
 }

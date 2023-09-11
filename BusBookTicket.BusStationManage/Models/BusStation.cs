@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.BusStationManage.Models
 {
-    internal class BusStation
+    public class BusStation
     {
+        public int busStationID { get; set; }
+        public string? name { get; set; }
+        public string? address { get; set; }
+        public string? description { get; set; }
     }
 }
