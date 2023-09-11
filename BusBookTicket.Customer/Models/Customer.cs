@@ -15,5 +15,6 @@ namespace BusBookTicket.CustomerManage.Models
         public string? email { get; set; }
         public string? phoneNumber { get; set; }
         public string? gender { get; set; }
+        public int rank { get; set; }
     }
 }
