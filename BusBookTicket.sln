@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket", "BusBookTicket\BusBookTicket.csproj", "{D8861C27-6950-4341-A923-21BA1DE6D23C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket", "BusBookTicket\BusBookTicket.csproj", "{D8861C27-6950-4341-A923-21BA1DE6D23C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.CustomerManage", "BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj", "{6EFCCA5B-8B4A-44F7-8086-4BBF8D504892}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.CustomerManage", "BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj", "{6EFCCA5B-8B4A-44F7-8086-4BBF8D504892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.CompanyManage", "BusBookTicket.Company\BusBookTicket.CompanyManage.csproj", "{792454F2-8512-434C-BCB8-EE7F861B85A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.CompanyManage", "BusBookTicket.Company\BusBookTicket.CompanyManage.csproj", "{792454F2-8512-434C-BCB8-EE7F861B85A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.TicketManage", "BusBookTicket.TicketManage\BusBookTicket.TicketManage.csproj", "{F9F7C1D3-2099-4E8B-8FBA-F69E64D57482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.TicketManage", "BusBookTicket.TicketManage\BusBookTicket.TicketManage.csproj", "{F9F7C1D3-2099-4E8B-8FBA-F69E64D57482}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Common", "BusBookTicket.Common\BusBookTicket.Common.csproj", "{3C92271F-7597-4E97-A4DE-17FA68793F94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Common", "BusBookTicket.Common\BusBookTicket.Common.csproj", "{3C92271F-7597-4E97-A4DE-17FA68793F94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.BusStationManage", "BusBookTicket.BusStationManage\BusBookTicket.BusStationManage.csproj", "{4246F69F-D846-4A52-AC45-132D86AB795C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Auth", "BusBookTicket.Auth\BusBookTicket.Auth.csproj", "{A82CBE24-A688-4BB9-BE53-D40A74FA9225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3C92271F-7597-4E97-A4DE-17FA68793F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C92271F-7597-4E97-A4DE-17FA68793F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C92271F-7597-4E97-A4DE-17FA68793F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4246F69F-D846-4A52-AC45-132D86AB795C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4246F69F-D846-4A52-AC45-132D86AB795C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4246F69F-D846-4A52-AC45-132D86AB795C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4246F69F-D846-4A52-AC45-132D86AB795C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A82CBE24-A688-4BB9-BE53-D40A74FA9225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A82CBE24-A688-4BB9-BE53-D40A74FA9225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A82CBE24-A688-4BB9-BE53-D40A74FA9225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A82CBE24-A688-4BB9-BE53-D40A74FA9225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
