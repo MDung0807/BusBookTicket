@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.TicketManage.Models
+namespace BusBookTicket.Models.Entity
 {
-    public class TicketItem
+    internal class Review
     {
-        public int ticketItemID { get; set; }
     }
 }

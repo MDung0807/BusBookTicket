@@ -6,12 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.Auth.Models
+namespace BusBookTicket.Models.Entity
 {
     public class Account
     {
         public int accountID { get; set; }
         public required string username { get; set; }
         public required string password { get; set; }
+
+        public virtual Customer customer { get; set; }
+        public Company company { get; set; }
     }
 }

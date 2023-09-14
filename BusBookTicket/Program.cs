@@ -1,4 +1,4 @@
-using BusBookTicket.EntityFW;
+using BusBookTicket.Models.EntityFW;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

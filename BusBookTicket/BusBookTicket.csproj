@@ -16,16 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BusBookTicket.Auth\BusBookTicket.Auth.csproj" />
-    <ProjectReference Include="..\BusBookTicket.BusStationManage\BusBookTicket.BusStationManage.csproj" />
-    <ProjectReference Include="..\BusBookTicket.Common\BusBookTicket.Common.csproj" />
-    <ProjectReference Include="..\BusBookTicket.Company\BusBookTicket.CompanyManage.csproj" />
-    <ProjectReference Include="..\BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EntityFW\ConfigsEntity\" />
-  </ItemGroup>
-
 </Project>
