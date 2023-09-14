@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Models.Entity
 {
-    internal class Discount
+    public class Discount
     {
+        public int discountID { get; set; }
     }
 }
