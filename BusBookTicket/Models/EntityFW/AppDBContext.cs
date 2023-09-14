@@ -1,21 +1,17 @@
-﻿
-using BusBookTicket.Auth.Models;
-using BusBookTicket.Auth.Models.ConfigEntity;
-using BusBookTicket.CompanyManage.Models;
-using BusBookTicket.CustomerManage.Models;
+﻿using BusBookTicket.Models.Entity;
+using BusBookTicket.Models.EntityFW.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusBookTicket.EntityFW
+namespace BusBookTicket.Models.EntityFW
 {
     public class AppDBContext : DbContext
     {
-        public AppDBContext(DbContextOptions<AppDBContext> options): base(options)
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AccountConfigs());
-
         }
         public DbSet<Bus> Buses { get; set; }
         public DbSet<BusType> BusesType { get; set; }

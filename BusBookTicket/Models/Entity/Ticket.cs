@@ -6,12 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.TicketManage.Models
+namespace BusBookTicket.Models.Entity
 {
     public class Ticket
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ticketID { get; set; }
         public DateTime dateCreate { get; set; }
         public DateTime dateDeparture { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.CustomerManage.Models
+namespace BusBookTicket.Models.Entity
 {
     public class Customer
     {
@@ -16,5 +16,9 @@ namespace BusBookTicket.CustomerManage.Models
         public string? phoneNumber { get; set; }
         public string? gender { get; set; }
         public int rank { get; set; }
+
+        public int accountID { get; set; }
+
+        public Account account { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.CompanyManage.Models
+namespace BusBookTicket.Models.Entity
 {
     public class Company
     {
@@ -14,5 +14,6 @@ namespace BusBookTicket.CompanyManage.Models
         public string? email { get; set; }
         public string? phoneNumber { get; set; }
         public ICollection<Bus> buses { get; set; } = new List<Bus>();
+        public Account account { get; set; }
     }
 }
