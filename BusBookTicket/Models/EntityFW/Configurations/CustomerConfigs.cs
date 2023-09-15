@@ -8,7 +8,6 @@ namespace BusBookTicket.Models.EntityFW.Configurations
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            throw new NotImplementedException();
             #region -- configs property --
 
             builder.HasKey(x => x.CustomerID);
@@ -23,25 +22,27 @@ namespace BusBookTicket.Models.EntityFW.Configurations
             builder.Property(x => x.address)
                 .HasMaxLength(50);
             builder.Property(x => x.email)
+                .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.phoneNumber)
+                .IsRequired()
                 .HasMaxLength(50); 
             builder.Property(x => x.gender)
                 .HasMaxLength(50); 
             builder.Property(x => x.dateCreate)
                 .HasMaxLength(50); 
             builder.Property(x => x.dateUpdate)
-                .HasMaxLength(50); 
+                .HasMaxLength(50);
             #endregion -- configs property --
 
             #region -- RelationShip--
-            builder.HasMany(x => x.reviews)
-                .WithOne(b => b.customer)
-                .HasForeignKey(b => b.customerID);
+            builder.HasOne(x => x.account)
+                .WithOne(x => x.customer)
+                .HasForeignKey<Account>("accountID");
 
-            builder.HasMany(x => x.tickets)
-                .WithOne(b => b.customer)
-                .HasForeignKey(b => b.customerID);
+            builder.HasOne(x => x.rank)
+                .WithMany(x => x.customers)
+                .HasForeignKey("rankID");
             #endregion -- RelationShip --
         }
     }

@@ -10,21 +10,15 @@ namespace BusBookTicket.Models.EntityFW.Configurations
         {
             builder.HasKey(x => x.accountID);
 
-            builder.Property(x => x.accountID).IsRequired().ValueGeneratedOnAdd();
+            builder.Property(x => x.accountID)
+                .ValueGeneratedOnAdd();
             builder.Property(x => x.username)
                 .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.password)
                 .IsRequired()
                 .HasMaxLength(50);
-
-            builder.HasOne(x => x.customer)
-                .WithOne(b => b.account).
-                HasForeignKey<Customer>(x=> x.accountID);
-
-            builder.HasOne(x => x.company)
-                .WithOne(builder => builder.account)
-                .HasForeignKey<Company>(x=> x.companyID);
+            
         }
     }
 }

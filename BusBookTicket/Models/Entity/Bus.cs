@@ -14,11 +14,12 @@ namespace BusBookTicket.Models.Entity
         public int busID { get; set; }
         public string? busNumber { get; set; }
 
-        public int companyID { get; set; }
-        public int busTypeID { get; set; }
+        #region -- Relationship --
+
         public Company? company { get; set; }
         public BusType? busType { get; set; }
         public HashSet<BusStop>? busStops { get; set; }
+        #endregion -- Relationship --
 
     }
 }

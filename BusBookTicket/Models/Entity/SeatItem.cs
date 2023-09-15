@@ -2,11 +2,17 @@
 {
     public class SeatItem
     {
+        #region -- Properties --
         public int seatID { get; set; }
         public int seatNumber { get; set; }
+        #endregion -- Properties --
 
-        public int busTypeID { get; set; }
+        #region -- Relationship --
         public BusType busType { get; set; }
-        public TicketItem ticketItem { get; set; }
+        public TicketItem? ticketItem { get; set; }
+        #endregion -- Relationship --
+
+
+
     }
 }

@@ -8,11 +8,15 @@ namespace BusBookTicket.Models.Entity
 {
     public class TicketItem
     {
+        #region -- Properties --
         public int ticketItemID { get; set; }
-        public int ticketID { get; set; }
+        #endregion -- Properties --
 
-        public int seatID { get; set; }
+        #region -- Relationship --
         public Ticket? ticket { get; set; }
         public SeatItem seat { get; set; }
+        #endregion -- Relationship --
+
+
     }
 }

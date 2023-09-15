@@ -19,17 +19,15 @@ namespace BusBookTicket.Models.Entity
         public string? gender { get; set; }
         public DateTime dateCreate { get; set; }
         public DateTime dateUpdate { get; set; }
-        public int rank { get; set; }
         #endregion -- configs property --
 
 
         #region -- RelationShip--
 
-        public int accountID { get; set; }
-
         public Account? account { get; set; }
         public HashSet<Review>? reviews { get; set; }
         public HashSet<Ticket>?tickets { get; set; }
+        public Rank rank { get; set; }
         #endregion -- RelationShip --
     }
 }
