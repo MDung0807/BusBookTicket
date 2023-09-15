@@ -15,5 +15,6 @@ namespace BusBookTicket.Models.Entity
         public string? phoneNumber { get; set; }
         public ICollection<Bus> buses { get; set; } = new List<Bus>();
         public Account account { get; set; }
+        public HashSet<Review> reviews { get; set; }
     }
 }

@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Models.Entity
 {
-    [Table("Buses")]
     public class Bus
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int busID { get; set; }
-        [Column(name:"busNumber")]
-        [Required]
         public string? busNumber { get; set; }
+
+        #region -- Relationship --
+
         public Company? company { get; set; }
         public BusType? busType { get; set; }
+        public HashSet<BusStop>? busStops { get; set; }
+        #endregion -- Relationship --
+
     }
 }

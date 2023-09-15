@@ -10,10 +10,18 @@ namespace BusBookTicket.Models.Entity
 {
     public class Ticket
     {
+        #region -- Properties --
         public int ticketID { get; set; }
         public DateTime dateCreate { get; set; }
         public DateTime dateDeparture { get; set; }
         public long totolPrice { get; set; }
+        #endregion -- Properties --
 
+        #region -- Relationship -- 
+        public BusStation? busStation { get; set; }
+        public Customer? customer { get; set; }
+        public HashSet<TicketItem>? ticketItems { get; set; }
+        public Discount? discount { get; set; }
+        #endregion  -- Relationship -- 
     }
 }

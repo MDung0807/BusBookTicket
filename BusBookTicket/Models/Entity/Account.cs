@@ -10,11 +10,16 @@ namespace BusBookTicket.Models.Entity
 {
     public class Account
     {
+        #region -- Properties --
         public int accountID { get; set; }
         public required string username { get; set; }
         public required string password { get; set; }
+        #endregion -- Properties --
 
-        public virtual Customer customer { get; set; }
+        #region -- Relationship ---
+        public Customer customer { get; set; }
         public Company company { get; set; }
+        #endregion -- Relationship ---
+
     }
 }
