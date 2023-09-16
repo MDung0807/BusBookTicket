@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.TicketManage"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Common", "BusBookTicket.Common\BusBookTicket.Common.csproj", "{3C92271F-7597-4E97-A4DE-17FA68793F94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.BusStationManage", "BusBookTicket.BusStationManage\BusBookTicket.BusStationManage.csproj", "{4246F69F-D846-4A52-AC45-132D86AB795C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.BusStationManage", "BusBookTicket.BusStationManage\BusBookTicket.BusStationManage.csproj", "{4246F69F-D846-4A52-AC45-132D86AB795C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Auth", "BusBookTicket.Auth\BusBookTicket.Auth.csproj", "{A82CBE24-A688-4BB9-BE53-D40A74FA9225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Auth", "BusBookTicket.Auth\BusBookTicket.Auth.csproj", "{A82CBE24-A688-4BB9-BE53-D40A74FA9225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

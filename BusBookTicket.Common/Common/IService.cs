@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Common.Common
 {
-    internal interface IService<T>
+    public interface IService<T>
     {
         T getByID(int id);
         List<T> GetAll();

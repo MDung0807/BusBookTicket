@@ -1,0 +1,14 @@
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.csproj.AssemblyReference.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.GeneratedMSBuildEditorConfig.editorconfig
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.AssemblyInfoInputs.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.AssemblyInfo.cs
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.csproj.CoreCompileInputs.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Company.deps.json
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Company.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Company.pdb
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\refint\BusBookTicket.Company.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.pdb
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\ref\BusBookTicket.Company.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Company.runtimeconfig.json
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.Company.genruntimeconfig.cache
