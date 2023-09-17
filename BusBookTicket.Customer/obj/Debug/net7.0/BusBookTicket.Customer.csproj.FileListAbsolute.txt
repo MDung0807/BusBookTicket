@@ -1,0 +1,14 @@
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\bin\Debug\net7.0\BusBookTicket.Customer.deps.json
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\bin\Debug\net7.0\BusBookTicket.Customer.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\bin\Debug\net7.0\BusBookTicket.Customer.pdb
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.csproj.AssemblyReference.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.GeneratedMSBuildEditorConfig.editorconfig
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.AssemblyInfoInputs.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.AssemblyInfo.cs
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.csproj.CoreCompileInputs.cache
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\refint\BusBookTicket.Customer.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.pdb
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\ref\BusBookTicket.Customer.dll
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\bin\Debug\net7.0\BusBookTicket.Customer.runtimeconfig.json
+D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.Customer\obj\Debug\net7.0\BusBookTicket.Customer.genruntimeconfig.cache

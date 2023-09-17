@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Common.Common
 {
-    internal interface IRepository<T>
+    public interface IRepository<T>
     {
         T getByID(int id);
         T update(T entity);
