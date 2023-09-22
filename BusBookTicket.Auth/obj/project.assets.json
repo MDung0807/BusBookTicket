@@ -10874,8 +10874,6 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "BusBookTicket.Common >= 1.0.0",
-      "Microsoft.AspNet.Mvc >= 5.2.9",
-      "Microsoft.AspNet.WebApi.Core >= 5.2.9",
       "Microsoft.AspNetCore >= 2.2.0",
       "Microsoft.AspNetCore.Mvc >= 2.2.0",
       "Microsoft.EntityFrameworkCore >= 7.0.11",
@@ -10900,7 +10898,6 @@
       ],
       "configFilePaths": [
         "C:\\Users\\dodung\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\ComponentOne.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -10936,14 +10933,6 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
-          "Microsoft.AspNet.Mvc": {
-            "target": "Package",
-            "version": "[5.2.9, )"
-          },
-          "Microsoft.AspNet.WebApi.Core": {
-            "target": "Package",
-            "version": "[5.2.9, )"
-          },
           "Microsoft.AspNetCore": {
             "target": "Package",
             "version": "[2.2.0, )"
