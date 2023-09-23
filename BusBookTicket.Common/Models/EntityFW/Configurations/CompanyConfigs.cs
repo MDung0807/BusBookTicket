@@ -22,7 +22,8 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
             #region -- Relationship --
             builder.HasOne(x => x.account)
                 .WithOne(x => x.company)
-                .HasForeignKey<Account>("accountID");
+                .HasForeignKey<Account>("accountID")
+                .IsRequired();
             #endregion -- Relationship --
         }
     }

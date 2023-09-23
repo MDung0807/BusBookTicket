@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj": {}
+    "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj": {}
   },
   "projects": {
-    "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj": {
+    "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj",
+        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj",
         "projectName": "BusBookTicket.Auth",
-        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj",
+        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj",
         "packagesPath": "C:\\Users\\dodung\\.nuget\\packages\\",
-        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Auth\\obj\\",
+        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -37,8 +37,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\BusBookTicket.Common.csproj": {
-                "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\BusBookTicket.Common.csproj"
+              "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj": {
+                "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj"
               }
             }
           }
@@ -53,6 +53,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.AspNetCore": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -92,14 +96,14 @@
         }
       }
     },
-    "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\BusBookTicket.Common.csproj": {
+    "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\BusBookTicket.Common.csproj",
+        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj",
         "projectName": "BusBookTicket.Common",
-        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\BusBookTicket.Common.csproj",
+        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj",
         "packagesPath": "C:\\Users\\dodung\\.nuget\\packages\\",
-        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Common\\obj\\",
+        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -137,6 +141,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.AspNet.Mvc": {
               "target": "Package",
               "version": "[5.2.9, )"

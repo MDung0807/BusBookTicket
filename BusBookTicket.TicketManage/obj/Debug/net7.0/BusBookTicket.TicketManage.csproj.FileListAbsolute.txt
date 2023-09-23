@@ -10,3 +10,15 @@ D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.TicketManage\obj\Debug\net7.0\Bu
 D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.TicketManage\obj\Debug\net7.0\refint\BusBookTicket.TicketManage.dll
 D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.pdb
 D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.TicketManage\obj\Debug\net7.0\ref\BusBookTicket.TicketManage.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\bin\Debug\net7.0\BusBookTicket.TicketManage.deps.json
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\bin\Debug\net7.0\BusBookTicket.TicketManage.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\bin\Debug\net7.0\BusBookTicket.TicketManage.pdb
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.csproj.AssemblyReference.cache
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.GeneratedMSBuildEditorConfig.editorconfig
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.AssemblyInfoInputs.cache
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.AssemblyInfo.cs
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.csproj.CoreCompileInputs.cache
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\refint\BusBookTicket.TicketManage.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\BusBookTicket.TicketManage.pdb
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.TicketManage\obj\Debug\net7.0\ref\BusBookTicket.TicketManage.dll

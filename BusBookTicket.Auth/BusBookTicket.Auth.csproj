@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\Responses\**" />
     <Compile Remove="Repository\**" />
+    <EmbeddedResource Remove="DTOs\Responses\**" />
     <EmbeddedResource Remove="Repository\**" />
+    <None Remove="DTOs\Responses\**" />
     <None Remove="Repository\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
@@ -24,12 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusBookTicket.Common\BusBookTicket.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DTOs\Responses\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
