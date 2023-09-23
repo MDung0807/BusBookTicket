@@ -101,7 +101,7 @@ namespace BusBookTicket.Common.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("busStopID"));
 
-                    b.Property<int?>("busID")
+                    b.Property<int>("busID")
                         .HasColumnType("int");
 
                     b.Property<int>("busStationID")
@@ -204,7 +204,7 @@ namespace BusBookTicket.Common.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("rankID")
+                    b.Property<int?>("rankID")
                         .HasColumnType("int");
 
                     b.HasKey("CustomerID");
@@ -280,7 +280,7 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int>("companyID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("customerID")
+                    b.Property<int>("customerID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("dateCreate")
@@ -336,13 +336,13 @@ namespace BusBookTicket.Common.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ticketID"));
 
-                    b.Property<int?>("busStationEndID")
+                    b.Property<int>("busStationEndID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("busStationStartID")
+                    b.Property<int>("busStationStartID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("customerID")
+                    b.Property<int>("customerID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("dateCreate")
@@ -351,7 +351,7 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<DateTime>("dateDeparture")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("discountID")
+                    b.Property<int>("discountID")
                         .HasColumnType("int");
 
                     b.Property<long>("totolPrice")
@@ -379,7 +379,7 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int>("seatID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ticketID")
+                    b.Property<int>("ticketID")
                         .HasColumnType("int");
 
                     b.HasKey("ticketItemID");
@@ -435,7 +435,8 @@ namespace BusBookTicket.Common.Migrations
                     b.HasOne("BusBookTicket.Common.Models.Entity.Bus", "bus")
                         .WithMany("busStops")
                         .HasForeignKey("busID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Common.Models.Entity.BusStation", "BusStation")
                         .WithMany("busStops")
@@ -453,8 +454,7 @@ namespace BusBookTicket.Common.Migrations
                     b.HasOne("BusBookTicket.Common.Models.Entity.Rank", "rank")
                         .WithMany("customers")
                         .HasForeignKey("rankID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("rank");
                 });
@@ -480,7 +480,8 @@ namespace BusBookTicket.Common.Migrations
                     b.HasOne("BusBookTicket.Common.Models.Entity.Customer", "customer")
                         .WithMany("reviews")
                         .HasForeignKey("customerID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("company");
 
@@ -503,17 +504,20 @@ namespace BusBookTicket.Common.Migrations
                     b.HasOne("BusBookTicket.Common.Models.Entity.BusStation", "busStation")
                         .WithMany("tickets")
                         .HasForeignKey("busStationEndID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Common.Models.Entity.Customer", "customer")
                         .WithMany("tickets")
                         .HasForeignKey("customerID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Common.Models.Entity.Discount", "discount")
                         .WithMany("tickets")
                         .HasForeignKey("discountID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("busStation");
 
@@ -533,7 +537,8 @@ namespace BusBookTicket.Common.Migrations
                     b.HasOne("BusBookTicket.Common.Models.Entity.Ticket", "ticket")
                         .WithMany("ticketItems")
                         .HasForeignKey("ticketID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("seat");
 

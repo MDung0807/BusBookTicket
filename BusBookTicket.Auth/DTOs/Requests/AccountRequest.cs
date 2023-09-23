@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.DTOs.Requests
 {
-    internal class AccountRequest
+    public class AccountRequest
     {
-        public int accountID {  get; set; }
         public string username { get; set; }
-        public string email { get; set; }
-        public string phoneNumber { get; set; }
+        public string password { get; set; }
     }
 }

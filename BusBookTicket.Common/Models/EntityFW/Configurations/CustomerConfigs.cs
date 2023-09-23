@@ -33,16 +33,20 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
                 .HasMaxLength(50); 
             builder.Property(x => x.dateUpdate)
                 .HasMaxLength(50);
+
+            builder.HasIndex(x => x.CustomerID);
             #endregion -- configs property --
 
             #region -- RelationShip--
             builder.HasOne(x => x.account)
                 .WithOne(x => x.customer)
-                .HasForeignKey<Account>("accountID");
+                .HasForeignKey<Account>("accountID")
+                .IsRequired();
 
             builder.HasOne(x => x.rank)
                 .WithMany(x => x.customers)
-                .HasForeignKey("rankID");
+                .HasForeignKey("rankID")
+                .IsRequired(false);
             #endregion -- RelationShip --
         }
     }

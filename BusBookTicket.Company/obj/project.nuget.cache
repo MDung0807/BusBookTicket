@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "EY34vPg94whJW80N39f/uBREIX94PTB78DQaBMGmSb6ZhXSbPlRLlijrsv6GtJiS96fw3WiJchnCUCa7lsf+EA==",
+  "dgSpecHash": "kiXDNv9LkwGAArqVY7OPQNcJy/tD0m7sKew2MG0QCGbWSPccsUlQdg7YcSN1RPsvqn7wFwbptyUugT7Ydm/q7Q==",
   "success": true,
-  "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.Company\\BusBookTicket.CompanyManage.csproj",
+  "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Company\\BusBookTicket.CompanyManage.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dodung\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\dodung\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.11\\microsoft.entityframeworkcore.analyzers.7.0.11.nupkg.sha512",

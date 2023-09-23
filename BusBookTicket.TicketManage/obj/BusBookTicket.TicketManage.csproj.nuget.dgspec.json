@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj": {}
+    "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj": {}
   },
   "projects": {
-    "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj": {
+    "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj",
+        "projectUniqueName": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj",
         "projectName": "BusBookTicket.TicketManage",
-        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj",
+        "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.TicketManage\\BusBookTicket.TicketManage.csproj",
         "packagesPath": "C:\\Users\\dodung\\.nuget\\packages\\",
-        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.TicketManage\\obj\\",
+        "outputPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.TicketManage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,6 +49,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.11, )"

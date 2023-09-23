@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AaIB+0JMS/z/iaNY6i6YOXXhmQQms+9r+W8P3/R3djqN42UodMC/MrC1kxcxyvvp0KP4d+ATJ2hajvUZGivdxg==",
+  "dgSpecHash": "uQP4g0Mq70Z+hsEFTmpDMk5+mxerhcYp+zfavNNsmGQzZD9FBs1Rwgw3JuZECScnRCqMMaPzwghmmg6FL9rhRg==",
   "success": true,
-  "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicket\\BusBookTicket.BusStationManage\\BusBookTicket.BusStationManage.csproj",
+  "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.BusStationManage\\BusBookTicket.BusStationManage.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dodung\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
@@ -49,7 +50,7 @@
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.codeanalysis.common\\2.8.0\\microsoft.codeanalysis.common.2.8.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.codeanalysis.csharp\\2.8.0\\microsoft.codeanalysis.csharp.2.8.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.codeanalysis.razor\\2.2.0\\microsoft.codeanalysis.razor.2.2.0.nupkg.sha512",
-    "C:\\Users\\dodung\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\dodung\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.dotnet.platformabstractions\\2.1.0\\microsoft.dotnet.platformabstractions.2.1.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",

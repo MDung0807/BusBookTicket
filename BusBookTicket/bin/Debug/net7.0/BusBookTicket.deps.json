@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "BusBookTicket/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "BusBookTicket.Auth": "1.0.0",
           "BusBookTicket.BusStationManage": "1.0.0",
           "BusBookTicket.Common": "1.0.0",
@@ -22,6 +23,17 @@
         },
         "runtime": {
           "BusBookTicket.dll": {}
+        }
+      },
+      "AutoMapper/12.0.1": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.1.0"
+          }
         }
       },
       "Azure.Core/1.25.0": {
@@ -846,7 +858,7 @@
       },
       "Microsoft.AspNetCore.JsonPatch/2.2.0": {
         "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
@@ -1577,7 +1589,7 @@
           }
         }
       },
-      "Microsoft.CSharp/4.5.0": {},
+      "Microsoft.CSharp/4.7.0": {},
       "Microsoft.Data.SqlClient/5.1.1": {
         "dependencies": {
           "Azure.Identity": "1.7.0",
@@ -1978,7 +1990,7 @@
       },
       "Microsoft.IdentityModel.Tokens/6.24.0": {
         "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.CSharp": "4.7.0",
           "Microsoft.IdentityModel.Logging": "6.24.0",
           "System.Security.Cryptography.Cng": "5.0.0"
         },
@@ -3202,9 +3214,8 @@
       },
       "BusBookTicket.Auth/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "BusBookTicket.Common": "1.0.0",
-          "Microsoft.AspNet.Mvc": "5.2.9",
-          "Microsoft.AspNet.WebApi.Core": "5.2.9",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
           "Microsoft.EntityFrameworkCore": "7.0.11"
@@ -3215,6 +3226,7 @@
       },
       "BusBookTicket.BusStationManage/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
           "Microsoft.EntityFrameworkCore": "7.0.11"
         },
@@ -3224,6 +3236,7 @@
       },
       "BusBookTicket.Common/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "Microsoft.AspNet.Mvc": "5.2.9",
           "Microsoft.AspNet.WebApi.Core": "5.2.9",
           "Microsoft.EntityFrameworkCore": "7.0.11",
@@ -3236,6 +3249,7 @@
       },
       "BusBookTicket.CompanyManage/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "Microsoft.EntityFrameworkCore": "7.0.11"
         },
         "runtime": {
@@ -3244,6 +3258,10 @@
       },
       "BusBookTicket.CustomerManage/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
+          "BusBookTicket.Auth": "1.0.0",
+          "BusBookTicket.Common": "1.0.0",
+          "Microsoft.AspNetCore.Mvc.Formatters.Json": "2.2.0",
           "Microsoft.EntityFrameworkCore": "7.0.11",
           "Microsoft.EntityFrameworkCore.Relational": "7.0.11",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.11"
@@ -3259,6 +3277,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "AutoMapper/12.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hvV62vl6Hp/WfQ24yzo3Co9+OPl8wH8hApwVtgWpiAynVJkUcs7xvehnSftawL8Pe8FrPffBRM3hwzLQqWDNjA==",
+      "path": "automapper/12.0.1",
+      "hashPath": "automapper.12.0.1.nupkg.sha512"
     },
     "Azure.Core/1.25.0": {
       "type": "package",
@@ -4135,12 +4160,12 @@
       "path": "microsoft.codeanalysis.workspaces.common/4.4.0",
       "hashPath": "microsoft.codeanalysis.workspaces.common.4.4.0.nupkg.sha512"
     },
-    "Microsoft.CSharp/4.5.0": {
+    "Microsoft.CSharp/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
-      "path": "microsoft.csharp/4.5.0",
-      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
     "Microsoft.Data.SqlClient/5.1.1": {
       "type": "package",

@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BusBookTicket.BusStationManage
-build_property.ProjectDir = D:\Nam4\HK1\Project\BusBookTicket\BusBookTicket.BusStationManage\
+build_property.ProjectDir = D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.BusStationManage\
