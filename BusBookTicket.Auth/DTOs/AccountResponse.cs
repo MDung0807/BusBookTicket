@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.Auth.DTOs.Requests
+namespace BusBookTicket.Auth.DTOs
 {
-    internal class AccountDTO
+    public class AccountResponse
     {
+        public int accountID { get; set; } 
     }
 }

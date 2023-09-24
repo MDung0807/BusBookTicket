@@ -11,9 +11,29 @@ namespace BusBookTicket.Auth.Services
 {
     public class AuthService : IAuthService
     {
-       public bool create (AccountRequest request)
+        public bool create(AccountRequest entity)
         {
-            return false;
+            throw new NotImplementedException();
+        }
+
+        public bool delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AccountResponse> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public AccountResponse getByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AccountResponse update(AccountRequest entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

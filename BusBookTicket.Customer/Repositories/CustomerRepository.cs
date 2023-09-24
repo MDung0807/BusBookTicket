@@ -19,6 +19,16 @@ namespace BusBookTicket.CustomerManage.Repositories
         {
             _context = context;
         }
+
+        public bool create(Customer entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool delete(int id)
+        {
+            throw new NotImplementedException();
+        }
         #endregion -- Contructor --
         public List<Customer> getAll()
         {
@@ -35,15 +45,6 @@ namespace BusBookTicket.CustomerManage.Repositories
             throw new NotImplementedException();
         }
 
-        bool IRepository<Customer>.create(Customer entity)
-        {
-            _context.Add(entity);
-            _context.SaveChanges();
-        }
-
-        bool IRepository<Customer>.delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+    
     }
 }

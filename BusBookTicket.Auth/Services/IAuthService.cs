@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Services
 {
-    public interface IAuthService
+    public interface IAuthService : IService<AccountRequest, AccountRequest, AccountResponse>
     {
-        bool create (AccountRequest entity);
+
     }
 }
