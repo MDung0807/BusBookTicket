@@ -12,6 +12,21 @@ namespace BusBookTicket.Common.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    accountID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.accountID);
+                    table.UniqueConstraint("AK_Accounts_username", x => x.username);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BusesType",
                 columns: table => new
                 {
@@ -42,22 +57,6 @@ namespace BusBookTicket.Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    companyID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    introduction = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.companyID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ranks",
                 columns: table => new
                 {
@@ -69,6 +68,29 @@ namespace BusBookTicket.Common.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ranks", x => x.rankID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    companyID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    introduction = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    accountID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.companyID);
+                    table.ForeignKey(
+                        name: "FK_Companies_Accounts_accountID",
+                        column: x => x.accountID,
+                        principalTable: "Accounts",
+                        principalColumn: "accountID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,37 +114,11 @@ namespace BusBookTicket.Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Buses",
-                columns: table => new
-                {
-                    busID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    busNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    companyID = table.Column<int>(type: "int", nullable: false),
-                    busTypeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Buses", x => x.busID);
-                    table.ForeignKey(
-                        name: "FK_Buses_BusesType_busTypeID",
-                        column: x => x.busTypeID,
-                        principalTable: "BusesType",
-                        principalColumn: "busTypeID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Buses_Companies_companyID",
-                        column: x => x.companyID,
-                        principalTable: "Companies",
-                        principalColumn: "companyID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerID = table.Column<int>(type: "int", nullable: false),
+                    customerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     fullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     dateOfBirth = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
                     address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -131,11 +127,18 @@ namespace BusBookTicket.Common.Migrations
                     gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     dateCreate = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
                     dateUpdate = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
+                    accountID = table.Column<int>(type: "int", nullable: false),
                     rankID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerID);
+                    table.PrimaryKey("PK_Customers", x => x.customerID);
+                    table.ForeignKey(
+                        name: "FK_Customers_Accounts_accountID",
+                        column: x => x.accountID,
+                        principalTable: "Accounts",
+                        principalColumn: "accountID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Customers_Ranks_rankID",
                         column: x => x.rankID,
@@ -170,53 +173,29 @@ namespace BusBookTicket.Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BusStops",
+                name: "Buses",
                 columns: table => new
                 {
-                    busStopID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    busStationID = table.Column<int>(type: "int", nullable: false),
                     busID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    busNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    companyID = table.Column<int>(type: "int", nullable: false),
+                    busTypeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BusStops", x => x.busStopID);
+                    table.PrimaryKey("PK_Buses", x => x.busID);
                     table.ForeignKey(
-                        name: "FK_BusStops_BusStations_busStationID",
-                        column: x => x.busStationID,
-                        principalTable: "BusStations",
-                        principalColumn: "busStationID",
+                        name: "FK_Buses_BusesType_busTypeID",
+                        column: x => x.busTypeID,
+                        principalTable: "BusesType",
+                        principalColumn: "busTypeID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BusStops_Buses_busID",
-                        column: x => x.busID,
-                        principalTable: "Buses",
-                        principalColumn: "busID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    accountID = table.Column<int>(type: "int", nullable: false),
-                    username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.accountID);
-                    table.ForeignKey(
-                        name: "FK_Accounts_Companies_accountID",
-                        column: x => x.accountID,
+                        name: "FK_Buses_Companies_companyID",
+                        column: x => x.companyID,
                         principalTable: "Companies",
                         principalColumn: "companyID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Accounts_Customers_accountID",
-                        column: x => x.accountID,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -247,7 +226,7 @@ namespace BusBookTicket.Common.Migrations
                         name: "FK_Reviews_Customers_customerID",
                         column: x => x.customerID,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID",
+                        principalColumn: "customerID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -278,13 +257,39 @@ namespace BusBookTicket.Common.Migrations
                         name: "FK_Tickets_Customers_customerID",
                         column: x => x.customerID,
                         principalTable: "Customers",
-                        principalColumn: "CustomerID",
+                        principalColumn: "customerID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tickets_Discounts_discountID",
                         column: x => x.discountID,
                         principalTable: "Discounts",
                         principalColumn: "discountID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BusStops",
+                columns: table => new
+                {
+                    busStopID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    busStationID = table.Column<int>(type: "int", nullable: false),
+                    busID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusStops", x => x.busStopID);
+                    table.ForeignKey(
+                        name: "FK_BusStops_BusStations_busStationID",
+                        column: x => x.busStationID,
+                        principalTable: "BusStations",
+                        principalColumn: "busStationID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BusStops_Buses_busID",
+                        column: x => x.busID,
+                        principalTable: "Buses",
+                        principalColumn: "busID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -333,6 +338,23 @@ namespace BusBookTicket.Common.Migrations
                 name: "IX_BusStops_busStationID",
                 table: "BusStops",
                 column: "busStationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_accountID",
+                table: "Companies",
+                column: "accountID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_accountID",
+                table: "Customers",
+                column: "accountID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_customerID",
+                table: "Customers",
+                column: "customerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_rankID",
@@ -390,9 +412,6 @@ namespace BusBookTicket.Common.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Accounts");
-
-            migrationBuilder.DropTable(
                 name: "BusStops");
 
             migrationBuilder.DropTable(
@@ -424,6 +443,9 @@ namespace BusBookTicket.Common.Migrations
 
             migrationBuilder.DropTable(
                 name: "Discounts");
+
+            migrationBuilder.DropTable(
+                name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Ranks");

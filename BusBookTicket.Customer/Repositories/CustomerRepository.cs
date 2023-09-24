@@ -13,23 +13,36 @@ namespace BusBookTicket.CustomerManage.Repositories
     {
         #region -- Properties --
         private readonly AppDBContext _context;
+        private bool _status = false;
         #endregion -- Properties --
         #region -- Contructor --
         public CustomerRepository(AppDBContext context)
         {
             _context = context;
         }
+        #endregion -- Contructor --
 
         public bool create(Customer entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Add<Customer>(entity);
+                _status = true;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+                _status = false;
+            }
+
+            return _status;
         }
 
         public bool delete(int id)
         {
             throw new NotImplementedException();
         }
-        #endregion -- Contructor --
         public List<Customer> getAll()
         {
             throw new NotImplementedException();

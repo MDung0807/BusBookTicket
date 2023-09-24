@@ -9,31 +9,44 @@ namespace BusBookTicket.CustomerManage.Services
 {
     public class CustomerService : ICustomerService
     {
-        #region -- var --
+        #region -- Properties --
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private Customer _customer;
-        #endregion --  varr --
+        #endregion --  Properties --
 
         #region -- Constructor --
         public CustomerService(IMapper mapper,
             IAuthService authService,
-            Customer customer,
             ICustomerRepository customerRepository)
         {
-            _customer = customer;
             _mapper = mapper;
             _authService = authService;
             _customerRepository = customerRepository;
         }
         #endregion -- Contructor --
+
+        #region -- Public method --
+
+        /// <summary>
+        /// Create Customer and account genera
+        /// Call Auth Service to create account and get account.
+        /// After create customer
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public bool create(FormRegister entity)
         {
             _customer = new Customer();
+
             _customer = _mapper.Map<Customer>(entity);
-            _customerRepository.create(_customer);
-            throw new NotImplementedException();
+
+            Account account = _mapper.Map<Account>(entity);
+            _authService.create(account);
+            _customer.account = _authService.getAccByUsername(entity.username);
+
+            return _customerRepository.create(_customer);
         }
 
         public bool delete(int id)
@@ -60,5 +73,6 @@ namespace BusBookTicket.CustomerManage.Services
         {
             throw new NotImplementedException();
         }
+        #endregion -- Public method --
     }
 }

@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "19gWiH4iInnKJZjWGrovT30TxFwIAHnbGv2smJ0qpM9YA2rMxtwlTJ7FqIJgJS88qaXGg0N+jAPlGFmDs/ezhg==",
+  "dgSpecHash": "0lzmbDn+LNWm8Un2TKfYzFcD+9Mj6mawRWe9Ee3VzjsytF8S6Oz80nGqcXG80wAaPNPrCYMtFo8b0LgSLL7RTw==",
   "success": true,
   "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dodung\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\dodung\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnet.mvc\\5.2.9\\microsoft.aspnet.mvc.5.2.9.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnet.razor\\3.2.9\\microsoft.aspnet.razor.3.2.9.nupkg.sha512",

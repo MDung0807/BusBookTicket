@@ -12,15 +12,14 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
             builder.HasKey(x => x.accountID);
 
             builder.Property(x => x.accountID)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn();
             builder.Property(x => x.username)
                 .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.password)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            builder.HasAlternateKey(x => x.accountID);
+                .IsRequired();
+            builder.HasAlternateKey(x => x.username);
             
         }
     }

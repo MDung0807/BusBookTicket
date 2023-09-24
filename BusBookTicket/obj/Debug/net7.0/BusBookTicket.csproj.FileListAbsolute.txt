@@ -553,3 +553,4 @@ D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket\obj\Debug\net7.0\scopedcss\bu
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket\obj\Debug\net7.0\BusBookTicket.csproj.CopyComplete
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket\obj\Debug\net7.0\BusBookTicket.genruntimeconfig.cache
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket\obj\Debug\net7.0\ref\BusBookTicket.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket\bin\Debug\net7.0\BCrypt.Net-Next.dll

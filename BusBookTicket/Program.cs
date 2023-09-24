@@ -1,5 +1,6 @@
 using AutoMapper;
 using BusBookTicket.Auth.Controllers;
+using BusBookTicket.Auth.Repositories;
 using BusBookTicket.Auth.Services;
 using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
@@ -41,7 +42,8 @@ internal class Program
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<Customer>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
+
         #endregion -- Scoped --
 
         var app = builder.Build();
