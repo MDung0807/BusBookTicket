@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Fu8gUcJKAZILJKtTZVNazunUSw5MvUYlpYBu/gC3vvuQXNQLspWARAAbomrHP80dbfdIXBLaq1a9mzxo82EiRg==",
+  "dgSpecHash": "bFEXjFzg7ZXQRLEAiC3HDjSVeIgvzRnWgEb778CUqE+MTXnFVlPuci5n36puNDNongxDIMBYmS6+675fDF182w==",
   "success": true,
   "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket\\BusBookTicket.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dodung\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\dodung\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Common.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230923072558_data")]
+    [Migration("20230924113242_data")]
     partial class data
     {
         /// <inheritdoc />
@@ -31,10 +31,11 @@ namespace BusBookTicket.Common.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("accountID"));
+
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("username")
                         .IsRequired()
@@ -42,6 +43,8 @@ namespace BusBookTicket.Common.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("accountID");
+
+                    b.HasAlternateKey("username");
 
                     b.ToTable("Accounts");
                 });
@@ -149,6 +152,9 @@ namespace BusBookTicket.Common.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("companyID"));
 
+                    b.Property<int>("accountID")
+                        .HasColumnType("int");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -165,12 +171,21 @@ namespace BusBookTicket.Common.Migrations
 
                     b.HasKey("companyID");
 
+                    b.HasIndex("accountID")
+                        .IsUnique();
+
                     b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("customerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("customerID"));
+
+                    b.Property<int>("accountID")
                         .HasColumnType("int");
 
                     b.Property<string>("address")
@@ -210,7 +225,12 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int?>("rankID")
                         .HasColumnType("int");
 
-                    b.HasKey("CustomerID");
+                    b.HasKey("customerID");
+
+                    b.HasIndex("accountID")
+                        .IsUnique();
+
+                    b.HasIndex("customerID");
 
                     b.HasIndex("rankID");
 
@@ -395,25 +415,6 @@ namespace BusBookTicket.Common.Migrations
                     b.ToTable("TicketItems");
                 });
 
-            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Account", b =>
-                {
-                    b.HasOne("BusBookTicket.Common.Models.Entity.Customer", "customer")
-                        .WithOne("account")
-                        .HasForeignKey("BusBookTicket.Common.Models.Entity.Account", "accountID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BusBookTicket.Common.Models.Entity.Company", "company")
-                        .WithOne("account")
-                        .HasForeignKey("BusBookTicket.Common.Models.Entity.Account", "accountID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("company");
-
-                    b.Navigation("customer");
-                });
-
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Bus", b =>
                 {
                     b.HasOne("BusBookTicket.Common.Models.Entity.BusType", "busType")
@@ -452,12 +453,31 @@ namespace BusBookTicket.Common.Migrations
                     b.Navigation("bus");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Company", b =>
+                {
+                    b.HasOne("BusBookTicket.Common.Models.Entity.Account", "account")
+                        .WithOne("company")
+                        .HasForeignKey("BusBookTicket.Common.Models.Entity.Company", "accountID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("account");
+                });
+
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Customer", b =>
                 {
+                    b.HasOne("BusBookTicket.Common.Models.Entity.Account", "account")
+                        .WithOne("customer")
+                        .HasForeignKey("BusBookTicket.Common.Models.Entity.Customer", "accountID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BusBookTicket.Common.Models.Entity.Rank", "rank")
                         .WithMany("customers")
                         .HasForeignKey("rankID")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("account");
 
                     b.Navigation("rank");
                 });
@@ -548,6 +568,15 @@ namespace BusBookTicket.Common.Migrations
                     b.Navigation("ticket");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Account", b =>
+                {
+                    b.Navigation("company")
+                        .IsRequired();
+
+                    b.Navigation("customer")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Bus", b =>
                 {
                     b.Navigation("busStops");
@@ -569,9 +598,6 @@ namespace BusBookTicket.Common.Migrations
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Company", b =>
                 {
-                    b.Navigation("account")
-                        .IsRequired();
-
                     b.Navigation("buses");
 
                     b.Navigation("reviews");
@@ -579,8 +605,6 @@ namespace BusBookTicket.Common.Migrations
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Customer", b =>
                 {
-                    b.Navigation("account");
-
                     b.Navigation("reviews");
 
                     b.Navigation("tickets");

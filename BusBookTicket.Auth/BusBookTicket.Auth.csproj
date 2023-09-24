@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\Responses\**" />
     <Compile Remove="Repository\**" />
-    <EmbeddedResource Remove="DTOs\Responses\**" />
     <EmbeddedResource Remove="Repository\**" />
-    <None Remove="DTOs\Responses\**" />
     <None Remove="Repository\**" />
   </ItemGroup>
 

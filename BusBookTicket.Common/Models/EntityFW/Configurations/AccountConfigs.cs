@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.Common.Models.Entity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BusBookTicket.Common.Models.EntityFW.Configurations
 {
@@ -11,13 +12,14 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
             builder.HasKey(x => x.accountID);
 
             builder.Property(x => x.accountID)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn();
             builder.Property(x => x.username)
                 .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.password)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
+            builder.HasAlternateKey(x => x.username);
             
         }
     }

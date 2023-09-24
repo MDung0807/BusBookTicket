@@ -1,5 +1,6 @@
 using AutoMapper;
 using BusBookTicket.Auth.Controllers;
+using BusBookTicket.Auth.Repositories;
 using BusBookTicket.Auth.Services;
 using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
@@ -8,6 +9,7 @@ using BusBookTicket.Configs;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;
+using BusBookTicket.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,19 +42,20 @@ internal class Program
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<Customer>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
+
         #endregion -- Scoped --
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
 
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseMiddleware<ExceptionMiddleware>();
         app.UseRouting();
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>

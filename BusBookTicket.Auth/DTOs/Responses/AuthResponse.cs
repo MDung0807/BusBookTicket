@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusBookTicket.Auth.Repositories
+namespace BusBookTicket.Auth.DTOs.Responses
 {
-    public class AccountResponse
+    public class AuthResponse
     {
+
     }
 }

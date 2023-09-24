@@ -10,9 +10,9 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
         {
             #region -- configs property --
 
-            builder.HasKey(x => x.CustomerID);
-            builder.Property(x => x.CustomerID)
-                .ValueGeneratedNever()
+            builder.HasKey(x => x.customerID);
+            builder.Property(x => x.customerID)
+                .ValueGeneratedOnAdd()
                 .IsRequired();
 
             builder.Property(x => x.fullName)
@@ -34,13 +34,13 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
             builder.Property(x => x.dateUpdate)
                 .HasMaxLength(50);
 
-            builder.HasIndex(x => x.CustomerID);
+            builder.HasIndex(x => x.customerID);
             #endregion -- configs property --
 
             #region -- RelationShip--
             builder.HasOne(x => x.account)
                 .WithOne(x => x.customer)
-                .HasForeignKey<Account>("accountID")
+                .HasForeignKey<Customer>("accountID")
                 .IsRequired();
 
             builder.HasOne(x => x.rank)

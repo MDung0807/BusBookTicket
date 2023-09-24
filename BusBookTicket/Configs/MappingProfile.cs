@@ -9,6 +9,7 @@ namespace BusBookTicket.Configs
         public MappingProfile() { 
             CreateMap<Customer, FormRegister>();
             CreateMap<FormRegister, Customer> ();
+            CreateMap<FormRegister, Account>();
         }
     }
 }

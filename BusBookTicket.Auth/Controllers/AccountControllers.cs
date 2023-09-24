@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Common.Common;
+﻿using BusBookTicket.Auth.Exceptions;
+using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,7 @@ namespace BusBookTicket.Auth.Controllers
         [HttpGet]
         public string Index()
         {
-            return "áaa";
+            throw new AuthException("có lỗi rồi");
         }
 
         [HttpGet("getAccount")]

@@ -10,7 +10,7 @@ namespace BusBookTicket.Common.Models.Entity
     {
         #region -- configs property --
 
-        public int CustomerID { get; set; }
+        public int customerID { get; set; }
         public string? fullName { get; set; }
         public DateTime dateOfBirth { get; set; }
         public string? address { get; set; }
