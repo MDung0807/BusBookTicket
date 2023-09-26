@@ -20,6 +20,7 @@ namespace BusBookTicket.Common.Models.EntityFW
             modelBuilder.ApplyConfiguration(new CustomerConfigs());
             modelBuilder.ApplyConfiguration(new DiscountConfigs());
             modelBuilder.ApplyConfiguration(new RankConfigs());
+            modelBuilder.ApplyConfiguration(new RoleConfigs());
             modelBuilder.ApplyConfiguration(new ReviewConfigs());
             modelBuilder.ApplyConfiguration(new SeatItemConfigs());
             modelBuilder.ApplyConfiguration(new TicketConfigs());
@@ -38,6 +39,7 @@ namespace BusBookTicket.Common.Models.EntityFW
         public DbSet<BusStation> BusStations { get; set; }
         public DbSet<BusStop> BusStops { get; set; }
         public DbSet<SeatItem> SeatItems { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Rank> Ranks { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Review> Reviews { get; set; }

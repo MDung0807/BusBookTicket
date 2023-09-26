@@ -13,7 +13,7 @@ namespace BusBookTicket.Auth.Services
 {
     public interface IAuthService : IService<Account, AuthRequest, AuthResponse>
     {
-        bool login (AuthRequest request);
+        AuthResponse login (AuthRequest request);
         Account getAccByUsername (string username);
     }
 }
