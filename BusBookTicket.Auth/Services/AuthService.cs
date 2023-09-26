@@ -2,6 +2,8 @@
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Repositories;
+using BusBookTicket.Auth.Security;
+using BusBookTicket.Auth.Utils;
 using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
 using System;
@@ -26,6 +28,7 @@ namespace BusBookTicket.Auth.Services
             _authRepository = authRepository;
             _mapper = mapper;
         }
+
         public bool create(Account account)
         {
             _account = _mapper.Map<Account>(account);
@@ -47,9 +50,16 @@ namespace BusBookTicket.Auth.Services
             throw new NotImplementedException();
         }
 
-        public bool login(AuthRequest request)
+        public AuthResponse login(AuthRequest request)
         {
-            throw new NotImplementedException();
+            AuthResponse response;
+            _account = _mapper.Map<Account>(request);
+            if (_authRepository.login(_account))
+            {
+                _account =_authRepository.getAccByUsername(request.username);
+                string token = JwtUtils.GernerateToken(_account.username, _account.role.roleName);
+                response = new AuthResponse(_account.accountID, _account.username, token);
+            }
         }
 
         public AuthResponse update(AuthRequest entity)

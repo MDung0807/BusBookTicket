@@ -12,6 +12,7 @@ namespace BusBookTicket.Common.Models.Entity
         #region -- Relationship ---
         public Customer customer { get; set; }
         public Company company { get; set; }
+        public Role role { get; set; }
         #endregion -- Relationship ---
 
     }

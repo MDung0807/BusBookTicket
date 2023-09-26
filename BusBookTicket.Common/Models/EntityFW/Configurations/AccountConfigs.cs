@@ -20,7 +20,15 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
             builder.Property(x => x.password)
                 .IsRequired();
             builder.HasAlternateKey(x => x.username);
-            
+
+            #region -- Relationship --
+            builder.HasOne(x => x.role)
+                .WithMany(x => x.accounts)
+                .HasForeignKey("roleID")
+                .IsRequired();
+            #endregion -- Relationship --
+
+
         }
     }
 }

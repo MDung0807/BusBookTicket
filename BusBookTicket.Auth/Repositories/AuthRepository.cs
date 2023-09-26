@@ -8,7 +8,7 @@ namespace BusBookTicket.Auth.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        #region -- Properties --
+        #region -- PropMerties --
         private readonly AppDBContext _context;
         private bool _status;
         private Account _account;
