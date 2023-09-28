@@ -8,5 +8,6 @@ namespace BusBookTicket.Auth.Utils
 {
     internal class AuthContrains
     {
+        internal static readonly string LOGIN_FAIL = "Username or Password not correct";
     }
 }

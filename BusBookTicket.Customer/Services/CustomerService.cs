@@ -1,9 +1,10 @@
 ﻿using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Repositories;
-using BusBookTicket.Auth.Services;
 using BusBookTicket.Common.Models.Entity;
 using AutoMapper;
+using BusBookTicket.Auth.Services.AuthService;
+using BusBookTicket.Auth.DTOs.Requests;
 
 namespace BusBookTicket.CustomerManage.Services
 {
@@ -42,8 +43,8 @@ namespace BusBookTicket.CustomerManage.Services
 
             _customer = _mapper.Map<Customer>(entity);
 
-            Account account = _mapper.Map<Account>(entity);
-            _authService.create(account);
+            AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
+            _authService.create(authRequest);
             _customer.account = _authService.getAccByUsername(entity.username);
 
             return _customerRepository.create(_customer);

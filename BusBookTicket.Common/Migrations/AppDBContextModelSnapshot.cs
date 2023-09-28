@@ -34,6 +34,9 @@ namespace BusBookTicket.Common.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("roleID")
+                        .HasColumnType("int");
+
                     b.Property<string>("username")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -42,6 +45,8 @@ namespace BusBookTicket.Common.Migrations
                     b.HasKey("accountID");
 
                     b.HasAlternateKey("username");
+
+                    b.HasIndex("roleID");
 
                     b.ToTable("Accounts");
                 });
@@ -327,6 +332,29 @@ namespace BusBookTicket.Common.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Role", b =>
+                {
+                    b.Property<int>("roleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("roleID"));
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("roleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("roleID");
+
+                    b.HasAlternateKey("roleName");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.SeatItem", b =>
                 {
                     b.Property<int>("seatID")
@@ -410,6 +438,17 @@ namespace BusBookTicket.Common.Migrations
                     b.HasIndex("ticketID");
 
                     b.ToTable("TicketItems");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Account", b =>
+                {
+                    b.HasOne("BusBookTicket.Common.Models.Entity.Role", "role")
+                        .WithMany("accounts")
+                        .HasForeignKey("roleID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("role");
                 });
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Bus", b =>
@@ -617,6 +656,11 @@ namespace BusBookTicket.Common.Migrations
                     b.Navigation("customers");
 
                     b.Navigation("discounts");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Role", b =>
+                {
+                    b.Navigation("accounts");
                 });
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.SeatItem", b =>
