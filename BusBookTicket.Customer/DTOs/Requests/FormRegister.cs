@@ -22,6 +22,7 @@ namespace BusBookTicket.CustomerManage.DTOs.Requests
         #region -- Account --
         public string username { get; set; }
         public string password { get; set; }
+        public string roleName { get; set; }
         #endregion -- Account --
     }
 }

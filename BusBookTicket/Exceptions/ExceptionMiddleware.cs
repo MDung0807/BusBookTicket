@@ -21,7 +21,7 @@ namespace BusBookTicket.Exceptions
             }
             catch(AuthException authException)
             {
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, authException.message)));
 

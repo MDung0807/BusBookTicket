@@ -2,6 +2,7 @@
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Security;
+using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,36 +12,20 @@ namespace BusBookTicket.Auth.Controllers
     [Route("auth")]
     public class AuthController  : ControllerBase
     {
-       
-        [HttpGet("getAccount")]
-        public Response<Account> get()
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            Account account = new Account();
-            account.username = "ffff";
-            account.password = "password";
-            account.accountID = 3;
-            return new Response<Account>(false, account);
+            _authService = authService;
         }
+        #region -- Controller --
 
         [HttpPost("login")]
-        public Response<AuthResponse> login([FromBody] AuthRequest requets)
+        public IActionResult login([FromBody] AuthRequest requets)
         {
-            string token = JwtUtils.GernerateToken(requets.username);
-            AuthResponse response = new AuthResponse();
-            response.token = token;
-            response.role = "User";
-            response.userName = requets.username;
-            response.userID = 1;
-
-            return new Response<AuthResponse>(false, response);
+            AuthResponse response = _authService.login(requets);
+            return Ok(new Response<AuthResponse>(false, response));
         }
-
-        [HttpPost("testToken")]
-        public Response<string> test (string token)
-        {
-             var status = JwtUtils.GetPrincipal(token);
-            return new Response<string>(false, status.ToString());
-        }
-        
+        #endregion -- Controller --
     }
 }

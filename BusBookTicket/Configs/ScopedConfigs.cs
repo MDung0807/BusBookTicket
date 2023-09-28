@@ -1,4 +1,4 @@
-﻿using BusBookTicket.Auth.Services;
+﻿using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;
