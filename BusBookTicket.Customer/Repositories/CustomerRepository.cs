@@ -1,6 +1,9 @@
 ﻿using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.Common.Models.EntityFW;
+using BusBookTicket.CustomerManage.Exceptions;
+using BusBookTicket.CustomerManage.Utilitis;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +33,9 @@ namespace BusBookTicket.CustomerManage.Repositories
                 _status = true;
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new System.Exception(ex.ToString());
                 _status = false;
             }
 
@@ -50,6 +53,17 @@ namespace BusBookTicket.CustomerManage.Repositories
 
         public Customer getByID(int id)
         {
+            try
+            {
+                return _context.Customers.Where(x => x.customerID == id)
+                    .Include(x => x.rank)
+                    .Include<Customer, Account>(x => x.account)
+                    .FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw new CustomerException(CusConstants.REGISTER_FAIL);
+            }
             throw new NotImplementedException();
         }
 

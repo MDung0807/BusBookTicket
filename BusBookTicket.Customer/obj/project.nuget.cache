@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "my41bPDN+NUPSNJyZo61a15ge7hx2odQwOsP67vVH53H1zNRTKb1VhGYHSMRn9+pCnGKyU4YYth/PNoFfWNfyg==",
+  "dgSpecHash": "5/l8HOoALrnRw0MRDUkY5J2JvxGwCiw30DDMnWI4ERxruiVIYxqOPrf4ZIVsyGy6uc0wfKo8h8dbKNTqqxquiw==",
   "success": true,
   "projectFilePath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Customer\\BusBookTicket.CustomerManage.csproj",
   "expectedPackageFiles": [
@@ -18,6 +18,7 @@
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.11\\microsoft.aspnetcore.authentication.jwtbearer.7.0.11.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.authorization.policy\\2.2.0\\microsoft.aspnetcore.authorization.policy.2.2.0.nupkg.sha512",
     "C:\\Users\\dodung\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\2.2.0\\microsoft.aspnetcore.connections.abstractions.2.2.0.nupkg.sha512",

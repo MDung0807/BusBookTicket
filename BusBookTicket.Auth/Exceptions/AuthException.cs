@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusBookTicket.Common.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Exceptions
 {
-    public class AuthException : Exception
+    public class AuthException : ExceptionDetail
     {
-        public string message { get; set; }
-        public AuthException() { }
-
-        public AuthException(string message)
-        {
-            this.message = message;
-        }
+        public AuthException(string message) : base(message) { }
     }
 }

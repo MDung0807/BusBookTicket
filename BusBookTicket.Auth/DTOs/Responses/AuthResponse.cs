@@ -9,18 +9,23 @@ namespace BusBookTicket.Auth.DTOs.Responses
     public class AuthResponse
     {
         public int userID { get; set; }
-        public string userName { get; set; }
+        public string username { get; set; }
         public string token { get; set; }
-        public string role { get; set; }
+        public string roleName { get; set; }
+        public string type { get; set; }
 
-        public AuthResponse(int userID, string userName, string token, string role)
+        public AuthResponse(int userID, string username, string token, string role)
         {
             this.userID = userID;
-            this.userName = userName;
+            this.username = username;
             this.token = token;
-            this.role = role;
+            this.roleName = role;
+            this.type = "Bearer";
         }
 
-        public AuthResponse() { }
+        public AuthResponse() 
+        {
+            this.type = "Bearer";
+        }
     }
 }

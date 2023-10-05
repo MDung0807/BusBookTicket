@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Services.AuthService
 {
-    public class AuthService : IAuthService
+    public sealed class AuthService : IAuthService
     {
         #region -- Properties --
         private IAuthRepository _authRepository;
@@ -58,20 +58,31 @@ namespace BusBookTicket.Auth.Services.AuthService
 
         public AuthResponse login(AuthRequest request)
         {
-            AuthResponse response;
+            AuthResponse response = new AuthResponse() ;
+
             _account = _mapper.Map<Account>(request);
             if (_authRepository.login(_account))
             {
-                _account = _authRepository.getAccByUsername(request.username);
+                _account = _authRepository.getAccByUsername(request.username, request.roleName);
+                
                 if (_account.role.roleName == request.roleName)
                 {
-                    string token = JwtUtils.GernerateToken(_account.username, _account.role.roleName);
-                    response = new AuthResponse(_account.accountID, _account.username, token, _account.role.roleName);
+                    response.username = _account.username;
+                    response.roleName = _account.role.roleName;
+                    if (request.roleName == "COMPANY")
+                    {
+                        response.userID = _account.company.companyID;
+                    }
+                    else
+                    {
+                        response.userID = _account.customer.customerID;
+                    }
+                    response.token = JwtUtils.GernerateToken(response);
                     return response;
                 }
             }
 
-            throw new AuthException(AuthContrains.LOGIN_FAIL);
+            throw new AuthException(AuthConstants.LOGIN_FAIL);
         }
 
         public AuthResponse update(AuthRequest entity)
@@ -79,10 +90,27 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public Account getAccByUsername(string username)
+        public AccResponse getAccByUsername(string username, string roleName)
         {
-            return _authRepository.getAccByUsername(username);
+            Account account = _authRepository.getAccByUsername(username, roleName);
+            AccResponse response = new AccResponse() ;
+            response.username = account.username;
+            response.roleName = account.role.roleName ;
+
+            if (roleName == "COMPANY")
+                response.userID = account.company.companyID;
+            else 
+                response.userID = account.customer.customerID;
+            return response;
+        }
+
+        public Account getAccountByUsername(string username, string roleName)
+        {
+            return _authRepository.getAccByUsername(username, roleName);
         }
         #endregion -- Public Method --
+
+        #region -- Private Method --
+        #endregion -- Private Method --
     }
 }

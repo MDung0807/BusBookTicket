@@ -11,6 +11,6 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
     public interface IAuthRepository : IRepository<Account>
     {
         bool login(Account acc);
-        Account getAccByUsername(string username);
+        Account getAccByUsername(string username, string roleName);
     }
 }

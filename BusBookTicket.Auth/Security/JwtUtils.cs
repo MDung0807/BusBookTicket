@@ -1,23 +1,35 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using BusBookTicket.Auth.DTOs.Responses;
+using BusBookTicket.Auth.Exceptions;
+using BusBookTicket.Auth.Services.AuthService;
+using BusBookTicket.Auth.Utils;
+using BusBookTicket.Common.Models.Entity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Security
 {
     public class JwtUtils
     {
-        private static readonly string SECRET= "BachelorOfEngineeringThesisByMinhDung";
+        #region -- Private properties --
+        private static readonly string SECRET = "BachelorOfEngineeringThesisByMinhDung";
         private static readonly long EXPIRE = 4200000;
+        #endregion -- Private properties --
 
-        public static string GernerateToken (string username, string role)
+        #region -- Public properties -- 
+        #endregion -- Public properties --
+
+        /// <summary>
+        /// When login success. Reponse token
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public static string GernerateToken (AuthResponse response)
         {
             SHA256 sha256 = SHA256.Create(); 
             var secretBytes = Encoding.UTF8.GetBytes (SECRET);
@@ -29,8 +41,9 @@ namespace BusBookTicket.Auth.Security
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("username", username),
-                    new Claim("role", role)
+                    new Claim("UserID", response.userID.ToString()),
+                    new Claim("username", response.username),
+                    new Claim("role", response.roleName)
                 }),
 
                 Expires = now.AddMinutes(Convert.ToInt32(EXPIRE)),
@@ -47,6 +60,11 @@ namespace BusBookTicket.Auth.Security
             return token;
         }
 
+        /// <summary>
+        /// Decode token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public static ClaimsPrincipal GetPrincipal(string token)
         {
             try
@@ -73,11 +91,37 @@ namespace BusBookTicket.Auth.Security
 
                 return principal;
             }
-            catch (Exception)
+            catch 
             {
-                //should write log
-                return null;
+                throw new AuthException(AuthConstants.UNAUTHORIZATION);
             }
+        }
+
+        /// <summary>
+        /// Get token from header
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetToken (HttpContext context)
+        {
+            string authString = context.Request.Headers["Authorization"].FirstOrDefault();
+            if (!authString.IsNullOrEmpty())
+            {
+                authString = authString.Substring(7);
+            }
+            return authString ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Get ID Client from header['Authorization']
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetUserID(HttpContext context)
+        {
+            string token = GetToken(context);
+            var principal = GetPrincipal(token);
+            return principal.Claims.ElementAt(0).Value;
         }
     }
 }
