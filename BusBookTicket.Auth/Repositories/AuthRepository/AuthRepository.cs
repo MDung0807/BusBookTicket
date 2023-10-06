@@ -1,4 +1,5 @@
 ﻿using BusBookTicket.Auth.Exceptions;
+using BusBookTicket.Auth.Utils;
 using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.Common.Models.EntityFW;
 using BusBookTicket.Common.Utils;
@@ -44,9 +45,20 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             throw new NotImplementedException();
         }
 
-        public Account getAccByUsername(string username)
+        public Account getAccByUsername(string username, string roleName)
         {
-            return _account = _context.Accounts.Where(x => x.username == username).Include(x => x.role).FirstOrDefault();
+            if (roleName == "COMPANY")
+            {
+                return _account = _context.Accounts.Where(x => x.username == username)
+                .Include(x => x.role)
+                .Include(x => x.company)
+                .FirstOrDefault();
+            }
+            return _account = _context.Accounts.Where(x => x.username == username)
+                .Include(x => x.role)
+                .Include(x => x.customer)
+                .FirstOrDefault();
+
         }
 
         public List<Account> getAll()
@@ -62,7 +74,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
         public bool login(Account acc)
         {
             _status = false;
-            _account = getAccByUsername(acc.username);
+            _account = getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
             return PassEncrypt.verifyPassword(acc.password, _account.password);
         }
 

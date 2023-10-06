@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Utils
 {
-    internal class AuthContrains
+    public class AuthConstants
     {
-        internal static readonly string LOGIN_FAIL = "Username or Password not correct";
+        public const string LOGIN_FAIL = "Username or Password not correct";
+        public const string UNAUTHORIZATION = "Access Deny";
     }
 }
