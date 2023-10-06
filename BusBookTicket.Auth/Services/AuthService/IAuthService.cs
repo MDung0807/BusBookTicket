@@ -14,6 +14,7 @@ namespace BusBookTicket.Auth.Services.AuthService
     public interface IAuthService : IService<AuthRequest, AuthRequest, AuthResponse>
     {
         AuthResponse login(AuthRequest request);
-        Account getAccByUsername(string username);
+        AccResponse getAccByUsername(string username, string roleName);
+        Account getAccountByUsername(string username, string rolleName);
     }
 }

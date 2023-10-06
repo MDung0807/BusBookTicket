@@ -1,15 +1,15 @@
 ﻿using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
-using BusBookTicket.Auth.Exceptions;
-using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Models.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.Auth.Controllers
 {
-    [Route("auth")]
+    [ApiController]
+    [AllowAnonymous]
+    [Route("api/auth")]
     public class AuthController  : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -20,6 +20,7 @@ namespace BusBookTicket.Auth.Controllers
         }
         #region -- Controller --
 
+        
         [HttpPost("login")]
         public IActionResult login([FromBody] AuthRequest requets)
         {

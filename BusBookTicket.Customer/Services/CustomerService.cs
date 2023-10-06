@@ -45,7 +45,7 @@ namespace BusBookTicket.CustomerManage.Services
 
             AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
             _authService.create(authRequest);
-            _customer.account = _authService.getAccByUsername(entity.username);
+            _customer.account = _authService.getAccountByUsername(entity.username, entity.roleName);
 
             return _customerRepository.create(_customer);
         }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Common.Common
 {
-    public interface IService<Create, Update, Resonse>
+    public interface IService<Create, Update, Response>
     {
-        Resonse getByID(int id);
-        List<Resonse> GetAll();
-        Resonse update(Update entity);
+        Response getByID(int id);
+        List<Response> GetAll();
+        Response update(Update entity);
         bool delete(int id);
         bool create(Create entity);
     }
