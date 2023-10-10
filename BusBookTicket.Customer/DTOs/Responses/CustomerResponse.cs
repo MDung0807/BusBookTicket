@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusBookTicket.CustomerManage.DTOs.Responses
+﻿namespace BusBookTicket.CustomerManage.DTOs.Responses
 {
     public class CustomerResponse
     {
@@ -14,6 +8,7 @@ namespace BusBookTicket.CustomerManage.DTOs.Responses
         public string? email { get; set; }
         public string? phoneNumber { get; set; }
         public string? gender { get; set; }
-        public DateTime dateCreate { get; set; }
+        public string username { get; set; }
+        public string rank { get; set; }
     }
 }

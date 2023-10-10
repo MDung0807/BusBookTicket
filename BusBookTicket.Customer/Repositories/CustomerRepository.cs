@@ -1,14 +1,8 @@
-﻿using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Models.Entity;
+﻿using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.Common.Models.EntityFW;
 using BusBookTicket.CustomerManage.Exceptions;
 using BusBookTicket.CustomerManage.Utilitis;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusBookTicket.CustomerManage.Repositories
 {
@@ -25,6 +19,12 @@ namespace BusBookTicket.CustomerManage.Repositories
         }
         #endregion -- Contructor --
 
+        /// <summary>
+        /// Insert Customer to database
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool create(Customer entity)
         {
             try
@@ -42,15 +42,40 @@ namespace BusBookTicket.CustomerManage.Repositories
             return _status;
         }
 
+        /// <summary>
+        /// Delete Customer to database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool delete(int id)
         {
             throw new NotImplementedException();
         }
         public List<Customer> getAll()
         {
-            throw new NotImplementedException();
+            List<Customer> customers = new List<Customer>();
+
+            try
+            {
+                return customers = _context.Set<Customer>()
+                    .Where(x => x.account.role.roleName == "CUSTOMER")
+                    .Include(x => x.account)
+                    .Include(x => x.rank).ToList();
+            }
+            catch
+            {
+                throw new Exception("Error In GetAll Customer");
+            }
         }
 
+        /// <summary>
+        /// Find Customer from id to database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="CustomerException"></exception>
+        /// <exception cref="Exception"></exception>
         public Customer getByID(int id)
         {
             try
@@ -58,20 +83,25 @@ namespace BusBookTicket.CustomerManage.Repositories
                 return _context.Customers.Where(x => x.customerID == id)
                     .Include(x => x.rank)
                     .Include<Customer, Account>(x => x.account)
-                    .FirstOrDefault();
+                    .Include(x => x.account.role)
+                    .Include(x => x.rank)
+                    .FirstOrDefault() ?? throw new CustomerException(CusConstants.NOT_FOUND);
             }
-            catch (Exception)
+            catch 
             {
-                throw new CustomerException(CusConstants.REGISTER_FAIL);
+                throw new Exception("Error");
             }
-            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// update customer information
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Customer update(Customer entity)
         {
             throw new NotImplementedException();
         }
-
-    
     }
 }

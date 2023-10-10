@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Common.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230926151436_data")]
+    [Migration("20231009115230_data")]
     partial class data
     {
         /// <inheritdoc />
@@ -38,6 +38,9 @@ namespace BusBookTicket.Common.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("roleID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.Property<string>("username")
@@ -71,6 +74,9 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int>("companyID")
                         .HasColumnType("int");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("busID");
 
                     b.HasIndex("busTypeID");
@@ -99,6 +105,9 @@ namespace BusBookTicket.Common.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("busStationID");
 
                     b.ToTable("BusStations");
@@ -116,6 +125,9 @@ namespace BusBookTicket.Common.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("busStationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.HasKey("busStopID");
@@ -140,6 +152,9 @@ namespace BusBookTicket.Common.Migrations
 
                     b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.Property<int>("totalSeats")
                         .HasColumnType("int");
@@ -173,6 +188,9 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.HasKey("companyID");
 
@@ -230,6 +248,9 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int?>("rankID")
                         .HasColumnType("int");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("customerID");
 
                     b.HasIndex("accountID")
@@ -271,6 +292,9 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<int?>("rankID")
                         .HasColumnType("int");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("discountID");
 
                     b.HasIndex("rankID");
@@ -291,6 +315,9 @@ namespace BusBookTicket.Common.Migrations
 
                     b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.HasKey("rankID");
 
@@ -326,6 +353,9 @@ namespace BusBookTicket.Common.Migrations
                     b.Property<string>("reviews")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("reviewID");
 
                     b.HasIndex("companyID");
@@ -351,6 +381,9 @@ namespace BusBookTicket.Common.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("roleID");
 
                     b.HasAlternateKey("roleName");
@@ -370,6 +403,9 @@ namespace BusBookTicket.Common.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("seatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.HasKey("seatID");
@@ -403,6 +439,9 @@ namespace BusBookTicket.Common.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("discountID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.Property<long>("totolPrice")

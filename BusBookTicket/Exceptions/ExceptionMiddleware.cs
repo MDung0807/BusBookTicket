@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Utils;
 using BusBookTicket.Common.Common;
+using BusBookTicket.Common.Common.Exceptions;
 using BusBookTicket.CustomerManage.Exceptions;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;
@@ -35,14 +36,31 @@ namespace BusBookTicket.Exceptions
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
             }
-            catch(UnauthorizedAccessException)
+            catch(UnauthorizedAccessException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, AuthConstants.UNAUTHORIZATION)));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
 
             }
-
+            catch(NotFoundException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
+            }
+            catch(UnAuthorException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
+            }
+            catch(NullReferenceException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "NotFound")));
+            }
         }
     }
 }

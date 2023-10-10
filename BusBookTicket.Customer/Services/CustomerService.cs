@@ -31,6 +31,22 @@ namespace BusBookTicket.CustomerManage.Services
         #region -- Public method --
 
         /// <summary>
+        /// Get all customer by admin
+        /// </summary>
+        /// <returns></returns>
+        public List<CustomerResponse> getAll()
+        {
+            List<Customer> customers = new List<Customer>();
+            List<CustomerResponse> responses = new List<CustomerResponse>();
+            customers = _customerRepository.getAll();
+            foreach(Customer customer in customers)
+            {
+                responses.Add(_mapper.Map<CustomerResponse>(customer));
+            }
+            return responses;
+        }
+
+        /// <summary>
         /// Create Customer and account genera
         /// Call Auth Service to create account and get account.
         /// After create customer
@@ -55,22 +71,23 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public List<CustomerResponse> GetAll()
+        public List<ProfileResponse> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public CustomerResponse getByID(int id)
+        public ProfileResponse getByID(int id)
+        {
+            _customer = _customerRepository.getByID(id);
+            return _mapper.Map<ProfileResponse>(_customer);
+        }
+
+        public ProfileResponse update(FormRegister entity)
         {
             throw new NotImplementedException();
         }
 
-        public CustomerResponse update(FormRegister entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public CustomerResponse update(FormUpdate entity)
+        public ProfileResponse update(FormUpdate entity)
         {
             throw new NotImplementedException();
         }

@@ -13,7 +13,7 @@ namespace BusBookTicket.Common.Models.Entity
     {
         public int busID { get; set; }
         public string? busNumber { get; set; }
-
+        public int status { get; set; }
         #region -- Relationship --
 
         public Company? company { get; set; }

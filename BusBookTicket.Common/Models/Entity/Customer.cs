@@ -19,6 +19,7 @@ namespace BusBookTicket.Common.Models.Entity
         public string? gender { get; set; }
         public DateTime dateCreate { get; set; }
         public DateTime dateUpdate { get; set; }
+        public int status { get; set; }
         #endregion -- configs property --
 
 

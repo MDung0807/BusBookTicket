@@ -1,6 +1,4 @@
-﻿using BCrypt.Net;
-
-namespace BusBookTicket.Common.Utils
+﻿namespace BusBookTicket.Common.Utils
 {
     public class PassEncrypt
     {

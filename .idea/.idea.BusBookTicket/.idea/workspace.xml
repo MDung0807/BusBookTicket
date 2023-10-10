@@ -12,16 +12,115 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f63f664-bfcb-4e8b-ad4f-dca6ee6470ca" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/UserIdentity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BusBookTicket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BusBookTicket/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/BusBookTicket/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/0c2a1681-7d94-4cea-ba46-2e130b680844.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/1ab14672-b62f-4ef6-b0a8-3d10ec89819f.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/50c9e4fd-ac70-483d-86e0-c887383f7709.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/6d4a28cb-9459-4d29-97cc-5440f1b1e090.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/7ea8863c-770c-4516-875b-532994b3e84f.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/bac326cd-79f7-4433-9797-10d2c4101f86.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/FileContentIndex/e760f924-898d-4004-9d0f-31ab1a9de3c3.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/v17/.futdcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/BusBookTicket/v17/.futdcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/BusBookTicket/v17/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/BusBookTicket/v17/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/ProjectEvaluation/busbookticket.metadata.v7.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/busbookticket.metadata.v7.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/ProjectEvaluation/busbookticket.projects.v7.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/busbookticket.projects.v7.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/Exceptions/AuthException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/Exceptions/AuthException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/Security/JwtUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/Security/JwtUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/Services/AuthService/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/Services/AuthService/AuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/Services/AuthService/IAuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/Services/AuthService/IAuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Auth.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Auth.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/bin/Debug/net7.0/BusBookTicket.Common.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/BusBookTicket.Auth.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/ref/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/ref/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/refint/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/Debug/net7.0/refint/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Auth/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Auth/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.BusStationManage/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.BusStationManage/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.BusStationManage/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.BusStationManage/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Common/ExceptionDetail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Common/ExceptionDetail.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Common/Response.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Common/Response.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Migrations/20230926151436_data.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Migrations/20230926151436_data.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Migrations/AppDBContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Account.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Account.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Bus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Bus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusStation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusStation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusStop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusStop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/BusType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Company.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Company.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Customer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Customer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Discount.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Discount.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Rank.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Rank.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Review.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Review.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Role.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Role.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/SeatItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/SeatItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Ticket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Models/Entity/Ticket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/Utils/PassEncrypt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/Utils/PassEncrypt.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/bin/Debug/net7.0/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/bin/Debug/net7.0/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/bin/Debug/net7.0/BusBookTicket.Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/bin/Debug/net7.0/BusBookTicket.Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/BusBookTicket.Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/ref/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/ref/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/refint/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/Debug/net7.0/refint/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Common/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Common/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/bin/Debug/net7.0/BusBookTicket.CompanyManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/bin/Debug/net7.0/BusBookTicket.CompanyManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/bin/Debug/net7.0/BusBookTicket.CompanyManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/bin/Debug/net7.0/BusBookTicket.CompanyManage.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/obj/Debug/net7.0/BusBookTicket.CompanyManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/obj/Debug/net7.0/BusBookTicket.CompanyManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/obj/Debug/net7.0/BusBookTicket.CompanyManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/obj/Debug/net7.0/BusBookTicket.CompanyManage.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Company/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Company/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Controller/CustomerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Controller/CustomerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/DTOs/Requests/FormRegister.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/DTOs/Requests/FormRegister.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/DTOs/Responses/CustomerResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/DTOs/Responses/ProfileResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Repositories/CustomerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Repositories/CustomerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Repositories/ICustomerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Repositories/ICustomerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Services/CustomerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Services/CustomerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Services/ICustomerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Services/ICustomerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/Utilitis/CusConstants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/Utilitis/CusConstants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Auth.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Auth.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.CustomerManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.CustomerManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.CustomerManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/bin/Debug/net7.0/BusBookTicket.CustomerManage.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/BusBookTicket.CustomerManage.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/ref/BusBookTicket.CustomerManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/ref/BusBookTicket.CustomerManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/refint/BusBookTicket.CustomerManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/Debug/net7.0/refint/BusBookTicket.CustomerManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.Customer/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.Customer/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.TicketManage/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.TicketManage/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket.TicketManage/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket.TicketManage/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/Configs/MappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/Configs/MappingProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/Exceptions/ExceptionMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/Exceptions/ExceptionMiddleware.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Auth.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Auth.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Auth.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Auth.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CompanyManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CompanyManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CompanyManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CompanyManage.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CustomerManage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CustomerManage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CustomerManage.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.CustomerManage.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/bin/Debug/net7.0/BusBookTicket.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.MvcApplicationPartsAssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.MvcApplicationPartsAssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/BusBookTicket.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/ref/BusBookTicket.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/ref/BusBookTicket.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/refint/BusBookTicket.dll" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/Debug/net7.0/refint/BusBookTicket.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusBookTicket/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BusBookTicket/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +136,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3182ebe051d9b4bed148730ecd591e6f2d28d705821e6fbb3c16b51b51f15c7/Profile.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/94979e8ad10eb958a4a5b6087471a94bb193a59adf81afeb84f161934495b72/View.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusBookTicket/Program.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -48,28 +149,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Dung",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "terminal",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\dodung\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\dodung\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\dodung\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\dodung\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\dodung\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\dodung\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
@@ -117,6 +218,9 @@
       <workItem from="1696585906124" duration="828000" />
       <workItem from="1696587809639" duration="318000" />
       <workItem from="1696588162927" duration="286000" />
+      <workItem from="1696676816923" duration="448000" />
+      <workItem from="1696682812166" duration="14687000" />
+      <workItem from="1696847917166" duration="7730000" />
     </task>
     <servers />
   </component>

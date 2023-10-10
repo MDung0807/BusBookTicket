@@ -19,7 +19,8 @@ namespace BusBookTicket.Common.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    totalSeats = table.Column<int>(type: "int", nullable: false)
+                    totalSeats = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +35,8 @@ namespace BusBookTicket.Common.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +50,8 @@ namespace BusBookTicket.Common.Migrations
                     rankID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,7 +65,8 @@ namespace BusBookTicket.Common.Migrations
                     roleID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     roleName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,6 +81,7 @@ namespace BusBookTicket.Common.Migrations
                     seatID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     seatNumber = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     busTypeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -102,6 +107,7 @@ namespace BusBookTicket.Common.Migrations
                     dateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     rankID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -123,6 +129,7 @@ namespace BusBookTicket.Common.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     roleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -147,6 +154,7 @@ namespace BusBookTicket.Common.Migrations
                     introduction = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     accountID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -174,6 +182,7 @@ namespace BusBookTicket.Common.Migrations
                     gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     dateCreate = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
                     dateUpdate = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     accountID = table.Column<int>(type: "int", nullable: false),
                     rankID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -201,6 +210,7 @@ namespace BusBookTicket.Common.Migrations
                     busID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     busNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: false),
                     companyID = table.Column<int>(type: "int", nullable: false),
                     busTypeID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -231,6 +241,7 @@ namespace BusBookTicket.Common.Migrations
                     dateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: false),
                     rate = table.Column<int>(type: "int", nullable: false),
                     customerID = table.Column<int>(type: "int", nullable: false),
                     companyID = table.Column<int>(type: "int", nullable: false)
@@ -261,6 +272,7 @@ namespace BusBookTicket.Common.Migrations
                     dateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dateDeparture = table.Column<DateTime>(type: "datetime2", nullable: false),
                     totolPrice = table.Column<long>(type: "bigint", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     busStationEndID = table.Column<int>(type: "int", nullable: false),
                     customerID = table.Column<int>(type: "int", nullable: false),
                     discountID = table.Column<int>(type: "int", nullable: false),
@@ -295,6 +307,7 @@ namespace BusBookTicket.Common.Migrations
                 {
                     busStopID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    status = table.Column<int>(type: "int", nullable: false),
                     busStationID = table.Column<int>(type: "int", nullable: false),
                     busID = table.Column<int>(type: "int", nullable: false)
                 },

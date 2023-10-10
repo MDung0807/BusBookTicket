@@ -51,7 +51,7 @@ internal class Program
                 options.RequireHttpsMetadata = false; // Set to true if you require HTTPS
                 options.SaveToken = true;
             });
-        ;
+        
         services.AddAuthorization();
         services.AddControllers();
         services.AddEndpointsApiExplorer();

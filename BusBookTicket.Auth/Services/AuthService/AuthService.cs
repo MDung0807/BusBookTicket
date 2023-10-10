@@ -6,13 +6,7 @@ using BusBookTicket.Auth.Repositories.AuthRepository;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.Auth.Utils;
-using BusBookTicket.Common.Common;
 using BusBookTicket.Common.Models.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Services.AuthService
 {

@@ -7,6 +7,7 @@ namespace BusBookTicket.Common.Models.Entity
         public int accountID { get; set; }
         public string username { get; set; }
         public string password { get; set; }
+        public int status { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship ---
