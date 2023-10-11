@@ -4,7 +4,7 @@ using BusBookTicket.CustomerManage.DTOs.Responses;
 
 namespace BusBookTicket.CustomerManage.Services
 {
-    public interface ICustomerService : IService<FormRegister,FormUpdate, ProfileResponse>
+    public interface ICustomerService : IService<FormRegister,FormUpdate, int, ProfileResponse>
     {
         List<CustomerResponse> getAll();
     }

@@ -32,7 +32,13 @@ namespace BusBookTicket.Auth.Services.AuthService
             _account = _mapper.Map<Account>(request);
             Role role = _roleService.getRole(request.roleName);
             _account.role = role;
+            _account.status = 1;
             return _authRepository.create(_account);
+        }
+
+        public bool update(AuthRequest entity, int id)
+        {
+            throw new NotImplementedException();
         }
 
         public bool delete(int id)
@@ -78,12 +84,6 @@ namespace BusBookTicket.Auth.Services.AuthService
 
             throw new AuthException(AuthConstants.LOGIN_FAIL);
         }
-
-        public AuthResponse update(AuthRequest entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public AccResponse getAccByUsername(string username, string roleName)
         {
             Account account = _authRepository.getAccByUsername(username, roleName);

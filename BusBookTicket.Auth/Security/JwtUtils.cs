@@ -106,7 +106,7 @@ namespace BusBookTicket.Auth.Security
             {
                 authString = authString.Substring(7);
             }
-            return authString ?? string.Empty;
+            return authString == ("null") ? string.Empty : authString;
         }
 
         /// <summary>

@@ -14,7 +14,6 @@ namespace BusBookTicket.CustomerManage.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        private Customer _customer;
         #endregion --  Properties --
 
         #region -- Constructor --
@@ -55,15 +54,20 @@ namespace BusBookTicket.CustomerManage.Services
         /// <returns></returns>
         public bool create(FormRegister entity)
         {
-            _customer = new Customer();
+            Customer customer = new Customer();
+            customer = new Customer();
 
-            _customer = _mapper.Map<Customer>(entity);
+            customer = _mapper.Map<Customer>(entity);
+
+            // Set Full data in form regisger
+            customer.dateUpdate = DateTime.Now;
+            customer.dateCreate = DateTime.Now;
 
             AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
             _authService.create(authRequest);
-            _customer.account = _authService.getAccountByUsername(entity.username, entity.roleName);
+            customer.account = _authService.getAccountByUsername(entity.username, entity.roleName);
 
-            return _customerRepository.create(_customer);
+            return _customerRepository.create(customer);
         }
 
         public bool delete(int id)
@@ -78,8 +82,9 @@ namespace BusBookTicket.CustomerManage.Services
 
         public ProfileResponse getByID(int id)
         {
-            _customer = _customerRepository.getByID(id);
-            return _mapper.Map<ProfileResponse>(_customer);
+            Customer customer = new Customer();
+            customer = _customerRepository.getByID(id);
+            return _mapper.Map<ProfileResponse>(customer);
         }
 
         public ProfileResponse update(FormRegister entity)
@@ -87,9 +92,14 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public ProfileResponse update(FormUpdate entity)
+        public bool update(FormUpdate entity, int id)
         {
-            throw new NotImplementedException();
+            Customer customer = new Customer();
+            
+            customer = _mapper.Map<Customer>(entity);
+            customer.customerID = id;
+            
+            return _customerRepository.update(customer);;
         }
         #endregion -- Public method --
     }

@@ -82,10 +82,9 @@ namespace BusBookTicket.CustomerManage.Repositories
             {
                 return _context.Customers.Where(x => x.customerID == id)
                     .Include(x => x.rank)
-                    .Include<Customer, Account>(x => x.account)
-                    .Include(x => x.account.role)
-                    .Include(x => x.rank)
-                    .FirstOrDefault() ?? throw new CustomerException(CusConstants.NOT_FOUND);
+                    .Include(x => x.account)
+                    .Include(x => x.account.role) 
+                    .First()?? throw new CustomerException(CusConstants.NOT_FOUND);
             }
             catch 
             {
@@ -99,9 +98,24 @@ namespace BusBookTicket.CustomerManage.Repositories
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Customer update(Customer entity)
+        public bool update(Customer entity)
         {
-            throw new NotImplementedException();
+            bool status = false;
+            try
+            {
+                _context.Customers.Update(entity);
+                _context.SaveChanges();
+                status = true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Fail in update profile: {e.Message}");
+            }
+            finally
+            {
+            }
+
+            return status;
         }
     }
 }

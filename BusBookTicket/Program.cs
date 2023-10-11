@@ -30,6 +30,25 @@ internal class Program
         services.AddSingleton(mapper);
         #endregion -- Config auto mapping --
 
+        #region -- Configs Policy --
+        //services.AddCors(options =>
+        //{
+        //    options.AddDefaultPolicy(builder =>
+        //    {
+        //        builder.AllowAnyHeader();
+        //        builder.AllowAnyMethod();
+        //        builder.AllowAnyOrigin();
+        //    });
+
+        //    options.AddPolicy("AllowAll", builder =>
+        //    {
+        //        builder.AllowAnyOrigin()
+        //               .AllowAnyMethod()
+        //               .AllowAnyHeader();
+        //    });
+        //});
+        #endregion -- Configs Policy --
+
         SHA256 sha256 = SHA256.Create();
         var secretBytes = Encoding.UTF8.GetBytes("BachelorOfEngineeringThesisByMinhDung");
         var symmetricKey = sha256.ComputeHash(secretBytes);
@@ -75,6 +94,12 @@ internal class Program
 
         // Configure the HTTP request pipeline.
         app.UseRouting();
+        app.UseCors(options =>
+        {
+            options.AllowAnyOrigin();
+            options.AllowAnyMethod();
+            options.AllowAnyHeader();
+        });
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseMiddleware<JwtMiddleware>();
         app.UseAuthentication();
@@ -84,13 +109,6 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        app.UseCors(options =>
-        {
-            options.AllowAnyOrigin();
-            options.AllowAnyMethod();
-            options.AllowAnyHeader();
-        });
-        
         app.UseEndpoints(endpoints =>
         endpoints.MapControllers()) ;
         

@@ -61,6 +61,12 @@ namespace BusBookTicket.Exceptions
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "NotFound")));
             }
+            catch(Exception ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
+            }
         }
     }
 }

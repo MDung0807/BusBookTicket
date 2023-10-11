@@ -5,7 +5,7 @@ using BusBookTicket.Common.Models.Entity;
 
 namespace BusBookTicket.Auth.Services.AuthService
 {
-    public interface IAuthService : IService<AuthRequest, AuthRequest, AuthResponse>
+    public interface IAuthService : IService<AuthRequest, AuthRequest, int, AuthResponse>
     {
         AuthResponse login(AuthRequest request);
         AccResponse getAccByUsername(string username, string roleName);

@@ -11,6 +11,7 @@ namespace BusBookTicket.Configs
         public MappingProfile() { 
             CreateMap<FormRegister, Customer> ();
             CreateMap<FormRegister, AuthRequest>();
+            CreateMap<FormUpdate, Customer>();
             CreateMap<Customer, ProfileResponse>()
                 .ForPath(dest => dest.roleName,
                     opt => opt.MapFrom(x => x.account.role.roleName))
