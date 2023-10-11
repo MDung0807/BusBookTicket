@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilitis;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.CustomerManage.Controller
