@@ -9,7 +9,7 @@ namespace BusBookTicket.Common.Common
     public interface IService<Create, Update, ID, Response>
     {
         Response getByID(ID id);
-        List<Response> GetAll();
+        List<Response> getAll();
         bool update(Update entity, ID id);
         bool delete(ID id);
         bool create(Create entity);

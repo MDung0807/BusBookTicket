@@ -46,7 +46,7 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public List<AuthResponse> GetAll()
+        public List<AuthResponse> getAll()
         {
             throw new NotImplementedException();
         }

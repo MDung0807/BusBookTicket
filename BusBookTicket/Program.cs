@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
+using BusBookTicket.BusStationManage.Repositories;
+using BusBookTicket.BusStationManage.Services;
 
 internal class Program
 {
@@ -30,24 +32,7 @@ internal class Program
         services.AddSingleton(mapper);
         #endregion -- Config auto mapping --
 
-        #region -- Configs Policy --
-        //services.AddCors(options =>
-        //{
-        //    options.AddDefaultPolicy(builder =>
-        //    {
-        //        builder.AllowAnyHeader();
-        //        builder.AllowAnyMethod();
-        //        builder.AllowAnyOrigin();
-        //    });
-
-        //    options.AddPolicy("AllowAll", builder =>
-        //    {
-        //        builder.AllowAnyOrigin()
-        //               .AllowAnyMethod()
-        //               .AllowAnyHeader();
-        //    });
-        //});
-        #endregion -- Configs Policy --
+        #region -- Authen --
 
         SHA256 sha256 = SHA256.Create();
         var secretBytes = Encoding.UTF8.GetBytes("BachelorOfEngineeringThesisByMinhDung");
@@ -70,6 +55,8 @@ internal class Program
                 options.RequireHttpsMetadata = false; // Set to true if you require HTTPS
                 options.SaveToken = true;
             });
+
+        #endregion -- Authen --
         
         services.AddAuthorization();
         services.AddControllers();
@@ -81,12 +68,7 @@ internal class Program
         
         
         #region -- Scoped --
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IAuthRepository, AuthRepository>();
-        services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
+        ScopedConfigs.Configure(services: services);
 
         #endregion -- Scoped --
 

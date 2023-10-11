@@ -5,6 +5,7 @@ using BusBookTicket.Common.Models.Entity;
 using AutoMapper;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
+using BusBookTicket.Common.Common;
 
 namespace BusBookTicket.CustomerManage.Services
 {
@@ -33,7 +34,7 @@ namespace BusBookTicket.CustomerManage.Services
         /// Get all customer by admin
         /// </summary>
         /// <returns></returns>
-        public List<CustomerResponse> getAll()
+        public List<CustomerResponse> getAllCustomer()
         {
             List<Customer> customers = new List<Customer>();
             List<CustomerResponse> responses = new List<CustomerResponse>();
@@ -75,16 +76,16 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public List<ProfileResponse> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public ProfileResponse getByID(int id)
         {
             Customer customer = new Customer();
             customer = _customerRepository.getByID(id);
             return _mapper.Map<ProfileResponse>(customer);
+        }
+
+        public List<ProfileResponse> getAll()
+        {
+            throw new NotImplementedException();
         }
 
         public ProfileResponse update(FormRegister entity)

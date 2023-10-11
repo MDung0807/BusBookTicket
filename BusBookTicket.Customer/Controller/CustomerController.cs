@@ -49,7 +49,7 @@ namespace BusBookTicket.CustomerManage.Controller
         public IActionResult getAllCustomer()
         {
             List<CustomerResponse> responses = new List<CustomerResponse>();
-            responses = _customerService.getAll();
+            responses = _customerService.getAllCustomer();
             return Ok(new Response<List<CustomerResponse>>(false, responses));
         }
 
