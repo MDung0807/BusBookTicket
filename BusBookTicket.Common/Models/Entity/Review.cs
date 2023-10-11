@@ -14,6 +14,7 @@ namespace BusBookTicket.Common.Models.Entity
         public DateTime dateCreate { get; set; }
         public DateTime dateUpdate { get; set; }
         public string? image { get; set; }
+        public int status { get; set; }
         public int rate { get; set; }
         #endregion -- Properties --
 

@@ -11,6 +11,7 @@ namespace BusBookTicket.Common.Models.Entity
         public int roleID { get; set; }
         public string roleName { get; set; }
         public string description { get; set; }
+        public int status { get; set; }
 
         #region -- Relationship --
         public HashSet<Account> accounts { get; set; }

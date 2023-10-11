@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
+using BusBookTicket.BusStationManage.Repositories;
+using BusBookTicket.BusStationManage.Services;
 
 internal class Program
 {
@@ -29,6 +31,8 @@ internal class Program
         IMapper mapper = mapperConfigs.CreateMapper();
         services.AddSingleton(mapper);
         #endregion -- Config auto mapping --
+
+        #region -- Authen --
 
         SHA256 sha256 = SHA256.Create();
         var secretBytes = Encoding.UTF8.GetBytes("BachelorOfEngineeringThesisByMinhDung");
@@ -51,7 +55,9 @@ internal class Program
                 options.RequireHttpsMetadata = false; // Set to true if you require HTTPS
                 options.SaveToken = true;
             });
-        ;
+
+        #endregion -- Authen --
+        
         services.AddAuthorization();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -62,12 +68,7 @@ internal class Program
         
         
         #region -- Scoped --
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IAuthRepository, AuthRepository>();
-        services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
+        ScopedConfigs.Configure(services: services);
 
         #endregion -- Scoped --
 
@@ -75,6 +76,12 @@ internal class Program
 
         // Configure the HTTP request pipeline.
         app.UseRouting();
+        app.UseCors(options =>
+        {
+            options.AllowAnyOrigin();
+            options.AllowAnyMethod();
+            options.AllowAnyHeader();
+        });
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseMiddleware<JwtMiddleware>();
         app.UseAuthentication();
@@ -84,13 +91,6 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        app.UseCors(options =>
-        {
-            options.AllowAnyOrigin();
-            options.AllowAnyMethod();
-            options.AllowAnyHeader();
-        });
-        
         app.UseEndpoints(endpoints =>
         endpoints.MapControllers()) ;
         

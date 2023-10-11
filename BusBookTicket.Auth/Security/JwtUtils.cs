@@ -1,14 +1,11 @@
 ﻿using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Exceptions;
-using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Utils;
-using BusBookTicket.Common.Models.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
 
 namespace BusBookTicket.Auth.Security
@@ -109,7 +106,7 @@ namespace BusBookTicket.Auth.Security
             {
                 authString = authString.Substring(7);
             }
-            return authString ?? string.Empty;
+            return authString == ("null") ? string.Empty : authString;
         }
 
         /// <summary>
@@ -117,11 +114,12 @@ namespace BusBookTicket.Auth.Security
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetUserID(HttpContext context)
+        public static int GetUserID(HttpContext context)
         {
             string token = GetToken(context);
             var principal = GetPrincipal(token);
-            return principal.Claims.ElementAt(0).Value;
+            string id = principal.Claims.ElementAt(0).Value;
+            return int.Parse(id);
         }
     }
 }

@@ -10,6 +10,5 @@ namespace BusBookTicket.CustomerManage.Repositories
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
-       
     }
 }

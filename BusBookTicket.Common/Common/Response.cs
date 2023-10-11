@@ -19,7 +19,7 @@ namespace BusBookTicket.Common.Common
         {
             this.isError = isError;
             this.data = data;
-            this.dateTime = (DateTime.Now).ToString("dd/MM/yyyy hh:mm");
+            this.dateTime = (DateTime.Now).ToString("dd/MM/yyyy hh:mm tt");
         }
     }
 }

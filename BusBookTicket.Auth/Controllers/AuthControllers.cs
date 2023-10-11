@@ -27,6 +27,13 @@ namespace BusBookTicket.Auth.Controllers
             AuthResponse response = _authService.login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
+
+        [HttpPost("reset")]
+        public IActionResult resetPassword([FromBody] AuthRequest requets)
+        {
+            AuthResponse response = _authService.login(requets);
+            return Ok(new Response<AuthResponse>(false, response));
+        }
         #endregion -- Controller --
     }
 }

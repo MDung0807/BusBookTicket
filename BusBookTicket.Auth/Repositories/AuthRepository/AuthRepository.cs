@@ -34,7 +34,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             }
             catch (Exception)
             {
-                throw new AuthException("Errors when create account");
+                throw new Exception("Errors when create account");
             }
             _status = true;
             return _status;
@@ -78,7 +78,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             return PassEncrypt.verifyPassword(acc.password, _account.password);
         }
 
-        public Account update(Account entity)
+        public bool update(Account entity)
         {
             throw new NotImplementedException();
         }

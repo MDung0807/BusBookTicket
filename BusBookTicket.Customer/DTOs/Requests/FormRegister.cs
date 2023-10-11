@@ -15,8 +15,6 @@ namespace BusBookTicket.CustomerManage.DTOs.Requests
         public string? email { get; set; }
         public string? phoneNumber { get; set; }
         public string? gender { get; set; }
-        public DateTime dateCreate { get; set; }
-        public DateTime dateUpdate { get; set; }
         #endregion -- Customer --
 
         #region -- Account --

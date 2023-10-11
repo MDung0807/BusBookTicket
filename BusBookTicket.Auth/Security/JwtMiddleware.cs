@@ -2,7 +2,6 @@
 using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Utils;
-using BusBookTicket.Common.Models.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 

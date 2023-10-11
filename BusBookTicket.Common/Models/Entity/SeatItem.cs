@@ -5,6 +5,7 @@
         #region -- Properties --
         public int seatID { get; set; }
         public int seatNumber { get; set; }
+        public int status { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship --
