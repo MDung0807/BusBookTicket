@@ -13,5 +13,3 @@ BusBookTicket/bin
 BusBookTicket/obj
 .vs/
 .idea/
-# Bỏ qua các file log
-*.log
