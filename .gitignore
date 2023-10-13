@@ -1,15 +1,15 @@
 # Bỏ qua tất cả các file sau khi build
 bin/
 obj/
-BusBookTicket.Auth/bin
-BusBookTicket.BusStationManage/bin
-BusBookTicket.Common/bin
-BusBookTicket.Company/BusBookTicket
-BusBookTicket.Company/bin
-BusBookTicket.Company/obj
-BusBookTicket.Customer/bin
-BusBookTicket.Customer/obj
-BusBookTicket/bin
-BusBookTicket/obj
+BusBookTicket.Auth/bin/
+BusBookTicket.BusStationManage/bin/
+BusBookTicket.Common/bin/
+BusBookTicket.Company/BusBookTicket/
+BusBookTicket.Company/bin/
+BusBookTicket.Company/obj/
+BusBookTicket.Customer/bin/
+BusBookTicket.Customer/obj/
+BusBookTicket/bin/
+BusBookTicket/obj/
 .vs/
 .idea/
