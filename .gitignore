@@ -1,0 +1,7 @@
+# Bỏ qua tất cả các file sau khi build
+**/bin/
+**/obj/
+**/PublishProfiles/
+**/.editorconfig
+.vs/
+.idea/
