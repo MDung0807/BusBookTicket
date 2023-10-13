@@ -65,7 +65,6 @@ public class CompanyRepos : ICompanyRepos
         }
         catch
         {
-            status = false;
             throw new Exception(CompanyConstants.ERROR_DELETE);
         }
 
