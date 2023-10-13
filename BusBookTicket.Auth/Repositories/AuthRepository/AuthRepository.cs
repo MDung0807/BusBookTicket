@@ -40,7 +40,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             return _status;
         }
 
-        public bool delete(int id)
+        public bool delete(Account id)
         {
             throw new NotImplementedException();
         }

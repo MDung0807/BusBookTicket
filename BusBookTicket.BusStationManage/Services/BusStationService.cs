@@ -44,7 +44,9 @@ public class BusStationService : IBusStationService
 
     public bool delete(int id)
     {
-        return _busStationRepos.delete(id);
+        BusStation busStation = _busStationRepos.getByID(id);
+        busStation.status = (int)EnumsApp.Delete;
+        return _busStationRepos.delete(busStation);
     }
 
     public bool create(BST_FormCreate entity)

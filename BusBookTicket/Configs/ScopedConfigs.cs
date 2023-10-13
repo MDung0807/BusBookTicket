@@ -5,6 +5,8 @@ using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.BusStationManage.Repositories;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.CompanyManage.Repositories;
+using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;
 
@@ -30,6 +32,11 @@ namespace BusBookTicket.Configs
             services.AddScoped<IBusStationService, BusStationService>();
             services.AddScoped<IBusStationRepos, BusStationRepos>();
             #endregion -- Add Scoped Auth Module --
+            
+            #region -- Add Scoped Company Module --
+            services.AddScoped<ICompanyRepos, CompanyRepos>();
+            services.AddScoped<ICompanyServices, CompanyService>();
+            #endregion -- Add Scoped Company Module --
         }
     }
 }

@@ -26,3 +26,8 @@ D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\obj\Debug\net7.0\refi
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.CompanyManage.pdb
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.CompanyManage.genruntimeconfig.cache
 D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\obj\Debug\net7.0\ref\BusBookTicket.CompanyManage.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Auth.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Common.dll
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Auth.pdb
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\bin\Debug\net7.0\BusBookTicket.Common.pdb
+D:\Nam4\HK1\Project\BusBookTicketAPI\BusBookTicket.Company\obj\Debug\net7.0\BusBookTicket.CompanyManage.csproj.CopyComplete

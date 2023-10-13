@@ -50,16 +50,12 @@ public class BusStationRepos : IBusStationRepos
         return status;
     }
 
-    public bool delete(int id)
+    public bool delete(BusStation busStation)
     {
         bool status = false;
-        BusStation busStation = new BusStation();
         try
         {
-            busStation = getByID(id);
-            busStation.status = 0;
-
-            _context.Update(busStation);
+            _context.BusStations.Update(busStation);
             _context.SaveChanges();
             status = true;
         }

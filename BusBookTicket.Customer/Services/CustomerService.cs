@@ -6,6 +6,7 @@ using AutoMapper;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Common.Common;
+using BusBookTicket.Common.Utils;
 
 namespace BusBookTicket.CustomerManage.Services
 {
@@ -56,7 +57,6 @@ namespace BusBookTicket.CustomerManage.Services
         public bool create(FormRegister entity)
         {
             Customer customer = new Customer();
-            customer = new Customer();
 
             customer = _mapper.Map<Customer>(entity);
 
@@ -72,8 +72,10 @@ namespace BusBookTicket.CustomerManage.Services
         }
 
         public bool delete(int id)
-        {
-            throw new NotImplementedException();
+        { 
+            Customer customer = _customerRepository.getByID(id);
+            customer = setStatus(customer, (int)EnumsApp.Delete);
+            return _customerRepository.delete(customer);
         }
 
         public ProfileResponse getByID(int id)
@@ -88,11 +90,6 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public ProfileResponse update(FormRegister entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool update(FormUpdate entity, int id)
         {
             Customer customer = new Customer();
@@ -103,5 +100,15 @@ namespace BusBookTicket.CustomerManage.Services
             return _customerRepository.update(customer);;
         }
         #endregion -- Public method --
+
+        #region -- Private Method --
+
+        private Customer setStatus(Customer customer, int status)
+        {
+            customer.status = customer.status != null ? status : customer.status;
+            customer.account.status = customer.account.status != null ? status: customer.account.status;
+            return customer;
+        }
+        #endregion
     }
 }

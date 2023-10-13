@@ -43,14 +43,26 @@ namespace BusBookTicket.CustomerManage.Repositories
         }
 
         /// <summary>
-        /// Delete Customer to database
+        /// Delete Customer in Database (update status)
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="customer"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool delete(int id)
+        public bool delete(Customer customer)
         {
-            throw new NotImplementedException();
+            bool status = false;
+            try
+            {
+                _context.Customers.Update(customer);
+                _context.SaveChanges();
+                status = true;
+            }
+            catch
+            {
+                throw new Exception(CusConstants.FAIL);
+            }
+
+            return status;
         }
         public List<Customer> getAll()
         {

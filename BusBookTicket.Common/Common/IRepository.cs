@@ -12,7 +12,7 @@ namespace BusBookTicket.Common.Common
     {
         T getByID(int id);
         bool update(T entity);
-        bool delete(int id);
+        bool delete(T entity);
         List<T> getAll();
         bool create (T entity);
     }

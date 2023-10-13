@@ -314,7 +314,14 @@
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj": {
+                "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Auth\\BusBookTicket.Auth.csproj"
+              },
+              "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj": {
+                "projectPath": "D:\\Nam4\\HK1\\Project\\BusBookTicketAPI\\BusBookTicket.Common\\BusBookTicket.Common.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

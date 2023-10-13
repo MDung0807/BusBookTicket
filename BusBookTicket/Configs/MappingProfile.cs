@@ -3,6 +3,8 @@ using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.CompanyManage.DTOs.Requests;
+using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 
@@ -34,14 +36,25 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.role.roleName, 
                     opt => opt.MapFrom(x => x.roleName));
             
-            CreateMap<FormUpdate, Customer>();
-            #endregion -- Configs Customer Module --
+            CreateMap<FormRegisterCompany, AuthRequest>();
+            #endregion -- Configs Auth Module --
 
             #region -- Configs BusStation Module --
             CreateMap<BST_FormUpdate, BusStation>();
             CreateMap<BST_FormCreate, BusStation>();
             CreateMap<BusStation, BusStationResponse>();
             #endregion -- Configs BusStation Module --
+
+            #region -- Configs Company Module --
+
+            CreateMap<FormRegisterCompany, Company>();
+            CreateMap<FormUpdateCompany, Company>();
+            CreateMap<Company, ProfileCompany>()
+                .ForPath(dest => dest.roleName,
+                    opt => opt.MapFrom(x => x.account.role.roleName))
+                .ForPath(dest => dest.username,
+                    opt => opt.MapFrom(x => x.account.username));
+            #endregion -- Configs Company Module --
         }
     }
 }
