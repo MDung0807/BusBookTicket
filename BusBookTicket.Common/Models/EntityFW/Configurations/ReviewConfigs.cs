@@ -25,9 +25,9 @@ namespace BusBookTicket.Common.Models.EntityFW.Configurations
                 .HasForeignKey("customerID")
                 .IsRequired();
 
-            builder.HasOne(x => x.company)
+            builder.HasOne(x => x.bus)
                 .WithMany(x => x.reviews)
-                .HasForeignKey("companyID")
+                .HasForeignKey("busID")
                 .IsRequired();
             #endregion -- Relationship --
 
