@@ -15,7 +15,6 @@ namespace BusBookTicket.Common.Models.Entity
         public string? description { get; set; }
         public int totalSeats { get; set; }
         public int status { get; set; }
-        public HashSet<SeatItem>? seatItems { get; set; }
         public HashSet<Bus>? buses { get; set; }
     }
 }

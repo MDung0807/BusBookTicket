@@ -19,7 +19,8 @@ namespace BusBookTicket.Common.Models.Entity
         #endregion -- Properties --
 
         #region -- Relationship -- 
-        public BusStation? busStation { get; set; }
+        public BusStation? busStationStart { get; set; }
+        public BusStation? busStationEnd { get; set; }
         public Customer? customer { get; set; }
         public HashSet<TicketItem>? ticketItems { get; set; }
         public Discount? discount { get; set; }
