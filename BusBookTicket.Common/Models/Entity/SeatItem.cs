@@ -9,7 +9,7 @@
         #endregion -- Properties --
 
         #region -- Relationship --
-        public BusType busType { get; set; }
+        public Bus bus { get; set; }
         public TicketItem? ticketItem { get; set; }
         #endregion -- Relationship --
 

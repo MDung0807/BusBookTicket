@@ -21,7 +21,6 @@ namespace BusBookTicket.Common.Models.Entity
         #region -- Relationship --
         public ICollection<Bus> buses { get; set; } = new List<Bus>();
         public Account account { get; set; }
-        public HashSet<Review> reviews { get; set; }
         #endregion -- Relationship --
        
     }

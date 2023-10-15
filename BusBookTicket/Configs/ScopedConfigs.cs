@@ -9,6 +9,8 @@ using BusBookTicket.CompanyManage.Repositories;
 using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;
+using BusBookTicket.Ranks.Repositories;
+using BusBookTicket.Ranks.Services;
 
 namespace BusBookTicket.Configs
 {
@@ -37,6 +39,11 @@ namespace BusBookTicket.Configs
             services.AddScoped<ICompanyRepos, CompanyRepos>();
             services.AddScoped<ICompanyServices, CompanyService>();
             #endregion -- Add Scoped Company Module --
+
+            #region -- Add Scoped Ranks Module --
+            services.AddScoped<IRankService, RankService>();
+            services.AddScoped<IRankRepository, RankRepository>();
+            #endregion
         }
     }
 }

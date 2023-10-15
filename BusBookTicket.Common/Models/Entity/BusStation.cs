@@ -8,7 +8,8 @@
         public string? description { get; set; }
         public int status { get; set; }
 
-        public HashSet<Ticket>? tickets { get; set; }
+        public HashSet<Ticket>? ticketStarts { get; set; }
+        public HashSet<Ticket>? ticketends { get; set; }
         public HashSet<BusStop>? busStops { get; set; }
     }
 }
