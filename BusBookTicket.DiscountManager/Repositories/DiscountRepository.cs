@@ -24,32 +24,36 @@ public class DiscountRepository : IDiscountRepository
         }
     }
 
-    public bool update(Discount entity)
+    public int update(Discount entity)
     {
+        int id;
         try
         {
-            _context.Update(entity); 
+            id = _context.Update(entity).Entity.discountID; 
             _context.SaveChanges();
-            return true;
         }
         catch 
         {
             throw new Exception(DiscountConstants.ERROR);
         }
+
+        return id;
     }
 
-    public bool delete(Discount entity)
+    public int delete(Discount entity)
     {
+        int id;
         try
         {
             _context.Entry(entity).Property(x => x.status).IsModified = true;
             _context.SaveChanges();
-            return true;
         }
         catch
         {
             throw new Exception(DiscountConstants.ERROR);
         }
+
+        return entity.discountID;
     }
 
     public List<Discount> getAll()
@@ -64,20 +68,19 @@ public class DiscountRepository : IDiscountRepository
         }
     }
 
-    public bool create(Discount entity)
+    public int create(Discount entity)
     {
-        bool status = false;
+        int id;
         try
         {
-            _context.Add(entity);
+            id = _context.Add(entity).Entity.discountID;
             _context.SaveChanges();
-            status = true;
         }
         catch
         {
             throw new Exception(DiscountConstants.ERROR);
         }
 
-        return status;
+        return id;
     }
 }

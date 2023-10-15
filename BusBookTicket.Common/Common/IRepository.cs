@@ -8,12 +8,45 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BusBookTicket.Common.Common
 {
-    public interface IRepository<T>
+    /// <summary>
+    /// Communication with database
+    /// </summary>
+    /// <typeparam name="T">Entity</typeparam>
+    /// <typeparam name="ID">ID in Entity</typeparam>
+    public interface IRepository<T, ID>
     {
+        /// <summary>
+        /// Get data by id
+        /// </summary>
+        /// <param name="id">Is ID in entity</param>
+        /// <returns>Entity has id = params</returns>
         T getByID(int id);
-        bool update(T entity);
-        bool delete(T entity);
+        
+        /// <summary>
+        /// Update Entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>ID in entity update</returns>
+        ID update(T entity);
+        
+        /// <summary>
+        /// Update status entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>ID in entity</returns>
+        ID delete(T entity);
+        
+        /// <summary>
+        /// Get all data entity in database
+        /// </summary>
+        /// <returns>List data</returns>
         List<T> getAll();
-        bool create (T entity);
+        
+        /// <summary>
+        /// Insert entity into database
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>ID for entity in database</returns>
+        ID create (T entity);
     }
 }

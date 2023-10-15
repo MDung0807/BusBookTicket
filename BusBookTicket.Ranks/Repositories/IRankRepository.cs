@@ -5,6 +5,6 @@ using BusBookTicket.Ranks.DTOs.Responses;
 
 namespace BusBookTicket.Ranks.Repositories;
 
-public interface IRankRepository : IRepository<Rank>
+public interface IRankRepository : IRepository<Rank, int>
 {
 }

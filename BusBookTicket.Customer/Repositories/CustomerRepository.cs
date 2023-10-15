@@ -25,21 +25,19 @@ namespace BusBookTicket.CustomerManage.Repositories
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public bool create(Customer entity)
+        public int create(Customer entity)
         {
+            int id;
             try
             {
-                _context.Add<Customer>(entity);
-                _status = true;
+                id =_context.Add<Customer>(entity).Entity.customerID;
                 _context.SaveChanges();
             }
             catch (System.Exception ex)
             {
                 throw new System.Exception(ex.ToString());
-                _status = false;
             }
-
-            return _status;
+            return id;
         }
 
         /// <summary>
@@ -48,21 +46,20 @@ namespace BusBookTicket.CustomerManage.Repositories
         /// <param name="customer"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool delete(Customer customer)
+        public int delete(Customer customer)
         {
-            bool status = false;
+            int id;
             try
             {
-                _context.Customers.Update(customer);
+                id = _context.Customers.Update(customer).Entity.customerID;
                 _context.SaveChanges();
-                status = true;
             }
             catch
             {
                 throw new Exception(CusConstants.FAIL);
             }
 
-            return status;
+            return id;
         }
         public List<Customer> getAll()
         {
@@ -110,14 +107,13 @@ namespace BusBookTicket.CustomerManage.Repositories
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool update(Customer entity)
+        public int update(Customer entity)
         {
-            bool status = false;
+            int id;
             try
             {
-                _context.Customers.Update(entity);
+                id = _context.Customers.Update(entity).Entity.customerID;
                 _context.SaveChanges();
-                status = true;
             }
             catch (Exception e)
             {
@@ -127,7 +123,7 @@ namespace BusBookTicket.CustomerManage.Repositories
             {
             }
 
-            return status;
+            return id;
         }
     }
 }

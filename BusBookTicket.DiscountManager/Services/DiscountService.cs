@@ -36,20 +36,22 @@ public class DiscountService : IDiscountService
     {
         Discount discount = _mapper.Map<Discount>(entity);
         discount.discountID = id;
-
-        return _discountRepository.update(discount);
+        _discountRepository.update(discount);
+        return true;
     }
 
     public bool delete(int id)
     {
         Discount discount = _discountRepository.getByID(id);
         discount.status = (int)EnumsApp.Delete;
-        return _discountRepository.delete(discount);
+        _discountRepository.delete(discount);
+        return true;
     }
 
     public bool create(DiscountCreate entity)
     {
         Discount discount = _mapper.Map<Discount>(entity);
-        return _discountRepository.create(discount);
+        _discountRepository.create(discount);
+        return true;
     }
 }

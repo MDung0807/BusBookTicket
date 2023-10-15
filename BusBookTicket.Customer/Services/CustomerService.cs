@@ -67,15 +67,17 @@ namespace BusBookTicket.CustomerManage.Services
             AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
             _authService.create(authRequest);
             customer.account = _authService.getAccountByUsername(entity.username, entity.roleName);
+            _customerRepository.create(customer);
 
-            return _customerRepository.create(customer);
+            return true;
         }
 
         public bool delete(int id)
         { 
             Customer customer = _customerRepository.getByID(id);
             customer = setStatus(customer, (int)EnumsApp.Delete);
-            return _customerRepository.delete(customer);
+            _customerRepository.delete(customer);
+            return true;
         }
 
         public ProfileResponse getByID(int id)
@@ -96,8 +98,8 @@ namespace BusBookTicket.CustomerManage.Services
             
             customer = _mapper.Map<Customer>(entity);
             customer.customerID = id;
-            
-            return _customerRepository.update(customer);;
+            _customerRepository.update(customer);
+            return true;
         }
         #endregion -- Public method --
 

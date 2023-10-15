@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.11" />
@@ -34,6 +35,9 @@
     <ProjectReference Include="..\BusBookTicket.Common\BusBookTicket.Common.csproj" />
     <ProjectReference Include="..\BusBookTicket.Company\BusBookTicket.CompanyManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj" />
+    <ProjectReference Include="..\BusBookTicket.DiscountManager\BusBookTicket.DiscountManager.csproj" />
+    <ProjectReference Include="..\BusBookTicket.Ranks\BusBookTicket.Ranks.csproj" />
+    <ProjectReference Include="..\BusBookTicket.TicketManage\BusBookTicket.TicketManage.csproj" />
   </ItemGroup>
 
 </Project>

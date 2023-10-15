@@ -3,7 +3,7 @@ using BusBookTicket.Common.Models.Entity;
 
 namespace BusBookTicket.DiscountManager.Repositories;
 
-public interface IDiscountRepository : IRepository<Discount>
+public interface IDiscountRepository : IRepository<Discount, int>
 {
     
 }

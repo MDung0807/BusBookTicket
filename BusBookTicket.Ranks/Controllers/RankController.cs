@@ -54,7 +54,7 @@ public class RankController : ControllerBase
     }
     
     [Authorize(Roles = "ADMIN")]
-    [HttpDelete("getAll")]
+    [HttpGet("getAll")]
     public IActionResult getAll()
     {
         List<RankResponse> responses = _rankService.getAll();

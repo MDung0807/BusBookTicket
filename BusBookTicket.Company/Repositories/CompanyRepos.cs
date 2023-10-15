@@ -32,44 +32,38 @@ public class CompanyRepos : ICompanyRepos
         }
     }
 
-    public bool update(Company entity)
+    public int update(Company entity)
     {
-        bool status = false;
         try
         {
-            _context.Companies.Update(entity);
+            int id = _context.Companies.Update(entity).Entity.companyID;
             _context.SaveChanges();
-            status = true;
+            return id;
         }
         catch
         {
-            status = false;
             throw new Exception(CompanyConstants.ERROR_GET);
         }
 
-        return status;
     }
 
-    public bool delete(Company entity)
+    public int delete(Company entity)
     {
-        bool status = false;
         try
         {
-            _context.Entry(entity).Property(x => x.account.status).IsModified = true;
+             _context.Entry(entity).Property(x => x.account.status).IsModified = true;
             foreach (var bus in entity.buses.Where(x => x.company.companyID == entity.companyID))
             {
                 _context.Entry(bus).Property(x => x.status).IsModified = true;
             }
             _context.SaveChanges();
-            status = true;
+            return entity.companyID;
         }
         catch
         {
-            status = false;
             throw new Exception(CompanyConstants.ERROR_DELETE);
         }
 
-        return status;
     }
 
     public List<Company> getAll()
@@ -84,21 +78,18 @@ public class CompanyRepos : ICompanyRepos
         }
     }
 
-    public bool create(Company entity)
+    public int create(Company entity)
     {
-        bool status = false;
         try
         {
-            _context.Add(entity);
+            int id = _context.Add(entity).Entity.companyID;
             _context.SaveChanges();
-            status = true;
+            return id;
         }
         catch
         {
-            status = false;
             throw new Exception(CompanyConstants.ERROR_CREATE);
         }
 
-        return status;
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Auth.Repositories.AuthRepository
 {
-    public interface IAuthRepository : IRepository<Account>
+    public interface IAuthRepository : IRepository<Account, int>
     {
         bool login(Account acc);
         Account getAccByUsername(string username, string roleName);

@@ -33,7 +33,9 @@ namespace BusBookTicket.Auth.Services.AuthService
             Role role = _roleService.getRole(request.roleName);
             _account.role = role;
             _account.status = 1;
-            return _authRepository.create(_account);
+
+            _authRepository.create(_account);
+            return true;
         }
 
         public bool update(AuthRequest entity, int id)
