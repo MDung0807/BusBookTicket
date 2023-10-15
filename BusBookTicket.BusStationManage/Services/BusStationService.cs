@@ -38,20 +38,22 @@ public class BusStationService : IBusStationService
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
         busStation.busStationID = id;
-
-        return _busStationRepos.update(busStation);
+        _busStationRepos.update(busStation);
+        return true;
     }
 
     public bool delete(int id)
     {
         BusStation busStation = _busStationRepos.getByID(id);
         busStation.status = (int)EnumsApp.Delete;
-        return _busStationRepos.delete(busStation);
+        _busStationRepos.delete(busStation);
+        return true;
     }
 
     public bool create(BST_FormCreate entity)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
-        return _busStationRepos.create(busStation);
+        _busStationRepos.create(busStation);
+        return true;
     }
 }

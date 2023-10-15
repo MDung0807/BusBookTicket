@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.CustomerManage.Repositories
 {
-    public interface ICustomerRepository : IRepository<Customer>
+    public interface ICustomerRepository : IRepository<Customer, int>
     {
     }
 }

@@ -22,25 +22,22 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 
         #region -- Public Method --
 
-        public bool create(Account entity)
+        public int create(Account entity)
         {
-            _status = false;
             try
             {
                 entity.password = PassEncrypt.hashPassword(entity.password);
-                _context.Add(entity);
+                int id = _context.Add(entity).Entity.accountID;
                 _context.SaveChanges();
-                _status = true;
+                return id;
             }
             catch (Exception)
             {
                 throw new Exception("Errors when create account");
             }
-            _status = true;
-            return _status;
         }
 
-        public bool delete(Account id)
+        public int delete(Account id)
         {
             throw new NotImplementedException();
         }
@@ -78,7 +75,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             return PassEncrypt.verifyPassword(acc.password, _account.password);
         }
 
-        public bool update(Account entity)
+        public int update(Account entity)
         {
             throw new NotImplementedException();
         }

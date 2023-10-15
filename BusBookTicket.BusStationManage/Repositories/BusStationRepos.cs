@@ -33,39 +33,32 @@ public class BusStationRepos : IBusStationRepos
         }
     }
 
-    public bool update(BusStation entity)
+    public int update(BusStation entity)
     {
-        bool status;
         try
         {
-            _context.Update(entity);
-            status = true;
+            int id = _context.Update(entity).Entity.busStationID;
+            return id;
         }
         catch
         {            
-            status = false;
             throw new Exception(BusStationConstants.UPDATE_ERROR);
         }
-
-        return status;
     }
 
-    public bool delete(BusStation busStation)
+    public int delete(BusStation busStation)
     {
-        bool status = false;
         try
         {
-            _context.BusStations.Update(busStation);
+            int id = _context.BusStations.Update(busStation).Entity.busStationID;
             _context.SaveChanges();
-            status = true;
+            return id;
         }
         catch
         {            
-            status = false;
             throw new Exception(BusStationConstants.DELETE_ERROR);
         }
 
-        return status;
     }
 
     public List<BusStation> getAll()
@@ -80,21 +73,18 @@ public class BusStationRepos : IBusStationRepos
         }
     }
 
-    public bool create(BusStation entity)
+    public int create(BusStation entity)
     {
-        bool status = false;
         try
         {
-            _context.BusStations.Add(entity);
+            int id = _context.BusStations.Add(entity).Entity.busStationID;
             _context.SaveChanges();
-            status = true;
+            return id;
         }
         catch
         {
-            status = false;
             throw new Exception(BusStationConstants.CREATE_ERROR);
         }
 
-        return status;
     }
 }

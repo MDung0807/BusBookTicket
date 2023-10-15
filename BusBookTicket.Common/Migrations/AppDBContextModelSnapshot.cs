@@ -448,6 +448,8 @@ namespace BusBookTicket.Common.Migrations
 
                     b.HasIndex("busStationEndID");
 
+                    b.HasIndex("busStationStartID");
+
                     b.HasIndex("customerID");
 
                     b.HasIndex("discountID");
@@ -599,9 +601,15 @@ namespace BusBookTicket.Common.Migrations
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.Ticket", b =>
                 {
-                    b.HasOne("BusBookTicket.Common.Models.Entity.BusStation", "busStation")
-                        .WithMany("tickets")
+                    b.HasOne("BusBookTicket.Common.Models.Entity.BusStation", "busStationEnd")
+                        .WithMany("ticketends")
                         .HasForeignKey("busStationEndID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BusBookTicket.Common.Models.Entity.BusStation", "busStationStart")
+                        .WithMany("ticketStarts")
+                        .HasForeignKey("busStationStartID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -617,7 +625,9 @@ namespace BusBookTicket.Common.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("busStation");
+                    b.Navigation("busStationEnd");
+
+                    b.Navigation("busStationStart");
 
                     b.Navigation("customer");
 
@@ -661,7 +671,9 @@ namespace BusBookTicket.Common.Migrations
                 {
                     b.Navigation("busStops");
 
-                    b.Navigation("tickets");
+                    b.Navigation("ticketStarts");
+
+                    b.Navigation("ticketends");
                 });
 
             modelBuilder.Entity("BusBookTicket.Common.Models.Entity.BusType", b =>

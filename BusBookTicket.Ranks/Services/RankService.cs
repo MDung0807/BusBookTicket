@@ -38,20 +38,23 @@ public class RankService : IRankService
     {
         Rank rank = _mapper.Map<Rank>(entity);
         rank.rankID = id;
-        return _rankRepository.update(rank);
+        _rankRepository.update(rank);
+        return true;
     }
 
     public bool delete(int id)
     {
         Rank rank = _rankRepository.getByID(id);
         rank.status = (int)EnumsApp.Delete;
-        return _rankRepository.delete(rank);
+        _rankRepository.delete(rank);
+        return true;
     }
 
     public bool create(RankCreate entity)
     {
         Rank rank = _mapper.Map<Rank>(entity);
-        return _rankRepository.create(rank);
+        _rankRepository.create(rank);
+        return true;
     }
     #endregion -- Public Method --
 }

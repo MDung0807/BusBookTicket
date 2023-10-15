@@ -28,38 +28,36 @@ public class RankRepository : IRankRepository
         }
     }
 
-    public bool update(Rank entity)
+    public int update(Rank entity)
     {
-        bool status = false;
+        int id;
         try
         {
-            _context.Update(entity);
+            id = _context.Update(entity).Entity.rankID;
             _context.SaveChanges();
-            status = true;
         }
         catch
         {
             throw new Exception(RankConstants.ERROR);
         }
 
-        return status;
+        return id;
     }
 
-    public bool delete(Rank entity)
+    public int delete(Rank entity)
     {
-        bool status = false;
+        int id;
         try
         {
             _context.Entry(entity).Property(x => x.status).IsModified = true;
             _context.SaveChanges();
-            status = true;
         }
         catch 
         {
             throw new Exception(RankConstants.ERROR);
         }
 
-        return status;
+        return entity.rankID;
     }
 
     public List<Rank> getAll()
@@ -69,21 +67,20 @@ public class RankRepository : IRankRepository
         return ranks;
     }
 
-    public bool create(Rank entity)
+    public int create(Rank entity)
     {
-        bool status = false;
+        int id;
         try
         {
-            _context.Add(entity);
+            id = _context.Add(entity).Entity.rankID;
             _context.AddAsync(entity);
             _context.SaveChanges();
-            status = true;
         }
         catch (Exception e)
         {
             throw new Exception(RankConstants.ERROR);
         }
 
-        return status;
+        return id;
     }
 }

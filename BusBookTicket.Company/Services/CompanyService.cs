@@ -47,14 +47,16 @@ public class CompanyService : ICompanyServices
     {
         Company company = _mapper.Map<Company>(entity);
         company.companyID = id;
-        return _companyRepos.update(company);
+        _companyRepos.update(company);
+        return true;
     }
 
     public bool delete(int id)
     {
         Company company = _companyRepos.getByID(id);
         company = changeStatus(company, (int)EnumsApp.Delete);
-        return _companyRepos.delete(company);
+        _companyRepos.delete(company);
+        return true;
     }
 
     public bool create(FormRegisterCompany entity)
@@ -66,7 +68,8 @@ public class CompanyService : ICompanyServices
         company.status = 0;
         _authService.create(account);
         company.account = _authService.getAccountByUsername(entity.username, entity.roleName);
-        return _companyRepos.create(company);
+        _companyRepos.create(company);
+        return true;
     }
 
     #endregion
