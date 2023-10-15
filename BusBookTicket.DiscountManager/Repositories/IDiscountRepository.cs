@@ -1,6 +1,9 @@
-﻿namespace BusBookTicket.DiscountManager.Repositories;
+﻿using BusBookTicket.Common.Common;
+using BusBookTicket.Common.Models.Entity;
 
-public interface IDiscountRepository
+namespace BusBookTicket.DiscountManager.Repositories;
+
+public interface IDiscountRepository : IRepository<Discount>
 {
     
 }

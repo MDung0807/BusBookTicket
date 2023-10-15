@@ -7,6 +7,8 @@ using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
+using BusBookTicket.DiscountManager.DTOs.Requests;
+using BusBookTicket.DiscountManager.DTOs.Responses;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 
@@ -62,6 +64,12 @@ namespace BusBookTicket.Configs
             CreateMap<RankUpdate, Rank>();
             CreateMap<Rank, RankResponse>();
             #endregion -- Configs Ranks Module --
+            
+            #region -- Configs Dícounts Module --
+            CreateMap<DiscountCreate, Rank>();
+            CreateMap<DiscountUpdate, Rank>();
+            CreateMap<Rank, DiscountResponse>();
+            #endregion -- Configs Dícounts Module --
         }
     }
 }

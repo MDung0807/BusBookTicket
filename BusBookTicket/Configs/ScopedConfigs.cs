@@ -9,6 +9,8 @@ using BusBookTicket.CompanyManage.Repositories;
 using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;
+using BusBookTicket.DiscountManager.Repositories;
+using BusBookTicket.DiscountManager.Services;
 using BusBookTicket.Ranks.Repositories;
 using BusBookTicket.Ranks.Services;
 
@@ -44,6 +46,11 @@ namespace BusBookTicket.Configs
             services.AddScoped<IRankService, RankService>();
             services.AddScoped<IRankRepository, RankRepository>();
             #endregion
+            
+            #region -- Add Scoped Discount Module --
+            services.AddScoped<IDiscountService, DiscountService>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
+            #endregion -- Add Scoped Discount Module --
         }
     }
 }
