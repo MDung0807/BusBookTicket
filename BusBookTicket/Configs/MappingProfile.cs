@@ -7,6 +7,8 @@ using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
+using BusBookTicket.Ranks.DTOs.Requests;
+using BusBookTicket.Ranks.DTOs.Responses;
 
 namespace BusBookTicket.Configs
 {
@@ -46,7 +48,6 @@ namespace BusBookTicket.Configs
             #endregion -- Configs BusStation Module --
 
             #region -- Configs Company Module --
-
             CreateMap<FormRegisterCompany, Company>();
             CreateMap<FormUpdateCompany, Company>();
             CreateMap<Company, ProfileCompany>()
@@ -55,6 +56,12 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.username,
                     opt => opt.MapFrom(x => x.account.username));
             #endregion -- Configs Company Module --
+
+            #region -- Configs Ranks Module --
+            CreateMap<RankCreate, Rank>();
+            CreateMap<RankUpdate, Rank>();
+            CreateMap<Rank, RankResponse>();
+            #endregion -- Configs Ranks Module --
         }
     }
 }
