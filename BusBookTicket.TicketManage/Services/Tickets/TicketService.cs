@@ -45,17 +45,15 @@ public class TicketService : ITicketService
     public bool create(TicketRequest entity)
     {
         List<TicketItemRequest> itemsRequest = entity.itemsRequest;
-        List<TicketItem> items = AppUtils.MappObject<TicketItemRequest, TicketItem>(itemsRequest, _mapper);
         int ticketID;
         try
         {
             Ticket ticket = _mapper.Map<Ticket>(entity);
             ticketID = _ticketRepository.create(ticket);
-            ticket = _ticketRepository.getByID(ticketID);
-            foreach (TicketItem item in items)
+            foreach (TicketItemRequest item in itemsRequest)
             {
-                item.ticket = ticket;
-                // _ticketItemService.create()
+                item.ticketID = ticketID;
+                _ticketItemService.create(item);
             }
         }
         catch
