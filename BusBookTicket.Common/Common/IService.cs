@@ -20,10 +20,10 @@ namespace BusBookTicket.Common.Common
         /// </summary>
         /// <param name="id">Is ID in entity</param>
         /// <returns>Entity has id = params</returns>
-        Response getByID(ID id);
-        List<Response> getAll();
-        bool update(Update entity, ID id);
-        bool delete(ID id);
-        bool create(Create entity);
+        Task<Response> getByID(ID id);
+        Task<List<Response>> getAll();
+        Task<bool> update(Update entity, ID id);
+        Task<bool> delete(ID id);
+        Task<bool> create(Create entity);
     }
 }

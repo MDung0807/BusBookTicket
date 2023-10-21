@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusBookTicket.Auth.DTOs.Requests;
+using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.Common.Models.Entity;
@@ -11,6 +12,8 @@ using BusBookTicket.DiscountManager.DTOs.Requests;
 using BusBookTicket.DiscountManager.DTOs.Responses;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
+using BusBookTicket.TicketManage.DTOs.Requests;
+using BusBookTicket.TicketManage.DTOs.Responses;
 
 namespace BusBookTicket.Configs
 {
@@ -39,7 +42,7 @@ namespace BusBookTicket.Configs
             CreateMap<AuthRequest, Account>()
                 .ForPath(dest => dest.role.roleName, 
                     opt => opt.MapFrom(x => x.roleName));
-            
+            CreateMap<Account, AccResponse>();
             CreateMap<FormRegisterCompany, AuthRequest>();
             #endregion -- Configs Auth Module --
 
@@ -70,6 +73,29 @@ namespace BusBookTicket.Configs
             CreateMap<DiscountUpdate, Rank>();
             CreateMap<Rank, DiscountResponse>();
             #endregion -- Configs Dícounts Module --
+
+            #region -- Configs Ticket Module --
+
+            CreateMap<TicketRequest, Ticket>();
+            CreateMap<TicketItemRequest, TicketItem>();
+            
+            CreateMap<Ticket, TicketResponse>()
+                .ForPath(dest => dest.nameCustomer,
+                    opts => opts.MapFrom(x => x.customer.fullName))
+                .ForPath(dest => dest.busStationStart,
+                    opts => opts.MapFrom(x => x.busStationStart.name))
+                .ForPath(dest => dest.busStationEnd,
+                    opts => opts.MapFrom(x => x.busStationEnd.name))
+                .ForPath(dest => dest.discount,
+                    opts => opts.MapFrom(x => x.discount.name));
+
+            CreateMap<TicketItem, TicketItemResponse>()
+                .ForPath(dest => dest.company,
+                    memberOptions: opts => opts.MapFrom(x => x.seat.bus.company.name))
+                .ForPath(dest => dest.busNumber,
+                    opts => opts.MapFrom(x => x.seat.bus.busNumber));
+
+            #endregion -- Configs Ticket Module --
         }
     }
 }

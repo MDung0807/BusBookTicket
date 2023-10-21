@@ -7,8 +7,8 @@ namespace BusBookTicket.Auth.Services.AuthService
 {
     public interface IAuthService : IService<AuthRequest, AuthRequest, int, AuthResponse>
     {
-        AuthResponse login(AuthRequest request);
-        AccResponse getAccByUsername(string username, string roleName);
-        Account getAccountByUsername(string username, string rolleName);
+        Task<AuthResponse> login(AuthRequest request);
+        Task<AccResponse> getAccByUsername(string username, string roleName);
+        Task<Account> getAccountByUsername(string username, string rolleName);
     }
 }

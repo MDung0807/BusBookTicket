@@ -19,41 +19,40 @@ public class RankService : IRankService
     }
 
     #region -- Public Method --
-    public RankResponse getByID(int id)
+    public async Task<RankResponse>  getByID(int id)
     {
-        Rank rank = _rankRepository.getByID(id);
+        Rank rank = await _rankRepository.getByID(id);
         return _mapper.Map<RankResponse>(rank);
     }
 
-    public List<RankResponse> getAll()
+    public async Task<List<RankResponse>> getAll()
     {
-        List<Rank> ranks = _rankRepository.getAll();
-        List<RankResponse> rankResponses = new List<RankResponse>();
-        
-        rankResponses = AppUtils.MappObject<Rank,RankResponse>(ranks, _mapper);
+        List<Rank> ranks = await _rankRepository.getAll();
+
+        List<RankResponse> rankResponses = await AppUtils.MappObject<Rank,RankResponse>(ranks, _mapper);
         return rankResponses;
     }
 
-    public bool update(RankUpdate entity, int id)
+    public async Task<bool> update(RankUpdate entity, int id)
     {
         Rank rank = _mapper.Map<Rank>(entity);
         rank.rankID = id;
-        _rankRepository.update(rank);
+        await _rankRepository.update(rank);
         return true;
     }
 
-    public bool delete(int id)
+    public async Task<bool> delete(int id)
     {
-        Rank rank = _rankRepository.getByID(id);
+        Rank rank = await _rankRepository.getByID(id);
         rank.status = (int)EnumsApp.Delete;
-        _rankRepository.delete(rank);
+        await _rankRepository.delete(rank);
         return true;
     }
 
-    public bool create(RankCreate entity)
+    public async Task<bool>create(RankCreate entity)
     {
         Rank rank = _mapper.Map<Rank>(entity);
-        _rankRepository.create(rank);
+        await _rankRepository.create(rank);
         return true;
     }
     #endregion -- Public Method --

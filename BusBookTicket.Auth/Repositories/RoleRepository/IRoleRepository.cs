@@ -9,6 +9,6 @@ namespace BusBookTicket.Auth.Repositories.RoleRepository
 {
     public interface IRoleRepository
     {
-        Role getRole(string roleName);
+        Task<Role> getRole(string roleName);
     }
 }

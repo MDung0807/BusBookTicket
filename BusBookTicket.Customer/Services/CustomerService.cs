@@ -35,18 +35,18 @@ namespace BusBookTicket.CustomerManage.Services
         /// Get all customer by admin
         /// </summary>
         /// <returns></returns>
-        public List<CustomerResponse> getAllCustomer()
+        public async Task<List<CustomerResponse>> getAllCustomer()
         {
             List<Customer> customers = new List<Customer>();
             List<CustomerResponse> responses = new List<CustomerResponse>();
-            customers = _customerRepository.getAll();
+            customers = await _customerRepository.getAll();
             foreach(Customer customer in customers)
             {
                 responses.Add(_mapper.Map<CustomerResponse>(customer));
             }
             return responses;
         }
-
+        
         /// <summary>
         /// Create Customer and account genera
         /// Call Auth Service to create account and get account.
@@ -54,7 +54,7 @@ namespace BusBookTicket.CustomerManage.Services
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public bool create(FormRegister entity)
+        public async Task<bool> create(FormRegister entity)
         {
             Customer customer = new Customer();
 
@@ -65,40 +65,39 @@ namespace BusBookTicket.CustomerManage.Services
             customer.dateCreate = DateTime.Now;
 
             AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
-            _authService.create(authRequest);
-            customer.account = _authService.getAccountByUsername(entity.username, entity.roleName);
-            _customerRepository.create(customer);
+            await _authService.create(authRequest);
+            customer.account = await _authService.getAccountByUsername(entity.username, entity.roleName);
+            await _customerRepository.create(customer);
 
             return true;
         }
 
-        public bool delete(int id)
+        public async Task<bool> delete(int id)
         { 
-            Customer customer = _customerRepository.getByID(id);
+            Customer customer = await _customerRepository.getByID(id);
             customer = setStatus(customer, (int)EnumsApp.Delete);
-            _customerRepository.delete(customer);
+            await _customerRepository.delete(customer);
             return true;
         }
 
-        public ProfileResponse getByID(int id)
+        public async Task<ProfileResponse> getByID(int id)
         {
-            Customer customer = new Customer();
-            customer = _customerRepository.getByID(id);
+            Customer customer = await _customerRepository.getByID(id);
             return _mapper.Map<ProfileResponse>(customer);
         }
 
-        public List<ProfileResponse> getAll()
+        public Task<List<ProfileResponse>> getAll()
         {
             throw new NotImplementedException();
         }
 
-        public bool update(FormUpdate entity, int id)
+        public async Task<bool> update(FormUpdate entity, int id)
         {
             Customer customer = new Customer();
             
             customer = _mapper.Map<Customer>(entity);
             customer.customerID = id;
-            _customerRepository.update(customer);
+            await _customerRepository.update(customer);
             return true;
         }
         #endregion -- Public method --

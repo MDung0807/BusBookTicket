@@ -11,5 +11,5 @@ public interface ITicketItemService : IService<TicketItemRequest, TicketItemRequ
     /// </summary>
     /// <param name="ticketID">ID bill</param>
     /// <returns>List all item in ticket</returns>
-    List<TicketItemResponse> GetItemInTicket(int ticketID);
+    Task<List<TicketItemResponse>> GetItemInTicket(int ticketID);
 }

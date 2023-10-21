@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.Auth.Repositories.RoleRepository
 {
@@ -16,9 +17,9 @@ namespace BusBookTicket.Auth.Repositories.RoleRepository
         {
             _dbContext = dbContext;
         }
-        public Role getRole(string roleName)
+        public async Task<Role> getRole(string roleName)
         {
-            return _dbContext.Roles.Where(x => x.roleName == roleName).FirstOrDefault();
+            return await _dbContext.Roles.Where(x => x.roleName == roleName).FirstAsync();
         }
     }
 }

@@ -22,17 +22,17 @@ public class TicketController : ControllerBase
     #region -- Controller --
     [Authorize(Roles = "CUSTOMER")]
     [HttpPost("create")]
-    public IActionResult createBill([FromBody] TicketRequest ticketRequest)
+    public async Task<IActionResult> createBill([FromBody] TicketRequest ticketRequest)
     {
-        _ticketService.create(ticketRequest);
+        await _ticketService.create(ticketRequest);
         return Ok(new Response<string>(false, "Response"));
     }
 
     [Authorize(Roles = "CUSTOMER")]
     [HttpGet("getBill")]
-    public IActionResult getBill(int id)
+    public async Task<IActionResult> getBill(int id)
     {
-        TicketResponse ticketResponse = _ticketService.getByID(id);
+        TicketResponse ticketResponse = await _ticketService.getByID(id);
         return Ok(new Response<TicketResponse>(false, ticketResponse));
     }
     #endregion -- Controller --

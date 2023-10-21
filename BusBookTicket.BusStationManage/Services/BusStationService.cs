@@ -20,40 +20,40 @@ public class BusStationService : IBusStationService
         this._busStationRepos = busStationRepos;
         this._mapper = mapper;
     }
-    public BusStationResponse getByID(int id)
+    public async Task<BusStationResponse> getByID(int id)
     {
-        BusStation busStation = _busStationRepos.getByID(id);
+        BusStation busStation = await _busStationRepos.getByID(id);
         return _mapper.Map<BusStationResponse>(busStation);
     }
 
-    public List<BusStationResponse> getAll()
+    public async Task<List<BusStationResponse>> getAll()
     {
         List<BusStationResponse> responses = new List<BusStationResponse>();
-        List<BusStation> busStations = _busStationRepos.getAll();
-        responses = AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        List<BusStation> busStations = await _busStationRepos.getAll();
+        responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         return responses;
     }
 
-    public bool update(BST_FormUpdate entity, int id)
+    public async Task<bool> update(BST_FormUpdate entity, int id)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
         busStation.busStationID = id;
-        _busStationRepos.update(busStation);
+        await _busStationRepos.update(busStation);
         return true;
     }
 
-    public bool delete(int id)
+    public async Task<bool> delete(int id)
     {
-        BusStation busStation = _busStationRepos.getByID(id);
+        BusStation busStation = await _busStationRepos.getByID(id);
         busStation.status = (int)EnumsApp.Delete;
-        _busStationRepos.delete(busStation);
+        await _busStationRepos.delete(busStation);
         return true;
     }
 
-    public bool create(BST_FormCreate entity)
+    public async Task<bool> create(BST_FormCreate entity)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
-        _busStationRepos.create(busStation);
+        await _busStationRepos.create(busStation);
         return true;
     }
 }

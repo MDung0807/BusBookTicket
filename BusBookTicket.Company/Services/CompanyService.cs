@@ -26,49 +26,46 @@ public class CompanyService : ICompanyServices
 
     #region -- Public Method --
 
-    public ProfileCompany getByID(int id)
+    public async Task<ProfileCompany> getByID(int id)
     {
-        Company company = _companyRepos.getByID(id);
+        Company company = await _companyRepos.getByID(id);
         ProfileCompany profile = _mapper.Map<ProfileCompany>(company);
         return profile;
     }
 
-    public List<ProfileCompany> getAll()
+    public async Task<List<ProfileCompany>> getAll()
     {
-        List<ProfileCompany> profileCompanies = new List<ProfileCompany>();
-        List<Company> companies = new List<Company>();
-
-        companies = _companyRepos.getAll();
-        profileCompanies = AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
+        List<Company> companies = await _companyRepos.getAll();
+        List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
         return profileCompanies;
     }
 
-    public bool update(FormUpdateCompany entity, int id)
+    public async Task<bool> update(FormUpdateCompany entity, int id)
     {
         Company company = _mapper.Map<Company>(entity);
         company.companyID = id;
-        _companyRepos.update(company);
+        await _companyRepos.update(company);
         return true;
     }
 
-    public bool delete(int id)
+    public async Task<bool> delete(int id)
     {
-        Company company = _companyRepos.getByID(id);
+        Company company = await _companyRepos.getByID(id);
         company = changeStatus(company, (int)EnumsApp.Delete);
-        _companyRepos.delete(company);
+        await _companyRepos.delete(company);
         return true;
     }
 
-    public bool create(FormRegisterCompany entity)
+    public async Task<bool> create(FormRegisterCompany entity)
     {
         Company company = _mapper.Map<Company>(entity);
         AuthRequest account = _mapper.Map<AuthRequest>(entity);
 
         // Set data
         company.status = 0;
-        _authService.create(account);
-        company.account = _authService.getAccountByUsername(entity.username, entity.roleName);
-        _companyRepos.create(company);
+        await _authService.create(account);
+        company.account = await _authService.getAccountByUsername(entity.username, entity.roleName);
+        await _companyRepos.create(company);
         return true;
     }
 

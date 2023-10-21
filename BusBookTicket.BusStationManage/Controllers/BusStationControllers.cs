@@ -22,50 +22,50 @@ namespace BusBookTicket.BusStationManage.Controllers
 
         [HttpGet("getAll")]
         [AllowAnonymous]
-        public IActionResult getAll()
+        public async Task<IActionResult> getAll()
         {
-            List<BusStationResponse> reponses = _busStationService.getAll();
-            return Ok(new Response<List<BusStationResponse>>(false, reponses));
+            List<BusStationResponse> responses = await _busStationService.getAll();
+            return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult getByID(int id)
+        public async Task<IActionResult> getByID(int id)
         {
-            BusStationResponse reponse = _busStationService.getByID(id);
-            return Ok(new Response<BusStationResponse>(false, reponse));
+            BusStationResponse response = await _busStationService.getByID(id);
+            return Ok(new Response<BusStationResponse>(false, response));
         }
         
         [Authorize(Roles = "ADMIN")]
-        [HttpPost("admin/update")]
-        public IActionResult update([FromBody] BST_FormUpdate request)
+        [HttpPut("admin/update")]
+        public async Task<IActionResult> update([FromBody] BST_FormUpdate request)
         {
-             bool status = _busStationService.update(request, request.busStationID);
+             bool status = await _busStationService.update(request, request.busStationID);
             return Ok(new Response<string>(status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpPost("admin/create")]
-        public IActionResult creawteByAdmin([FromBody] BST_FormCreate request)
+        public async Task<IActionResult> createByAdmin([FromBody] BST_FormCreate request)
         {
-            bool status = _busStationService.create(request);
+            bool status = await _busStationService.create(request);
             return Ok(new Response<string>(status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
-        [HttpGet("admin/delete")]
-        public IActionResult delete(int id)
+        [HttpDelete("admin/delete")]
+        public async Task<IActionResult> delete(int id)
         {
-            bool status = _busStationService.delete(id);
+            bool status = await _busStationService.delete(id);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "COMPANY")]
         [HttpPost("company/create")]
-        public IActionResult creawteByCompany([FromBody] BST_FormCreate request)
+        public async Task<IActionResult> createByCompany([FromBody] BST_FormCreate request)
         {
             request.status = 0;
-            bool status = _busStationService.create(request);
+            bool status = await _busStationService.create(request);
             return Ok(new Response<string>(!status, "Response"));
         }
         #endregion -- Controllers --

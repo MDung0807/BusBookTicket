@@ -8,6 +8,6 @@ public class TicketResponse
     public long totolPrice { get; set; }
     public string busStationStart { get; set; }
     public string busStationEnd { get; set; }
-    public int discountID { get; set; } 
+    public string discount { get; set; } 
     public List<TicketItemResponse> items { get; set; }
 }

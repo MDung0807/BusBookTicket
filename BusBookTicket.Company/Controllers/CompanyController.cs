@@ -26,42 +26,42 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public IActionResult register([FromBody] FormRegisterCompany request)
+    public async Task<IActionResult> register([FromBody] FormRegisterCompany request)
     {
-        _companyServices.create(request);
+        await _companyServices.create(request);
         return Ok(new Response<string>(false, CompanyConstants.SUCCESS));
     }
 
-    [HttpPatch("udpate")]
+    [HttpPut("udpate")]
     [Authorize(Roles = ("COMPANY"))]
-    public IActionResult update([FromBody] FormUpdateCompany request)
+    public async Task<IActionResult> update([FromBody] FormUpdateCompany request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
-        bool status = _companyServices.update(request, id);
+        bool status = await _companyServices.update(request, id);
         return Ok(new Response<string>(!status, "Response"));
     }
 
     [HttpDelete("delete")]
     [Authorize(Roles = ("COMPANY,ADMIN"))]
-    public IActionResult delete(int id)
+    public async Task<IActionResult> delete(int id)
     {
-        bool status = _companyServices.delete(id);
+        bool status = await _companyServices.delete(id);
         return Ok(new Response<string>(!status, ""));
     }
 
     [AllowAnonymous]
     [HttpGet("get")]
-    public IActionResult getById(int id)
+    public async Task<IActionResult> getById(int id)
     {
-        ProfileCompany response = _companyServices.getByID(id);
+        ProfileCompany response = await _companyServices.getByID(id);
         return Ok(new Response<ProfileCompany>(false, response));
     }
 
     [AllowAnonymous]
     [HttpGet("getAll")]
-    public IActionResult getAllCompany()
+    public async Task<IActionResult> getAllCompany()
     {
-        List<ProfileCompany> responses = _companyServices.getAll();
+        List<ProfileCompany> responses = await _companyServices.getAll();
         return Ok(new Response<List<ProfileCompany>>(false, responses));
     }
     #endregion

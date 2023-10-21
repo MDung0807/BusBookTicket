@@ -3,6 +3,7 @@ using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.Common.Models.EntityFW;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.Ranks.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.Ranks.Repositories;
 
@@ -16,11 +17,11 @@ public class RankRepository : IRankRepository
     {
         this._context = context;
     }
-    public Rank getByID(int id)
+    public async Task<Rank> getByID(int id)
     {
         try
         {
-            return _context.Ranks.First(x => x.rankID == id) ?? throw new NotFoundException(RankConstants.NOT_FOUND);
+            return await _context.Ranks.FirstAsync(x => x.rankID == id) ?? throw new NotFoundException(RankConstants.NOT_FOUND);
         }
         catch
         {
@@ -28,59 +29,49 @@ public class RankRepository : IRankRepository
         }
     }
 
-    public int update(Rank entity)
+    public async Task<int> update(Rank entity)
     {
-        int id;
         try
         {
-            id = _context.Update(entity).Entity.rankID;
-            _context.SaveChanges();
+            _context.Update(entity);
+            return await _context.SaveChangesAsync();
         }
         catch
         {
             throw new Exception(RankConstants.ERROR);
         }
-
-        return id;
     }
 
-    public int delete(Rank entity)
+    public async Task<int> delete(Rank entity)
     {
-        int id;
         try
         {
             _context.Entry(entity).Property(x => x.status).IsModified = true;
-            _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
         catch 
         {
             throw new Exception(RankConstants.ERROR);
         }
-
-        return entity.rankID;
     }
 
-    public List<Rank> getAll()
+    public async Task<List<Rank>> getAll()
     {
         List<Rank> ranks = new List<Rank>();
-        ranks = _context.Set<Rank>().ToList();
+        ranks = await _context.Set<Rank>().ToListAsync();
         return ranks;
     }
 
-    public int create(Rank entity)
+    public async Task<int> create(Rank entity)
     {
-        int id;
         try
         {
-            id = _context.Add(entity).Entity.rankID;
-            _context.AddAsync(entity);
-            _context.SaveChanges();
+            await _context.AddAsync(entity);
+            return await _context.SaveChangesAsync();
         }
         catch (Exception e)
         {
             throw new Exception(RankConstants.ERROR);
         }
-
-        return id;
     }
 }
