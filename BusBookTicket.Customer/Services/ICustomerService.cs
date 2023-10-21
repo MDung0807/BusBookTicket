@@ -6,6 +6,6 @@ namespace BusBookTicket.CustomerManage.Services
 {
     public interface ICustomerService : IService<FormRegister,FormUpdate, int, ProfileResponse>
     {
-        List<CustomerResponse> getAllCustomer();
+        Task<List<CustomerResponse>> getAllCustomer();
     }
 }

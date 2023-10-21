@@ -5,5 +5,5 @@ namespace BusBookTicket.TicketManage.Repositories.TicketItems;
 
 public interface ITicketItemRepos : IRepository<TicketItem, int>
 {
-    List<TicketItem> getAllItems(int ticketID);
+    Task<List<TicketItem>> getAllItems(int ticketID);
 }

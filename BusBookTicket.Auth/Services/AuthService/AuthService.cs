@@ -16,10 +16,16 @@ namespace BusBookTicket.Auth.Services.AuthService
         private IAuthRepository _authRepository;
         private IRoleService _roleService;
         private readonly IMapper _mapper;
-        private Account _account;
         #endregion -- Properties --
 
         #region -- Public Method --
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="authRepository"></param>
+        /// <param name="mapper"></param>
+        /// <param name="roleService"></param>
         public AuthService(IAuthRepository authRepository, IMapper mapper, IRoleService roleService)
         {
             _authRepository = authRepository;
@@ -27,57 +33,57 @@ namespace BusBookTicket.Auth.Services.AuthService
             _roleService = roleService;
         }
 
-        public bool create(AuthRequest request)
+        public async Task<bool> create(AuthRequest request)
         {
-            _account = _mapper.Map<Account>(request);
-            Role role = _roleService.getRole(request.roleName);
-            _account.role = role;
-            _account.status = 1;
+            Account account = _mapper.Map<Account>(request);
+            Role role = await _roleService.getRole(request.roleName);
+            account.role = role;
+            account.status = 1;
 
-            _authRepository.create(_account);
+            _authRepository.create(account);
             return true;
         }
 
-        public bool update(AuthRequest entity, int id)
+        public Task<bool> update(AuthRequest entity, int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool delete(int id)
+        public Task<bool> delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<AuthResponse> getAll()
+        public Task<List<AuthResponse>> getAll()
         {
             throw new NotImplementedException();
         }
 
-        public AuthResponse getByID(int id)
+        public Task<AuthResponse> getByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public AuthResponse login(AuthRequest request)
+        public async Task<AuthResponse> login(AuthRequest request)
         {
             AuthResponse response = new AuthResponse() ;
 
-            _account = _mapper.Map<Account>(request);
-            if (_authRepository.login(_account))
+            Account account = _mapper.Map<Account>(request);
+            if (await _authRepository.login(account))
             {
-                _account = _authRepository.getAccByUsername(request.username, request.roleName);
+                account = await _authRepository.getAccByUsername(request.username, request.roleName);
                 
-                if (_account.role.roleName == request.roleName)
+                if (account.role.roleName == request.roleName)
                 {
-                    response.username = _account.username;
-                    response.roleName = _account.role.roleName;
+                    response.username = account.username;
+                    response.roleName = account.role.roleName;
                     if (request.roleName == "COMPANY")
                     {
-                        response.userID = _account.company.companyID;
+                        response.userID = account.company.companyID;
                     }
                     else
                     {
-                        response.userID = _account.customer.customerID;
+                        response.userID = account.customer.customerID;
                     }
                     response.token = JwtUtils.GernerateToken(response);
                     return response;
@@ -86,12 +92,11 @@ namespace BusBookTicket.Auth.Services.AuthService
 
             throw new AuthException(AuthConstants.LOGIN_FAIL);
         }
-        public AccResponse getAccByUsername(string username, string roleName)
+        public async Task<AccResponse> getAccByUsername(string username, string roleName)
         {
-            Account account = _authRepository.getAccByUsername(username, roleName);
-            AccResponse response = new AccResponse() ;
-            response.username = account.username;
-            response.roleName = account.role.roleName ;
+            Account account = await _authRepository.getAccByUsername(username, roleName);
+
+            AccResponse response = _mapper.Map<AccResponse>(account);
 
             if (roleName == "COMPANY")
                 response.userID = account.company.companyID;
@@ -100,9 +105,9 @@ namespace BusBookTicket.Auth.Services.AuthService
             return response;
         }
 
-        public Account getAccountByUsername(string username, string roleName)
+        public async Task<Account> getAccountByUsername(string username, string roleName)
         {
-            return _authRepository.getAccByUsername(username, roleName);
+            return await _authRepository.getAccByUsername(username, roleName);
         }
         #endregion -- Public Method --
 

@@ -9,6 +9,6 @@ namespace BusBookTicket.Auth.Services.RoleService
 {
     public interface IRoleService
     {
-        Role getRole(string roleName);
+         Task<Role> getRole(string roleName);
     }
 }

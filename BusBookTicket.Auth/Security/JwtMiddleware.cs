@@ -28,9 +28,9 @@ namespace BusBookTicket.Auth.Security
                 string roleName = principal.Claims.ElementAt(2).Value;
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    var _authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+                    var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
                     // Use the scoped service within the scope of the request
-                    response = _authService.getAccByUsername(username, roleName);
+                    response = await authService.getAccByUsername(username, roleName);
                     // Check account exist in data
                     if (response.roleName != principal.Claims.ElementAt(2).Value ||
                         response.userID.ToString() != principal.Claims.ElementAt(0).Value)

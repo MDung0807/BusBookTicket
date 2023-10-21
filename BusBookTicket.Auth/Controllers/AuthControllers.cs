@@ -22,16 +22,16 @@ namespace BusBookTicket.Auth.Controllers
 
         
         [HttpPost("login")]
-        public IActionResult login([FromBody] AuthRequest requets)
+        public async Task<IActionResult> login([FromBody] AuthRequest requets)
         {
-            AuthResponse response = _authService.login(requets);
+            AuthResponse response = await _authService.login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
 
         [HttpPost("reset")]
-        public IActionResult resetPassword([FromBody] AuthRequest requets)
+        public async Task<IActionResult> resetPassword([FromBody] AuthRequest requets)
         {
-            AuthResponse response = _authService.login(requets);
+            AuthResponse response = await _authService.login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
         #endregion -- Controller --

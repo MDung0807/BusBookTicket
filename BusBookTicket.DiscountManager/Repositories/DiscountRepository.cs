@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.Common.Models.Entity;
 using BusBookTicket.Common.Models.EntityFW;
 using BusBookTicket.DiscountManager.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.DiscountManager.Repositories;
 
@@ -12,11 +13,11 @@ public class DiscountRepository : IDiscountRepository
     {
         this._context = context;
     }
-    public Discount getByID(int id)
+    public async Task<Discount> getByID(int id)
     {
         try
         {
-            return _context.Discounts.First(x => x.discountID == id);
+            return await _context.Discounts.FirstAsync(x => x.discountID == id);
         }
         catch
         {
@@ -24,43 +25,25 @@ public class DiscountRepository : IDiscountRepository
         }
     }
 
-    public int update(Discount entity)
+    public async Task<int> update(Discount entity)
     {
-        int id;
         try
         {
-            id = _context.Update(entity).Entity.discountID; 
-            _context.SaveChanges();
+            _context.Update(entity); 
+            return await _context.SaveChangesAsync();
         }
         catch 
         {
             throw new Exception(DiscountConstants.ERROR);
         }
-
-        return id;
     }
 
-    public int delete(Discount entity)
+    public async Task<int> delete(Discount entity)
     {
-        int id;
         try
         {
             _context.Entry(entity).Property(x => x.status).IsModified = true;
-            _context.SaveChanges();
-        }
-        catch
-        {
-            throw new Exception(DiscountConstants.ERROR);
-        }
-
-        return entity.discountID;
-    }
-
-    public List<Discount> getAll()
-    {
-        try
-        {
-            return _context.Set<Discount>().ToList();
+            return await _context.SaveChangesAsync();
         }
         catch
         {
@@ -68,19 +51,28 @@ public class DiscountRepository : IDiscountRepository
         }
     }
 
-    public int create(Discount entity)
+    public async Task<List<Discount>> getAll()
     {
-        int id;
         try
         {
-            id = _context.Add(entity).Entity.discountID;
-            _context.SaveChanges();
+            return await _context.Set<Discount>().ToListAsync();
         }
         catch
         {
             throw new Exception(DiscountConstants.ERROR);
         }
+    }
 
-        return id;
+    public async Task<int> create(Discount entity)
+    {
+        try
+        {
+            await _context.AddAsync(entity);
+            return await _context.SaveChangesAsync();
+        }
+        catch
+        {
+            throw new Exception(DiscountConstants.ERROR);
+        }
     }
 }

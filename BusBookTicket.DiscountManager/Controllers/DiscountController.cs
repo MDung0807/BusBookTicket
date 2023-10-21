@@ -22,39 +22,39 @@ public class DiscountController : ControllerBase
 
     [HttpGet("get")]
     [AllowAnonymous]
-    public IActionResult getByID(int id)
+    public async Task<IActionResult> getByID(int id)
     {
-        DiscountResponse response = _discountService.getByID(id);
+        DiscountResponse response = await _discountService.getByID(id);
         return Ok(new Response<DiscountResponse>(false, response));
     }
     
     [HttpGet("getAll")]
     [AllowAnonymous]
-    public IActionResult getAll()
+    public async Task<IActionResult> getAll()
     {
-        List<DiscountResponse> responses = _discountService.getAll();
+        List<DiscountResponse> responses = await _discountService.getAll();
         return Ok(new Response<List<DiscountResponse>>(false, responses));
     }
 
     [HttpPost("create")]
     [Authorize(Roles = "COMPANY")]
-    public IActionResult create([FromBody] DiscountCreate discountCreate)
+    public async Task<IActionResult> create([FromBody] DiscountCreate discountCreate)
     {
-        bool status = _discountService.create(discountCreate);
+        bool status = await _discountService.create(discountCreate);
         return Ok(new Response<string>(!status, "Response"));
     }
     [HttpPatch("update")]
     [Authorize(Roles = "COMPANY")]
-    public IActionResult update([FromBody] DiscountUpdate discountUpdate)
+    public async Task<IActionResult> update([FromBody] DiscountUpdate discountUpdate)
     {
-        bool status = _discountService.update(discountUpdate, discountUpdate.discountID);
+        bool status = await _discountService.update(discountUpdate, discountUpdate.discountID);
         return Ok(new Response<string>(!status, "response"));
     }
     [HttpDelete("delete")]
     [AllowAnonymous]
-    public IActionResult delete(int id)
+    public async Task<IActionResult> delete(int id)
     {
-        bool status = _discountService.delete(id);
+        bool status = await _discountService.delete(id);
         return Ok(new Response<string>(!status, "response"));
     }
 

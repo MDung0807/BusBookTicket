@@ -22,9 +22,9 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public Response<string> register([FromBody] FormRegister register)
+        public async Task<IActionResult>register([FromBody] FormRegister register)
         {
-            bool status = _customerService.create(register);
+            bool status = await _customerService.create(register);
             string mess;
             if (status)
             {
@@ -32,33 +32,33 @@ namespace BusBookTicket.CustomerManage.Controller
             }
             else
                 mess = CusConstants.REGISTER_FAIL;
-            return new Response<string>(!status, mess);
+
+            return Ok(new Response<string>(!status, mess));
         }
 
         [HttpGet("profile")]
         [Authorize(Roles = "CUSTOMER")]
-        public IActionResult getProfile()
+        public async Task<IActionResult> getProfile()
         {
             int id = JwtUtils.GetUserID(HttpContext);
-            ProfileResponse response = _customerService.getByID(id);
+            ProfileResponse response = await _customerService.getByID(id);
             return Ok(new Response<ProfileResponse>(false, response));
         }
         
         [HttpGet("getAll")]
         [Authorize(Roles = "ADMIN")]
-        public IActionResult getAllCustomer()
+        public async Task<IActionResult> getAllCustomer()
         {
-            List<CustomerResponse> responses = new List<CustomerResponse>();
-            responses = _customerService.getAllCustomer();
+            List<CustomerResponse> responses =  await _customerService.getAllCustomer();
             return Ok(new Response<List<CustomerResponse>>(false, responses));
         }
 
-        [HttpPost("updateProfile")]
+        [HttpPut("updateProfile")]
         [Authorize(Roles = "CUSTOMER")]
-        public IActionResult updateProfile([FromBody] FormUpdate request)
+        public async Task<IActionResult> updateProfile([FromBody] FormUpdate request)
         {
             int id = JwtUtils.GetUserID(HttpContext);
-            bool status = _customerService.update(request, id);
+            bool status = await _customerService.update(request, id);
             return Ok(new Response<string>(false, "response"));
         }
 

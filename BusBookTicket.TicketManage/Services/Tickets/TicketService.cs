@@ -22,38 +22,37 @@ public class TicketService : ITicketService
         this._mapper = mapper;
         this._ticketRepository = ticketRepository;
     }
-    public TicketResponse getByID(int id)
+    public Task<TicketResponse> getByID(int id)
     {
         throw new NotImplementedException();
     }
 
-    public List<TicketResponse> getAll()
+    public Task<List<TicketResponse>> getAll()
     {
         throw new NotImplementedException();
     }
 
-    public bool update(TicketRequest entity, int id)
+    public Task<bool> update(TicketRequest entity, int id)
     {
         throw new NotImplementedException();
     }
 
-    public bool delete(int id)
+    public Task<bool> delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public bool create(TicketRequest entity)
+    public async Task<bool> create(TicketRequest entity)
     {
         List<TicketItemRequest> itemsRequest = entity.itemsRequest;
-        int ticketID;
         try
         {
             Ticket ticket = _mapper.Map<Ticket>(entity);
-            ticketID = _ticketRepository.create(ticket);
+            int ticketId = await _ticketRepository.create(ticket);
             foreach (TicketItemRequest item in itemsRequest)
             {
-                item.ticketID = ticketID;
-                _ticketItemService.create(item);
+                item.ticketID = ticketId;
+                await _ticketItemService.create(item);
             }
         }
         catch

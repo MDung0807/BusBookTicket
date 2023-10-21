@@ -12,7 +12,7 @@ public class AppUtils
     /// <typeparam name="T1">Object Source</typeparam>
     /// <typeparam name="T2">Object Dest</typeparam>
     /// <returns></returns>
-    public static List<T2> MappObject<T1, T2>(List<T1> source, IMapper _mapper)
+    public static Task<List<T2>> MappObject<T1, T2>(List<T1> source, IMapper _mapper)
     {
         List<T2> listDest = new List<T2>();
         foreach (var item in source)
@@ -20,6 +20,6 @@ public class AppUtils
             listDest.Add(_mapper.Map<T2>(item));
         }
 
-        return listDest;
+        return Task.FromResult(listDest);
     }
 }

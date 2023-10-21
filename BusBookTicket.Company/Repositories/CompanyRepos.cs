@@ -17,13 +17,13 @@ public class CompanyRepos : ICompanyRepos
         this._context = context;
     }
     
-    public Company getByID(int id)
+    public async Task<Company> getByID(int id)
     {
         try
         {
-            return _context.Companies.Where(x => x.companyID == id)
+            return await _context.Companies.Where(x => x.companyID == id)
                 .Include(x => x.account)
-                .Include(x => x.account.role).First() ??
+                .Include(x => x.account.role).FirstAsync() ??
                    throw new NotFoundException(CompanyConstants.NOT_FOUND);
         }
         catch
@@ -32,13 +32,12 @@ public class CompanyRepos : ICompanyRepos
         }
     }
 
-    public int update(Company entity)
+    public async Task<int> update(Company entity)
     {
         try
         {
-            int id = _context.Companies.Update(entity).Entity.companyID;
-            _context.SaveChanges();
-            return id;
+            _context.Companies.Update(entity);
+            return await _context.SaveChangesAsync();
         }
         catch
         {
@@ -47,7 +46,7 @@ public class CompanyRepos : ICompanyRepos
 
     }
 
-    public int delete(Company entity)
+    public async Task<int> delete(Company entity)
     {
         try
         {
@@ -56,8 +55,7 @@ public class CompanyRepos : ICompanyRepos
             {
                 _context.Entry(bus).Property(x => x.status).IsModified = true;
             }
-            _context.SaveChanges();
-            return entity.companyID;
+            return await  _context.SaveChangesAsync();
         }
         catch
         {
@@ -66,11 +64,11 @@ public class CompanyRepos : ICompanyRepos
 
     }
 
-    public List<Company> getAll()
+    public async Task<List<Company>> getAll()
     {
         try
         {
-            return _context.Set<Company>().ToList();
+            return await _context.Companies.ToListAsync();
         }
         catch
         {
@@ -78,13 +76,12 @@ public class CompanyRepos : ICompanyRepos
         }
     }
 
-    public int create(Company entity)
+    public async Task<int> create(Company entity)
     {
         try
         {
-            int id = _context.Add(entity).Entity.companyID;
-            _context.SaveChanges();
-            return id;
+            await _context.AddAsync(entity);
+            return await _context.SaveChangesAsync();
         }
         catch
         {

@@ -19,13 +19,13 @@ public class BusStationRepos : IBusStationRepos
         this._context = context;
     }
     #endregion -- Constructor --
-    public BusStation getByID(int id)
+    public async Task<BusStation>getByID(int id)
     {
         try
         {
-            return _context.BusStations.Where(x => x.busStationID == id)
+            return await _context.BusStations.Where(x => x.busStationID == id)
                 .Include(x => x.busStops)
-                .First() ?? throw new NotFoundException(BusStationConstants.NOT_FOUND);
+                .FirstAsync() ?? throw new NotFoundException(BusStationConstants.NOT_FOUND);
         }
         catch
         {
@@ -33,11 +33,12 @@ public class BusStationRepos : IBusStationRepos
         }
     }
 
-    public int update(BusStation entity)
+    public async Task<int>update(BusStation entity)
     {
         try
         {
-            int id = _context.Update(entity).Entity.busStationID;
+            _context.BusStations.Update(entity);
+            int id = await _context.SaveChangesAsync();
             return id;
         }
         catch
@@ -46,13 +47,12 @@ public class BusStationRepos : IBusStationRepos
         }
     }
 
-    public int delete(BusStation busStation)
+    public async Task<int> delete(BusStation busStation)
     {
         try
         {
-            int id = _context.BusStations.Update(busStation).Entity.busStationID;
-            _context.SaveChanges();
-            return id;
+            _context.BusStations.Update(busStation);
+            return await _context.SaveChangesAsync();
         }
         catch
         {            
@@ -61,11 +61,11 @@ public class BusStationRepos : IBusStationRepos
 
     }
 
-    public List<BusStation> getAll()
+    public async Task<List<BusStation>> getAll()
     {
         try
         {
-            return _context.Set<BusStation>().ToList();
+            return await _context.Set<BusStation>().ToListAsync();
         }
         catch (Exception e)
         {
@@ -73,13 +73,12 @@ public class BusStationRepos : IBusStationRepos
         }
     }
 
-    public int create(BusStation entity)
+    public async Task<int> create(BusStation entity)
     {
         try
         {
-            int id = _context.BusStations.Add(entity).Entity.busStationID;
-            _context.SaveChanges();
-            return id;
+            _context.BusStations.Add(entity);
+            return await _context.SaveChangesAsync();
         }
         catch
         {

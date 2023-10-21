@@ -22,14 +22,14 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 
         #region -- Public Method --
 
-        public int create(Account entity)
+        public async Task<int> create(Account entity)
         {
             try
             {
                 entity.password = PassEncrypt.hashPassword(entity.password);
-                int id = _context.Add(entity).Entity.accountID;
-                _context.SaveChanges();
-                return id;
+                int id = _context.AddAsync(entity).Result.Entity.accountID;
+                await _context.SaveChangesAsync();
+                return  id;
             }
             catch (Exception)
             {
@@ -37,45 +37,44 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
             }
         }
 
-        public int delete(Account id)
+        public Task<int> delete(Account id)
         {
             throw new NotImplementedException();
         }
 
-        public Account getAccByUsername(string username, string roleName)
+        public async Task<Account> getAccByUsername(string username, string roleName)
         {
             if (roleName == "COMPANY")
             {
-                return _account = _context.Accounts.Where(x => x.username == username)
+                return await _context.Accounts.Where(x => x.username == username)
                 .Include(x => x.role)
                 .Include(x => x.company)
-                .FirstOrDefault();
+                .FirstAsync();
             }
-            return _account = _context.Accounts.Where(x => x.username == username)
+            return await _context.Accounts.Where(x => x.username == username)
                 .Include(x => x.role)
                 .Include(x => x.customer)
-                .FirstOrDefault();
+                .FirstAsync();
 
         }
 
-        public List<Account> getAll()
+        public Task<List<Account>> getAll()
         {
             throw new NotImplementedException();
         }
 
-        public Account getByID(int id)
+        public Task<Account> getByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool login(Account acc)
+        public async Task<bool> login(Account acc)
         {
-            _status = false;
-            _account = getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
-            return PassEncrypt.verifyPassword(acc.password, _account.password);
+            _account = await getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
+            return PassEncrypt.VerifyPassword(acc.password, _account.password);
         }
 
-        public int update(Account entity)
+        public Task<int> update(Account entity)
         {
             throw new NotImplementedException();
         }

@@ -16,9 +16,9 @@ namespace BusBookTicket.Auth.Services.RoleService
         {
             _roleRepository = roleRepository;
         }
-        public Role getRole(string roleName)
+        public async Task<Role> getRole(string roleName)
         {
-            return _roleRepository.getRole(roleName);
+            return await _roleRepository.getRole(roleName);
         }
     }
 }

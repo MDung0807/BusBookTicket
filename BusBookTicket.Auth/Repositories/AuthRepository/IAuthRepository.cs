@@ -10,7 +10,7 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 {
     public interface IAuthRepository : IRepository<Account, int>
     {
-        bool login(Account acc);
-        Account getAccByUsername(string username, string roleName);
+        Task<bool> login(Account acc);
+        Task<Account> getAccByUsername(string username, string roleName);
     }
 }

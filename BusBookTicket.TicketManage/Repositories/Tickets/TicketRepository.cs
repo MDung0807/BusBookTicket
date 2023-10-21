@@ -13,16 +13,16 @@ public class TicketRepository : ITicketRepository
     {
         this._context = context;
     }
-    public Ticket getByID(int id)
+    public async Task<Ticket> getByID(int id)
     {
         try
         {
-            return _context.Tickets.Where(x => x.ticketID == id)
+            return await _context.Tickets.Where(x => x.ticketID == id)
                 .Include(x => x.ticketItems)
                 .Include(x => x.customer)
                 .Include(x => x.discount)
                 .Include(x => x.busStationEnd)
-                .Include(x => x.busStationStart).First();
+                .Include(x => x.busStationStart).FirstAsync();
         }
         catch
         {
@@ -30,35 +30,32 @@ public class TicketRepository : ITicketRepository
         }
     }
 
-    public int update(Ticket entity)
+    public Task<int> update(Ticket entity)
     {
         throw new NotImplementedException();
     }
 
-    public int delete(Ticket entity)
+    public Task<int> delete(Ticket entity)
     {
         throw new NotImplementedException();
     }
 
-    public List<Ticket> getAll()
+    public Task<List<Ticket>> getAll()
     {
         throw new NotImplementedException();
     }
 
-    public int create(Ticket entity)
+    public async Task<int> create(Ticket entity)
     {
-        int id;
         try
         {
-            id = _context.Add(entity).Entity.ticketID;
-            _context.SaveChanges();
+            await _context.AddAsync(entity);
+            return await _context.SaveChangesAsync();
         }
         catch
         {
             throw new Exception(TicketConstants.ERROR_CREATE);
         }
-
-        return id;
     }
     
     

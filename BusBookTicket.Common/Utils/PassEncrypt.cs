@@ -20,7 +20,7 @@
         /// <param name="password"></param>
         /// <param name="hashPassword"></param>
         /// <returns></returns>
-        public static bool verifyPassword (string password, string hashPassword)
+        public static bool VerifyPassword (string password, string hashPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashPassword);
         }

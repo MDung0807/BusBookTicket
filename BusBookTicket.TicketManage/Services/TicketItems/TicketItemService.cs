@@ -19,32 +19,32 @@ public class TicketItemService : ITicketItemService
         this._ticketItemRepos = ticketItemRepos;
     }
     
-    public TicketItemResponse getByID(int id)
+    public Task<TicketItemResponse> getByID(int id)
     {
         throw new NotImplementedException();
     }
 
-    public List<TicketItemResponse> getAll()
+    public Task<List<TicketItemResponse>> getAll()
     {
         throw new NotImplementedException();
     }
 
-    public bool update(TicketItemRequest entity, int id)
+    public Task<bool> update(TicketItemRequest entity, int id)
     {
         throw new NotImplementedException();
     }
 
-    public bool delete(int id)
+    public Task<bool> delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public bool create(TicketItemRequest entity)
+    public async Task<bool> create(TicketItemRequest entity)
     {
         try
         {
             TicketItem item = _mapper.Map<TicketItem>(entity);
-            _ticketItemRepos.create(item);
+            await _ticketItemRepos.create(item);
             return true;
         }
         catch
@@ -53,14 +53,14 @@ public class TicketItemService : ITicketItemService
         }
     }
 
-    public List<TicketItemResponse> GetItemInTicket(int id)
+    public async Task<List<TicketItemResponse>> GetItemInTicket(int id)
     {
         List<TicketItemResponse> responses = new List<TicketItemResponse>();
         try
         {
-            List<TicketItem> ticketItems = _ticketItemRepos.getAllItems(id);
+            List<TicketItem> ticketItems = await _ticketItemRepos.getAllItems(id);
 
-            responses = AppUtils.MappObject<TicketItem, TicketItemResponse>(ticketItems, _mapper);
+            responses = await AppUtils.MappObject<TicketItem, TicketItemResponse>(ticketItems, _mapper);
             return responses;
         }
         catch
