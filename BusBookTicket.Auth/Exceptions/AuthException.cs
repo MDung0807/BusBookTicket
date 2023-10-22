@@ -1,4 +1,4 @@
-﻿using BusBookTicket.Common.Common;
+﻿using BusBookTicket.Core.Common;
 
 
 namespace BusBookTicket.Auth.Exceptions

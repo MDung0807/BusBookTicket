@@ -1,7 +1,7 @@
 ﻿using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Utils;
-using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Common.Exceptions;
+using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.CustomerManage.Exceptions;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;

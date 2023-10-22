@@ -2,8 +2,8 @@ using AutoMapper;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Repositories;
-using BusBookTicket.Common.Models.Entity;
-using BusBookTicket.Common.Utils;
+using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.BusStationManage.Services;
 

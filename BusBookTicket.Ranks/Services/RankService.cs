@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BusBookTicket.Common.Models.Entity;
-using BusBookTicket.Common.Utils;
+using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.Ranks.Repositories;

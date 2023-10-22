@@ -3,7 +3,7 @@ using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
-using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.DTOs.Requests;

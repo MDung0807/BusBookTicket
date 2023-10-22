@@ -4,7 +4,7 @@ using BusBookTicket.Auth.Repositories.RoleRepository;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Services.RoleService;
-using BusBookTicket.Common.Models.EntityFW;
+using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Configs;
 using BusBookTicket.CustomerManage.Repositories;
 using BusBookTicket.CustomerManage.Services;

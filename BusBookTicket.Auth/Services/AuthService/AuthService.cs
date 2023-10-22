@@ -6,7 +6,7 @@ using BusBookTicket.Auth.Repositories.AuthRepository;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.Auth.Utils;
-using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.Auth.Services.AuthService
 {
@@ -40,11 +40,11 @@ namespace BusBookTicket.Auth.Services.AuthService
             account.role = role;
             account.status = 1;
 
-            _authRepository.create(account);
+            await _authRepository.create(account);
             return true;
         }
 
-        public Task<bool> update(AuthRequest entity, int id)
+        public Task<bool> update(FormResetPass entity, int id)
         {
             throw new NotImplementedException();
         }

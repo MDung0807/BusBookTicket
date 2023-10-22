@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Models.Entity;
-using BusBookTicket.Common.Utils;
+using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.TicketManage.DTOs.Requests;
 using BusBookTicket.TicketManage.DTOs.Responses;
 using BusBookTicket.TicketManage.Repositories.Tickets;

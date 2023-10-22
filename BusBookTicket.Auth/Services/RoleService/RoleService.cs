@@ -1,5 +1,5 @@
 ﻿using BusBookTicket.Auth.Repositories.RoleRepository;
-using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.Core.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

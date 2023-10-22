@@ -1,4 +1,4 @@
-﻿using BusBookTicket.Common.Common;
+﻿using BusBookTicket.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
