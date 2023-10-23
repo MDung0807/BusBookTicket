@@ -1,21 +1,13 @@
 ﻿using AutoMapper;
-using BusBookTicket.Auth.Repositories.AuthRepository;
-using BusBookTicket.Auth.Repositories.RoleRepository;
 using BusBookTicket.Auth.Security;
-using BusBookTicket.Auth.Services.AuthService;
-using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Configs;
-using BusBookTicket.CustomerManage.Repositories;
-using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.Exceptions;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
-using BusBookTicket.BusStationManage.Repositories;
-using BusBookTicket.BusStationManage.Services;
+using BusBookTicket.Application.MailKet.Settings;
 
 internal class Program
 {
@@ -71,6 +63,8 @@ internal class Program
         ScopedConfigs.Configure(services: services);
 
         #endregion -- Scoped --
+        services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 
         var app = builder.Build();
 
