@@ -7,6 +7,7 @@ using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.Auth.Utils;
 using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.Auth.Services.AuthService
 {
@@ -41,6 +42,13 @@ namespace BusBookTicket.Auth.Services.AuthService
             account.status = 1;
 
             await _authRepository.create(account);
+            return true;
+        }
+
+        public async Task<bool> resetPass(FormResetPass request)
+        {
+            request.password = PassEncrypt.hashPassword(request.password);
+            await _authRepository.resetPass(request);
             return true;
         }
 

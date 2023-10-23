@@ -1,5 +1,7 @@
-﻿using BusBookTicket.Auth.Exceptions;
+﻿using BusBookTicket.Auth.DTOs.Requests;
+using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Utils;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Core.Utils;
@@ -12,7 +14,6 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
         #region -- PropMerties --
         private readonly AppDBContext _context;
         private bool _status;
-        private Account _account;
         #endregion -- Properties --
 
         public AuthRepository(AppDBContext context)
@@ -21,6 +22,27 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
         }
 
         #region -- Public Method --
+
+        public async Task<int> resetPass(FormResetPass request)
+        {
+            try
+            {
+                Account account = await _context.Accounts.Where(x => x.username == request.username)
+                    .Include(x => x.customer)
+                    .FirstAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+
+                if (account.customer.email == request.email && account.customer.phoneNumber == request.phoneNumber)
+                {
+                    account.password = request.password;
+                    return await update(account);
+                }
+                throw new NotFoundException(AuthConstants.NOT_FOUND);
+            }
+            catch
+            {
+                throw new Exception(AuthConstants.ERROR);
+            }
+        }
 
         public async Task<int> create(Account entity)
         {
@@ -70,13 +92,14 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 
         public async Task<bool> login(Account acc)
         {
-            _account = await getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
-            return PassEncrypt.VerifyPassword(acc.password, _account.password);
+            Account account = await getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
+            return PassEncrypt.VerifyPassword(acc.password, account.password);
         }
 
-        public Task<int> update(Account entity)
+        public async Task<int> update(Account entity)
         {
-            throw new NotImplementedException();
+            _context.Update<Account>(entity);
+            return await _context.SaveChangesAsync();
         }
         #endregion -- Public Method -- 
     }

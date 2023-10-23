@@ -31,7 +31,7 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("reset")]
         public async Task<IActionResult> resetPassword([FromBody] FormResetPass requets)
         {
-            bool response = await _authService.update(requets, 0);
+            bool response = await _authService.resetPass(requets);
             return Ok(new Response<string>(false, "response"));
         }
         #endregion -- Controller --

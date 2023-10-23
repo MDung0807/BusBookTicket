@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusBookTicket.Auth.DTOs.Requests;
 
 namespace BusBookTicket.Auth.Repositories.AuthRepository
 {
@@ -12,5 +13,6 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
     {
         Task<bool> login(Account acc);
         Task<Account> getAccByUsername(string username, string roleName);
+        Task<int> resetPass(FormResetPass request);
     }
 }
