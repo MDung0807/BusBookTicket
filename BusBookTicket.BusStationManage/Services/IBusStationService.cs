@@ -1,6 +1,6 @@
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
-using BusBookTicket.Common.Common;
+using BusBookTicket.Core.Common;
 
 namespace BusBookTicket.BusStationManage.Services;
 

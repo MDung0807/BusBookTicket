@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusBookTicket.Auth\BusBookTicket.Auth.csproj" />
-    <ProjectReference Include="..\BusBookTicket.Common\BusBookTicket.Common.csproj" />
+    <ProjectReference Include="..\BusBookTicket.Core\BusBookTicket.Core.csproj" />
   </ItemGroup>
 
 </Project>

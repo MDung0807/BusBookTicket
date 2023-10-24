@@ -1,7 +1,10 @@
-﻿using BusBookTicket.Auth.Repositories.AuthRepository;
+﻿using BusBookTicket.Application.MailKet.Service;
+using BusBookTicket.Auth.Repositories.AuthRepository;
 using BusBookTicket.Auth.Repositories.RoleRepository;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Services.RoleService;
+using BusBookTicket.Buses.Repositories.BusTypeRepositories;
+using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.BusStationManage.Repositories;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.CompanyManage.Repositories;
@@ -62,6 +65,21 @@ namespace BusBookTicket.Configs
             services.AddScoped<ITicketItemRepos, TicketItemRepos>();
 
             #endregion -- Add Scoped Ticket Module --
+
+            #region -- Add Scoped Mail Service --
+            services.AddTransient<IMailService, MailService>();
+
+            #endregion
+
+            #region -- Add Scroped Buses Module --
+
+            services.AddScoped<IBusTypeRepos, BusTypeRepos>();
+            services.AddScoped<IBusTypeService, BusTypeService>();
+            
+            services.AddScoped<IBusService, BusService>();
+            services.AddScoped<IBusRepos, BusRepos>();
+
+            #endregion -- Add Scroped Buses Module --
         }
     }
 }

@@ -1,5 +1,5 @@
 using BusBookTicket.Auth.DTOs.Requests;
-using BusBookTicket.Common.Common;
+using BusBookTicket.Core.Common;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 

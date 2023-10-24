@@ -1,4 +1,4 @@
-﻿using BusBookTicket.Common.Common;
+﻿using BusBookTicket.Core.Common;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.Ranks.Services;

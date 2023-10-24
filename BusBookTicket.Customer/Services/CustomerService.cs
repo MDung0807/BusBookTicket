@@ -1,12 +1,12 @@
 ﻿using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Repositories;
-using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.Core.Models.Entity;
 using AutoMapper;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
-using BusBookTicket.Common.Common;
-using BusBookTicket.Common.Utils;
+using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.CustomerManage.Services
 {

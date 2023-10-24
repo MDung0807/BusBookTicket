@@ -1,6 +1,6 @@
-﻿using BusBookTicket.Common.Common.Exceptions;
-using BusBookTicket.Common.Models.Entity;
-using BusBookTicket.Common.Models.EntityFW;
+﻿using BusBookTicket.Core.Common.Exceptions;
+using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.Ranks.Utilities;
 using Microsoft.EntityFrameworkCore;

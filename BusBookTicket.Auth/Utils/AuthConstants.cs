@@ -10,5 +10,7 @@ namespace BusBookTicket.Auth.Utils
     {
         public const string LOGIN_FAIL = "Username or Password not correct";
         public const string UNAUTHORIZATION = "Access Deny";
+        public const string NOT_FOUND = "Not Found Account";
+        public const string ERROR = "Error";
     }
 }

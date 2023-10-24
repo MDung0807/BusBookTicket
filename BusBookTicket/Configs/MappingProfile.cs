@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Runtime.ConstrainedExecution;
+using AutoMapper;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
+using BusBookTicket.Buses.DTOs.Requests;
+using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
-using BusBookTicket.Common.Models.Entity;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.DTOs.Requests;
@@ -14,6 +17,7 @@ using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.TicketManage.DTOs.Requests;
 using BusBookTicket.TicketManage.DTOs.Responses;
+using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
 
 namespace BusBookTicket.Configs
 {
@@ -96,6 +100,30 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.seat.bus.busNumber));
 
             #endregion -- Configs Ticket Module --
+
+            #region -- Configs Buses Module --
+
+            CreateMap<FormCreateBus, Bus>()
+                .ForPath(dest => dest.busType.name,
+                    opts => opts.MapFrom(x => x.busType))
+                .ForPath(dest => dest.company.companyID, 
+                    opts => opts.MapFrom(x => x.companyID));
+            CreateMap<FormUpdateBus, Bus>()
+                .ForPath(dest => dest.busType.name,
+                    opts => opts.MapFrom(x => x.busType))
+                .ForPath(dest => dest.company.companyID, 
+                    opts => opts.MapFrom(x => x.companyID));;
+            CreateMap<Bus, BusResponse>()
+                .ForPath(dest => dest.company,
+                    opts => opts.MapFrom(x => x.company.name))
+                .ForPath(dest => dest.busType,
+                    opts => opts.MapFrom(x => x.busType.name));
+
+            CreateMap<BusTypeForm, BusType>();
+            CreateMap<BusTypeFormUpdate, BusType>();
+            CreateMap<BusType, BusTypeResponse>();
+
+            #endregion -- Configs Buses Module --
         }
     }
 }

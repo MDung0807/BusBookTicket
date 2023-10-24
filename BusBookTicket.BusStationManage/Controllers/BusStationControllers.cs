@@ -1,14 +1,14 @@
 ﻿using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Services;
-using BusBookTicket.Common.Common;
+using BusBookTicket.Core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.BusStationManage.Controllers
 {
     [ApiController]
-    [Route("api/busstation")]
+    [Route("api/station")]
     public class BusStationController : ControllerBase
     {
         private readonly IBusStationService _busStationService;
