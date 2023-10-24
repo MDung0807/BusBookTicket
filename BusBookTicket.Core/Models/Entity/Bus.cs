@@ -19,7 +19,7 @@ namespace BusBookTicket.Core.Models.Entity
         public Company? company { get; set; }
         public BusType? busType { get; set; }
         public HashSet<SeatItem> Seats { get; set; }
-        public HashSet<BusStop>? busStops { get; set; }
+        public HashSet<BusStop> busStops { get; set; }
         public HashSet<Review> reviews { get; set; }
 
         #endregion -- Relationship --
