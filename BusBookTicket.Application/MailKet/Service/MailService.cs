@@ -1,6 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using BusBookTicket.Application.MailKet.DTO.Request;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Mailjet.Client.TransactionalEmails;
+using Newtonsoft.Json.Linq;
 
 namespace BusBookTicket.Application.MailKet.Service;
 
@@ -12,24 +16,24 @@ public class MailService : IMailService
 
     public async Task SendEmailAsync(MailRequest mailRequest)
     {
-        var fromAddress = new MailAddress("dominhdung21082002@gmail.com", "Do Minh Dung");
-        var toAddress = new MailAddress(mailRequest.toMail, "DoMinhDung");
-        const string fromPassword = "D942925765EF338FDB82D6492DB23EC20DFA";
-        const string subject = "Test email subject";
-        const string body = "This is a test email.";
+        var client = new MailjetClient("9c8946fcf499857d45c77bc73f69c324", "9334d8220626a45378a43afc9ddbdab0");
 
-        var smtp = new SmtpClient
-        {
-            Host = "smtp.elasticemail.com",
-            Port = 2525,
-            Credentials = new NetworkCredential("dominhdung21082002@gmail.com", fromPassword)
-        };
-        using var message = new MailMessage(fromAddress, toAddress)
-        {
-            Subject = subject,
-            Body = body
-        };
-        await smtp.SendMailAsync(message);
-        Console.WriteLine("Email sent successfully.");
+         MailjetRequest request = new MailjetRequest
+         {
+            Resource = Send.Resource
+         };
+
+         // construct your email with builder
+         var email = new TransactionalEmailBuilder()
+                .WithFrom(new SendContact("dominhdung21082002@gmail.com"))
+                .WithSubject("Password Update")
+                .WithHtmlPart($"<h4>Hi {mailRequest.toMail}! Im Minh Dũng</h4>" +
+                              "<p>You want change password?, Code id = </p>")
+                .WithTo(new SendContact("20110620@student.hcmute.edu.vn"))
+                .Build();
+
+         // invoke API to send email
+         var response = await client.SendTransactionalEmailAsync(email);
+
     }
 }
