@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.CustomerManag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.CompanyManage", "BusBookTicket.Company\BusBookTicket.CompanyManage.csproj", "{792454F2-8512-434C-BCB8-EE7F861B85A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.TicketManage", "BusBookTicket.TicketManage\BusBookTicket.TicketManage.csproj", "{F9F7C1D3-2099-4E8B-8FBA-F69E64D57482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.BillManage", "BusBookTicket.BillManage\BusBookTicket.BillManage.csproj", "{F9F7C1D3-2099-4E8B-8FBA-F69E64D57482}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Core", "BusBookTicket.Core\BusBookTicket.Core.csproj", "{3C92271F-7597-4E97-A4DE-17FA68793F94}"
 EndProject

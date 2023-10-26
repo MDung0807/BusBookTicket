@@ -26,7 +26,7 @@ public class MailService : IMailService
          // construct your email with builder
          var email = new TransactionalEmailBuilder()
                 .WithFrom(new SendContact("dominhdung21082002@gmail.com"))
-                .WithSubject("Password Update")
+                .WithSubject(mailRequest.subject)
                 .WithHtmlPart($"<h4>Hi {mailRequest.toMail}! Im Minh Dũng</h4>" +
                               "<p>You want change password?, Code id = </p>")
                 .WithTo(new SendContact("20110620@student.hcmute.edu.vn"))

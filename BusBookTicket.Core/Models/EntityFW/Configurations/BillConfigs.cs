@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class TicketConfigs : IEntityTypeConfiguration<Ticket>
+    public class BillConfigs : IEntityTypeConfiguration<Bill>
     {
-        public void Configure(EntityTypeBuilder<Ticket> builder)
+        public void Configure(EntityTypeBuilder<Bill> builder)
         {
 
             #region -- Properties --
-            builder.HasKey(x => x.ticketID);
+            builder.HasKey(x => x.billID);
 
-            builder.Property(x => x.ticketID)
+            builder.Property(x => x.billID)
                 .ValueGeneratedOnAdd();
             #endregion -- Properties --
 

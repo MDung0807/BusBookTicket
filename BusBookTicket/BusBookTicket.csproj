@@ -39,7 +39,7 @@
     <ProjectReference Include="..\BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.DiscountManager\BusBookTicket.DiscountManager.csproj" />
     <ProjectReference Include="..\BusBookTicket.Ranks\BusBookTicket.Ranks.csproj" />
-    <ProjectReference Include="..\BusBookTicket.TicketManage\BusBookTicket.TicketManage.csproj" />
+    <ProjectReference Include="..\BusBookTicket.BillManage\BusBookTicket.BillManage.csproj" />
   </ItemGroup>
 
 </Project>

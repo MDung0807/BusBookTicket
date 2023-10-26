@@ -10,7 +10,7 @@
 
         #region -- Relationship --
         public Bus bus { get; set; }
-        public TicketItem? ticketItem { get; set; }
+        public BillItem? ticketItem { get; set; }
         #endregion -- Relationship --
 
 

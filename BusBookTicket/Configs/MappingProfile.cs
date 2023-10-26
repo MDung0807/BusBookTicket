@@ -15,8 +15,8 @@ using BusBookTicket.DiscountManager.DTOs.Requests;
 using BusBookTicket.DiscountManager.DTOs.Responses;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
-using BusBookTicket.TicketManage.DTOs.Requests;
-using BusBookTicket.TicketManage.DTOs.Responses;
+using BusBookTicket.BillManage.DTOs.Requests;
+using BusBookTicket.BillManage.DTOs.Responses;
 using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
 
 namespace BusBookTicket.Configs
@@ -80,10 +80,10 @@ namespace BusBookTicket.Configs
 
             #region -- Configs Ticket Module --
 
-            CreateMap<TicketRequest, Ticket>();
-            CreateMap<TicketItemRequest, TicketItem>();
+            CreateMap<BillRequest, Bill>();
+            CreateMap<BillItemRequest, BillItem>();
             
-            CreateMap<Ticket, TicketResponse>()
+            CreateMap<Bill, BillResponse>()
                 .ForPath(dest => dest.nameCustomer,
                     opts => opts.MapFrom(x => x.customer.fullName))
                 .ForPath(dest => dest.busStationStart,
@@ -93,7 +93,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.discount,
                     opts => opts.MapFrom(x => x.discount.name));
 
-            CreateMap<TicketItem, TicketItemResponse>()
+            CreateMap<BillItem, BillItemResponse>()
                 .ForPath(dest => dest.company,
                     memberOptions: opts => opts.MapFrom(x => x.seat.bus.company.name))
                 .ForPath(dest => dest.busNumber,

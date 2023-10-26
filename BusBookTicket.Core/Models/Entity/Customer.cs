@@ -27,7 +27,7 @@ namespace BusBookTicket.Core.Models.Entity
 
         public Account? account { get; set; }
         public HashSet<Review>? reviews { get; set; }
-        public HashSet<Ticket>?tickets { get; set; }
+        public HashSet<Bill>?tickets { get; set; }
         public Rank rank { get; set; }
         #endregion -- RelationShip --
     }

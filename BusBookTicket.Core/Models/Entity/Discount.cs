@@ -20,7 +20,7 @@ namespace BusBookTicket.Core.Models.Entity
         #endregion -- Properties --
 
         #region -- Relationship --
-        public HashSet<Ticket>? tickets { get; set; }
+        public HashSet<Bill>? tickets { get; set; }
         public Rank? rank { get; set; }
         #endregion -- Relationship -- M
     }

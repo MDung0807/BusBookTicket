@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Ticket
+    public class Bill
     {
         #region -- Properties --
-        public int ticketID { get; set; }
+        public int billID { get; set; }
         public DateTime dateCreate { get; set; }
         public DateTime dateDeparture { get; set; }
         public long totolPrice { get; set; }
@@ -22,7 +22,7 @@ namespace BusBookTicket.Core.Models.Entity
         public BusStation? busStationStart { get; set; }
         public BusStation? busStationEnd { get; set; }
         public Customer? customer { get; set; }
-        public HashSet<TicketItem>? ticketItems { get; set; }
+        public HashSet<BillItem>? billItems { get; set; }
         public Discount? discount { get; set; }
         #endregion  -- Relationship -- 
     }
