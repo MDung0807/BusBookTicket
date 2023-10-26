@@ -1,24 +1,24 @@
-﻿using BusBookTicket.Core.Models.Entity;
+﻿using BusBookTicket.BillManage.Utilities;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Models.EntityFW;
-using BusBookTicket.TicketManage.Utilities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusBookTicket.TicketManage.Repositories.Tickets;
+namespace BusBookTicket.BillManage.Repositories.Bills;
 
-public class TicketRepository : ITicketRepository
+public class BillRepository : IBillRepository
 {
     private readonly AppDBContext _context;
 
-    public TicketRepository(AppDBContext context)
+    public BillRepository(AppDBContext context)
     {
         this._context = context;
     }
-    public async Task<Ticket> getByID(int id)
+    public async Task<Bill> getByID(int id)
     {
         try
         {
-            return await _context.Tickets.Where(x => x.ticketID == id)
-                .Include(x => x.ticketItems)
+            return await _context.Bills.Where(x => x.billID == id)
+                .Include(x => x.billItems)
                 .Include(x => x.customer)
                 .Include(x => x.discount)
                 .Include(x => x.busStationEnd)
@@ -26,26 +26,26 @@ public class TicketRepository : ITicketRepository
         }
         catch
         {
-            throw new Exception(TicketConstants.ERROR_GET);
+            throw new Exception(BillConstants.ERROR_GET);
         }
     }
 
-    public Task<int> update(Ticket entity)
+    public Task<int> update(Bill entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> delete(Ticket entity)
+    public Task<int> delete(Bill entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<Ticket>> getAll()
+    public Task<List<Bill>> getAll()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<int> create(Ticket entity)
+    public async Task<int> create(Bill entity)
     {
         try
         {
@@ -54,7 +54,7 @@ public class TicketRepository : ITicketRepository
         }
         catch
         {
-            throw new Exception(TicketConstants.ERROR_CREATE);
+            throw new Exception(BillConstants.ERROR_CREATE);
         }
     }
     

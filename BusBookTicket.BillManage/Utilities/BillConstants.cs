@@ -1,6 +1,6 @@
-﻿namespace BusBookTicket.TicketManage.Utilities;
+﻿namespace BusBookTicket.BillManage.Utilities;
 
-public class TicketConstants
+public class BillConstants
 {
     public const string ERROR = "Error";
     public const string SUCCESS = "Success";

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class TicketItem
+    public class BillItem
     {
         #region -- Properties --
-        public int ticketItemID { get; set; }
+        public int billItemID { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship --
-        public Ticket? ticket { get; set; }
+        public Bill? bill { get; set; }
         public SeatItem seat { get; set; }
         #endregion -- Relationship --
 

@@ -1,6 +1,6 @@
-﻿namespace BusBookTicket.TicketManage.DTOs.Responses;
+﻿namespace BusBookTicket.BillManage.DTOs.Responses;
 
-public class TicketResponse
+public class BillResponse
 {
     public string nameCustomer { get; set; }
     public DateTime dateDeparture { get; set; }
@@ -9,5 +9,5 @@ public class TicketResponse
     public string busStationStart { get; set; }
     public string busStationEnd { get; set; }
     public string discount { get; set; } 
-    public List<TicketItemResponse> items { get; set; }
+    public List<BillItemResponse> items { get; set; }
 }

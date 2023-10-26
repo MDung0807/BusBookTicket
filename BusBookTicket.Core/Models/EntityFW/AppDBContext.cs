@@ -23,8 +23,8 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration(new RoleConfigs());
             modelBuilder.ApplyConfiguration(new ReviewConfigs());
             modelBuilder.ApplyConfiguration(new SeatItemConfigs());
-            modelBuilder.ApplyConfiguration(new TicketConfigs());
-            modelBuilder.ApplyConfiguration(new TicketItemConfigs());
+            modelBuilder.ApplyConfiguration(new BillConfigs());
+            modelBuilder.ApplyConfiguration(new BillItemConfigs());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -43,7 +43,7 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<Rank> Ranks { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<TicketItem> TicketItems { get; set; }
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<BillItem> BillItems { get; set; }
     }
 }

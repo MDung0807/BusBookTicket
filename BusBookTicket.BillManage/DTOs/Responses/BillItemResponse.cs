@@ -1,6 +1,6 @@
-﻿namespace BusBookTicket.TicketManage.DTOs.Responses;
+﻿namespace BusBookTicket.BillManage.DTOs.Responses;
 
-public class TicketItemResponse
+public class BillItemResponse
 {
     public List<int> seatNumber { get; set; }
     public string busNumber { get; set; }

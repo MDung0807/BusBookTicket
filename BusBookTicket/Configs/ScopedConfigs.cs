@@ -15,10 +15,10 @@ using BusBookTicket.DiscountManager.Repositories;
 using BusBookTicket.DiscountManager.Services;
 using BusBookTicket.Ranks.Repositories;
 using BusBookTicket.Ranks.Services;
-using BusBookTicket.TicketManage.Repositories.TicketItems;
-using BusBookTicket.TicketManage.Repositories.Tickets;
-using BusBookTicket.TicketManage.Services.TicketItems;
-using BusBookTicket.TicketManage.Services.Tickets;
+using BusBookTicket.BillManage.Repositories.BillItems;
+using BusBookTicket.BillManage.Repositories.Bills;
+using BusBookTicket.BillManage.Services.BillItems;
+using BusBookTicket.BillManage.Services.Bills;
 
 namespace BusBookTicket.Configs
 {
@@ -59,10 +59,10 @@ namespace BusBookTicket.Configs
             #endregion -- Add Scoped Discount Module --
 
             #region  -- Add Scoped Ticket Module --
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<ITicketRepository, TicketRepository>();
-            services.AddScoped<ITicketItemService, TicketItemService>();
-            services.AddScoped<ITicketItemRepos, TicketItemRepos>();
+            services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IBillItemService, BillItemService>();
+            services.AddScoped<IBillItemRepos, BillItemRepos>();
 
             #endregion -- Add Scoped Ticket Module --
 

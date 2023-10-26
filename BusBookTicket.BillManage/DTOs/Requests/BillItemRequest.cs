@@ -1,8 +1,8 @@
-﻿namespace BusBookTicket.TicketManage.DTOs.Requests;
+﻿namespace BusBookTicket.BillManage.DTOs.Requests;
 
-public class TicketItemRequest
+public class BillItemRequest
 {
-    public int ticketID { get; set; }
+    public int billID { get; set; }
     public List<int> seatNumber { get; set; }
     public string busNumber { get; set; }
     public string company { get; set; }
