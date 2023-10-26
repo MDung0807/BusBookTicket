@@ -95,9 +95,9 @@ namespace BusBookTicket.Configs
 
             CreateMap<BillItem, BillItemResponse>()
                 .ForPath(dest => dest.company,
-                    memberOptions: opts => opts.MapFrom(x => x.seat.bus.company.name))
+                    memberOptions: opts => opts.MapFrom(x => x.TicketItem.ticket.bus.company.name))
                 .ForPath(dest => dest.busNumber,
-                    opts => opts.MapFrom(x => x.seat.bus.busNumber));
+                    opts => opts.MapFrom(x => x.TicketItem.ticket.bus.busNumber));
 
             #endregion -- Configs Ticket Module --
 
