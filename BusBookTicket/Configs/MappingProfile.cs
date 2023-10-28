@@ -17,6 +17,8 @@ using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
+using BusBookTicket.Ticket.DTOs.Requests;
+using BusBookTicket.Ticket.DTOs.Response;
 using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
 
 namespace BusBookTicket.Configs
@@ -78,7 +80,7 @@ namespace BusBookTicket.Configs
             CreateMap<Rank, DiscountResponse>();
             #endregion -- Configs Dícounts Module --
 
-            #region -- Configs Ticket Module --
+            #region -- Configs Bill Module --
 
             CreateMap<BillRequest, Bill>();
             CreateMap<BillItemRequest, BillItem>();
@@ -99,7 +101,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.busNumber,
                     opts => opts.MapFrom(x => x.TicketItem.ticket.bus.busNumber));
 
-            #endregion -- Configs Ticket Module --
+            #endregion -- Configs Bill Module --
 
             #region -- Configs Buses Module --
 
@@ -143,6 +145,29 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.seatType.typeID,
                     opts => opts.MapFrom(x => x.typeID));
             #endregion -- Configs Buses Module --
+
+            #region -- Configs Ticket Module --
+
+            //Ticket
+            CreateMap<TicketFormCreate, Core.Models.Entity.Ticket>()
+                .ForPath(dest => dest.bus.busID,
+                    opts => opts.MapFrom(x => x.busID));
+            
+            CreateMap<TicketFormUpdate, Core.Models.Entity.Ticket>()
+                .ForPath(dest => dest.bus.busID,
+                    opts => opts.MapFrom(x => x.busID));
+
+            CreateMap<Core.Models.Entity.Ticket, TicketResponse>()
+                .ForPath(dest => dest.busNumber,
+                    opts => opts.MapFrom(x => x.bus.busNumber))
+                .ForPath(dest => dest.company,
+                    opts => opts.MapFrom(x => x.bus.company.name));
+
+            //TicketItem
+            CreateMap<TicketItemForm, TicketItem>();
+            CreateMap<TicketItem, TicketItemResponse>();
+
+            #endregion -- Configs Ticket Module --
         }
     }
 }
