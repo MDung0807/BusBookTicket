@@ -43,7 +43,7 @@ public class DiscountController : ControllerBase
         bool status = await _discountService.create(discountCreate);
         return Ok(new Response<string>(!status, "Response"));
     }
-    [HttpPatch("update")]
+    [HttpPut("update")]
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> update([FromBody] DiscountUpdate discountUpdate)
     {
