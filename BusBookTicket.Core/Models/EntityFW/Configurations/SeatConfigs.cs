@@ -22,6 +22,11 @@ public class SeatConfigs : IEntityTypeConfiguration<Seat>
             .HasForeignKey("busID")
             .IsRequired();
 
+        builder.HasOne(x => x.seatType)
+            .WithMany(x => x.seats)
+            .HasForeignKey("seatTypeID")
+            .IsRequired();
+
         #endregion -- Relationship --
     }
 }

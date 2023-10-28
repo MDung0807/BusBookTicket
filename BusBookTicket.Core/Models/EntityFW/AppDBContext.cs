@@ -27,6 +27,7 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration(new BillItemConfigs());
             modelBuilder.ApplyConfiguration(new TicketConfigs());
             modelBuilder.ApplyConfiguration(new SeatConfigs());
+            modelBuilder.ApplyConfiguration(new SeatTyeConfigs());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -40,7 +41,7 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<Account> Accounts { get; set; }
         public DbSet<BusStation> BusStations { get; set; }
         public DbSet<BusStop> BusStops { get; set; }
-        public DbSet<TicketItem> SeatItems { get; set; }
+        public DbSet<TicketItem> TicketItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Rank> Ranks { get; set; }
         public DbSet<Discount> Discounts { get; set; }
@@ -49,5 +50,6 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<BillItem> BillItems { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Seat> Seats { get; set; }
+        public DbSet<SeatType> SeatTypes { get; set; }
     }
 }

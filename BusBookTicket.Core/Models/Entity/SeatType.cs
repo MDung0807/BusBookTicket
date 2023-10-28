@@ -1,6 +1,6 @@
 ﻿namespace BusBookTicket.Core.Models.Entity;
 
-public class SeateType
+public class SeatType
 {
     #region -- Poperties --
     public int typeID { get; set; }
@@ -12,5 +12,6 @@ public class SeateType
 
     #region -- Relationships --
     public HashSet<Seat> seats { get; set; }
+    public Company Company { get; set; }
     #endregion -- Relationships --
 }
