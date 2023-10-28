@@ -103,6 +103,7 @@ namespace BusBookTicket.Configs
 
             #region -- Configs Buses Module --
 
+            // Bus
             CreateMap<FormCreateBus, Bus>()
                 .ForPath(dest => dest.busType.name,
                     opts => opts.MapFrom(x => x.busType))
@@ -123,6 +124,24 @@ namespace BusBookTicket.Configs
             CreateMap<BusTypeFormUpdate, BusType>();
             CreateMap<BusType, BusTypeResponse>();
 
+            //Seat
+            CreateMap<SeatTypeFormCreate, SeatType>()
+                .ForPath(dest => dest.Company.companyID,
+                    opts => opts.MapFrom(x => x.companyID));
+
+            CreateMap<SeatTypeFormUpdate, SeatType>()
+                .ForPath(dest => dest.Company.companyID,
+                    opts => opts.MapFrom(x => x.companyID));
+
+            CreateMap<SeatType, SeatTypeResponse>();
+
+            CreateMap<SeatForm, Seat>()
+                .ForPath(dest => dest.bus.busID,
+                    opts => opts.MapFrom(x => x.busID));
+
+            CreateMap<SeatForm, Seat>()
+                .ForPath(dest => dest.seatType.typeID,
+                    opts => opts.MapFrom(x => x.typeID));
             #endregion -- Configs Buses Module --
         }
     }
