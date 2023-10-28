@@ -14,7 +14,7 @@ namespace BusBookTicket.Core.Models.Entity
 
         #region -- Relationship --
         public Bill? bill { get; set; }
-        public SeatItem seat { get; set; }
+        public TicketItem TicketItem { get; set; }
         #endregion -- Relationship --
 
 

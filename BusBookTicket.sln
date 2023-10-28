@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Buses", "BusBookTicket.Buses\BusBookTicket.Buses.csproj", "{1394D66A-316C-424B-8A2E-5E9397471AE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Ticket", "BusBookTicket.Ticket\BusBookTicket.Ticket.csproj", "{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{1394D66A-316C-424B-8A2E-5E9397471AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1394D66A-316C-424B-8A2E-5E9397471AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1394D66A-316C-424B-8A2E-5E9397471AE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

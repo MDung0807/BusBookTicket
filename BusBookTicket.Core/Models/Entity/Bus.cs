@@ -18,10 +18,10 @@ namespace BusBookTicket.Core.Models.Entity
 
         public Company? company { get; set; }
         public BusType? busType { get; set; }
-        public HashSet<SeatItem> Seats { get; set; }
         public HashSet<BusStop> busStops { get; set; }
         public HashSet<Review> reviews { get; set; }
-
+        public HashSet<Seat> seats { get; set; }
+        public HashSet<Ticket> tickets { get; set; }
         #endregion -- Relationship --
 
     }

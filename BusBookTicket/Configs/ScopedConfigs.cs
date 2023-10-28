@@ -19,6 +19,11 @@ using BusBookTicket.BillManage.Repositories.BillItems;
 using BusBookTicket.BillManage.Repositories.Bills;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
+using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Repositories.SeatRepositories;
+using BusBookTicket.Buses.Repositories.SeatTypeRepositories;
+using BusBookTicket.Buses.Services.SeatServices;
+using BusBookTicket.Buses.Services.SeatTypServices;
 
 namespace BusBookTicket.Configs
 {
@@ -78,6 +83,12 @@ namespace BusBookTicket.Configs
             
             services.AddScoped<IBusService, BusService>();
             services.AddScoped<IBusRepos, BusRepos>();
+
+            services.AddScoped<ISeatService, SeatService>();
+            services.AddScoped<ISeatRepository, SeatRepository>();
+
+            services.AddScoped<ISeatTypeService, SeatTypeService>();
+            services.AddScoped<ISeatTypeRepos, SeatTypeRepos>();
 
             #endregion -- Add Scroped Buses Module --
         }

@@ -21,6 +21,7 @@ namespace BusBookTicket.Core.Models.Entity
         #region -- Relationship --
         public ICollection<Bus> buses { get; set; } = new List<Bus>();
         public Account account { get; set; }
+        public HashSet<SeatType> SeatTypes { get; set; }
         #endregion -- Relationship --
        
     }

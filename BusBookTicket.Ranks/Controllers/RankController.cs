@@ -30,7 +30,7 @@ public class RankController : ControllerBase
     }
     
     [Authorize(Roles = "ADMIN")]
-    [HttpPatch("update")]
+    [HttpPut("update")]
     public async Task<IActionResult> update([FromBody] RankUpdate request)
     {
         bool status = await _rankService.update(request, request.rankID);

@@ -20,12 +20,12 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #region -- Relationship --
             builder.HasOne(x => x.bill)
                 .WithMany(x => x.billItems)
-                .HasForeignKey("ticketID")
+                .HasForeignKey("billID")
                 .IsRequired();
 
-            builder.HasOne(x => x.seat)
-                .WithOne(x => x.ticketItem)
-                .HasForeignKey<BillItem>("seatID")
+            builder.HasOne(x => x.TicketItem)
+                .WithOne(x => x.BillItem)
+                .HasForeignKey<BillItem>("ticketItemID")
                 .IsRequired();
             #endregion -- Relationship --
         }
