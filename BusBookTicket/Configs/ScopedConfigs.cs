@@ -24,6 +24,10 @@ using BusBookTicket.Buses.Repositories.SeatRepositories;
 using BusBookTicket.Buses.Repositories.SeatTypeRepositories;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
+using BusBookTicket.Ticket.Responses.TicketItemRespositories;
+using BusBookTicket.Ticket.Responses.TicketRepositories;
+using BusBookTicket.Ticket.Services.TicketItemServices;
+using BusBookTicket.Ticket.Services.TicketServices;
 
 namespace BusBookTicket.Configs
 {
@@ -63,13 +67,13 @@ namespace BusBookTicket.Configs
             services.AddScoped<IDiscountRepository, DiscountRepository>();
             #endregion -- Add Scoped Discount Module --
 
-            #region  -- Add Scoped Ticket Module --
+            #region  -- Add Scoped Bill Module --
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IBillItemService, BillItemService>();
             services.AddScoped<IBillItemRepos, BillItemRepos>();
 
-            #endregion -- Add Scoped Ticket Module --
+            #endregion -- Add Scoped Bill Module --
 
             #region -- Add Scoped Mail Service --
             services.AddTransient<IMailService, MailService>();
@@ -91,6 +95,16 @@ namespace BusBookTicket.Configs
             services.AddScoped<ISeatTypeRepos, SeatTypeRepos>();
 
             #endregion -- Add Scroped Buses Module --
+
+            #region -- Add Scoped Ticket Module --
+
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+
+            services.AddScoped<ITicketItemService, TicketItemService>();
+            services.AddScoped<ITicketItemRepos, TicketItemRepos>();
+
+            #endregion -- Add Scoped Ticket Module --
         }
     }
 }

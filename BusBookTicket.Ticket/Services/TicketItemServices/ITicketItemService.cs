@@ -1,0 +1,10 @@
+﻿using BusBookTicket.Core.Common;
+using BusBookTicket.Ticket.DTOs.Requests;
+using BusBookTicket.Ticket.DTOs.Response;
+
+namespace BusBookTicket.Ticket.Services.TicketItemServices;
+
+public interface ITicketItemService : IService<TicketItemForm, TicketItemForm, int, TicketItemResponse>
+{
+    Task<List<TicketItemResponse>> getAllInTicket(int ticketID);
+}
