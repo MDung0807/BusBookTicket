@@ -22,14 +22,7 @@ public class TicketRepository : ITicketRepository
     public async Task<Core.Models.Entity.Ticket> getByID(int id)
     {
         try
-        {
-            Bus  bus = await _context.Buses.Where(x => x.busID == 24)
-                .Include(x => x.company)
-                .Include(x => x.seats)
-                .Include(x => x.busStops)
-                .Include(x => x.busType)
-                .FirstAsync();
-            
+        {      
             Core.Models.Entity.Ticket ticket  =  await _context.Tickets.Where(x => x.ticketID == id)
                 .Include(x => x.bus)
                 .ThenInclude(x => x.seats)
@@ -40,6 +33,13 @@ public class TicketRepository : ITicketRepository
                 .Include(x => x.bus)
                 .ThenInclude(x => x.busType)
                 .FirstAsync()?? throw new NotFoundException(TicketConstants.NOT_FOUND);
+
+            Bus bus = await _context.Buses.Where(x => x.busID == ticket.bus.busID)
+                .Include(x => x.company)
+                .Include(x => x.seats)
+                .Include(x => x.busStops)
+                .Include(x => x.busType)
+                .FirstAsync();
 
             ticket.bus = bus;
             return ticket;
@@ -101,9 +101,10 @@ public class TicketRepository : ITicketRepository
         {
             List<Core.Models.Entity.Ticket> ticketResponses = await _context.Tickets
                 .Where(x => x.status != (int)EnumsApp.Delete && x.status != (int)EnumsApp.Disable)
-                .Where(x => x.date >= dateTime)
-                .Include(x => x.bus.busStops
-                    .Where(x => x.BusStation.name == stationStart && x.BusStation.name == stationEnd))
+                .Where(x => x.date.Date >= dateTime.Date)
+                .Include(x => x.bus)
+                .ThenInclude(x => x.busStops)
+                .Where(x => x.bus.busStops.Any(p => p.BusStation.name.Contains(stationEnd)))
                 .ToListAsync() ?? throw new NotFoundException(TicketConstants.NOT_FOUND);
             return ticketResponses;
         }

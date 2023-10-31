@@ -1,5 +1,4 @@
-﻿using System.Web.Mvc;
-using BusBookTicket.Core.Common;
+﻿using BusBookTicket.Core.Common;
 using BusBookTicket.DiscountManager.DTOs.Requests;
 using BusBookTicket.DiscountManager.DTOs.Responses;
 using BusBookTicket.DiscountManager.Services;

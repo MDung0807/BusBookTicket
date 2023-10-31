@@ -6,5 +6,5 @@ namespace BusBookTicket.Ticket.Services.TicketServices;
 
 public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, int, TicketResponse>
 {
-    Task<List<TicketResponse>> getAllTicket(DateTime dateTime, string stationStart, string stationEnd);
+    Task<List<TicketResponse>> getAllTicket(SearchForm searchForm);
 }

@@ -104,7 +104,7 @@ public class BusStationRepos : IBusStationRepos
     {
         try
         {
-            return await _context.Set<BusStation>().Where(x => x.address == location).ToListAsync();
+            return await _context.Set<BusStation>().Where(x => x.address.Contains(location)).ToListAsync();
         }
         catch
         {
