@@ -62,19 +62,13 @@ public class TicketService : ITicketService
         try
         {
             Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
+            ticket.status = (int)EnumsApp.Active;
             int ticketID = await _repository.create(ticket);
             ticket = await _repository.getByID(ticketID);
             List<Seat> seats = ticket.bus.seats.ToList();
             foreach (Seat seat in seats)
             {
-                TicketItemForm form = new TicketItemForm();
-                form.ticketID = ticketID;
-                form.status = seat.status;
-                form.ticketItemID = 0;
-                form.seatNumber = seat.seatNumber;
-                form.price = seat.price;
-
-                await _itemService.create(form);
+                await createItem(seat, ticketID);
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -88,9 +82,11 @@ public class TicketService : ITicketService
         }
     }
 
-    public async Task<List<TicketResponse>> getAllTicket(DateTime dateTime, string stationStart, string stationEnd)
+    public async Task<List<TicketResponse>> getAllTicket(SearchForm searchForm)
     {
-        List<Core.Models.Entity.Ticket> tickets = await _repository.getAllTicket(dateTime, stationStart, stationEnd);
+        searchForm.dateTime = searchForm.dateTime.Date;
+        searchForm.dateTime = Convert.ToDateTime("30/10/2023");
+        List<Core.Models.Entity.Ticket> tickets = await _repository.getAllTicket(searchForm.dateTime, searchForm.stationStart, searchForm.stationEnd);
         List<TicketResponse> responses = new List<TicketResponse>();
 
         foreach (Core.Models.Entity.Ticket ticket in tickets)
@@ -100,4 +96,19 @@ public class TicketService : ITicketService
 
         return responses;
     }
+
+    #region -- Private Method --
+
+    private async Task<bool> createItem(Seat seat, int ticketID)
+    {
+        TicketItemForm form = new TicketItemForm();
+        form.ticketID = ticketID;
+        form.status = seat.status;
+        form.ticketItemID = 0;
+        form.seatNumber = seat.seatNumber;
+        form.price = seat.price;
+
+        return await _itemService.create(form);
+    }
+    #endregion -- Private Method --
 }

@@ -23,11 +23,11 @@ public class TicketController : ControllerBase
 
     #region -- Controller --
 
-    [HttpGet("find")]
+    [HttpPost("find")]
     [AllowAnonymous]
-    public async Task<IActionResult> getTicket([FromQuery] DateTime dateTime, string stationStart, string stationEnd)
+    public async Task<IActionResult> getTicket([FromBody] SearchForm searchForm )
     {
-        List<TicketResponse> response = await _ticketService.getAllTicket(dateTime, stationStart, stationEnd);
+        List<TicketResponse> response = await _ticketService.getAllTicket(searchForm);
         return Ok(new Response<List<TicketResponse>>(false, response));
     }
     

@@ -35,6 +35,14 @@ public class BillController : ControllerBase
         BillResponse billResponse = await _billService.getByID(id);
         return Ok(new Response<BillResponse>(false, billResponse));
     }
+    
+    [Authorize(Roles = "CUSTOMER")]
+    [HttpGet("getAll")]
+    public async Task<IActionResult> getAllBill()
+    {
+        List<BillResponse> billResponse = await _billService.getAll();
+        return Ok(new Response<List<BillResponse>>(false, billResponse));
+    }
     #endregion -- Controller --
 
 }
