@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.DTOs.Requests;
@@ -15,13 +16,15 @@ public class TicketService : ITicketService
     private readonly ITicketRepository _repository;
     private readonly ITicketItemService _itemService;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion -- Properties --
 
-    public TicketService(ITicketItemService itemService, ITicketRepository repository, IMapper mapper)
+    public TicketService(ITicketItemService itemService, ITicketRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
     {
         this._repository = repository;
         this._itemService = itemService;
         this._mapper = mapper;
+        this._unitOfWork = unitOfWork;
     }
     
     public async Task<TicketResponse> getByID(int id)
@@ -55,22 +58,34 @@ public class TicketService : ITicketService
 
     public async Task<bool> create(TicketFormCreate entity)
     {
-        Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
-        int ticketID = await _repository.create(ticket);
-        ticket = await _repository.getByID(ticketID);
-        List<Seat> seats = ticket.bus.seats.ToList();
-        foreach (Seat seat in seats)
+        await _unitOfWork.BeginTransaction();
+        try
         {
-            TicketItemForm form = new TicketItemForm();
-            form.ticketID = ticketID;
-            form.status = seat.status;
-            form.ticketItemID = 0;
-            form.seatNumber = seat.seatNumber;
-            form.price = seat.price;
+            Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
+            int ticketID = await _repository.create(ticket);
+            ticket = await _repository.getByID(ticketID);
+            List<Seat> seats = ticket.bus.seats.ToList();
+            foreach (Seat seat in seats)
+            {
+                TicketItemForm form = new TicketItemForm();
+                form.ticketID = ticketID;
+                form.status = seat.status;
+                form.ticketItemID = 0;
+                form.seatNumber = seat.seatNumber;
+                form.price = seat.price;
 
-            await _itemService.create(form);
+                await _itemService.create(form);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
-        return true;
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            Console.WriteLine(e.ToString());
+            throw new Exception("ERROR");
+        }
     }
 
     public async Task<List<TicketResponse>> getAllTicket(DateTime dateTime, string stationStart, string stationEnd)

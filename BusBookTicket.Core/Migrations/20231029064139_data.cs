@@ -44,6 +44,20 @@ namespace BusBookTicket.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    id01 = table.Column<int>(type: "int", nullable: false),
+                    objectModel = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ranks",
                 columns: table => new
                 {
@@ -343,6 +357,7 @@ namespace BusBookTicket.Core.Migrations
                     ticketID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
                     busID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -362,7 +377,7 @@ namespace BusBookTicket.Core.Migrations
                 {
                     seatID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    seatNumber = table.Column<int>(type: "int", nullable: false),
+                    seatNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
                     price = table.Column<int>(type: "int", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -387,7 +402,7 @@ namespace BusBookTicket.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SeatItems",
+                name: "TicketItems",
                 columns: table => new
                 {
                     ticketItemID = table.Column<int>(type: "int", nullable: false)
@@ -399,9 +414,9 @@ namespace BusBookTicket.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeatItems", x => x.ticketItemID);
+                    table.PrimaryKey("PK_TicketItems", x => x.ticketItemID);
                     table.ForeignKey(
-                        name: "FK_SeatItems_Tickets_ticketID",
+                        name: "FK_TicketItems_Tickets_ticketID",
                         column: x => x.ticketID,
                         principalTable: "Tickets",
                         principalColumn: "ticketID",
@@ -427,9 +442,9 @@ namespace BusBookTicket.Core.Migrations
                         principalColumn: "billID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BillItems_SeatItems_ticketItemID",
+                        name: "FK_BillItems_TicketItems_ticketItemID",
                         column: x => x.ticketItemID,
-                        principalTable: "SeatItems",
+                        principalTable: "TicketItems",
                         principalColumn: "ticketItemID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -528,11 +543,6 @@ namespace BusBookTicket.Core.Migrations
                 column: "customerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeatItems_ticketID",
-                table: "SeatItems",
-                column: "ticketID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Seats_busID",
                 table: "Seats",
                 column: "busID");
@@ -546,6 +556,11 @@ namespace BusBookTicket.Core.Migrations
                 name: "IX_SeatTypes_companyID",
                 table: "SeatTypes",
                 column: "companyID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketItems_ticketID",
+                table: "TicketItems",
+                column: "ticketID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_busID",
@@ -563,6 +578,9 @@ namespace BusBookTicket.Core.Migrations
                 name: "BusStops");
 
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
@@ -572,7 +590,7 @@ namespace BusBookTicket.Core.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "SeatItems");
+                name: "TicketItems");
 
             migrationBuilder.DropTable(
                 name: "SeatTypes");

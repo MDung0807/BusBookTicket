@@ -5,6 +5,7 @@ public class Ticket
     #region -- Properties --
     public int ticketID { get; set; }
     public DateTime date { get; set; }
+    public int status { get; set; }
     #endregion -- Properties --
 
     #region -- Relationships --

@@ -24,6 +24,12 @@ namespace BusBookTicket.Core.Common
         Task<List<Response>> getAll();
         Task<bool> update(Update entity, ID id);
         Task<bool> delete(ID id);
+        
+        /// <summary>
+        /// Handling insert data into database
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         Task<bool> create(Create entity);
     }
 }

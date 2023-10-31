@@ -51,7 +51,7 @@ public class SeatRepository : ISeatRepository
     {
         try
         {
-            _context.Seats.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             int id = await _context.SaveChangesAsync();
             return id;
         }
@@ -84,11 +84,12 @@ public class SeatRepository : ISeatRepository
     {
         try
         {
-            _context.Seats.Add(entity);
+             _context.Entry(entity).State  = EntityState.Added;
             return await _context.SaveChangesAsync();
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine(ex.ToString());
             throw new Exception(SeatTypeConstants.ERROR);
         }
     }

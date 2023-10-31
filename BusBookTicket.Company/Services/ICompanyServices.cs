@@ -7,4 +7,5 @@ namespace BusBookTicket.CompanyManage.Services;
 
 public interface ICompanyServices : IService<FormRegisterCompany, FormUpdateCompany, int, ProfileCompany>
 {
+    Task<bool> changeStatus(int id, int stauts);
 }

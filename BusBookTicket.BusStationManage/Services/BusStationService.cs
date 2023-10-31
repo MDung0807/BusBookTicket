@@ -15,6 +15,7 @@ public class BusStationService : IBusStationService
     private readonly IMapper _mapper;
     #endregion -- Properties --
 
+    #region -- Public Method --
     public BusStationService(IBusStationRepos busStationRepos, IMapper mapper)
     {
         this._busStationRepos = busStationRepos;
@@ -56,4 +57,20 @@ public class BusStationService : IBusStationService
         await _busStationRepos.create(busStation);
         return true;
     }
+
+    public async Task<BusStationResponse> getStationByName(string name)
+    {
+        BusStation busStation = await _busStationRepos.getStationByName(name);
+        return _mapper.Map<BusStationResponse>(busStation);
+    }
+
+    public async Task<List<BusStationResponse>> getStationByLocaion(string location)
+    {
+        List<BusStation> busStations = await _busStationRepos.getAllStationByLocation(location);
+        List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+
+        return responses;
+    }
+
+    #endregion
 }

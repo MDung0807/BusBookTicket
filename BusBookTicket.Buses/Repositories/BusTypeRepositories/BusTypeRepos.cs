@@ -34,7 +34,8 @@ public class BusTypeRepos : IBusTypeRepos
     {
         try
         {
-            _context.BusesType.Update(entity);
+            _context.BusesType.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             int id = await _context.SaveChangesAsync();
             return id;
         }

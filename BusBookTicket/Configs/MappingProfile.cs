@@ -1,5 +1,4 @@
-﻿using System.Runtime.ConstrainedExecution;
-using AutoMapper;
+﻿using AutoMapper;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Buses.DTOs.Requests;
@@ -48,7 +47,9 @@ namespace BusBookTicket.Configs
             CreateMap<AuthRequest, Account>()
                 .ForPath(dest => dest.role.roleName, 
                     opt => opt.MapFrom(x => x.roleName));
-            CreateMap<Account, AccResponse>();
+            CreateMap<Account, AccResponse>()
+                .ForPath(dest => dest.roleName,
+                    opts => opts.MapFrom(x => x.role.roleName));
             CreateMap<FormRegisterCompany, AuthRequest>();
             #endregion -- Configs Auth Module --
 
@@ -107,8 +108,8 @@ namespace BusBookTicket.Configs
 
             // Bus
             CreateMap<FormCreateBus, Bus>()
-                .ForPath(dest => dest.busType.name,
-                    opts => opts.MapFrom(x => x.busType))
+                .ForPath(dest => dest.busType.busTypeID,
+                    opts => opts.MapFrom(x => x.busTypeID))
                 .ForPath(dest => dest.company.companyID, 
                     opts => opts.MapFrom(x => x.companyID));
             CreateMap<FormUpdateBus, Bus>()
@@ -122,11 +123,12 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.busType,
                     opts => opts.MapFrom(x => x.busType.name));
 
+            //BusType
             CreateMap<BusTypeForm, BusType>();
             CreateMap<BusTypeFormUpdate, BusType>();
             CreateMap<BusType, BusTypeResponse>();
 
-            //Seat
+            //SeatType
             CreateMap<SeatTypeFormCreate, SeatType>()
                 .ForPath(dest => dest.Company.companyID,
                     opts => opts.MapFrom(x => x.companyID));
@@ -137,13 +139,15 @@ namespace BusBookTicket.Configs
 
             CreateMap<SeatType, SeatTypeResponse>();
 
+            //Seat
             CreateMap<SeatForm, Seat>()
                 .ForPath(dest => dest.bus.busID,
                     opts => opts.MapFrom(x => x.busID));
 
             CreateMap<SeatForm, Seat>()
                 .ForPath(dest => dest.seatType.typeID,
-                    opts => opts.MapFrom(x => x.typeID));
+                    opts => opts.MapFrom(x => x.seatTypeID));
+
             #endregion -- Configs Buses Module --
 
             #region -- Configs Ticket Module --
@@ -164,7 +168,9 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.bus.company.name));
 
             //TicketItem
-            CreateMap<TicketItemForm, TicketItem>();
+            CreateMap<TicketItemForm, TicketItem>()
+                .ForPath(dest => dest.ticket.ticketID,
+                    opts => opts.MapFrom(x => x.ticketID));
             CreateMap<TicketItem, TicketItemResponse>();
 
             #endregion -- Configs Ticket Module --

@@ -2,6 +2,7 @@
 using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Utils;
+using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,8 +34,9 @@ namespace BusBookTicket.Auth.Security
                     response = await authService.getAccByUsername(username, roleName);
                     // Check account exist in data
                     if (response.roleName != principal.Claims.ElementAt(2).Value ||
-                        response.userID.ToString() != principal.Claims.ElementAt(0).Value)
-                        throw new AuthException(AuthConstants.UNAUTHORIZATION);
+                        response.userID.ToString() != principal.Claims.ElementAt(0).Value||
+                        response.status != (int)EnumsApp.Active)
+                        throw new AuthException(AuthConstants.AUTHENRIZATION);
                 }
             }
 

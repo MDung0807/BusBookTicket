@@ -7,7 +7,9 @@ namespace BusBookTicket.Core.Models.EntityFW
     public class AppDBContext : DbContext
     {
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        { }
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -28,12 +30,14 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration(new TicketConfigs());
             modelBuilder.ApplyConfiguration(new SeatConfigs());
             modelBuilder.ApplyConfiguration(new SeatTyeConfigs());
+            modelBuilder.ApplyConfiguration(new ImgaesConfigs());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
         }
+
         public DbSet<Bus> Buses { get; set; }
         public DbSet<BusType> BusesType { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -51,5 +55,6 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<SeatType> SeatTypes { get; set; }
-    }
+        public DbSet<Images> Images { get; set; }
+}
 }

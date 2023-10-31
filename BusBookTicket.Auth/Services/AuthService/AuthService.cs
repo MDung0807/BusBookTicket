@@ -47,6 +47,7 @@ namespace BusBookTicket.Auth.Services.AuthService
 
         public async Task<bool> resetPass(FormResetPass request)
         {
+            
             request.password = PassEncrypt.hashPassword(request.password);
             await _authRepository.resetPass(request);
             return true;

@@ -40,6 +40,7 @@ public class TicketController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> create([FromBody] TicketFormCreate request)
     {
         await _ticketService.create(request);

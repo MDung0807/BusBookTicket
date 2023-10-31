@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.Buses.Controllers;
 
 [ApiController]
-[Route("api/bystype")]
+[Route("api/bustype")]
 public class BusTypeController : ControllerBase
 {
     private readonly IBusTypeService _busTypeService;
@@ -41,7 +41,7 @@ public class BusTypeController : ControllerBase
         public async Task<IActionResult> update([FromBody] BusTypeFormUpdate request)
         {
              bool status = await _busTypeService.update(request, request.busTypeID);
-            return Ok(new Response<string>(status, "Response"));
+            return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
@@ -49,7 +49,7 @@ public class BusTypeController : ControllerBase
         public async Task<IActionResult> createByAdmin([FromBody] BusTypeForm request)
         {
             bool status = await _busTypeService.create(request);
-            return Ok(new Response<string>(status, "Response"));
+            return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]

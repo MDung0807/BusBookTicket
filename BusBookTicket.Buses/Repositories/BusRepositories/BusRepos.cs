@@ -35,7 +35,7 @@ public class BusRepos : IBusRepos
     {
         try
         {
-            _context.Buses.Update(entity);
+            _context.Buses.Entry(entity).State = EntityState.Modified;
             int id = await _context.SaveChangesAsync();
             return id;
         }
@@ -74,13 +74,29 @@ public class BusRepos : IBusRepos
     {
         try
         {
-            _context.Buses.Add(entity);
-            return await _context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return entity.busID;    
         }
         catch
         {
             throw new Exception(BusTypeConstants.ERROR);
         }
 
+    }
+
+    public async Task<int> createStopStation(BusStop busStop)
+    {
+        try
+        {
+            _context.BusStops.Entry(busStop).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return busStop.busStopID;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("ERROR");
+        }
     }
 }

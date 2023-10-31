@@ -1,4 +1,5 @@
 ﻿using BusBookTicket.Core.Common.Exceptions;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.DTOs.Response;
@@ -22,10 +23,26 @@ public class TicketRepository : ITicketRepository
     {
         try
         {
-            return await _context.Tickets.Where(x => x.ticketID == id)
+            Bus  bus = await _context.Buses.Where(x => x.busID == 24)
+                .Include(x => x.company)
+                .Include(x => x.seats)
+                .Include(x => x.busStops)
+                .Include(x => x.busType)
+                .FirstAsync();
+            
+            Core.Models.Entity.Ticket ticket  =  await _context.Tickets.Where(x => x.ticketID == id)
                 .Include(x => x.bus)
-                .Include(x => x.bus.company)
+                .ThenInclude(x => x.seats)
+                .Include(x => x.bus)
+                .ThenInclude(x => x.company)
+                .Include(x => x.bus)
+                .ThenInclude(x => x.busStops)
+                .Include(x => x.bus)
+                .ThenInclude(x => x.busType)
                 .FirstAsync()?? throw new NotFoundException(TicketConstants.NOT_FOUND);
+
+            ticket.bus = bus;
+            return ticket;
         }
         catch 
         {
@@ -68,8 +85,9 @@ public class TicketRepository : ITicketRepository
     {
         try
         {
-            await _context.AddAsync(entity);
-            return await _context.SaveChangesAsync();
+            _context.Tickets.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return entity.ticketID;
         }
         catch (System.Exception ex)
         {

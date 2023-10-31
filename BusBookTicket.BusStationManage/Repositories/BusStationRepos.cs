@@ -37,9 +37,10 @@ public class BusStationRepos : IBusStationRepos
     {
         try
         {
-            _context.BusStations.Update(entity);
-            int id = await _context.SaveChangesAsync();
-            return id;
+            _context.BusStations.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return entity.busStationID;
         }
         catch
         {            
@@ -85,5 +86,29 @@ public class BusStationRepos : IBusStationRepos
             throw new Exception(BusStationConstants.CREATE_ERROR);
         }
 
+    }
+
+    public async Task<BusStation> getStationByName(string name)
+    {
+        try
+        {
+            return await _context.Set<BusStation>().Where(x => x.name == name).FirstAsync();
+        }
+        catch
+        {
+            throw new Exception(BusStationConstants.CREATE_ERROR);
+        }
+    }
+
+    public async Task<List<BusStation>> getAllStationByLocation(string location)
+    {
+        try
+        {
+            return await _context.Set<BusStation>().Where(x => x.address == location).ToListAsync();
+        }
+        catch
+        {
+            throw new Exception(BusStationConstants.CREATE_ERROR);
+        }
     }
 }

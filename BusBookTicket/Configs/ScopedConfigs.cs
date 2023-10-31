@@ -1,4 +1,7 @@
-﻿using BusBookTicket.Application.MailKet.Service;
+﻿using BusBookTicket.Application.CloudImage;
+using BusBookTicket.Application.CloudImage.Repositories;
+using BusBookTicket.Application.CloudImage.Services;
+using BusBookTicket.Application.MailKet.Service;
 using BusBookTicket.Auth.Repositories.AuthRepository;
 using BusBookTicket.Auth.Repositories.RoleRepository;
 using BusBookTicket.Auth.Services.AuthService;
@@ -24,6 +27,7 @@ using BusBookTicket.Buses.Repositories.SeatRepositories;
 using BusBookTicket.Buses.Repositories.SeatTypeRepositories;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
+using BusBookTicket.Core.Common;
 using BusBookTicket.Ticket.Responses.TicketItemRespositories;
 using BusBookTicket.Ticket.Responses.TicketRepositories;
 using BusBookTicket.Ticket.Services.TicketItemServices;
@@ -78,7 +82,7 @@ namespace BusBookTicket.Configs
             #region -- Add Scoped Mail Service --
             services.AddTransient<IMailService, MailService>();
 
-            #endregion
+            #endregion -- Add Scoped Mail Service --
 
             #region -- Add Scroped Buses Module --
 
@@ -105,6 +109,21 @@ namespace BusBookTicket.Configs
             services.AddScoped<ITicketItemRepos, TicketItemRepos>();
 
             #endregion -- Add Scoped Ticket Module --
+
+            #region -- Add Scoped ImageCloudDianary --
+
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+
+            services.AddSingleton(typeof(ClouImageCore));
+
+            #endregion -- Add Scoped ImageCloudDianary --
+
+            #region -- Add Scoped UnitWork --
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            #endregion -- Add Scoped UnitWork --
         }
     }
 }

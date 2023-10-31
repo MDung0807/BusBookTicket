@@ -4,6 +4,7 @@ using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CompanyManage.Utils;
+using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,18 +27,35 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> register([FromBody] FormRegisterCompany request)
+    public async Task<IActionResult> register([FromForm] FormRegisterCompany request)
     {
+        request.roleName = AppConstants.COMPANY;
         await _companyServices.create(request);
         return Ok(new Response<string>(false, CompanyConstants.SUCCESS));
     }
 
-    [HttpPut("udpate")]
+    [HttpPut("update")]
     [Authorize(Roles = ("COMPANY"))]
     public async Task<IActionResult> update([FromBody] FormUpdateCompany request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
         bool status = await _companyServices.update(request, id);
+        return Ok(new Response<string>(!status, "Response"));
+    }
+    
+    [HttpPut("admin/update")]
+    [Authorize(Roles = ("ADMIN"))]
+    public async Task<IActionResult> updateByAdmin([FromBody] FormUpdateCompany request)
+    {
+        bool status = await _companyServices.update(request, request.companyID);
+        return Ok(new Response<string>(!status, "Response"));
+    }
+
+    [HttpGet("admin/active")]
+    [Authorize(Roles = ("ADMIN"))]
+    public async Task<IActionResult> active([FromQuery] int id)
+    {
+        bool status = await _companyServices.changeStatus(id, (int)EnumsApp.Active);
         return Ok(new Response<string>(!status, "Response"));
     }
 
