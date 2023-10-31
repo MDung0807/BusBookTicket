@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilitis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.Controller
 {
@@ -22,8 +24,9 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult>register([FromBody] FormRegister register)
+        public async Task<IActionResult>register([FromForm] FormRegister register)
         {
+            register.roleName = AppConstants.CUSTOMER;
             bool status = await _customerService.create(register);
             string mess;
             if (status)

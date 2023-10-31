@@ -4,7 +4,7 @@ public class Seat
 {
     #region -- Properties --
     public int seatID { get; set; }
-    public int seatNumber { get; set; }
+    public string seatNumber { get; set; }
     public int status { get; set; }
     public int price { get; set; }
     public string description { get; set; }

@@ -4,7 +4,7 @@
     {
         #region -- Properties --
         public int ticketItemID { get; set; }
-        public int seatNumber { get; set; }
+        public string seatNumber { get; set; }
         public int status { get; set; }
         public int price { get; set; }
         #endregion -- Properties --

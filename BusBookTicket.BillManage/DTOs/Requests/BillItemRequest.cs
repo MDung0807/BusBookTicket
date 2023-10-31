@@ -1,5 +1,8 @@
-﻿namespace BusBookTicket.BillManage.DTOs.Requests;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
+namespace BusBookTicket.BillManage.DTOs.Requests;
+
+[ValidateNever]
 public class BillItemRequest
 {
     public int billID { get; set; }

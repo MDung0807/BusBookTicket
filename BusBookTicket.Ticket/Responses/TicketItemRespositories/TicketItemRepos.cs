@@ -59,7 +59,7 @@ public class TicketItemRepos : ITicketItemRepos
     {
         try
         {
-            await _context.AddAsync(entity);
+            _context.TicketItems.Entry(entity).State= EntityState.Added;
             return await _context.SaveChangesAsync();
         }
         catch (System.Exception ex)

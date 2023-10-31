@@ -41,7 +41,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> update([FromBody] BST_FormUpdate request)
         {
              bool status = await _busStationService.update(request, request.busStationID);
-            return Ok(new Response<string>(status, "Response"));
+            return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
@@ -49,7 +49,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> createByAdmin([FromBody] BST_FormCreate request)
         {
             bool status = await _busStationService.create(request);
-            return Ok(new Response<string>(status, "Response"));
+            return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
@@ -67,6 +67,22 @@ namespace BusBookTicket.BusStationManage.Controllers
             request.status = 0;
             bool status = await _busStationService.create(request);
             return Ok(new Response<string>(!status, "Response"));
+        }
+
+        [HttpGet("getByName")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getStationByName([FromQuery]string name)
+        {
+            BusStationResponse response = await _busStationService.getStationByName(name);
+            return Ok(new Response<BusStationResponse>(false, response));
+        }
+        
+        [HttpGet("getByLocation")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getStationByLocation([FromQuery] string location)
+        {
+            List<BusStationResponse> responses = await _busStationService.getStationByLocaion(location);
+            return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         #endregion -- Controllers --
     }

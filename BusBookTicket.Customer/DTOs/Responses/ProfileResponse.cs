@@ -8,6 +8,7 @@ namespace BusBookTicket.CustomerManage.DTOs.Responses
 {
     public class ProfileResponse
     {
+        public string avatar { get; set; }
         public string? fullName { get; set; }
         public DateTime dateOfBirth { get; set; }
         public string? address { get; set; }

@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace BusBookTicket.CompanyManage.DTOs.Requests;
 
+[ValidateNever]
 public class FormRegisterCompany
 {
     #region -- Company -- 
@@ -7,6 +11,7 @@ public class FormRegisterCompany
     public string? introduction { get; set; }
     public string? email { get; set; }
     public string? phoneNumber { get; set; }
+    public IFormFile logo { get; set; }
     #endregion -- Company --
 
     #region -- Account --

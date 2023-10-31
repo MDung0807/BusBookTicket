@@ -50,6 +50,7 @@ public class SeatTypeService : ISeatTypeService
     public async Task<bool> create(SeatTypeFormCreate entity)
     {
         SeatType seatType = _mapper.Map<SeatType>(entity);
+        seatType.status = (int)EnumsApp.Active;
         await _seatTypeResponse.create(seatType);
         return true;
     }

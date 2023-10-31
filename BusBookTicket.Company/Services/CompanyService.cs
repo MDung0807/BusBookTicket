@@ -56,6 +56,14 @@ public class CompanyService : ICompanyServices
         return true;
     }
 
+    public async Task<bool> changeStatus(int id, int stauts)
+    {
+        Company company = await _companyRepos.getByID(id);
+        company = changeStatus(company, stauts);
+        await _companyRepos.delete(company);
+        return true;
+    }
+
     public async Task<bool> create(FormRegisterCompany entity)
     {
         Company company = _mapper.Map<Company>(entity);
@@ -80,6 +88,8 @@ public class CompanyService : ICompanyServices
         {
             bus.status = status;
         }
+
+        entity.account.status = status;
 
         return entity;
     }

@@ -1,10 +1,13 @@
-﻿using BusBookTicket.Auth.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Utils;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.CustomerManage.Exceptions;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;
+using SendGrid.Helpers.Errors.Model;
+using NotFoundException = BusBookTicket.Core.Common.Exceptions.NotFoundException;
 
 namespace BusBookTicket.Exceptions
 {
@@ -23,11 +26,12 @@ namespace BusBookTicket.Exceptions
             {
                 await _next(context);
             }
-            catch(AuthException authException)
+            catch (AuthException authException)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, authException.message)));
+                await context.Response.WriteAsync(
+                    JsonConvert.SerializeObject(new Response<string>(true, authException.message)));
 
             }
             catch (CustomerException ex)
@@ -36,32 +40,38 @@ namespace BusBookTicket.Exceptions
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
             }
-            catch(UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
 
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
             }
-            catch(UnAuthorException ex)
+            catch (UnAuthorException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
             }
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "NotFound")));
             }
-            catch(Exception ex)
+            catch (ValidationException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+            }
+            catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 context.Response.ContentType = "application/json";

@@ -50,6 +50,9 @@ public class SeatService : ISeatService
     public async Task<bool> create(SeatForm entity)
     {
         Seat seat = _mapper.Map<Seat>(entity);
+        seat.bus = new Bus();
+        seat.bus.busID = entity.busID;
+        seat.status = (int)EnumsApp.Active;
         await _seatRepository.create(seat);
         return true;
     }

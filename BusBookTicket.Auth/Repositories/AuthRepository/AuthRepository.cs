@@ -66,17 +66,25 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 
         public async Task<Account> getAccByUsername(string username, string roleName)
         {
-            if (roleName == "COMPANY")
+            try
             {
+                if (roleName == "COMPANY")
+                {
+                    return await _context.Accounts.Where(x => x.username == username)
+                        .Include(x => x.role)
+                        .Include(x => x.company)
+                        .FirstAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+                }
+
                 return await _context.Accounts.Where(x => x.username == username)
-                .Include(x => x.role)
-                .Include(x => x.company)
-                .FirstAsync();
+                    .Include(x => x.role)
+                    .Include(x => x.customer)
+                    .FirstAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
             }
-            return await _context.Accounts.Where(x => x.username == username)
-                .Include(x => x.role)
-                .Include(x => x.customer)
-                .FirstAsync();
+            catch
+            {
+                throw new Exception(AuthConstants.ERROR);
+            }
 
         }
 

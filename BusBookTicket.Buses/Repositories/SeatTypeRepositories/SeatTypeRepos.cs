@@ -51,7 +51,7 @@ public class SeatTypeRepos : ISeatTypeRepos
     {
         try
         {
-            _context.SeatTypes.Update(entity);
+            _context.Entry(entity).State= EntityState.Modified;
             int id = await _context.SaveChangesAsync();
             return id;
         }
@@ -82,8 +82,8 @@ public class SeatTypeRepos : ISeatTypeRepos
     public async Task<int> create(SeatType entity)
     {
         try
-        {
-            _context.SeatTypes.Add(entity);
+        { 
+            _context.Entry(entity).State = EntityState.Added;
             return await _context.SaveChangesAsync();
         }
         catch

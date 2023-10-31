@@ -29,5 +29,15 @@ public class BusController : ControllerBase
         await _busService.create(request);
         return Ok(new Response<string>(false, "Response"));
     }
+    
+    [HttpPut("update")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> update([FromBody] FormUpdateBus request)
+    {
+        int id = JwtUtils.GetUserID(HttpContext);
+        request.companyID = id;
+        await _busService.update(request, request.busID);
+        return Ok(new Response<string>(false, "Response"));
+    }
     #endregion -- Controller --
 }

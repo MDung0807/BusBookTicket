@@ -368,6 +368,29 @@ namespace BusBookTicket.Core.Migrations
                     b.ToTable("Discounts");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Images", b =>
+                {
+                    b.Property<string>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<int>("id01")
+                        .HasColumnType("int");
+
+                    b.Property<string>("image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("objectModel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Rank", b =>
                 {
                     b.Property<int>("rankID")
@@ -475,8 +498,9 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("price")
                         .HasColumnType("int");
 
-                    b.Property<int>("seatNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("seatNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("seatTypeID")
                         .HasColumnType("int");
@@ -508,7 +532,7 @@ namespace BusBookTicket.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("pirce")
+                    b.Property<int>("price")
                         .HasColumnType("int");
 
                     b.Property<int>("status")
@@ -539,6 +563,9 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
                     b.HasKey("ticketID");
 
                     b.HasIndex("busID");
@@ -557,8 +584,9 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("price")
                         .HasColumnType("int");
 
-                    b.Property<int>("seatNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("seatNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("status")
                         .HasColumnType("int");

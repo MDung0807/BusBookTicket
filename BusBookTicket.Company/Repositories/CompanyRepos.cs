@@ -50,11 +50,8 @@ public class CompanyRepos : ICompanyRepos
     {
         try
         {
-             _context.Entry(entity).Property(x => x.account.status).IsModified = true;
-            foreach (var bus in entity.buses.Where(x => x.company.companyID == entity.companyID))
-            {
-                _context.Entry(bus).Property(x => x.status).IsModified = true;
-            }
+            _context.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             return await  _context.SaveChangesAsync();
         }
         catch

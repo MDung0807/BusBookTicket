@@ -27,8 +27,9 @@ public class SeatTypeController : ControllerBase
 
     [HttpGet("getAll")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> getAll([FromQuery] int companyID)
+    public async Task<IActionResult> getAll()
     {
+        int companyID = JwtUtils.GetUserID(HttpContext);
         List<SeatTypeResponse> responses = await _seatTypeService.getAll(companyID);
         return Ok(new Response<List<SeatTypeResponse>>(false, responses));
     }
@@ -63,7 +64,19 @@ public class SeatTypeController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> update([FromBody] SeatTypeFormUpdate request)
     {
+        int id = JwtUtils.GetUserID(HttpContext);
+        request.companyID = id;
         await _seatTypeService.update(request, request.typeID);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPost("/admin/create")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> createByAdmin([FromBody] SeatTypeFormCreate request)
+    {
+        int id = 0;
+        request.companyID = id;
+        await _seatTypeService.create(request);
         return Ok(new Response<string>(false, "Response"));
     }
     #endregion -- Controllers --
