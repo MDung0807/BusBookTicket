@@ -17,6 +17,7 @@ namespace BusBookTicket.Core.Models.Entity
         public DateTime dateStart { get; set; }
         public DateTime dateEnd { get; set; }
         public int status { get; set; }
+        public float value { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship --

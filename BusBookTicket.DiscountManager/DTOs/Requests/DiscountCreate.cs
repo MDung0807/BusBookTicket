@@ -1,5 +1,8 @@
-﻿namespace BusBookTicket.DiscountManager.DTOs.Requests;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
+namespace BusBookTicket.DiscountManager.DTOs.Requests;
+
+[ValidateNever]
 public class DiscountCreate
 {
     public string? name { get; set; }
@@ -8,5 +11,6 @@ public class DiscountCreate
     public DateTime dateCreate { get; set; }
     public DateTime dateStart { get; set; }
     public DateTime dateEnd { get; set; }
-    public string rankName { get; set; }
+    public string rankID { get; set; }
+    public float value { get; set; }
 }

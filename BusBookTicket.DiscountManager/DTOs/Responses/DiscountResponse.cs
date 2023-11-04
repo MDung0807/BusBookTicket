@@ -9,5 +9,5 @@ public class DiscountResponse
     public DateTime dateCreate { get; set; }
     public DateTime dateStart { get; set; }
     public DateTime dateEnd { get; set; }
-    public string rankName { get; set; }
+    public string rankID { get; set; }
 }

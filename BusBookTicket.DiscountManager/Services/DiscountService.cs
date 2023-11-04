@@ -51,6 +51,7 @@ public class DiscountService : IDiscountService
     public async Task<bool> create(DiscountCreate entity)
     {
         Discount discount = _mapper.Map<Discount>(entity);
+        entity.dateCreate = DateTime.Now;
         await _discountRepository.create(discount);
         return true;
     }

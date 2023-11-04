@@ -9,5 +9,6 @@ public class DiscountUpdate
     public DateTime dateCreate { get; set; }
     public DateTime dateStart { get; set; }
     public DateTime dateEnd { get; set; }
-    public string rankName { get; set; }
+    public string rankID { get; set; }
+    public float value { get; set; }
 }
