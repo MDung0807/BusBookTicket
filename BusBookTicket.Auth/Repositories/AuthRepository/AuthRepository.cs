@@ -73,16 +73,17 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
                     return await _context.Accounts.Where(x => x.username == username)
                         .Include(x => x.role)
                         .Include(x => x.company)
-                        .FirstAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+                        .FirstOrDefaultAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
                 }
 
                 return await _context.Accounts.Where(x => x.username == username)
                     .Include(x => x.role)
                     .Include(x => x.customer)
-                    .FirstAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+                    .FirstOrDefaultAsync() ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 throw new Exception(AuthConstants.ERROR);
             }
 
@@ -100,8 +101,17 @@ namespace BusBookTicket.Auth.Repositories.AuthRepository
 
         public async Task<bool> login(Account acc)
         {
-            Account account = await getAccByUsername(acc.username, acc.role.roleName) ?? throw new AuthException(AuthConstants.LOGIN_FAIL) ;
-            return PassEncrypt.VerifyPassword(acc.password, account.password);
+            try
+            {
+                Account account = await getAccByUsername(acc.username, acc.role.roleName);
+                                  
+                return PassEncrypt.VerifyPassword(acc.password, account.password);
+            }
+            catch
+            {
+                throw new AuthException(AuthConstants.LOGIN_FAIL);
+            }
+            
         }
 
         public async Task<int> update(Account entity)
