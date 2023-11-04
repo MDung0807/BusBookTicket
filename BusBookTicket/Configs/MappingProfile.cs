@@ -76,9 +76,15 @@ namespace BusBookTicket.Configs
             #endregion -- Configs Ranks Module --
             
             #region -- Configs Dícounts Module --
-            CreateMap<DiscountCreate, Rank>();
-            CreateMap<DiscountUpdate, Rank>();
-            CreateMap<Rank, DiscountResponse>();
+            CreateMap<DiscountCreate, Discount>()
+                .ForPath(dest => dest.rank.rankID,
+                    opts => opts.MapFrom(x => x.rankID));
+            CreateMap<DiscountUpdate, Discount>()
+                .ForPath(dest => dest.rank.rankID,
+                    opts => opts.MapFrom(x => x.rankID));;
+            CreateMap<Discount, DiscountResponse>()
+                .ForPath(dest => dest.rankID,
+                    opts => opts.MapFrom(x => x.rank.rankID));;
             #endregion -- Configs Dícounts Module --
 
             #region -- Configs Bill Module --

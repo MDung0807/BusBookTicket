@@ -26,29 +26,7 @@ internal class Program
         #endregion -- Config auto mapping --
 
         #region -- Authen --
-
-        SHA256 sha256 = SHA256.Create();
-        var secretBytes = Encoding.UTF8.GetBytes("BachelorOfEngineeringThesisByMinhDung");
-        var symmetricKey = sha256.ComputeHash(secretBytes);
-
-        // Add services to the container.
-        services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    // Các cấu hình kiểm tra token
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(symmetricKey),
-                    ClockSkew = TimeSpan.Zero
-                };
-
-                options.RequireHttpsMetadata = false; // Set to true if you require HTTPS
-                options.SaveToken = true;
-            });
-
+        JwtMiddleware.ConfigureService(services);
         #endregion -- Authen --
         
         services.AddAuthorization();
@@ -108,7 +86,6 @@ internal class Program
             options.AllowAnyHeader();
         });
         app.UseMiddleware<ExceptionMiddleware>();
-        app.UseMiddleware<JwtMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
         if (app.Environment.IsDevelopment())
