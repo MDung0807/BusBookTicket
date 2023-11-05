@@ -27,34 +27,37 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> register([FromForm] FormRegisterCompany request)
+    public async Task<IActionResult> Register([FromForm] FormRegisterCompany request)
     {
+        int userId = JwtUtils.GetUserID(HttpContext);
         request.roleName = AppConstants.COMPANY;
-        await _companyServices.create(request);
+        await _companyServices.Create(request, userId);
         return Ok(new Response<string>(false, CompanyConstants.SUCCESS));
     }
 
     [HttpPut("update")]
     [Authorize(Roles = ("COMPANY"))]
-    public async Task<IActionResult> update([FromBody] FormUpdateCompany request)
+    public async Task<IActionResult> Update([FromBody] FormUpdateCompany request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
-        bool status = await _companyServices.update(request, id);
+        bool status = await _companyServices.Update(request, id, id);
         return Ok(new Response<string>(!status, "Response"));
     }
     
     [HttpPut("admin/update")]
     [Authorize(Roles = ("ADMIN"))]
-    public async Task<IActionResult> updateByAdmin([FromBody] FormUpdateCompany request)
+    public async Task<IActionResult> UpdateByAdmin([FromBody] FormUpdateCompany request)
     {
-        bool status = await _companyServices.update(request, request.companyID);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _companyServices.Update(request, request.companyID, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
 
     [HttpGet("admin/active")]
     [Authorize(Roles = ("ADMIN"))]
-    public async Task<IActionResult> active([FromQuery] int id)
+    public async Task<IActionResult> Active([FromQuery] int id)
     {
+        int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _companyServices.changeStatus(id, (int)EnumsApp.Active);
         return Ok(new Response<string>(!status, "Response"));
     }
@@ -63,7 +66,8 @@ public class CompanyController : ControllerBase
     [Authorize(Roles = ("COMPANY,ADMIN"))]
     public async Task<IActionResult> delete(int id)
     {
-        bool status = await _companyServices.delete(id);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _companyServices.Delete(id, userId);
         return Ok(new Response<string>(!status, ""));
     }
 
@@ -71,7 +75,7 @@ public class CompanyController : ControllerBase
     [HttpGet("get")]
     public async Task<IActionResult> getById(int id)
     {
-        ProfileCompany response = await _companyServices.getByID(id);
+        ProfileCompany response = await _companyServices.GetById(id);
         return Ok(new Response<ProfileCompany>(false, response));
     }
 
@@ -79,7 +83,7 @@ public class CompanyController : ControllerBase
     [HttpGet("getAll")]
     public async Task<IActionResult> getAllCompany()
     {
-        List<ProfileCompany> responses = await _companyServices.getAll();
+        List<ProfileCompany> responses = await _companyServices.GetAll();
         return Ok(new Response<List<ProfileCompany>>(false, responses));
     }
     #endregion

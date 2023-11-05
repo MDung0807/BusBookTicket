@@ -1,4 +1,5 @@
-﻿using BusBookTicket.BillManage.DTOs.Requests;
+﻿using BusBookTicket.Auth.Security;
+using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
@@ -22,25 +23,26 @@ public class BillController : ControllerBase
     #region -- Controller --
     [Authorize(Roles = "CUSTOMER")]
     [HttpPost("create")]
-    public async Task<IActionResult> createBill([FromBody] BillRequest billRequest)
+    public async Task<IActionResult> CreateBill([FromBody] BillRequest billRequest)
     {
-        await _billService.create(billRequest);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _billService.Create(billRequest, userId);
         return Ok(new Response<string>(false, "Response"));
     }
 
     [Authorize(Roles = "CUSTOMER")]
     [HttpGet("getBill")]
-    public async Task<IActionResult> getBill(int id)
+    public async Task<IActionResult> GetBill(int id)
     {
-        BillResponse billResponse = await _billService.getByID(id);
+        BillResponse billResponse = await _billService.GetById(id);
         return Ok(new Response<BillResponse>(false, billResponse));
     }
     
     [Authorize(Roles = "CUSTOMER")]
     [HttpGet("getAll")]
-    public async Task<IActionResult> getAllBill()
+    public async Task<IActionResult> GetAllBill()
     {
-        List<BillResponse> billResponse = await _billService.getAll();
+        List<BillResponse> billResponse = await _billService.GetAll();
         return Ok(new Response<List<BillResponse>>(false, billResponse));
     }
     #endregion -- Controller --

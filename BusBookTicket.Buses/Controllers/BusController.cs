@@ -22,21 +22,21 @@ public class BusController : ControllerBase
 
     [HttpPost("create")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> create([FromBody] FormCreateBus request)
+    public async Task<IActionResult> Create([FromBody] FormCreateBus request)
     {
-        int id = JwtUtils.GetUserID(HttpContext);
-        request.companyID = id;
-        await _busService.create(request);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        request.companyID = userId;
+        await _busService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     
     [HttpPut("update")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> update([FromBody] FormUpdateBus request)
+    public async Task<IActionResult> Update([FromBody] FormUpdateBus request)
     {
-        int id = JwtUtils.GetUserID(HttpContext);
-        request.companyID = id;
-        await _busService.update(request, request.busID);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        request.companyID = userId;
+        await _busService.Update(request, request.Id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     #endregion -- Controller --

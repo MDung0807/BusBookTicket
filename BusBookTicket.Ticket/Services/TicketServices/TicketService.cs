@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
-using BusBookTicket.Ticket.Responses.TicketRepositories;
 using BusBookTicket.Ticket.Services.TicketItemServices;
+using BusBookTicket.Ticket.Specification;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
 
@@ -13,62 +13,72 @@ public class TicketService : ITicketService
 {
     #region -- Properties --
 
-    private readonly ITicketRepository _repository;
     private readonly ITicketItemService _itemService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
     #endregion -- Properties --
 
-    public TicketService(ITicketItemService itemService, ITicketRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
+    public TicketService(
+        ITicketItemService itemService, 
+        IMapper mapper, 
+        IUnitOfWork unitOfWork)
     {
-        this._repository = repository;
         this._itemService = itemService;
         this._mapper = mapper;
         this._unitOfWork = unitOfWork;
+        this._repository = unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
     }
     
-    public async Task<TicketResponse> getByID(int id)
+    public async Task<TicketResponse> GetById(int id)
     {
-        Core.Models.Entity.Ticket ticket = await _repository.getByID(id);
+        TicketSpecification ticketSpecification = new TicketSpecification(id);
+        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         List<TicketItemResponse> itemResponses = await _itemService.getAllInTicket(id);
         TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
         response.ItemResponses = itemResponses;
         return response;
     }
 
-    public Task<List<TicketResponse>> getAll()
+    public Task<List<TicketResponse>> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> update(TicketFormUpdate entity, int id)
+    public async Task<bool> Update(TicketFormUpdate entity, int id, int userId)
     {
         Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
-        await _repository.update(ticket);
+        await _repository.Update(ticket, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        Core.Models.Entity.Ticket ticket = await _repository.getByID(id);
-        ticket.status = (int)EnumsApp.Delete;
-        await _repository.delete(ticket);
+        TicketSpecification ticketSpecification = new TicketSpecification(id);
+        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+        ticket.Status = (int)EnumsApp.Delete;
+        await _repository.Delete(ticket, userId);
         return true;
     }
 
-    public async Task<bool> create(TicketFormCreate entity)
+    public async Task<bool> Create(TicketFormCreate entity, int userId)
     {
         await _unitOfWork.BeginTransaction();
         try
         {
+            //Create Ticket
             Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
-            ticket.status = (int)EnumsApp.Active;
-            int ticketID = await _repository.create(ticket);
-            ticket = await _repository.getByID(ticketID);
-            List<Seat> seats = ticket.bus.seats.ToList();
+            ticket.Status = (int)EnumsApp.Active;
+            ticket = await _repository.Create(ticket, userId);
+            
+            //Create TicketItem
+            TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id);
+            ticket = await _repository.Get(ticketSpecification);
+            
+            List<Seat> seats = ticket.Bus.Seats.ToList();
             foreach (Seat seat in seats)
             {
-                await createItem(seat, ticketID);
+                await createItem(seat, ticket.Id, userId);
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -82,16 +92,24 @@ public class TicketService : ITicketService
         }
     }
 
-    public async Task<List<TicketResponse>> getAllTicket(SearchForm searchForm)
+    public async Task<List<TicketResponse>> GetAllTicket(SearchForm searchForm)
     {
         searchForm.dateTime = searchForm.dateTime.Date;
         searchForm.dateTime = Convert.ToDateTime("30/10/2023");
-        List<Core.Models.Entity.Ticket> tickets = await _repository.getAllTicket(searchForm.dateTime, searchForm.stationStart, searchForm.stationEnd);
+        
+        TicketSpecification ticketSpecification =
+            new TicketSpecification(dateTime: searchForm.dateTime, 
+                stationStart: searchForm.stationStart,
+                stationEnd: searchForm.stationEnd);
+        
+        // Find
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         List<TicketResponse> responses = new List<TicketResponse>();
 
+        // Map
         foreach (Core.Models.Entity.Ticket ticket in tickets)
         {
-            responses.Add( await getByID(ticket.ticketID));
+            responses.Add( await GetById(ticket.Id));
         }
 
         return responses;
@@ -99,16 +117,16 @@ public class TicketService : ITicketService
 
     #region -- Private Method --
 
-    private async Task<bool> createItem(Seat seat, int ticketID)
+    private async Task<bool> createItem(Seat seat, int ticketID, int userId)
     {
         TicketItemForm form = new TicketItemForm();
         form.ticketID = ticketID;
-        form.status = seat.status;
+        form.status = seat.Status;
         form.ticketItemID = 0;
-        form.seatNumber = seat.seatNumber;
-        form.price = seat.price;
+        form.seatNumber = seat.SeatNumber;
+        form.price = seat.Price;
 
-        return await _itemService.create(form);
+        return await _itemService.Create(form, userId);
     }
     #endregion -- Private Method --
 }

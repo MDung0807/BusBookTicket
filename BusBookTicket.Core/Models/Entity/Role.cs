@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Role
+    public class Role : BaseEntity
     {
-        public int roleID { get; set; }
-        public string roleName { get; set; }
-        public string description { get; set; }
-        public int status { get; set; }
+        public string RoleName { get; set; }
+        public string Description { get; set; }
 
         #region -- Relationship --
-        public HashSet<Account> accounts { get; set; }
+        public HashSet<Account> Accounts { get; set; }
         #endregion -- Relationship --
     }
 }

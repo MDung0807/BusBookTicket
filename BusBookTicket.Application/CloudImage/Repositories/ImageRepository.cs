@@ -15,13 +15,13 @@ public class ImageRepository : IImageRepository
     {
         this._context = context;
     }
-    public async Task<string> create(Images entity)
+    public async Task<int> create(Images entity)
     {
         try
         {
-            string id = _context.Images.AddAsync(entity).Result.Entity.id;
+            await _context.Images.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return id;
+            return entity.Id;
         }
         catch
         {

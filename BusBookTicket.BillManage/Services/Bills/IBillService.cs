@@ -1,6 +1,6 @@
 ﻿using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
-using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.BillManage.Services.Bills;
 

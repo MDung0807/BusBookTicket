@@ -4,28 +4,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class DiscountConfigs : IEntityTypeConfiguration<Discount>
+    public class DiscountConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Discount>
     {
         public void Configure(EntityTypeBuilder<Discount> builder)
         {
 
             #region -- Properties --
 
-            builder.HasKey(x => x.discountID);
-
-            builder.Property(x => x.discountID)
-                .ValueGeneratedOnAdd();
-            builder.Property(x => x.dateStart)
+            builder.Property(x => x.DateStart)
                 .IsRequired();
-            builder.Property(x => x.dateEnd)
-                .IsRequired();
-            builder.Property(x =>x.dateCreate)
+            builder.Property(x => x.DateEnd)
                 .IsRequired();
             #endregion -- Properties --
 
             #region -- relationship --
-            builder.HasOne(x => x.rank)
-               .WithMany(x => x.discounts)
+            builder.HasOne(x => x.Rank)
+               .WithMany(x => x.Discounts)
                .HasForeignKey("rankID")
                .IsRequired(false);
             #endregion -- relationship --

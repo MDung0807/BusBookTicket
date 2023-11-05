@@ -1,24 +1,24 @@
-﻿using BusBookTicket.Auth.Repositories.RoleRepository;
+﻿using BusBookTicket.Auth.Specification;
 using BusBookTicket.Core.Models.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.Auth.Services.RoleService
 {
     public class RoleService : IRoleService
     {
-        private readonly IRoleRepository _roleRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Role> _repository;
         
-        public RoleService(IRoleRepository roleRepository)
+        public RoleService(IUnitOfWork unitOfWork)
         {
-            _roleRepository = roleRepository;
+            _unitOfWork = unitOfWork;
+            _repository = _unitOfWork.GenericRepository<Role>();
         }
         public async Task<Role> getRole(string roleName)
         {
-            return await _roleRepository.getRole(roleName);
+            RoleSpecification roleSpecification = new RoleSpecification(roleName);
+            return await _repository.Get(roleSpecification);
         }
     }
 }

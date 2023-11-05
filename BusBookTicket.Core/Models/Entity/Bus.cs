@@ -1,27 +1,17 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Bus
+    public class Bus : BaseEntity
     {
-        public int busID { get; set; }
-        public string? busNumber { get; set; }
-        public int status { get; set; }
+        public string? BusNumber { get; set; }
         #region -- Relationship --
 
-        public Company company { get; set; }
-        public BusType busType { get; set; }
-        public HashSet<BusStop> busStops { get; set; }
-        public HashSet<Review> reviews { get; set; }
-        public HashSet<Seat> seats { get; set; }
-        public HashSet<Ticket> tickets { get; set; }
+        public Company Company { get; set; }
+        public BusType BusType { get; set; }
+        public HashSet<BusStop> BusStops { get; set; }
+        public HashSet<Review> Reviews { get; set; }
+        public HashSet<Seat> Seats { get; set; }
+        public HashSet<Ticket> Tickets { get; set; }
         #endregion -- Relationship --
 
     }

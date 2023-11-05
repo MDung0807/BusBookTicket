@@ -1,12 +1,13 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
+using Account = CloudinaryDotNet.Account;
 
 namespace BusBookTicket.Application.CloudImage;
 
 public class ClouImageCore
 {
-    private Cloudinary cloudinary  = new Cloudinary(
+    private readonly Cloudinary _cloudinary  = new Cloudinary(
         new Account("dx7nsygei", 
             "889198864823844", 
             "m1llh5b2a2t_1JaApGYaXcjiL3w"));
@@ -17,7 +18,7 @@ public class ClouImageCore
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public async Task<string> saveImage(IFormFile file)
+    public async Task<string> SaveImage(IFormFile file)
     {
         try
         {
@@ -28,12 +29,13 @@ public class ClouImageCore
                     File = new FileDescription(file.FileName, stream),
                     PublicId = file.FileName
                 };
-                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 return uploadResult.Url.ToString();
             }
         }
-        catch
+        catch (Exception e)
         {
+            Console.WriteLine(e.ToString());
             return null;
         }
     }

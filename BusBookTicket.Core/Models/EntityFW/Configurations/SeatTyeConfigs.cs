@@ -4,15 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations;
 
-public class SeatTyeConfigs : IEntityTypeConfiguration<SeatType>
+public class SeatTyeConfigs : BaseEntityConfigs, IEntityTypeConfiguration<SeatType>
 {
     public void Configure(EntityTypeBuilder<SeatType> builder)
     {
         #region -- Properties --
-
-        builder.HasKey(x => x.typeID);
-
-        builder.Property(x => x.typeID).ValueGeneratedOnAdd();
 
         #endregion -- Properties --
 

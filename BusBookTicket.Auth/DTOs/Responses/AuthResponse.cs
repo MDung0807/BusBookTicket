@@ -8,7 +8,7 @@ namespace BusBookTicket.Auth.DTOs.Responses
 {
     public class AuthResponse
     {
-        public int userID { get; set; }
+        public int Id { get; set; }
         public string username { get; set; }
         public string token { get; set; }
         public string roleName { get; set; }
@@ -16,7 +16,7 @@ namespace BusBookTicket.Auth.DTOs.Responses
 
         public AuthResponse(int userID, string username, string token, string role)
         {
-            this.userID = userID;
+            this.Id = userID;
             this.username = username;
             this.token = token;
             this.roleName = role;

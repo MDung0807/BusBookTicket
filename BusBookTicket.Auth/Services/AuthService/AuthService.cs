@@ -2,10 +2,11 @@
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Exceptions;
-using BusBookTicket.Auth.Repositories.AuthRepository;
 using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.RoleService;
+using BusBookTicket.Auth.Specification;
 using BusBookTicket.Auth.Utils;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
@@ -14,109 +15,109 @@ namespace BusBookTicket.Auth.Services.AuthService
     public sealed class AuthService : IAuthService
     {
         #region -- Properties --
-        private IAuthRepository _authRepository;
-        private IRoleService _roleService;
+        private readonly IRoleService _roleService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Account> _repository;
         private readonly IMapper _mapper;
         #endregion -- Properties --
 
         #region -- Public Method --
-        
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="authRepository"></param>
-        /// <param name="mapper"></param>
-        /// <param name="roleService"></param>
-        public AuthService(IAuthRepository authRepository, IMapper mapper, IRoleService roleService)
+
+        public AuthService(IMapper mapper, IRoleService roleService, IUnitOfWork unitOfWork)
         {
-            _authRepository = authRepository;
             _mapper = mapper;
             _roleService = roleService;
+            _unitOfWork = unitOfWork;
+            _repository = _unitOfWork.GenericRepository<Account>();
         }
 
-        public async Task<bool> create(AuthRequest request)
+        public async Task<bool> Create(AuthRequest request, int userId)
         {
             Account account = _mapper.Map<Account>(request);
             Role role = await _roleService.getRole(request.roleName);
-            account.role = role;
-            account.status = 1;
+            account.Role = role;
+            account.Status = 1;
 
-            await _authRepository.create(account);
+            await _repository.Create(account, userId);
             return true;
         }
 
-        public async Task<bool> resetPass(FormResetPass request)
+        public async Task<bool> ResetPass(FormResetPass request)
         {
             
-            request.password = PassEncrypt.hashPassword(request.password);
-            await _authRepository.resetPass(request);
-            return true;
+            // request.password = PassEncrypt.hashPassword(request.password);
+            // await _authRepository.resetPass(request);
+            // return true;
+            throw new NotImplementedException();
         }
 
-        public Task<bool> update(FormResetPass entity, int id)
+        public Task<bool> Update(FormResetPass entity, int id, int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> delete(int id)
+        public Task<bool> Delete(int id, int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<AuthResponse>> getAll()
+        public Task<List<AuthResponse>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<AuthResponse> getByID(int id)
+        public Task<AuthResponse> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<AuthResponse> login(AuthRequest request)
+        public async Task<AuthResponse> Login(AuthRequest request)
         {
-            AuthResponse response = new AuthResponse() ;
+            AuthResponse response = new AuthResponse();
 
-            Account account = _mapper.Map<Account>(request);
-            if (await _authRepository.login(account))
+            Account accountRequest = _mapper.Map<Account>(request);
+            Account account = await GetAccountByUsername(request.username, request.roleName);
+            
+            if (PassEncrypt.VerifyPassword(accountRequest.Password, account.Password))
             {
-                account = await _authRepository.getAccByUsername(request.username, request.roleName);
-                
-                if (account.role.roleName == request.roleName)
+                if (account.Role.RoleName == request.roleName)
                 {
-                    response.username = account.username;
-                    response.roleName = account.role.roleName;
-                    if (request.roleName == "COMPANY")
+                    response.username = account.Username;
+                    response.roleName = account.Role.RoleName;
+                    if (request.roleName == AppConstants.COMPANY)
                     {
-                        response.userID = account.company.companyID;
+                        response.Id = account.Company.Id;
                     }
                     else
                     {
-                        response.userID = account.customer.customerID;
+                        response.Id = account.Customer.Id;
                     }
-                    response.token = JwtUtils.GernerateToken(response);
+                    response.token = JwtUtils.GenerateToken(response);
                     return response;
                 }
             }
 
             throw new AuthException(AuthConstants.LOGIN_FAIL);
         }
-        public async Task<AccResponse> getAccByUsername(string username, string roleName)
+        // public async Task<AccResponse> getAccByUsername(string username, string roleName)
+        // {
+        //     AccountSpecification accountSpecification = new AccountSpecification(username, roleName);
+        //     Account account = await _repository.Get(accountSpecification);
+        //
+        //     AccResponse response = _mapper.Map<AccResponse>(account);
+        //
+        //     if (roleName == "COMPANY")
+        //         response.Id = account.Company.Id;
+        //     else 
+        //         response.Id = account.Customer.Id;
+        //     return response;
+        // }
+
+        public async Task<Account> GetAccountByUsername(string username, string roleName)
         {
-            Account account = await _authRepository.getAccByUsername(username, roleName);
-
-            AccResponse response = _mapper.Map<AccResponse>(account);
-
-            if (roleName == "COMPANY")
-                response.userID = account.company.companyID;
-            else 
-                response.userID = account.customer.customerID;
-            return response;
-        }
-
-        public async Task<Account> getAccountByUsername(string username, string roleName)
-        {
-            return await _authRepository.getAccByUsername(username, roleName);
+            AccountSpecification accountSpecification = new AccountSpecification(username, roleName);
+            Account account = await _repository.Get(accountSpecification);
+            return account;
         }
         #endregion -- Public Method --
 

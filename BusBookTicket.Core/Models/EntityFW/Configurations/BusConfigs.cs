@@ -4,25 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class BusConfigs : IEntityTypeConfiguration<Bus>
+    public class BusConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Bus>
     {
         public void Configure(EntityTypeBuilder<Bus> builder)
         {
             #region -- Properties --
-            builder.HasKey(x => x.busID);
-
-            builder.Property(x => x.busID)
-                .ValueGeneratedOnAdd()
-                .IsRequired() ;
             #endregion -- Properties --
 
             #region -- Relationship --
-            builder.HasOne(x => x.busType)
-                .WithMany(x => x.buses)
+            builder.HasOne(x => x.BusType)
+                .WithMany(x => x.Buses)
                 .HasForeignKey("busTypeID")
                 .IsRequired();
-            builder.HasOne(x => x.company)
-                .WithMany(x => x.buses)
+            builder.HasOne(x => x.Company)
+                .WithMany(x => x.Buses)
                 .HasForeignKey("companyID")
                 .IsRequired();
             #endregion -- Relationship --

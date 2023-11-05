@@ -1,10 +1,12 @@
 ﻿namespace BusBookTicket.Core.Models.Entity
 {
-    public class BusStop
+    public class BusStop : BaseEntity
     {
-        public int busStopID { get; set; }
-        public int status { get; set; }
+        #region -- Relation ship
+
         public BusStation? BusStation { get; set; }
-        public Bus? bus { get; set; }
+        public Bus? Bus { get; set; }
+
+        #endregion
     }
 }

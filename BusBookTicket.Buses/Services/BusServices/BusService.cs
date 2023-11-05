@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
-using BusBookTicket.Buses.Repositories.BusTypeRepositories;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
-using BusBookTicket.Core.Common;
+using BusBookTicket.Buses.Specification;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
@@ -14,81 +14,85 @@ public class BusService : IBusService
 {
     #region -- Properties --
 
-    private readonly IBusRepos _busRepos;
     private readonly IMapper _mapper;
     private readonly IBusTypeService _busTypeService;
     private readonly ISeatTypeService _seatTypeService;
     private readonly ISeatService _seatService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Bus> _repository;
+    private readonly IGenericRepository<BusStop> _busStopRepository;
     #endregion -- Properties --
 
     public BusService(
-        IBusRepos busRepos, 
         IMapper mapper, 
         IBusTypeService busTypeService
         ,ISeatTypeService seatTypeService
         ,ISeatService seatService,
         IUnitOfWork unitOfWork)
     {
-        this._busRepos = busRepos;
         this._mapper = mapper;
         this._seatTypeService = seatTypeService;
         this._busTypeService = busTypeService;
         this._seatService = seatService;
         this._unitOfWork = unitOfWork;
+        this._repository = unitOfWork.GenericRepository<Bus>();
+        this._busStopRepository = unitOfWork.GenericRepository<BusStop>();
     }
-    public async Task<BusResponse> getByID(int id)
+    public async Task<BusResponse> GetById(int id)
     {
-        Bus bus = await _busRepos.getByID(id);
+        BusSpecification busSpecification = new BusSpecification(id);
+        Bus bus = await _repository.Get(busSpecification);
         return _mapper.Map<BusResponse>(bus);
     }
 
-    public async Task<List<BusResponse>> getAll()
+    public async Task<List<BusResponse>> GetAll()
     {
-        List<Bus> buses = await _busRepos.getAll();
+        BusSpecification busSpecification = new BusSpecification();
+        List<Bus> buses = await _repository.ToList(busSpecification);
         List<BusResponse> responses = await AppUtils.MappObject<Bus, BusResponse>(buses, _mapper);
         return responses;
     }
 
-    public async Task<bool> update(FormUpdateBus entity, int id)
+    public async Task<bool> Update(FormUpdateBus entity, int id, int userId)
     {
         Bus bus = _mapper.Map<Bus>(entity);
-        bus.busID = id;
-        await _busRepos.update(bus);
+        bus.Id = id;
+        await _repository.Update(bus, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        Bus bus = await _busRepos.getByID(id);
-        bus.status = (int)EnumsApp.Delete;
-        await _busRepos.delete(bus);
+        BusSpecification busSpecification = new BusSpecification(id);
+        Bus bus = await _repository.Get(busSpecification);
+        bus.Status = (int)EnumsApp.Delete;
+        await _repository.Update(bus, userId);
         return true;
     }
 
-    public async Task<bool> create(FormCreateBus entity)
+    public async Task<bool> Create(FormCreateBus entity, int userId)
     {
         await _unitOfWork.BeginTransaction();
         try
         {
             //Get Data
-            BusTypeResponse busType = await _busTypeService.getByID(entity.busTypeID);
-            SeatTypeResponse seatType = await _seatTypeService.getByID(entity.seatTypeID);
+            BusTypeResponse busType = await _busTypeService.GetById(entity.busTypeID);
+            SeatTypeResponse seatType = await _seatTypeService.GetById(entity.seatTypeID);
             
             //Save Bus
             Bus bus = _mapper.Map<Bus>(entity);
-            bus.status = (int)EnumsApp.Active;
-            int busID = await _busRepos.create(bus);
+            bus.Status = (int)EnumsApp.Active;
+            bus = await _repository.Create(bus, userId);
             
             foreach (int stationID in entity.listBusStopID)
             {
                 BusStop busStop = new BusStop();
                 busStop.BusStation ??= new BusStation();
-                busStop.BusStation.busStationID = stationID;
-                busStop.bus ??= new Bus();
-                busStop.bus.busID= busID;
+                busStop.BusStation.Id = stationID;
+                busStop.Bus ??= new Bus();
+                busStop.Bus.Id= bus.Id;
 
-                await _busRepos.createStopStation(busStop);
+                await _busStopRepository.Create(busStop, userId);
             }
             
             int totalSeat = busType.totalSeats == 0? 1: busType.totalSeats;
@@ -100,12 +104,12 @@ public class BusService : IBusService
                 SeatForm seatForm = new SeatForm();
                 seatForm.seatNumber = seatType.type + "_" + i.ToString();
                 seatForm.seatTypeID = seatType.typeID;
-                seatForm.busID = busID;
+                seatForm.busID = bus.Id;
                 seatForm.description = "";
                 seatForm.price = seatType.price;
                 seatForm.seatID = 0;
 
-                await _seatService.create(seatForm);
+                await _seatService.Create(seatForm, userId);
             }
             await _unitOfWork.SaveChangesAsync();
             return true;

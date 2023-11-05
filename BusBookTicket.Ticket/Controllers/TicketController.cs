@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Common;
+﻿using BusBookTicket.Auth.Security;
+using BusBookTicket.Core.Common;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketServices;
@@ -27,7 +28,7 @@ public class TicketController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> getTicket([FromBody] SearchForm searchForm )
     {
-        List<TicketResponse> response = await _ticketService.getAllTicket(searchForm);
+        List<TicketResponse> response = await _ticketService.GetAllTicket(searchForm);
         return Ok(new Response<List<TicketResponse>>(false, response));
     }
     
@@ -35,7 +36,7 @@ public class TicketController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> getByID([FromQuery] int id)
     {
-        TicketResponse response = await _ticketService.getByID(id);
+        TicketResponse response = await _ticketService.GetById(id);
         return Ok(new Response<TicketResponse>(false, response));
     }
 
@@ -43,21 +44,24 @@ public class TicketController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> create([FromBody] TicketFormCreate request)
     {
-        await _ticketService.create(request);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _ticketService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     
     [HttpDelete("delete")]
     public async Task<IActionResult> delete([FromQuery] int id)
     {
-        await _ticketService.delete(id);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _ticketService.Delete(id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     
     [HttpPut("update")]
     public async Task<IActionResult> update([FromBody] TicketFormUpdate request)
     {
-        await _ticketService.update(request, request.ticketID);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _ticketService.Update(request, request.ticketID, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     #endregion -- Controller --

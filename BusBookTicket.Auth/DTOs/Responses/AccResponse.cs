@@ -8,14 +8,14 @@ namespace BusBookTicket.Auth.DTOs.Responses
 {
     public class AccResponse
     {
-        public int userID { get; set; }
+        public int Id { get; set; }
         public string username { get; set; }
         public string roleName { get; set; }
         public int status { get; set; }
 
         public AccResponse(int userID, string username, string role)
         {
-            this.userID = userID;
+            this.Id = userID;
             this.username = username;
             this.roleName = role;
         }

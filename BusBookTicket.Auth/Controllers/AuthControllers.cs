@@ -26,7 +26,7 @@ namespace BusBookTicket.Auth.Controllers
         public async Task<IActionResult> login([FromBody] AuthRequest requets)
         {
             requets.roleName = AppConstants.CUSTOMER;
-            AuthResponse response = await _authService.login(requets);
+            AuthResponse response = await _authService.Login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
         
@@ -34,7 +34,7 @@ namespace BusBookTicket.Auth.Controllers
         public async Task<IActionResult> companyLogin([FromBody] AuthRequest requets)
         {
             requets.roleName = AppConstants.COMPANY;
-            AuthResponse response = await _authService.login(requets);
+            AuthResponse response = await _authService.Login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
         
@@ -42,7 +42,7 @@ namespace BusBookTicket.Auth.Controllers
         public async Task<IActionResult> adminLogin([FromBody] AuthRequest requets)
         {
             requets.roleName = AppConstants.ADMIN;
-            AuthResponse response = await _authService.login(requets);
+            AuthResponse response = await _authService.Login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
         
@@ -57,7 +57,7 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("reset")]
         public async Task<IActionResult> resetPassword([FromBody] FormResetPass requets)
         {
-            bool response = await _authService.resetPass(requets);
+            bool response = await _authService.ResetPass(requets);
             return Ok(new Response<string>(false, "response"));
         }
         #endregion -- Controller --

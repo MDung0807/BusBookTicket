@@ -1,15 +1,13 @@
 ﻿namespace BusBookTicket.Core.Models.Entity
 {
-    public class Rank
+    public class Rank : BaseEntity
     {
         #region -- Properties --
-        public int rankID {  get; set; }
-        public string? name { get; set; }
-        public string? description { get; set; }
-        public int status { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
 
-        public HashSet<Customer>? customers { get; set; }
-        public HashSet<Discount>? discounts { get; set; }
+        public HashSet<Customer>? Customers { get; set; }
+        public HashSet<Discount>? Discounts { get; set; }
         #endregion -- Properties --
     }
 }

@@ -5,25 +5,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class AccountConfigs : IEntityTypeConfiguration<Account>
+    public class AccountConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Account>
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.HasKey(x => x.accountID);
-
-            builder.Property(x => x.accountID)
-                .ValueGeneratedOnAdd()
-                .UseIdentityColumn();
-            builder.Property(x => x.username)
+            builder.Property(x => x.Username)
                 .IsRequired()
+                
                 .HasMaxLength(50);
-            builder.Property(x => x.password)
+            builder.Property(x => x.Password)
                 .IsRequired();
-            builder.HasAlternateKey(x => x.username);
+            builder.HasAlternateKey(x => x.Username);
 
             #region -- Relationship --
-            builder.HasOne(x => x.role)
-                .WithMany(x => x.accounts)
+            builder.HasOne(x => x.Role)
+                .WithMany(x => x.Accounts)
                 .HasForeignKey("roleID")
                 .IsRequired();
             #endregion -- Relationship --

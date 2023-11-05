@@ -1,4 +1,5 @@
-﻿using BusBookTicket.BusStationManage.DTOs.Requests;
+﻿using BusBookTicket.Auth.Security;
+using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.Core.Common;
@@ -22,56 +23,60 @@ namespace BusBookTicket.BusStationManage.Controllers
 
         [HttpGet("getAll")]
         [AllowAnonymous]
-        public async Task<IActionResult> getAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<BusStationResponse> responses = await _busStationService.getAll();
+            List<BusStationResponse> responses = await _busStationService.GetAll();
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> getByID(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            BusStationResponse response = await _busStationService.getByID(id);
+            BusStationResponse response = await _busStationService.GetById(id);
             return Ok(new Response<BusStationResponse>(false, response));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpPut("admin/update")]
-        public async Task<IActionResult> update([FromBody] BST_FormUpdate request)
+        public async Task<IActionResult> Update([FromBody] BST_FormUpdate request)
         {
-             bool status = await _busStationService.update(request, request.busStationID);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.Update(request, request.busStationID, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpPost("admin/create")]
-        public async Task<IActionResult> createByAdmin([FromBody] BST_FormCreate request)
+        public async Task<IActionResult> CreateByAdmin([FromBody] BST_FormCreate request)
         {
-            bool status = await _busStationService.create(request);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("admin/delete")]
-        public async Task<IActionResult> delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            bool status = await _busStationService.delete(id);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.Delete(id, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "COMPANY")]
         [HttpPost("company/create")]
-        public async Task<IActionResult> createByCompany([FromBody] BST_FormCreate request)
+        public async Task<IActionResult> CreateByCompany([FromBody] BST_FormCreate request)
         {
             request.status = 0;
-            bool status = await _busStationService.create(request);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
 
         [HttpGet("getByName")]
         [AllowAnonymous]
-        public async Task<IActionResult> getStationByName([FromQuery]string name)
+        public async Task<IActionResult> GetStationByName([FromQuery]string name)
         {
             BusStationResponse response = await _busStationService.getStationByName(name);
             return Ok(new Response<BusStationResponse>(false, response));
@@ -79,9 +84,9 @@ namespace BusBookTicket.BusStationManage.Controllers
         
         [HttpGet("getByLocation")]
         [AllowAnonymous]
-        public async Task<IActionResult> getStationByLocation([FromQuery] string location)
+        public async Task<IActionResult> GetStationByLocation([FromQuery] string location)
         {
-            List<BusStationResponse> responses = await _busStationService.getStationByLocaion(location);
+            List<BusStationResponse> responses = await _busStationService.getStationByLocation(location);
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         #endregion -- Controllers --
