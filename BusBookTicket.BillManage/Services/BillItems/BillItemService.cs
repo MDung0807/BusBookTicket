@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
-using BusBookTicket.BillManage.Repositories.BillItems;
+using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
@@ -11,40 +12,42 @@ namespace BusBookTicket.BillManage.Services.BillItems;
 public class BillItemService : IBillItemService
 {
     private readonly IMapper _mapper;
-    private readonly IBillItemRepos _billItemRepos;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<BillItem> _repository;
 
-    public BillItemService(IMapper mapper, IBillItemRepos billItemRepos)
+    public BillItemService(IMapper mapper, IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
+        _repository = unitOfWork.GenericRepository<BillItem>();
         this._mapper = mapper;
-        this._billItemRepos = billItemRepos;
     }
     
-    public Task<BillItemResponse> getByID(int id)
+    public Task<BillItemResponse> GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<BillItemResponse>> getAll()
+    public Task<List<BillItemResponse>> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> update(BillItemRequest entity, int id)
+    public Task<bool> Update(BillItemRequest entity, int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> delete(int id)
+    public Task<bool> Delete(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> create(BillItemRequest entity)
+    public async Task<bool> Create(BillItemRequest entity, int userId)
     {
         try
         {
             BillItem item = _mapper.Map<BillItem>(entity);
-            await _billItemRepos.create(item);
+            await _repository.Create(item, userId);
             return true;
         }
         catch
@@ -58,7 +61,8 @@ public class BillItemService : IBillItemService
         List<BillItemResponse> responses = new List<BillItemResponse>();
         try
         {
-            List<BillItem> ticketItems = await _billItemRepos.getAllItems(id);
+            BillItemSpecification billItemSpecification = new BillItemSpecification(id);
+            List<BillItem> ticketItems = await _repository.ToList(billItemSpecification);
 
             responses = await AppUtils.MappObject<BillItem, BillItemResponse>(ticketItems, _mapper);
             return responses;

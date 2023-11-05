@@ -27,7 +27,7 @@ namespace BusBookTicket.CustomerManage.Controller
         public async Task<IActionResult>register([FromForm] FormRegister register)
         {
             register.roleName = AppConstants.CUSTOMER;
-            bool status = await _customerService.create(register);
+            bool status = await _customerService.Create(register, -1);
             string mess;
             if (status)
             {
@@ -44,7 +44,7 @@ namespace BusBookTicket.CustomerManage.Controller
         public async Task<IActionResult> getProfile()
         {
             int id = JwtUtils.GetUserID(HttpContext);
-            ProfileResponse response = await _customerService.getByID(id);
+            ProfileResponse response = await _customerService.GetById(id);
             return Ok(new Response<ProfileResponse>(false, response));
         }
         
@@ -52,7 +52,7 @@ namespace BusBookTicket.CustomerManage.Controller
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> getAllCustomer()
         {
-            List<CustomerResponse> responses =  await _customerService.getAllCustomer();
+            List<CustomerResponse> responses =  await _customerService.GetAllCustomer();
             return Ok(new Response<List<CustomerResponse>>(false, responses));
         }
 
@@ -61,7 +61,7 @@ namespace BusBookTicket.CustomerManage.Controller
         public async Task<IActionResult> updateProfile([FromBody] FormUpdate request)
         {
             int id = JwtUtils.GetUserID(HttpContext);
-            bool status = await _customerService.update(request, id);
+            bool status = await _customerService.Update(request, id, id);
             return Ok(new Response<string>(false, "response"));
         }
 

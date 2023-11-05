@@ -14,7 +14,10 @@ namespace BusBookTicket.Auth.Security
     {
         #region -- Private properties --
         private static readonly string SECRET = "BachelorOfEngineeringThesisByMinhDung";
-        private static readonly long EXPIRE = 4200000;
+        /// <summary>
+        /// Minutes
+        /// </summary>
+        private static readonly long EXPIRE = 60;
         #endregion -- Private properties --
 
         #region -- Public properties -- 
@@ -26,7 +29,7 @@ namespace BusBookTicket.Auth.Security
         /// <param name="username"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public static string GernerateToken (AuthResponse response)
+        public static string GenerateToken (AuthResponse response)
         {
             SHA256 sha256 = SHA256.Create(); 
             var secretBytes = Encoding.UTF8.GetBytes (SECRET);
@@ -38,7 +41,7 @@ namespace BusBookTicket.Auth.Security
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("UserID", response.userID.ToString()),
+                    new Claim("UserID", response.Id.ToString()),
                     new Claim("username", response.username),
                     new Claim("role", response.roleName)
                 }),

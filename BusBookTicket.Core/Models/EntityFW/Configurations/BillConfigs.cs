@@ -4,35 +4,31 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class BillConfigs : IEntityTypeConfiguration<Bill>
+    public class BillConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Bill>
     {
         public void Configure(EntityTypeBuilder<Bill> builder)
         {
 
             #region -- Properties --
-            builder.HasKey(x => x.billID);
-
-            builder.Property(x => x.billID)
-                .ValueGeneratedOnAdd();
             #endregion -- Properties --
 
             #region -- Relationship --
-            builder.HasOne(x => x.busStationStart)
-                .WithMany(x => x.ticketStarts)
+            builder.HasOne(x => x.BusStationStart)
+                .WithMany(x => x.TicketStarts)
                 .HasForeignKey("busStationStartID")
                 .IsRequired();
-            builder.HasOne(x => x.busStationEnd)
-                .WithMany(x => x.ticketends)
+            builder.HasOne(x => x.BusStationEnd)
+                .WithMany(x => x.TicketEnds)
                 .HasForeignKey("busStationEndID")
                 .IsRequired();
 
-            builder.HasOne(x => x.customer)
-               .WithMany(x => x.tickets)
+            builder.HasOne(x => x.Customer)
+               .WithMany(x => x.Tickets)
                .HasForeignKey("customerID")
                .IsRequired();
 
-            builder.HasOne(x => x.discount)
-               .WithMany(x => x.tickets)
+            builder.HasOne(x => x.Discount)
+               .WithMany(x => x.Tickets)
                .HasForeignKey("discountID")
                .IsRequired() ;
             #endregion -- Relationship --

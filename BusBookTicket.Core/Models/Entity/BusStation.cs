@@ -1,15 +1,13 @@
 ﻿namespace BusBookTicket.Core.Models.Entity
 {
-    public class BusStation
+    public class BusStation : BaseEntity
     {
-        public int busStationID { get; set; }
-        public string? name { get; set; }
-        public string? address { get; set; }
-        public string? description { get; set; }
-        public int status { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? Description { get; set; }
 
-        public HashSet<Bill>? ticketStarts { get; set; }
-        public HashSet<Bill>? ticketends { get; set; }
-        public HashSet<BusStop>? busStops { get; set; }
+        public HashSet<Bill>? TicketStarts { get; set; }
+        public HashSet<Bill>? TicketEnds { get; set; }
+        public HashSet<BusStop>? BusStops { get; set; }
     }
 }

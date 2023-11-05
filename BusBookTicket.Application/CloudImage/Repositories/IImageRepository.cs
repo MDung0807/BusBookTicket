@@ -5,6 +5,6 @@ namespace BusBookTicket.Application.CloudImage.Repositories;
 
 public interface IImageRepository
 {
-    Task<string> create(Images entity);
+    Task<int> create(Images entity);
     Task<List<Images>> getAllImage(string objectModel, int key);
 }

@@ -5,75 +5,86 @@ using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
-using BusBookTicket.CompanyManage.Repositories;
+using BusBookTicket.CompanyManage.Specification;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.CompanyManage.Services;
 
 public class CompanyService : ICompanyServices
 {
     #region -- Properties --
-    private readonly ICompanyRepos _companyRepos;
     private readonly IMapper _mapper;
     private readonly IAuthService _authService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Company> _repository;
     #endregion
 
-    public CompanyService(ICompanyRepos companyRepos, IMapper mapper, IAuthService authService)
+    public CompanyService(
+        IMapper mapper, 
+        IAuthService authService,
+        IUnitOfWork unitOfWork
+        )
     {
         this._mapper = mapper;
-        this._companyRepos = companyRepos;
         this._authService = authService;
+        this._unitOfWork = unitOfWork;
+        _repository = unitOfWork.GenericRepository<Company>();
     }
 
     #region -- Public Method --
 
-    public async Task<ProfileCompany> getByID(int id)
+    public async Task<ProfileCompany> GetById(int id)
     {
-        Company company = await _companyRepos.getByID(id);
+        CompanySpecification companySpecification = new CompanySpecification(id);
+        Company company = await _repository.Get(companySpecification);
         ProfileCompany profile = _mapper.Map<ProfileCompany>(company);
         return profile;
     }
 
-    public async Task<List<ProfileCompany>> getAll()
+    public async Task<List<ProfileCompany>> GetAll()
     {
-        List<Company> companies = await _companyRepos.getAll();
+        CompanySpecification companySpecification = new CompanySpecification();
+        List<Company> companies = await _repository.ToList(companySpecification);
         List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
         return profileCompanies;
     }
 
-    public async Task<bool> update(FormUpdateCompany entity, int id)
+    public async Task<bool> Update(FormUpdateCompany entity, int id, int userId)
     {
         Company company = _mapper.Map<Company>(entity);
-        company.companyID = id;
-        await _companyRepos.update(company);
+        company.Id = id;
+        await _repository.Update(company, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        Company company = await _companyRepos.getByID(id);
+        CompanySpecification companySpecification = new CompanySpecification(id);
+        Company company = await _repository.Get(companySpecification);
         company = changeStatus(company, (int)EnumsApp.Delete);
-        await _companyRepos.delete(company);
+        await _repository.Update(company, userId);
         return true;
     }
 
-    public async Task<bool> changeStatus(int id, int stauts)
+    public async Task<bool> changeStatus(int id, int status)
     {
-        Company company = await _companyRepos.getByID(id);
-        company = changeStatus(company, stauts);
-        await _companyRepos.delete(company);
+        CompanySpecification companySpecification = new CompanySpecification(id);
+        Company company = await _repository.Get(companySpecification);
+        company = changeStatus(company, status);
+        await _repository.Update(company, id);
         return true;
     }
 
-    public async Task<bool> create(FormRegisterCompany entity)
+    public async Task<bool> Create(FormRegisterCompany entity, int userID)
     {
         Company company = _mapper.Map<Company>(entity);
         AuthRequest account = _mapper.Map<AuthRequest>(entity);
 
         // Set data
-        company.status = 0;
-        await _authService.create(account);
-        company.account = await _authService.getAccountByUsername(entity.username, entity.roleName);
-        await _companyRepos.create(company);
+        company.Status = 0;
+        await _authService.Create(account, -1);
+        company.Account = await _authService.GetAccountByUsername(entity.username, entity.roleName);
+        await _repository.Create(company, -1);
         return true;
     }
 
@@ -83,13 +94,13 @@ public class CompanyService : ICompanyServices
 
     private Company changeStatus(Company entity, int status)
     {
-        entity.status = status;
-        foreach (Bus bus in entity.buses)
+        entity.Status = status;
+        foreach (Bus bus in entity.Buses)
         {
-            bus.status = status;
+            bus.Status = status;
         }
 
-        entity.account.status = status;
+        entity.Account.Status = status;
 
         return entity;
     }

@@ -1,16 +1,14 @@
 ﻿namespace BusBookTicket.Core.Models.Entity
 {
-    public class TicketItem
+    public class TicketItem : BaseEntity
     {
         #region -- Properties --
-        public int ticketItemID { get; set; }
-        public string seatNumber { get; set; }
-        public int status { get; set; }
-        public int price { get; set; }
+        public string SeatNumber { get; set; }
+        public int Price { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship --
-        public Ticket ticket { get; set; }
+        public Ticket Ticket { get; set; }
         public BillItem BillItem { get; set; }
         #endregion -- Relationship --
 

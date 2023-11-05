@@ -1,15 +1,13 @@
 ﻿namespace BusBookTicket.Core.Models.Entity;
 
-public class Ticket
+public class Ticket : BaseEntity
 {
     #region -- Properties --
-    public int ticketID { get; set; }
-    public DateTime date { get; set; }
-    public int status { get; set; }
+    public DateTime Date { get; set; }
     #endregion -- Properties --
 
     #region -- Relationships --
-    public Bus bus { get; set; }
+    public Bus Bus { get; set; }
     public HashSet<TicketItem> TicketItems { get; set; }
     #endregion -- Relationships --
 }

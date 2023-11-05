@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Common;
+﻿using BusBookTicket.Auth.Security;
+using BusBookTicket.Core.Common;
 using BusBookTicket.DiscountManager.DTOs.Requests;
 using BusBookTicket.DiscountManager.DTOs.Responses;
 using BusBookTicket.DiscountManager.Services;
@@ -23,7 +24,7 @@ public class DiscountController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> getByID(int id)
     {
-        DiscountResponse response = await _discountService.getByID(id);
+        DiscountResponse response = await _discountService.GetById(id);
         return Ok(new Response<DiscountResponse>(false, response));
     }
     
@@ -31,7 +32,7 @@ public class DiscountController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> getAll()
     {
-        List<DiscountResponse> responses = await _discountService.getAll();
+        List<DiscountResponse> responses = await _discountService.GetAll();
         return Ok(new Response<List<DiscountResponse>>(false, responses));
     }
 
@@ -39,21 +40,24 @@ public class DiscountController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> create([FromBody] DiscountCreate discountCreate)
     {
-        bool status = await _discountService.create(discountCreate);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _discountService.Create(discountCreate, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
     [HttpPut("update")]
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> update([FromBody] DiscountUpdate discountUpdate)
     {
-        bool status = await _discountService.update(discountUpdate, discountUpdate.discountID);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _discountService.Update(discountUpdate, discountUpdate.discountID, userId);
         return Ok(new Response<string>(!status, "response"));
     }
     [HttpDelete("delete")]
     [AllowAnonymous]
     public async Task<IActionResult> delete(int id)
     {
-        bool status = await _discountService.delete(id);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _discountService.Delete(id, userId);
         return Ok(new Response<string>(!status, "response"));
     }
 

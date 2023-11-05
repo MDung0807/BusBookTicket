@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
-using BusBookTicket.BillManage.Repositories.Bills;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Utilities;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.BillManage.Services.Bills;
@@ -11,46 +11,52 @@ namespace BusBookTicket.BillManage.Services.Bills;
 public class BillService : IBillService
 {
     private readonly IMapper _mapper;
-    private readonly IBillRepository _billRepository;
     private readonly IBillItemService _billItemService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Bill> _repository;
 
-    public BillService(IMapper mapper, IBillRepository billRepository, IBillItemService billItemService)
+    public BillService(
+        IMapper mapper,
+        IBillItemService billItemService,
+        IUnitOfWork unitOfWork
+        )
     {
         this._billItemService = billItemService;
+        this._unitOfWork = unitOfWork;
+        this._repository = unitOfWork.GenericRepository<Bill>();
         this._mapper = mapper;
-        this._billRepository = billRepository;
     }
-    public Task<BillResponse> getByID(int id)
+    public Task<BillResponse> GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<BillResponse>> getAll()
+    public Task<List<BillResponse>> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> update(BillRequest entity, int id)
+    public Task<bool> Update(BillRequest entity, int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> delete(int id)
+    public Task<bool> Delete(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> create(BillRequest entity)
+    public async Task<bool> Create(BillRequest entity, int userId)
     {
         List<BillItemRequest> itemsRequest = entity.itemsRequest;
         try
         {
             Bill bill = _mapper.Map<Bill>(entity);
-            int billID = await _billRepository.create(bill);
+            bill = await _repository.Create(bill, userId);
             foreach (BillItemRequest item in itemsRequest)
             {
-                item.billID = billID;
-                await _billItemService.create(item);
+                item.billID = bill.Id;
+                await _billItemService.Create(item, userId);
             }
         }
         catch

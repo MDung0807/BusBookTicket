@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Discount
+    public class Discount : BaseEntity
     {
         #region -- Properties --
-        public int discountID { get; set; }
-        public string? name { get; set; }
-        public string? description { get; set; }
-        public int quantity { get; set; }
-        public DateTime dateCreate { get; set; }
-        public DateTime dateStart { get; set; }
-        public DateTime dateEnd { get; set; }
-        public int status { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public int Quantity { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
+        public float Value { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship --
-        public HashSet<Bill>? tickets { get; set; }
-        public Rank? rank { get; set; }
+        public HashSet<Bill>? Tickets { get; set; }
+        public Rank? Rank { get; set; }
         #endregion -- Relationship -- M
     }
 }

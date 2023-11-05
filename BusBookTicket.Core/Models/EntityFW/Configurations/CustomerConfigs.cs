@@ -4,47 +4,37 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class CustomerConfigs : IEntityTypeConfiguration<Customer>
+    public class CustomerConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             #region -- configs property --
 
-            builder.HasKey(x => x.customerID);
-            builder.Property(x => x.customerID)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
-
-            builder.Property(x => x.fullName)
+            builder.Property(x => x.FullName)
                 .HasMaxLength(50);
-            builder.Property(x => x.dateOfBirth)
+            builder.Property(x => x.DateOfBirth)
                 .HasMaxLength(50);
-            builder.Property(x => x.address)
+            builder.Property(x => x.Address)
                 .HasMaxLength(50);
-            builder.Property(x => x.email)
+            builder.Property(x => x.Email)
                 .IsRequired()
                 .HasMaxLength(50);
-            builder.Property(x => x.phoneNumber)
+            builder.Property(x => x.PhoneNumber)
                 .IsRequired()
                 .HasMaxLength(50); 
-            builder.Property(x => x.gender)
+            builder.Property(x => x.Gender)
                 .HasMaxLength(50); 
-            builder.Property(x => x.dateCreate)
-                .HasMaxLength(50); 
-            builder.Property(x => x.dateUpdate)
-                .HasMaxLength(50);
 
-            builder.HasIndex(x => x.customerID);
             #endregion -- configs property --
 
             #region -- RelationShip--
-            builder.HasOne(x => x.account)
-                .WithOne(x => x.customer)
+            builder.HasOne(x => x.Account)
+                .WithOne(x => x.Customer)
                 .HasForeignKey<Customer>("accountID")
                 .IsRequired();
 
-            builder.HasOne(x => x.rank)
-                .WithMany(x => x.customers)
+            builder.HasOne(x => x.Rank)
+                .WithMany(x => x.Customers)
                 .HasForeignKey("rankID")
                 .IsRequired(false);
             #endregion -- RelationShip --

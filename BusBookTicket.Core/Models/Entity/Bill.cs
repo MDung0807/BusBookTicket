@@ -1,29 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Bill
+    public class Bill: BaseEntity
     {
         #region -- Properties --
-        public int billID { get; set; }
-        public DateTime dateCreate { get; set; }
-        public DateTime dateDeparture { get; set; }
-        public long totolPrice { get; set; }
-        public int status { get; set; }
+        public DateTime DateDeparture { get; set; }
+        public long TotalPrice { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship -- 
-        public BusStation? busStationStart { get; set; }
-        public BusStation? busStationEnd { get; set; }
-        public Customer? customer { get; set; }
-        public HashSet<BillItem>? billItems { get; set; }
-        public Discount? discount { get; set; }
+        public BusStation? BusStationStart { get; set; }
+        public BusStation? BusStationEnd { get; set; }
+        public Customer? Customer { get; set; }
+        public HashSet<BillItem>? BillItems { get; set; }
+        public Discount? Discount { get; set; }
         #endregion  -- Relationship -- 
     }
 }

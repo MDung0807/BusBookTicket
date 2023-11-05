@@ -9,15 +9,12 @@ using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class RoleConfigs : IEntityTypeConfiguration<Role>
+    public class RoleConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Role>
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             #region -- Properties --
-            builder.HasKey(x => x.roleID);
-
-            builder.Property(x => x.roleID).ValueGeneratedOnAdd();
-            builder.HasAlternateKey(x => x.roleName);
+            builder.HasAlternateKey(x => x.RoleName);
             #endregion -- Properties --
 
             #region -- Relationship --

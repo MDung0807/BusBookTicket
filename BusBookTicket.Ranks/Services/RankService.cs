@@ -1,58 +1,64 @@
 ﻿using AutoMapper;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
-using BusBookTicket.Ranks.Repositories;
+using BusBookTicket.Ranks.Specification;
 
 namespace BusBookTicket.Ranks.Services;
 
 public class RankService : IRankService
 {
-    private readonly IRankRepository _rankRepository;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Rank> _repository;
 
-    public RankService(IRankRepository repository, IMapper mapper)
+    public RankService(IMapper mapper, IUnitOfWork unitOfWork)
     {
         this._mapper = mapper;
-        this._rankRepository = repository;
+        this._unitOfWork = unitOfWork;
+        this._repository = _unitOfWork.GenericRepository<Rank>();
     }
 
     #region -- Public Method --
-    public async Task<RankResponse>  getByID(int id)
+    public async Task<RankResponse>  GetById(int id)
     {
-        Rank rank = await _rankRepository.getByID(id);
+        RankSpecification rankSpecification = new RankSpecification(id);
+        Rank rank = await _repository.Get(rankSpecification);
         return _mapper.Map<RankResponse>(rank);
     }
 
-    public async Task<List<RankResponse>> getAll()
+    public async Task<List<RankResponse>> GetAll()
     {
-        List<Rank> ranks = await _rankRepository.getAll();
-
+        RankSpecification rankSpecification = new RankSpecification();
+        List<Rank> ranks = await _repository.ToList(rankSpecification);
+        
         List<RankResponse> rankResponses = await AppUtils.MappObject<Rank,RankResponse>(ranks, _mapper);
         return rankResponses;
     }
 
-    public async Task<bool> update(RankUpdate entity, int id)
+    public async Task<bool> Update(RankUpdate entity, int id, int userId)
     {
         Rank rank = _mapper.Map<Rank>(entity);
-        rank.rankID = id;
-        await _rankRepository.update(rank);
+        rank.Id = id;
+        await _repository.Update(rank, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        Rank rank = await _rankRepository.getByID(id);
-        rank.status = (int)EnumsApp.Delete;
-        await _rankRepository.delete(rank);
+        RankSpecification rankSpecification = new RankSpecification(id);
+        Rank rank = await _repository.Get(rankSpecification);
+        rank.Status = (int)EnumsApp.Delete;
+        await _repository.Update(rank, userId);
         return true;
     }
 
-    public async Task<bool>create(RankCreate entity)
+    public async Task<bool>Create(RankCreate entity, int userId)
     {
         Rank rank = _mapper.Map<Rank>(entity);
-        await _rankRepository.create(rank);
+        await _repository.Create(rank, userId);
         return true;
     }
     #endregion -- Public Method --

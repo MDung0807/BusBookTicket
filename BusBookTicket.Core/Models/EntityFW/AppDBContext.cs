@@ -13,24 +13,24 @@ namespace BusBookTicket.Core.Models.EntityFW
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new AccountConfigs());
-            modelBuilder.ApplyConfiguration(new BusConfigs());
-            modelBuilder.ApplyConfiguration(new BusStationConfigs());
-            modelBuilder.ApplyConfiguration(new BusStopConfigs());
-            modelBuilder.ApplyConfiguration(new BusTypeConfigs());
-            modelBuilder.ApplyConfiguration(new CompanyConfigs());
-            modelBuilder.ApplyConfiguration(new CustomerConfigs());
-            modelBuilder.ApplyConfiguration(new DiscountConfigs());
-            modelBuilder.ApplyConfiguration(new RankConfigs());
-            modelBuilder.ApplyConfiguration(new RoleConfigs());
-            modelBuilder.ApplyConfiguration(new ReviewConfigs());
-            modelBuilder.ApplyConfiguration(new TicketItemConfigs());
-            modelBuilder.ApplyConfiguration(new BillConfigs());
-            modelBuilder.ApplyConfiguration(new BillItemConfigs());
-            modelBuilder.ApplyConfiguration(new TicketConfigs());
-            modelBuilder.ApplyConfiguration(new SeatConfigs());
-            modelBuilder.ApplyConfiguration(new SeatTyeConfigs());
-            modelBuilder.ApplyConfiguration(new ImgaesConfigs());
+            modelBuilder.ApplyConfiguration<Account>(new AccountConfigs());
+            modelBuilder.ApplyConfiguration<Bus>(new BusConfigs());
+            modelBuilder.ApplyConfiguration<BusStation>(new BusStationConfigs());
+            modelBuilder.ApplyConfiguration<BusStop>(new BusStopConfigs());
+            modelBuilder.ApplyConfiguration<BusType>(new BusTypeConfigs());
+            modelBuilder.ApplyConfiguration<Company>(new CompanyConfigs());
+            modelBuilder.ApplyConfiguration<Customer>(new CustomerConfigs());
+            modelBuilder.ApplyConfiguration<Discount>(new DiscountConfigs());
+            modelBuilder.ApplyConfiguration<Rank>(new RankConfigs());
+            modelBuilder.ApplyConfiguration<Role>(new RoleConfigs());
+            modelBuilder.ApplyConfiguration<Review>(new ReviewConfigs());
+            modelBuilder.ApplyConfiguration<TicketItem>(new TicketItemConfigs());
+            modelBuilder.ApplyConfiguration<Bill>(new BillConfigs());
+            modelBuilder.ApplyConfiguration<BillItem>(new BillItemConfigs());
+            modelBuilder.ApplyConfiguration<Ticket>(new TicketConfigs());
+            modelBuilder.ApplyConfiguration<Seat>(new SeatConfigs());
+            modelBuilder.ApplyConfiguration<SeatType>(new SeatTyeConfigs());
+            modelBuilder.ApplyConfiguration<Images>(new ImgaesConfigs());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {

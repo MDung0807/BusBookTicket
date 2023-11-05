@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class BusType
+    public class BusType : BaseEntity
     {
-        public int busTypeID {  get; set; }
-        public string? name { get; set; }
-        public string? description { get; set; }
-        public int totalSeats { get; set; }
-        public int status { get; set; }
-        public HashSet<Bus>? buses { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public int TotalSeats { get; set; }
+        public HashSet<Bus>? Buses { get; set; }
     }
 }

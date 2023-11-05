@@ -27,7 +27,7 @@ public class SeatTypeController : ControllerBase
 
     [HttpGet("getAll")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> getAll()
+    public async Task<IActionResult> GetAll()
     {
         int companyID = JwtUtils.GetUserID(HttpContext);
         List<SeatTypeResponse> responses = await _seatTypeService.getAll(companyID);
@@ -36,47 +36,49 @@ public class SeatTypeController : ControllerBase
 
     [HttpGet("getByID")]
     [AllowAnonymous]
-    public async Task<IActionResult> getByID([FromQuery] int id)
+    public async Task<IActionResult> GetById([FromQuery] int id)
     {
-        SeatTypeResponse response = await _seatTypeService.getByID(id);
+        SeatTypeResponse response = await _seatTypeService.GetById(id);
         return Ok(new Response<SeatTypeResponse>(false, response));
     }
     
     [HttpPost("create")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> create([FromBody] SeatTypeFormCreate request)
+    public async Task<IActionResult> Create([FromBody] SeatTypeFormCreate request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
         request.companyID = id;
-        await _seatTypeService.create(request);
+        await _seatTypeService.Create(request, id);
         return Ok(new Response<string>(false, "Response"));
     }
 
     [HttpDelete("delete")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> delete([FromQuery] int id)
+    public async Task<IActionResult> Delete([FromQuery] int id)
     {
-        await _seatTypeService.delete(id);
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _seatTypeService.Delete(id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
 
     [HttpPut("update")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> update([FromBody] SeatTypeFormUpdate request)
+    public async Task<IActionResult> Update([FromBody] SeatTypeFormUpdate request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
         request.companyID = id;
-        await _seatTypeService.update(request, request.typeID);
+        await _seatTypeService.Update(request, request.typeID, id);
         return Ok(new Response<string>(false, "Response"));
     }
     
     [HttpPost("/admin/create")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> createByAdmin([FromBody] SeatTypeFormCreate request)
+    public async Task<IActionResult> CreateByAdmin([FromBody] SeatTypeFormCreate request)
     {
+        int userId = JwtUtils.GetUserID(HttpContext);
         int id = 0;
         request.companyID = id;
-        await _seatTypeService.create(request);
+        await _seatTypeService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     #endregion -- Controllers --

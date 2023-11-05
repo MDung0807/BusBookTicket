@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace BusBookTicket.Core.Models.Entity
 {
-    public class Company
+    public class Company : BaseEntity
     {
         #region -- Properties --
-        public int companyID {  get; set; }
-        public string? name { get; set; }
-        public string? introduction { get; set; }
-        public string? email { get; set; }
-        public string? phoneNumber { get; set; }
-        public int status { get; set; }
+        public string? Name { get; set; }
+        public string? Introduction { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
 
         #endregion -- Properties --
 
         #region -- Relationship --
-        public ICollection<Bus> buses { get; set; } = new List<Bus>();
-        public Account account { get; set; }
+        public ICollection<Bus> Buses { get; set; } = new List<Bus>();
+        public Account Account { get; set; }
         public HashSet<SeatType> SeatTypes { get; set; }
         #endregion -- Relationship --
        

@@ -4,29 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class ReviewConfigs : IEntityTypeConfiguration<Review>
+    public class ReviewConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Review>
     {
         public void Configure(EntityTypeBuilder<Review> builder)
         {
 
             #region -- Properties --
-            builder.HasKey(x => x.reviewID);
-
-            builder.Property(x => x.reviewID)
-                .ValueGeneratedOnAdd();
-
-            builder.Property(x => x.rate)
+            builder.Property(x => x.Rate)
                 .IsRequired();
             #endregion -- Properties --
 
             #region -- Relationship --
-            builder.HasOne(x => x.customer)
-                .WithMany(x => x.reviews)
+            builder.HasOne(x => x.Customer)
+                .WithMany(x => x.Reviews)
                 .HasForeignKey("customerID")
                 .IsRequired();
 
-            builder.HasOne(x => x.bus)
-                .WithMany(x => x.reviews)
+            builder.HasOne(x => x.Bus)
+                .WithMany(x => x.Reviews)
                 .HasForeignKey("busID")
                 .IsRequired();
             #endregion -- Relationship --

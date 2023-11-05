@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Buses.DTOs.Requests;
+﻿using BusBookTicket.Auth.Security;
+using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Core.Common;
@@ -22,50 +23,54 @@ public class BusTypeController : ControllerBase
     
         [HttpGet("getAll")]
         [AllowAnonymous]
-        public async Task<IActionResult> getAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<BusTypeResponse> responses = await _busTypeService.getAll();
+            List<BusTypeResponse> responses = await _busTypeService.GetAll();
             return Ok(new Response<List<BusTypeResponse>>(false, responses));
         }
         
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> getByID(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            BusTypeResponse response = await _busTypeService.getByID(id);
+            BusTypeResponse response = await _busTypeService.GetById(id);
             return Ok(new Response<BusTypeResponse>(false, response));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpPut("admin/update")]
-        public async Task<IActionResult> update([FromBody] BusTypeFormUpdate request)
+        public async Task<IActionResult> Update([FromBody] BusTypeFormUpdate request)
         {
-             bool status = await _busTypeService.update(request, request.busTypeID);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busTypeService.Update(request, request.busTypeID, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpPost("admin/create")]
-        public async Task<IActionResult> createByAdmin([FromBody] BusTypeForm request)
+        public async Task<IActionResult> CreateByAdmin([FromBody] BusTypeForm request)
         {
-            bool status = await _busTypeService.create(request);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busTypeService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("admin/delete")]
-        public async Task<IActionResult> delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            bool status = await _busTypeService.delete(id);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busTypeService.Delete(id, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
         [Authorize(Roles = "COMPANY")]
         [HttpPost("company/create")]
-        public async Task<IActionResult> createByCompany([FromBody] BusTypeForm request)
+        public async Task<IActionResult> CreateByCompany([FromBody] BusTypeForm request)
         {
             request.status = 0;
-            bool status = await _busTypeService.create(request);
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busTypeService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         #endregion -- Controllers --

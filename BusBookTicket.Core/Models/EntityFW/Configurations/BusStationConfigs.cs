@@ -4,21 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusBookTicket.Core.Models.EntityFW.Configurations
 {
-    public class BusStationConfigs: IEntityTypeConfiguration<BusStation>
+    public class BusStationConfigs: BaseEntityConfigs, IEntityTypeConfiguration<BusStation>
     {
         public void Configure(EntityTypeBuilder<BusStation> builder)
         {
 
             #region -- properties --
-            builder.HasKey(x => x.busStationID);
-
-            builder.Property(x => x.busStationID)
-                .ValueGeneratedOnAdd();
-            builder.Property(x => x.name)
+            builder.Property(x => x.Name)
                 .HasMaxLength(50);
-            builder.Property(x => x.address)
+            builder.Property(x => x.Address)
                 .HasMaxLength(50);
-            builder.Property(x => x.description);
+            builder.Property(x => x.Description);
             #endregion -- properties --
 
             #region -- relationship ---

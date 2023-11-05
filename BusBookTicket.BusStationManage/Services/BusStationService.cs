@@ -1,7 +1,8 @@
 using AutoMapper;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
-using BusBookTicket.BusStationManage.Repositories;
+using BusBookTicket.BusStationManage.Specification;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
@@ -11,62 +12,69 @@ public class BusStationService : IBusStationService
 {
     #region -- Properties --
 
-    private readonly IBusStationRepos _busStationRepos;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<BusStation> _repository;
     #endregion -- Properties --
 
     #region -- Public Method --
-    public BusStationService(IBusStationRepos busStationRepos, IMapper mapper)
+    public BusStationService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        this._busStationRepos = busStationRepos;
+        _unitOfWork = unitOfWork;
+        _repository = _unitOfWork.GenericRepository<BusStation>();
         this._mapper = mapper;
     }
-    public async Task<BusStationResponse> getByID(int id)
+    public async Task<BusStationResponse> GetById(int id)
     {
-        BusStation busStation = await _busStationRepos.getByID(id);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStation busStation = await _repository.Get(busStationSpecification);
         return _mapper.Map<BusStationResponse>(busStation);
     }
 
-    public async Task<List<BusStationResponse>> getAll()
+    public async Task<List<BusStationResponse>> GetAll()
     {
+        BusStationSpecification busStationSpecification = new BusStationSpecification();
         List<BusStationResponse> responses = new List<BusStationResponse>();
-        List<BusStation> busStations = await _busStationRepos.getAll();
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         return responses;
     }
 
-    public async Task<bool> update(BST_FormUpdate entity, int id)
+    public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
-        busStation.busStationID = id;
-        await _busStationRepos.update(busStation);
+        busStation.Id = id;
+        await _repository.Update(busStation, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        BusStation busStation = await _busStationRepos.getByID(id);
-        busStation.status = (int)EnumsApp.Delete;
-        await _busStationRepos.delete(busStation);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStation busStation = await _repository.Get(busStationSpecification);
+        busStation.Status = (int)EnumsApp.Delete;
+        await _repository.Update(busStation, userId);
         return true;
     }
 
-    public async Task<bool> create(BST_FormCreate entity)
+    public async Task<bool> Create(BST_FormCreate entity, int userId)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);
-        await _busStationRepos.create(busStation);
+        await _repository.Create(busStation, userId);
         return true;
     }
 
     public async Task<BusStationResponse> getStationByName(string name)
     {
-        BusStation busStation = await _busStationRepos.getStationByName(name);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(name);
+        BusStation busStation = await _repository.Get(busStationSpecification);
         return _mapper.Map<BusStationResponse>(busStation);
     }
 
-    public async Task<List<BusStationResponse>> getStationByLocaion(string location)
+    public async Task<List<BusStationResponse>> getStationByLocation(string location)
     {
-        List<BusStation> busStations = await _busStationRepos.getAllStationByLocation(location);
+        BusStationSpecification busStationSpecification = new BusStationSpecification("", location);
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
 
         return responses;

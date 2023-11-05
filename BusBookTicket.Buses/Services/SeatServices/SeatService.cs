@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
-using BusBookTicket.Buses.Repositories.SeatRepositories;
+using BusBookTicket.Buses.Specification;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
@@ -11,55 +12,60 @@ public class SeatService : ISeatService
 {
     #region -- Properties --
 
-    private readonly ISeatRepository _seatRepository;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Seat> _repository;
     #endregion -- Properties --
 
-    public SeatService(ISeatRepository repository, IMapper mapper)
+    public SeatService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        this._seatRepository = repository;
+        this._unitOfWork = unitOfWork;
+        this._repository = unitOfWork.GenericRepository<Seat>();
         this._mapper = mapper;
     }
     
-    public async Task<SeatResponse> getByID(int id)
+    public async Task<SeatResponse> GetById(int id)
     {
-        Seat seat = await _seatRepository.getByID(id);
+        SeatSpecification seatSpecification = new SeatSpecification(id);
+        Seat seat = await _repository.Get(seatSpecification);
         return _mapper.Map<SeatResponse>(seat);
     }
 
-    public Task<List<SeatResponse>> getAll()
+    public Task<List<SeatResponse>> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> update(SeatForm entity, int id)
+    public async Task<bool> Update(SeatForm entity, int id, int userId)
     {
         Seat seat = _mapper.Map<Seat>(entity);
-        await _seatRepository.update(seat);
+        await _repository.Update(seat, userId);
         return true;
     }
 
-    public async Task<bool> delete(int id)
+    public async Task<bool> Delete(int id, int userId)
     {
-        Seat seat = await _seatRepository.getByID(id);
-        seat.status = (int)EnumsApp.Delete;
-        await _seatRepository.delete(seat);
+        SeatSpecification seatSpecification = new SeatSpecification(id);
+        Seat seat = await _repository.Get(seatSpecification);
+        seat.Status = (int)EnumsApp.Delete;
+        await _repository.Delete(seat, userId);
         return true;
     }
 
-    public async Task<bool> create(SeatForm entity)
+    public async Task<bool> Create(SeatForm entity, int userId)
     {
         Seat seat = _mapper.Map<Seat>(entity);
-        seat.bus = new Bus();
-        seat.bus.busID = entity.busID;
-        seat.status = (int)EnumsApp.Active;
-        await _seatRepository.create(seat);
+        seat.Bus = new Bus();
+        seat.Bus.Id = entity.busID;
+        seat.Status = (int)EnumsApp.Active;
+        await _repository.Create(seat, userId);
         return true;
     }
 
     public async Task<List<SeatResponse>> getSeatInBus(int busID)
     {
-        List<Seat> seats = await _seatRepository.getSeatInBus(busID);
+        SeatSpecification seatSpecification = new SeatSpecification(0, busID);
+        List<Seat> seats = await _repository.ToList(seatSpecification);
         List<SeatResponse> responses = await AppUtils.MappObject<Seat, SeatResponse>(seats, _mapper);
         return responses;
     }
