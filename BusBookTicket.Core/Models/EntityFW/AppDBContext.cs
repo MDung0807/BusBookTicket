@@ -14,10 +14,13 @@ namespace BusBookTicket.Core.Models.EntityFW
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration<Account>(new AccountConfigs());
+            modelBuilder.ApplyConfiguration<AdministrativeRegion>(new AdministrativeRegionConfigs());
+            modelBuilder.ApplyConfiguration<AdministrativeUnit>(new AdministrativeUnitConfigs());
             modelBuilder.ApplyConfiguration<Bus>(new BusConfigs());
             modelBuilder.ApplyConfiguration<BusStation>(new BusStationConfigs());
             modelBuilder.ApplyConfiguration<BusStop>(new BusStopConfigs());
             modelBuilder.ApplyConfiguration<BusType>(new BusTypeConfigs());
+            modelBuilder.ApplyConfiguration<District>(new DistrictConfigs());
             modelBuilder.ApplyConfiguration<Company>(new CompanyConfigs());
             modelBuilder.ApplyConfiguration<Customer>(new CustomerConfigs());
             modelBuilder.ApplyConfiguration<Discount>(new DiscountConfigs());
@@ -30,6 +33,9 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration<Ticket>(new TicketConfigs());
             modelBuilder.ApplyConfiguration<Seat>(new SeatConfigs());
             modelBuilder.ApplyConfiguration<SeatType>(new SeatTyeConfigs());
+            modelBuilder.ApplyConfiguration<Province>(new ProvinceConfigs());
+            modelBuilder.ApplyConfiguration<Ward>(new WardConfigs());
+            modelBuilder.ApplyConfiguration<District>(new DistrictConfigs());
             modelBuilder.ApplyConfiguration<Images>(new ImgaesConfigs());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -56,5 +62,10 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<Seat> Seats { get; set; }
         public DbSet<SeatType> SeatTypes { get; set; }
         public DbSet<Images> Images { get; set; }
+        public DbSet<AdministrativeRegion> AdministrativeRegions { get; set; }
+        public DbSet<AdministrativeUnit> AdministrativeUnits { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ward> Wards { get; set; }
 }
 }

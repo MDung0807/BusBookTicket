@@ -9,3 +9,5 @@
 - Step 7: Build BusBookTicket.Auth. Because Module have file authentication, register, and login.
 - Step 8: Build the remaining projects
 ### 2. Case
+
+https://github.com/ThangLeQuoc/vietnamese-provinces-database#get-wards-under-a-district

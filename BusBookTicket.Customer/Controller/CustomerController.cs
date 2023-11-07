@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-using BusBookTicket.Auth.Security;
+﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Services;
-using BusBookTicket.CustomerManage.Utilitis;
+using BusBookTicket.CustomerManage.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.Controller
 {
@@ -24,7 +22,7 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult>register([FromForm] FormRegister register)
+        public async Task<IActionResult>Register([FromForm] FormRegister register)
         {
             register.roleName = AppConstants.CUSTOMER;
             bool status = await _customerService.Create(register, -1);
@@ -41,7 +39,7 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpGet("profile")]
         [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> getProfile()
+        public async Task<IActionResult> GetProfile()
         {
             int id = JwtUtils.GetUserID(HttpContext);
             ProfileResponse response = await _customerService.GetById(id);
@@ -50,7 +48,7 @@ namespace BusBookTicket.CustomerManage.Controller
         
         [HttpGet("getAll")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> getAllCustomer()
+        public async Task<IActionResult> GetAllCustomer()
         {
             List<CustomerResponse> responses =  await _customerService.GetAllCustomer();
             return Ok(new Response<List<CustomerResponse>>(false, responses));
@@ -58,7 +56,7 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPut("updateProfile")]
         [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> updateProfile([FromBody] FormUpdate request)
+        public async Task<IActionResult> UpdateProfile([FromBody] FormUpdate request)
         {
             int id = JwtUtils.GetUserID(HttpContext);
             bool status = await _customerService.Update(request, id, id);

@@ -11,8 +11,8 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
         {
             builder.Property(x => x.Username)
                 .IsRequired()
-                
                 .HasMaxLength(50);
+            builder.HasIndex(x => x.Username);
             builder.Property(x => x.Password)
                 .IsRequired();
             builder.HasAlternateKey(x => x.Username);
