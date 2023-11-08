@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231107131537_data")]
+    [Migration("20231108144311_data")]
     partial class data
     {
         /// <inheritdoc />

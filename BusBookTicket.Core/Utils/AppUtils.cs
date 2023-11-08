@@ -15,11 +15,19 @@ public class AppUtils
     public static Task<List<T2>> MappObject<T1, T2>(List<T1> source, IMapper _mapper)
     {
         List<T2> listDest = new List<T2>();
-        foreach (var item in source)
+        try
         {
-            listDest.Add(_mapper.Map<T2>(item));
-        }
+            foreach (var item in source)
+            {
+                listDest.Add(_mapper.Map<T2>(item));
+            }
 
-        return Task.FromResult(listDest);
+            return Task.FromResult(listDest ?? null);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace BusBookTicket.Core.Models.Entity
         public HashSet<Review>? Reviews { get; set; }
         public HashSet<Bill>?Tickets { get; set; }
         public Rank Rank { get; set; }
+        public Ward Ward { get; set; }
+
         #endregion -- RelationShip --
     }
 }

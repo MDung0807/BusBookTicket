@@ -7,12 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
       <Folder Include="Utilities\" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BusBookTicket.Core\BusBookTicket.Core.csproj" />
     </ItemGroup>
 
 </Project>

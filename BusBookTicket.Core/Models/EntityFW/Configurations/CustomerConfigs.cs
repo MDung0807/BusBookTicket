@@ -37,6 +37,11 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
                 .WithMany(x => x.Customers)
                 .HasForeignKey("rankID")
                 .IsRequired(false);
+            
+            
+            builder.HasOne(x => x.Ward)
+                .WithMany(x => x.Customers)
+                .HasForeignKey("wardId");
             #endregion -- RelationShip --
         }
     }

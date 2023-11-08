@@ -1,4 +1,9 @@
-﻿using BusBookTicket.Application.CloudImage;
+﻿using BusBookTicket.AddressManagement.Services;
+using BusBookTicket.AddressManagement.Services.DistrictService;
+using BusBookTicket.AddressManagement.Services.ProvinceService;
+using BusBookTicket.AddressManagement.Services.UnitService;
+using BusBookTicket.AddressManagement.Services.WardService;
+using BusBookTicket.Application.CloudImage;
 using BusBookTicket.Application.CloudImage.Repositories;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Application.MailKet.Service;
@@ -100,6 +105,16 @@ namespace BusBookTicket.Configs
 
 
             #endregion -- Add Scoped Core --
+
+            #region -- Add Scoped Address --
+
+            services.AddScoped<IRegionService, RegionService>();
+            services.AddScoped<IUnitService, UnitService>();
+            services.AddScoped<IProvinceService, ProvinceService>();
+            services.AddScoped<IDistrictService, DistrictService>();
+            services.AddScoped<IWardService, WardService>();
+
+            #endregion -- Add Scoped Address --
         }
     }
 }

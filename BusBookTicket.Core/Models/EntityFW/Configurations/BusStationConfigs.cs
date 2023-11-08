@@ -18,7 +18,11 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #endregion -- properties --
 
             #region -- relationship ---
-            
+
+            builder.HasOne(x => x.Ward)
+                .WithMany(x => x.BusStations)
+                .HasForeignKey("wardId");
+
             #endregion -- relationship ---
         }
     }

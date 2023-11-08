@@ -13,6 +13,7 @@ namespace BusBookTicket.Core.Models.Entity
         public string? Introduction { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+        public string Address { get; set; }
 
         #endregion -- Properties --
 
@@ -20,6 +21,7 @@ namespace BusBookTicket.Core.Models.Entity
         public ICollection<Bus> Buses { get; set; } = new List<Bus>();
         public Account Account { get; set; }
         public HashSet<SeatType> SeatTypes { get; set; }
+        public Ward Ward { get; set; }
         #endregion -- Relationship --
        
     }

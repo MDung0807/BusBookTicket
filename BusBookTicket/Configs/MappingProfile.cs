@@ -1,4 +1,14 @@
 ﻿using AutoMapper;
+using BusBookTicket.AddressManagement.DTOs.Requests.District;
+using BusBookTicket.AddressManagement.DTOs.Requests.Province;
+using BusBookTicket.AddressManagement.DTOs.Requests.Region;
+using BusBookTicket.AddressManagement.DTOs.Requests.Unit;
+using BusBookTicket.AddressManagement.DTOs.Requests.Ward;
+using BusBookTicket.AddressManagement.DTOs.Responses.District;
+using BusBookTicket.AddressManagement.DTOs.Responses.Province;
+using BusBookTicket.AddressManagement.DTOs.Responses.Region;
+using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
+using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Buses.DTOs.Requests;
@@ -180,6 +190,34 @@ namespace BusBookTicket.Configs
             CreateMap<TicketItem, TicketItemResponse>();
 
             #endregion -- Configs Ticket Module --
+            
+            #region -- Address Module --
+
+            CreateMap<RegionCreate, AdministrativeRegion>();
+            CreateMap<RegionUpdate, AdministrativeRegion>();
+            CreateMap<AdministrativeRegion, RegionResponse>();
+
+            CreateMap<UnitCreate, AdministrativeUnit>();
+            CreateMap<UnitUpdate, AdministrativeUnit>();
+            CreateMap<AdministrativeUnit, UnitResponse>();
+
+            CreateMap<ProvinceCreate, Province>();
+            CreateMap<ProvinceUpdate, Province>();
+            CreateMap<Province, ProvinceResponse>();
+
+            CreateMap<DistrictCreate, District>();
+            CreateMap<DistrictUpdate, District>();
+            CreateMap<District, DistrictResponse>();
+
+            CreateMap<WardCreate, Ward>();
+            CreateMap<WardUpdate, Ward>();
+            CreateMap<Ward, WardResponse>()
+                .ForPath(dest => dest.District, 
+                    opts => opts.MapFrom(x => x.District.FullName))
+                .ForPath(dest => dest.Province,
+                    opts => opts.MapFrom(x => x.District.Province.FullName));
+
+            #endregion -- Address Module --
         }
     }
 }
