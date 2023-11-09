@@ -30,12 +30,12 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #region -- RelationShip--
             builder.HasOne(x => x.Account)
                 .WithOne(x => x.Customer)
-                .HasForeignKey<Customer>("accountID")
+                .HasForeignKey<Customer>("AccountID")
                 .IsRequired();
 
             builder.HasOne(x => x.Rank)
                 .WithMany(x => x.Customers)
-                .HasForeignKey("rankID")
+                .HasForeignKey("RankID")
                 .IsRequired(false);
             
             

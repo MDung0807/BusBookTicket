@@ -17,11 +17,11 @@ public class DistrictConfigs : IEntityTypeConfiguration<District>
 
         builder.HasOne(x => x.AdministrativeUnit)
             .WithMany(x => x.Districts)
-            .HasForeignKey("administrativeUnitId");
+            .HasForeignKey("AdministrativeUnitId");
 
         builder.HasOne(x => x.Province)
             .WithMany(x => x.Districts)
-            .HasForeignKey("provinceId");
+            .HasForeignKey("ProvinceId");
 
         #endregion -- Relationship --
     }

@@ -16,7 +16,7 @@ public class SeatTyeConfigs : BaseEntityConfigs, IEntityTypeConfiguration<SeatTy
 
         builder.HasOne(x => x.Company)
             .WithMany(x => x.SeatTypes)
-            .HasForeignKey("companyID")
+            .HasForeignKey("CompanyID")
             .IsRequired(false);
 
         #endregion -- Relationship --
