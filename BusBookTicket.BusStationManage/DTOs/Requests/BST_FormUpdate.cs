@@ -2,9 +2,10 @@ namespace BusBookTicket.BusStationManage.DTOs.Requests;
 
 public class BST_FormUpdate
 {
-    public int busStationID { get; set; }
-    public string? name { get; set; }
-    public string? address { get; set; }
-    public string? description { get; set; }
-    public int status { get; set; }
+    public int BusStationId { get; set; }
+    public string? Name { get; set; }
+    public string? Address { get; set; }
+    public string? Description { get; set; }
+    public int Status { get; set; }
+    public int WardId { get; set; }
 }

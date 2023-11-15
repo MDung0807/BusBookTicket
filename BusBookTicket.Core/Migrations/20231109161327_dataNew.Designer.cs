@@ -4,6 +4,7 @@ using BusBookTicket.Core.Models.EntityFW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231109161327_dataNew")]
+    partial class dataNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,7 +335,7 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("UpdateBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WardId")
+                    b.Property<int>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -461,7 +464,7 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("UpdateBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WardId")
+                    b.Property<int>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -529,7 +532,7 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("UpdateBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("wardId")
+                    b.Property<int>("wardId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1185,7 +1188,8 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.Ward", "Ward")
                         .WithMany("BusStations")
                         .HasForeignKey("WardId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Ward");
                 });
@@ -1220,7 +1224,8 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.Ward", "Ward")
                         .WithMany("Companies")
                         .HasForeignKey("WardId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Account");
 
@@ -1243,7 +1248,8 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.Ward", "Ward")
                         .WithMany("Customers")
                         .HasForeignKey("wardId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Account");
 

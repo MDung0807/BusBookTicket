@@ -1,9 +1,11 @@
 ﻿using BusBookTicket.Core.Application.Specification.Interfaces;
+using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.Core.Application.Specification;
 
-public class SpecificationEvaluator<T> where T : class
+public abstract class SpecificationEvaluator<T> where T : BaseEntity
 {
     public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
     {
@@ -14,7 +16,7 @@ public class SpecificationEvaluator<T> where T : class
         {
             query = query.Where(specification.Criteria);
         }
-
+        
         // Includes all expression-based includes
         query = specification.Includes.Aggregate(query,
             (current, include) => current.Include(include));

@@ -5,29 +5,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.DTOs.Requests
 {
     [ValidateNever]
-    public class FormRegister
+    public class FormRegister : IActionFilter
     {
         #region --Customer -- 
-        [Required(ErrorMessage = "Requiry fullname")]
-        [MinLength(length: 10, ErrorMessage = "Min lenght is 10"), MaxLength(50, ErrorMessage = "Max lenght is 50")]
-        public string? fullName { get; set; }
-        public DateTime dateOfBirth { get; set; }
-        public string? address { get; set; }
-        public string? email { get; set; }
-        public string? phoneNumber { get; set; }
-        public string? gender { get; set; }
-        public IFormFile avatar { get; set; }
+        [Required(ErrorMessage = "Require fullname")]
+        [Range(10, 100, ErrorMessage = "Full name is from 10 to 100 character")]
+        public string FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string? Address { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Gender { get; set; }
+        public int WardId { get; set; }
+        public IFormFile Avatar { get; set; }
         #endregion -- Customer --
 
         #region -- Account --
-        public string username { get; set; }
-        public string password { get; set; }
-        public string roleName { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string RoleName { get; set; }
         #endregion -- Account --
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            new Exception("sfgfgg");
+        }
+
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            new Exception("sfgfgg");
+
+        }
     }
 }

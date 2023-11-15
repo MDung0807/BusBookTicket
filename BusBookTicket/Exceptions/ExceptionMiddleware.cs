@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Auth.Utils;
 using BusBookTicket.Core.Common;
@@ -26,6 +27,20 @@ namespace BusBookTicket.Exceptions
             {
                 await _next(context);
             }
+            // catch (Exception ex)
+            // {
+            //     // var statusCode = ex switch
+            //     // {
+            //     //     NotFoundException => (int)HttpStatusCode.NotFound,
+            //     //     UnauthorizedException => (int)HttpStatusCode.Unauthorized,
+            //     //     ValidationException => (int)HttpStatusCode.BadRequest,
+            //     //     _ => (int)HttpStatusCode.InternalServerError,
+            //     // };
+            //
+            //     context.Response.ContentType = "application/json";
+            //     await context.Response.WriteAsync(
+            //         JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
+            // }
             catch (AuthException authException)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -71,11 +86,30 @@ namespace BusBookTicket.Exceptions
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
             }
+            catch (BadRequestException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+
+            }
+            catch (LockedResource ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
+            }
+            catch (ExceptionDetail ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+            }
             catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.ToString())));
             }
         }
     }

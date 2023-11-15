@@ -51,6 +51,29 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Change status account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        // public async Task<bool> ChangeStatus(AuthRequest request)
+        // {
+        //     try
+        //     {
+        //         AccountSpecification accountSpecification =
+        //             new AccountSpecification("customer12", AppConstants.CUSTOMER);
+        //         Account account = await _repository.Get(accountSpecification);
+        //         await _repository.ChangeStatus(account, );
+        //         return true;
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e.ToString());
+        //         throw;
+        //     }
+        // }
+
         public Task<bool> Update(FormResetPass entity, int id, int userId)
         {
             throw new NotImplementedException();

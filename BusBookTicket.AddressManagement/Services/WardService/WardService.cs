@@ -27,8 +27,7 @@ public class WardService : IWardService
     }
     public async Task<WardResponse> GetById(int id)
     {
-        WardSpecification wardSpecification = new WardSpecification(id);
-        Ward ward = await _repository.Get(wardSpecification);
+        Ward ward = await WardGet(id);
         return _mapper.Map<WardResponse>(ward);
     }
 
@@ -58,6 +57,13 @@ public class WardService : IWardService
         Ward ward = _mapper.Map<Ward>(entity);
         await _repository.Create(ward, userId);
         return true;
+    }
+
+    public async Task<Ward> WardGet(int id)
+    {
+        WardSpecification wardSpecification = new WardSpecification(id);
+        Ward ward = await _repository.Get(wardSpecification);
+        return ward;
     }
 
     #endregion -- Public method --

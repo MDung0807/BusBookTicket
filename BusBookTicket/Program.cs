@@ -4,10 +4,8 @@ using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Configs;
 using BusBookTicket.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using System.Text;
 using BusBookTicket.Application.MailKet.Settings;
+using BusBookTicket.CustomerManage.DTOs.Requests;
 using Microsoft.OpenApi.Models;
 
 internal class Program
@@ -69,6 +67,8 @@ internal class Program
         ScopedConfigs.Configure(services: services);
 
         #endregion -- Scoped --
+
+        services.AddScoped<FormRegister>();
         services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
         services.AddLogging(loggingBuilder =>

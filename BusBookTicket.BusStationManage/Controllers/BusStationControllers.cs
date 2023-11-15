@@ -42,7 +42,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> Update([FromBody] BST_FormUpdate request)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.Update(request, request.busStationID, userId);
+            bool status = await _busStationService.Update(request, request.BusStationId, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
@@ -68,7 +68,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         [HttpPost("company/create")]
         public async Task<IActionResult> CreateByCompany([FromBody] BST_FormCreate request)
         {
-            request.status = 0;
+            request.Status = 0;
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busStationService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));

@@ -9,6 +9,7 @@ namespace BusBookTicket.Core.Common
         {
             this.message = message;
         }
+        public ExceptionDetail(){}
 
         public ExceptionDetail (string message, Exception detail) :base (message, detail) { }
     }

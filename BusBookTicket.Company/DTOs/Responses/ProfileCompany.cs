@@ -2,13 +2,14 @@ namespace BusBookTicket.CompanyManage.DTOs.Responses;
 
 public class ProfileCompany
 {
-    public int companyID { get; set; }
-    public string? name { get; set; }
-    public string? introduction { get; set; }
-    public string? email { get; set; }
-    public string? phoneNumber { get; set; }
-    public int status { get; set; }
+    public int CompanyId { get; set; }
+    public string? Name { get; set; }
+    public string? Introduction { get; set; }
+    public string? Email { get; set; }
+    public string? PhoneNumber { get; set; }
+    public int Status { get; set; }
 
-    public string username { get; set; }
-    public string roleName { get; set; }
+    public string Username { get; set; }
+    public string RoleName { get; set; }
+    public int WardId { get; set; }
 }

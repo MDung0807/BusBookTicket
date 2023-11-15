@@ -6,4 +6,5 @@ public enum EnumsApp
     Active = 1,
     Waiting = 2,
     Disable = 3,
+    Lock = 4
 }
