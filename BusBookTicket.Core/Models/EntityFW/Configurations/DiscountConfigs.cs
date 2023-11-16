@@ -20,7 +20,7 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #region -- relationship --
             builder.HasOne(x => x.Rank)
                .WithMany(x => x.Discounts)
-               .HasForeignKey("rankID")
+               .HasForeignKey("RankID")
                .IsRequired(false);
             #endregion -- relationship --
         }

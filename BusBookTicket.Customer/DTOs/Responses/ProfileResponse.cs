@@ -8,16 +8,17 @@ namespace BusBookTicket.CustomerManage.DTOs.Responses
 {
     public class ProfileResponse
     {
-        public string avatar { get; set; }
-        public string? fullName { get; set; }
-        public DateTime dateOfBirth { get; set; }
-        public string? address { get; set; }
-        public string? email { get; set; }
-        public string? phoneNumber { get; set; }
-        public string? gender { get; set; }
-        public DateTime dateCreate { get; set; }
-        public string roleName { get; set; }
-        public string username { get; set; }
-        public string rank { get; set; }
+        public string Avatar { get; set; }
+        public string? FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string? Address { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Gender { get; set; }
+        public DateTime DateCreate { get; set; }
+        public string RoleName { get; set; }
+        public string Username { get; set; }
+        public string Rank { get; set; }
+        public int WardId { get; set; }
     }
 }

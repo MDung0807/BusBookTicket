@@ -2,6 +2,7 @@
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.Core.Models.Entity;
 using AutoMapper;
+using BusBookTicket.AddressManagement.Services.WardService;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
@@ -19,19 +20,22 @@ namespace BusBookTicket.CustomerManage.Services
         private readonly IImageService _imageService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Customer> _repository;
+        private readonly IWardService _wardService;
         #endregion --  Properties --
 
         #region -- Constructor --
         public CustomerService(IMapper mapper,
             IAuthService authService,
             IImageService imageService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IWardService wardService)
         {
             _mapper = mapper;
             _authService = authService;
             _imageService = imageService;
             _unitOfWork = unitOfWork;
             _repository = _unitOfWork.GenericRepository<Customer>();
+            _wardService = wardService;
         }
         #endregion -- Contructor --
 
@@ -78,17 +82,18 @@ namespace BusBookTicket.CustomerManage.Services
                 // Get account
                 AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
                 await _authService.Create(authRequest, -1);
-                customer.Account = await _authService.GetAccountByUsername(entity.username, entity.roleName);
+                // customer.Ward = await _wardService.WardGet(entity.WardId);
+                customer.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
                 await _repository.Create(customer, -1);
 
                 // Save Image
-                await _imageService.saveImage(entity.avatar, typeof(Customer).ToString(), customer.Id);
+                await _imageService.saveImage(entity.Avatar, typeof(Customer).ToString(), customer.Id);
                 List<string> images = await _imageService.getImages(typeof(Customer).ToString(), customer.Id);
 
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 await _unitOfWork.RollbackTransactionAsync();
                 return false;
@@ -112,7 +117,7 @@ namespace BusBookTicket.CustomerManage.Services
             List<string> images = await _imageService.getImages(typeof(Customer).ToString(), id);
             if (images.Count > 0)
             {
-                response.avatar = images[0];
+                response.Avatar = images[0];
             }
             return response;
         }

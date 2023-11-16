@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusBookTicket.AddressManagement\BusBookTicket.AddressManagement.csproj" />
     <ProjectReference Include="..\BusBookTicket.Application\BusBookTicket.Application.csproj" />
     <ProjectReference Include="..\BusBookTicket.Auth\BusBookTicket.Auth.csproj" />
     <ProjectReference Include="..\BusBookTicket.Buses\BusBookTicket.Buses.csproj" />

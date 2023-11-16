@@ -49,7 +49,7 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> UpdateByAdmin([FromBody] FormUpdateCompany request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        bool status = await _companyServices.Update(request, request.companyID, userId);
+        bool status = await _companyServices.Update(request, request.CompanyId, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
 

@@ -15,7 +15,7 @@ public class TicketConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Ticket>
 
         builder.HasOne(x => x.Bus)
             .WithMany(x => x.Tickets)
-            .HasForeignKey("busID")
+            .HasForeignKey("BusID")
             .IsRequired();
 
         #endregion -- Relationship --

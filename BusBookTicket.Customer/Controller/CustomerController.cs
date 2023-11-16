@@ -7,6 +7,7 @@ using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.Controller
 {
@@ -22,19 +23,24 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPost("register")]
         [AllowAnonymous]
+        [ServiceFilter(typeof(FormRegister))]
         public async Task<IActionResult>Register([FromForm] FormRegister register)
         {
-            register.roleName = AppConstants.CUSTOMER;
-            bool status = await _customerService.Create(register, -1);
-            string mess;
-            if (status)
+            if (!ModelState.IsValid)
+                Console.WriteLine("Loi");
+            try
             {
-                mess = CusConstants.REGISTER_SUCCESS;
-            }
-            else
-                mess = CusConstants.REGISTER_FAIL;
+                register.RoleName = AppConstants.CUSTOMER;
+                bool status = await _customerService.Create(register, -1);
+                var mess = status ? CusConstants.REGISTER_SUCCESS : CusConstants.REGISTER_FAIL;
 
-            return Ok(new Response<string>(!status, mess));
+                return Ok(new Response<string>(!status, mess));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         [HttpGet("profile")]

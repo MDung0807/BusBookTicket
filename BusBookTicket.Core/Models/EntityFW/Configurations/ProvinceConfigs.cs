@@ -16,11 +16,11 @@ public class ProvinceConfigs : IEntityTypeConfiguration<Province>
 
         builder.HasOne(x => x.AdministrativeRegion)
             .WithMany(x => x.Provinces)
-            .HasForeignKey("administrativeRegionId");
+            .HasForeignKey("AdministrativeRegionId");
 
         builder.HasOne(x => x.AdministrativeUnit)
             .WithMany(x => x.Provinces)
-            .HasForeignKey("administrativeUnitId");
+            .HasForeignKey("AdministrativeUnitId");
 
         #endregion -- Relationship --
     }

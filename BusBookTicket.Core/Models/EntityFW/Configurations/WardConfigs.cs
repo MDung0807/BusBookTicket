@@ -16,12 +16,12 @@ public class WardConfigs : IEntityTypeConfiguration<Ward>
 
         builder.HasOne(x => x.AdministrativeUnit)
             .WithMany(x => x.Wards)
-            .HasForeignKey("administrativeUnitId")
+            .HasForeignKey("AdministrativeUnitId")
             .IsRequired();
 
         builder.HasOne(x => x.District)
             .WithMany(x => x.Wards)
-            .HasForeignKey("DistrictId")
+            .HasForeignKey("DistrictId")    
             .IsRequired();
 
         #endregion -- Relationship --

@@ -1,4 +1,14 @@
 ﻿using AutoMapper;
+using BusBookTicket.AddressManagement.DTOs.Requests.District;
+using BusBookTicket.AddressManagement.DTOs.Requests.Province;
+using BusBookTicket.AddressManagement.DTOs.Requests.Region;
+using BusBookTicket.AddressManagement.DTOs.Requests.Unit;
+using BusBookTicket.AddressManagement.DTOs.Requests.Ward;
+using BusBookTicket.AddressManagement.DTOs.Responses.District;
+using BusBookTicket.AddressManagement.DTOs.Responses.Province;
+using BusBookTicket.AddressManagement.DTOs.Responses.Region;
+using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
+using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Buses.DTOs.Requests;
@@ -26,27 +36,33 @@ namespace BusBookTicket.Configs
     {
         public MappingProfile() {
             #region -- Configs Customer Module --
-            CreateMap<FormRegister, Customer> ();
-            CreateMap<FormUpdate, Customer>();
+            CreateMap<FormRegister, Customer> ()
+                .ForPath(dest => dest.Ward.Id, 
+                    opts => opts.MapFrom(x => x.WardId));
+            CreateMap<FormUpdate, Customer>()
+                .ForPath(dest => dest.Ward.Id, 
+                    opts => opts.MapFrom(x => x.WardId));
             CreateMap<Customer, ProfileResponse>()
-                .ForPath(dest => dest.roleName,
+                .ForPath(dest => dest.RoleName,
                     opt => opt.MapFrom(x => x.Account.Role.RoleName))
-                .ForPath(dest => dest.username, 
+                .ForPath(dest => dest.Username, 
                     opt => opt.MapFrom(x => x.Account.Username))
-                .ForPath(dest => dest.rank,
+                .ForPath(dest => dest.Rank,
                     opt => opt.MapFrom(x => x.Rank.Name));
             CreateMap<Customer, CustomerResponse>()
-                .ForPath(dest => dest.username, 
+                .ForPath(dest => dest.Username, 
                     opt => opt.MapFrom(x => x.Account.Username))
-                .ForPath(dest => dest.rank,
-                    opt => opt.MapFrom(x => x.Rank.Name));
+                .ForPath(dest => dest.Rank,
+                    opt => opt.MapFrom(x => x.Rank.Name))
+                .ForPath(dest => dest.WardId,
+                    opt => opt.MapFrom(x => x.Ward.Id));;
             #endregion -- Configs Customer Module --
             
             #region -- Configs Auth Module --
             CreateMap<FormRegister, AuthRequest>();
             CreateMap<AuthRequest, Account>()
                 .ForPath(dest => dest.Role.RoleName, 
-                    opt => opt.MapFrom(x => x.roleName));
+                    opt => opt.MapFrom(x => x.RoleName));
             CreateMap<Account, AccResponse>()
                 .ForPath(dest => dest.roleName,
                     opts => opts.MapFrom(x => x.Role.RoleName));
@@ -54,19 +70,31 @@ namespace BusBookTicket.Configs
             #endregion -- Configs Auth Module --
 
             #region -- Configs BusStation Module --
-            CreateMap<BST_FormUpdate, BusStation>();
-            CreateMap<BST_FormCreate, BusStation>();
-            CreateMap<BusStation, BusStationResponse>();
+            CreateMap<BST_FormUpdate, BusStation>()
+                .ForPath(dest => dest.Ward.Id, 
+                    opts => opts.MapFrom(x => x.WardId));
+            CreateMap<BST_FormCreate, BusStation>()
+                .ForPath(dest => dest.Ward.Id, 
+                    opts => opts.MapFrom(x => x.WardId));
+            CreateMap<BusStation, BusStationResponse>()
+                .ForPath(dest => dest.WardId, 
+                    opts => opts.MapFrom(x => x.Ward.Id));
             #endregion -- Configs BusStation Module --
 
             #region -- Configs Company Module --
-            CreateMap<FormRegisterCompany, Company>();
-            CreateMap<FormUpdateCompany, Company>();
+            CreateMap<FormRegisterCompany, Company>()
+                .ForPath(dest => dest.Id,
+                    opts =>opts.MapFrom(x => x.WardId));
+            CreateMap<FormUpdateCompany, Company>()
+                .ForPath(dest => dest.Id,
+                    opts =>opts.MapFrom(x => x.WardId));;
             CreateMap<Company, ProfileCompany>()
-                .ForPath(dest => dest.roleName,
+                .ForPath(dest => dest.RoleName,
                     opt => opt.MapFrom(x => x.Account.Role.RoleName))
-                .ForPath(dest => dest.username,
-                    opt => opt.MapFrom(x => x.Account.Username));
+                .ForPath(dest => dest.Username,
+                    opt => opt.MapFrom(x => x.Account.Username))
+                .ForPath(dest => dest.WardId, 
+                    opts => opts.MapFrom(x => x.Ward.Id));
             #endregion -- Configs Company Module --
 
             #region -- Configs Ranks Module --
@@ -180,6 +208,33 @@ namespace BusBookTicket.Configs
             CreateMap<TicketItem, TicketItemResponse>();
 
             #endregion -- Configs Ticket Module --
+            
+            #region -- Address Module --
+
+            CreateMap<RegionCreate, AdministrativeRegion>();
+            CreateMap<RegionUpdate, AdministrativeRegion>();
+            CreateMap<AdministrativeRegion, RegionResponse>();
+
+            CreateMap<UnitCreate, AdministrativeUnit>();
+            CreateMap<UnitUpdate, AdministrativeUnit>();
+            CreateMap<AdministrativeUnit, UnitResponse>();
+
+            CreateMap<ProvinceCreate, Province>();
+            CreateMap<ProvinceUpdate, Province>();
+            CreateMap<Province, ProvinceResponse>();
+
+            CreateMap<DistrictCreate, District>();
+            CreateMap<DistrictUpdate, District>();
+            CreateMap<District, DistrictResponse>();
+
+            CreateMap<WardCreate, Ward>();
+            CreateMap<WardUpdate, Ward>();
+            CreateMap<Ward, WardResponse>()
+                .ForPath(dest => dest.District, 
+                    opts => opts.MapFrom(x => x.District.FullName))
+                .ForPath(dest => dest.Province,
+                    opts => opts.MapFrom(x => x.District.Province.FullName));
+            #endregion -- Address Module --
         }
     }
 }

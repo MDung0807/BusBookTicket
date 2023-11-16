@@ -19,7 +19,7 @@ SET IDENTITY_INSERT AdministrativeUnits OFF;
 -- Table Provinces
 SET IDENTITY_INSERT Provinces ON;
 INSERT INTO Provinces (id, FullName, FullNameEnglish, CodeName, Name, NameEnglish, AdministrativeRegionId, AdministrativeUnitId, DateCreate, DateUpdate, UpdateBy, CreateBy, Status)
-SELECT CAST(code as INT),full_name,full_name_en,code_name,name,name_en,CAST(administrative_unit_id as INT),CAST(administrative_region_id as INT), GETDATE(), GETDATE(), -1, -1, 1
+SELECT CAST(code as INT),full_name,full_name_en,code_name,name,name_en,CAST(administrative_region_id as INT), CAST(administrative_unit_id as INT), GETDATE(), GETDATE(), -1, -1, 1
 FROM provinces_tmp
 SET IDENTITY_INSERT Provinces OFF;
 

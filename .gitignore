@@ -5,3 +5,4 @@
 **/.editorconfig
 .vs/
 .idea/
+**/appsettings.json

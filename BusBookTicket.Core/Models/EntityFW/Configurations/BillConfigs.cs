@@ -15,21 +15,21 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #region -- Relationship --
             builder.HasOne(x => x.BusStationStart)
                 .WithMany(x => x.TicketStarts)
-                .HasForeignKey("busStationStartID")
+                .HasForeignKey("BusStationStartID")
                 .IsRequired();
             builder.HasOne(x => x.BusStationEnd)
                 .WithMany(x => x.TicketEnds)
-                .HasForeignKey("busStationEndID")
+                .HasForeignKey("BusStationEndID")
                 .IsRequired();
 
             builder.HasOne(x => x.Customer)
                .WithMany(x => x.Tickets)
-               .HasForeignKey("customerID")
+               .HasForeignKey("CustomerID")
                .IsRequired();
 
             builder.HasOne(x => x.Discount)
                .WithMany(x => x.Tickets)
-               .HasForeignKey("discountID")
+               .HasForeignKey("DiscountID")
                .IsRequired() ;
             #endregion -- Relationship --
         }

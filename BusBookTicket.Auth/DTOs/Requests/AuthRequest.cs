@@ -5,8 +5,8 @@ namespace BusBookTicket.Auth.DTOs.Requests
     [ValidateNever]
     public class AuthRequest
     {
-        public string username { get; set; }
-        public string password { get; set; }
-        public string roleName { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string RoleName { get; set; }
     }
 }

@@ -30,5 +30,13 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="userId">ID user</param>
         /// <returns>ID for entity in database</returns>
         Task<T> Create(T entity, int userId);
+
+        /// <summary>
+        /// Change status in entity and reference entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> ChangeStatus(T entity, int userId, int status);
     }
 }

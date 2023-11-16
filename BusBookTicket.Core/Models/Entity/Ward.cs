@@ -15,5 +15,8 @@ public class Ward : BaseEntity
     #region -- Relationship --
     public District District { get; set; }
     public AdministrativeUnit AdministrativeUnit { get; set; }
+    public HashSet<Customer> Customers { get; set; }
+    public HashSet<BusStation> BusStations { get; set; }
+    public HashSet<Company> Companies { get; set; }
     #endregion -- Relationship --
 }

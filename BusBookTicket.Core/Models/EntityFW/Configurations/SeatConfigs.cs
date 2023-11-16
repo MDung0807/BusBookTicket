@@ -15,12 +15,12 @@ public class SeatConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Seat>
 
         builder.HasOne(x => x.Bus)
             .WithMany(x => x.Seats)
-            .HasForeignKey("busID")
+            .HasForeignKey("BusID")
             .IsRequired();
 
         builder.HasOne(x => x.SeatType)
             .WithMany(x => x.Seats)
-            .HasForeignKey("seatTypeID")
+            .HasForeignKey("SeatTypeID")
             .IsRequired();
 
         #endregion -- Relationship --
