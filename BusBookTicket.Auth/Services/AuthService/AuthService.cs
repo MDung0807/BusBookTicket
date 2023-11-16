@@ -34,7 +34,8 @@ namespace BusBookTicket.Auth.Services.AuthService
         public async Task<bool> Create(AuthRequest request, int userId)
         {
             Account account = _mapper.Map<Account>(request);
-            Role role = await _roleService.getRole(request.roleName);
+            Role role = await _roleService.getRole(request.RoleName);
+            account.Password = PassEncrypt.hashPassword(request.Password);
             account.Role = role;
             account.Status = 1;
 
@@ -99,15 +100,15 @@ namespace BusBookTicket.Auth.Services.AuthService
             AuthResponse response = new AuthResponse();
 
             Account accountRequest = _mapper.Map<Account>(request);
-            Account account = await GetAccountByUsername(request.username, request.roleName);
+            Account account = await GetAccountByUsername(request.Username, request.RoleName);
             
             if (PassEncrypt.VerifyPassword(accountRequest.Password, account.Password))
             {
-                if (account.Role.RoleName == request.roleName)
+                if (account.Role.RoleName == request.RoleName)
                 {
                     response.username = account.Username;
                     response.roleName = account.Role.RoleName;
-                    if (request.roleName == AppConstants.COMPANY)
+                    if (request.RoleName == AppConstants.COMPANY)
                     {
                         response.Id = account.Company.Id;
                     }

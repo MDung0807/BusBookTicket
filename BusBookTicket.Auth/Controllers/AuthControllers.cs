@@ -27,7 +27,7 @@ namespace BusBookTicket.Auth.Controllers
         public async Task<IActionResult> Login([FromBody] AuthRequest request)
         {
             // AuthResponse response = await _authService.Login(request);
-            request.roleName = AppConstants.CUSTOMER;
+            request.RoleName = AppConstants.CUSTOMER;
             // await _authService.ChangeStatus(request);
             //var attemt = HttpContext.Session.GetInt32("FailLogin") ?? 0;
             
@@ -37,7 +37,7 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("company/login")]
         public async Task<IActionResult> CompanyLogin([FromBody] AuthRequest requets)
         {
-            requets.roleName = AppConstants.COMPANY;
+            requets.RoleName = AppConstants.COMPANY;
             AuthResponse response = await _authService.Login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
@@ -45,7 +45,7 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("admin/login")]
         public async Task<IActionResult> AdminLogin([FromBody] AuthRequest requets)
         {
-            requets.roleName = AppConstants.ADMIN;
+            requets.RoleName = AppConstants.ADMIN;
             AuthResponse response = await _authService.Login(requets);
             return Ok(new Response<AuthResponse>(false, response));
         }
