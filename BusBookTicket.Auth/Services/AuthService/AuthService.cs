@@ -37,7 +37,7 @@ namespace BusBookTicket.Auth.Services.AuthService
             Role role = await _roleService.getRole(request.RoleName);
             account.Password = PassEncrypt.hashPassword(request.Password);
             account.Role = role;
-            account.Status = 1;
+            account.Status = 1; 
 
             await _repository.Create(account, userId);
             return true;

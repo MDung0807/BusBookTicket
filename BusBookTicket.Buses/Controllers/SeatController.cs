@@ -42,7 +42,7 @@ public class SeatController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Create([FromBody] SeatForm request)
     {
-        request.seatID = 0;
+        request.SeatId = 0;
         int userId = JwtUtils.GetUserID(HttpContext);
         await _seatService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
@@ -62,7 +62,7 @@ public class SeatController : ControllerBase
     public async Task<IActionResult> Update([FromBody] SeatForm request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        await _seatService.Update(request, request.seatID, userId);
+        await _seatService.Update(request, request.SeatId, userId);
         return Ok(new Response<string>(false, "Response"));
     }
 }

@@ -11,10 +11,13 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
 
             #region -- Properties --
 
+            builder.HasAlternateKey(x => x.Name);
+            builder.Property(x => x.Name).IsRequired();
+
             #endregion -- Properties --
 
             #region -- relationship --
-            
+
             #endregion -- relationship --
         }
     }

@@ -25,7 +25,7 @@ public class BusController : ControllerBase
     public async Task<IActionResult> Create([FromBody] FormCreateBus request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        request.companyID = userId;
+        request.CompanyId = userId;
         await _busService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
     }
@@ -35,7 +35,7 @@ public class BusController : ControllerBase
     public async Task<IActionResult> Update([FromBody] FormUpdateBus request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        request.companyID = userId;
+        request.CompanyId = userId;
         await _busService.Update(request, request.Id, userId);
         return Ok(new Response<string>(false, "Response"));
     }

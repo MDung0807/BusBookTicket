@@ -47,7 +47,7 @@ public class SeatTypeController : ControllerBase
     public async Task<IActionResult> Create([FromBody] SeatTypeFormCreate request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
-        request.companyID = id;
+        request.CompanyId = id;
         await _seatTypeService.Create(request, id);
         return Ok(new Response<string>(false, "Response"));
     }
@@ -66,8 +66,8 @@ public class SeatTypeController : ControllerBase
     public async Task<IActionResult> Update([FromBody] SeatTypeFormUpdate request)
     {
         int id = JwtUtils.GetUserID(HttpContext);
-        request.companyID = id;
-        await _seatTypeService.Update(request, request.typeID, id);
+        request.CompanyId = id;
+        await _seatTypeService.Update(request, request.TypeId, id);
         return Ok(new Response<string>(false, "Response"));
     }
     
@@ -77,7 +77,7 @@ public class SeatTypeController : ControllerBase
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         int id = 0;
-        request.companyID = id;
+        request.CompanyId = id;
         await _seatTypeService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
     }
