@@ -2,6 +2,7 @@
 using BusBookTicket.Application.CloudImage.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,8 @@ public class ImageService : IImageService
         {
             Image = imageResult,
             Id01 = key,
-            ObjectModel = objectModel
+            ObjectModel = objectModel,
+            Status = (int)EnumsApp.Active
         };
         await _repository.Create(images, -1);
         return true;

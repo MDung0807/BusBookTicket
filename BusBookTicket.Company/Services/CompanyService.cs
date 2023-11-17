@@ -1,4 +1,5 @@
 using AutoMapper;
+using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Core.Models.Entity;
@@ -6,6 +7,8 @@ using BusBookTicket.Core.Utils;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CompanyManage.Specification;
+using BusBookTicket.CompanyManage.Utils;
+using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.CompanyManage.Services;
@@ -17,18 +20,21 @@ public class CompanyService : ICompanyServices
     private readonly IAuthService _authService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Company> _repository;
+    private readonly IImageService _imageService;
     #endregion
 
     public CompanyService(
         IMapper mapper, 
         IAuthService authService,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IImageService imageService
         )
     {
         this._mapper = mapper;
         this._authService = authService;
         this._unitOfWork = unitOfWork;
         _repository = unitOfWork.GenericRepository<Company>();
+        _imageService = imageService;
     }
 
     #region -- Public Method --
@@ -38,6 +44,8 @@ public class CompanyService : ICompanyServices
         CompanySpecification companySpecification = new CompanySpecification(id);
         Company company = await _repository.Get(companySpecification);
         ProfileCompany profile = _mapper.Map<ProfileCompany>(company);
+        List<string> images = await _imageService.getImages(typeof(Company).ToString(), company.Id);
+        profile.Logo = (images.Count> 0 ? images[0]: null)!;
         return profile;
     }
 
@@ -79,13 +87,28 @@ public class CompanyService : ICompanyServices
     {
         Company company = _mapper.Map<Company>(entity);
         AuthRequest account = _mapper.Map<AuthRequest>(entity);
-
-        // Set data
-        company.Status = 0;
-        await _authService.Create(account, -1);
-        company.Account = await _authService.GetAccountByUsername(entity.username, entity.roleName);
-        await _repository.Create(company, -1);
-        return true;
+        await _unitOfWork.BeginTransaction();
+        try
+        {
+            // Set data
+            company.Status = (int)EnumsApp.Lock;
+            await _authService.Create(account, -1);
+            company.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
+            company = await _repository.Create(company, -1);
+            
+            // Save Image
+            await _imageService.saveImage(entity.Logo, typeof(Company).ToString(), company.Id);
+            await _unitOfWork.SaveChangesAsync();
+            _unitOfWork.Dispose();
+            return true;
+        }
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            Console.WriteLine(e);
+            throw new ExceptionDetail(CompanyConstants.ERROR_CREATE);
+        }
+       
     }
 
     #endregion

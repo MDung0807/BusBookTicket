@@ -83,10 +83,10 @@ namespace BusBookTicket.Configs
 
             #region -- Configs Company Module --
             CreateMap<FormRegisterCompany, Company>()
-                .ForPath(dest => dest.Id,
+                .ForPath(dest => dest.Ward.Id,
                     opts =>opts.MapFrom(x => x.WardId));
             CreateMap<FormUpdateCompany, Company>()
-                .ForPath(dest => dest.Id,
+                .ForPath(dest => dest.Ward.Id,
                     opts =>opts.MapFrom(x => x.WardId));;
             CreateMap<Company, ProfileCompany>()
                 .ForPath(dest => dest.RoleName,

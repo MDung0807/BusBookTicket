@@ -29,9 +29,8 @@ public class CompanyController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromForm] FormRegisterCompany request)
     {
-        int userId = JwtUtils.GetUserID(HttpContext);
-        request.roleName = AppConstants.COMPANY;
-        await _companyServices.Create(request, userId);
+        request.RoleName = AppConstants.COMPANY;
+        await _companyServices.Create(request, -1);
         return Ok(new Response<string>(false, CompanyConstants.SUCCESS));
     }
 
