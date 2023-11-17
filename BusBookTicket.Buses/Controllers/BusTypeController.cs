@@ -42,7 +42,7 @@ public class BusTypeController : ControllerBase
         public async Task<IActionResult> Update([FromBody] BusTypeFormUpdate request)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busTypeService.Update(request, request.busTypeID, userId);
+            bool status = await _busTypeService.Update(request, request.BusTypeId, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
@@ -68,7 +68,7 @@ public class BusTypeController : ControllerBase
         [HttpPost("company/create")]
         public async Task<IActionResult> CreateByCompany([FromBody] BusTypeForm request)
         {
-            request.status = 0;
+            request.Status = 0;
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busTypeService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));

@@ -56,7 +56,7 @@ public class SeatService : ISeatService
     {
         Seat seat = _mapper.Map<Seat>(entity);
         seat.Bus = new Bus();
-        seat.Bus.Id = entity.busID;
+        seat.Bus.Id = entity.BusId;
         seat.Status = (int)EnumsApp.Active;
         await _repository.Create(seat, userId);
         return true;

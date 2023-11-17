@@ -2,9 +2,9 @@
 
 public class SeatResponse
 {
-    public int seatID { get; set; }
-    public string seatNumber { get; set; }
-    public int seatTypeID { get; set; }
-    public int price { get; set; }
-    public string description { get; set; }
+    public int SeatId { get; set; }
+    public string SeatNumber { get; set; }
+    public int SeatTypeId { get; set; }
+    public int Price { get; set; }
+    public string Description { get; set; }
 }

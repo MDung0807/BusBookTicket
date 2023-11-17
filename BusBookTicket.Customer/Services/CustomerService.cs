@@ -72,7 +72,6 @@ namespace BusBookTicket.CustomerManage.Services
             try
             {
                 Customer customer = new Customer();
-
                 customer = _mapper.Map<Customer>(entity);
 
                 // Set Full data in form regisger
@@ -84,6 +83,7 @@ namespace BusBookTicket.CustomerManage.Services
                 await _authService.Create(authRequest, -1);
                 // customer.Ward = await _wardService.WardGet(entity.WardId);
                 customer.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
+                customer.Status = (int)EnumsApp.Active;
                 await _repository.Create(customer, -1);
 
                 // Save Image

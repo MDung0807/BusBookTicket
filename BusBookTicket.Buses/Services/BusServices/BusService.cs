@@ -76,15 +76,15 @@ public class BusService : IBusService
         try
         {
             //Get Data
-            BusTypeResponse busType = await _busTypeService.GetById(entity.busTypeID);
-            SeatTypeResponse seatType = await _seatTypeService.GetById(entity.seatTypeID);
+            BusTypeResponse busType = await _busTypeService.GetById(entity.BusTypeId);
+            SeatTypeResponse seatType = await _seatTypeService.GetById(entity.SeatTypeId);
             
             //Save Bus
             Bus bus = _mapper.Map<Bus>(entity);
             bus.Status = (int)EnumsApp.Active;
             bus = await _repository.Create(bus, userId);
             
-            foreach (int stationID in entity.listBusStopID)
+            foreach (int stationID in entity.ListBusStopId)
             {
                 BusStop busStop = new BusStop();
                 busStop.BusStation ??= new BusStation();
@@ -95,19 +95,19 @@ public class BusService : IBusService
                 await _busStopRepository.Create(busStop, userId);
             }
             
-            int totalSeat = busType.totalSeats == 0? 1: busType.totalSeats;
+            int totalSeat = busType.TotalSeats == 0? 1: busType.TotalSeats;
 
             
             //Save Seat in bus
             for (int i = 0; i < totalSeat; i++)
             {
                 SeatForm seatForm = new SeatForm();
-                seatForm.seatNumber = seatType.type + "_" + i.ToString();
-                seatForm.seatTypeID = seatType.typeID;
-                seatForm.busID = bus.Id;
-                seatForm.description = "";
-                seatForm.price = seatType.price;
-                seatForm.seatID = 0;
+                seatForm.SeatNumber = seatType.Type + "_" + i.ToString();
+                seatForm.SeatTypeId = seatType.TypeId;
+                seatForm.BusId = bus.Id;
+                seatForm.Description = "";
+                seatForm.Price = seatType.Price;
+                seatForm.SeatId = 0;
 
                 await _seatService.Create(seatForm, userId);
             }

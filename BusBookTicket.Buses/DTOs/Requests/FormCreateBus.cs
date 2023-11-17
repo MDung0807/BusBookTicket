@@ -2,9 +2,9 @@
 
 public class FormCreateBus
 {
-    public int companyID { get; set; }
-    public string busNumber { get; set; }
-    public int busTypeID { get; set; }
-    public int seatTypeID { get; set; }
-    public List<int> listBusStopID { get; set; }
+    public int CompanyId { get; set; }
+    public string BusNumber { get; set; }
+    public int BusTypeId { get; set; }
+    public int SeatTypeId { get; set; }
+    public List<int> ListBusStopId { get; set; }
 }

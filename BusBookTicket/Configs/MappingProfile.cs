@@ -143,18 +143,18 @@ namespace BusBookTicket.Configs
             // Bus
             CreateMap<FormCreateBus, Bus>()
                 .ForPath(dest => dest.BusType.Id,
-                    opts => opts.MapFrom(x => x.busTypeID))
+                    opts => opts.MapFrom(x => x.BusTypeId))
                 .ForPath(dest => dest.Company.Id,
-                    opts => opts.MapFrom(x => x.companyID));
+                    opts => opts.MapFrom(x => x.CompanyId));
             CreateMap<FormUpdateBus, Bus>()
                 .ForPath(dest => dest.BusType.Id,
-                        opts => opts.MapFrom(x => x.busTypeId))
+                        opts => opts.MapFrom(x => x.BusTypeId))
                 .ForPath(dest => dest.Company.Id, 
-                    opts => opts.MapFrom(x => x.companyID));;
+                    opts => opts.MapFrom(x => x.CompanyId));;
             CreateMap<Bus, BusResponse>()
-                .ForPath(dest => dest.company,
+                .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Company.Name))
-                .ForPath(dest => dest.busType,
+                .ForPath(dest => dest.BusType,
                     opts => opts.MapFrom(x => x.BusType.Name));
 
             //BusType
@@ -165,22 +165,22 @@ namespace BusBookTicket.Configs
             //SeatType
             CreateMap<SeatTypeFormCreate, SeatType>()
                 .ForPath(dest => dest.Company.Id,
-                    opts => opts.MapFrom(x => x.companyID));
+                    opts => opts.MapFrom(x => x.CompanyId));
 
             CreateMap<SeatTypeFormUpdate, SeatType>()
                 .ForPath(dest => dest.Company.Id,
-                    opts => opts.MapFrom(x => x.companyID));
+                    opts => opts.MapFrom(x => x.CompanyId));
 
             CreateMap<SeatType, SeatTypeResponse>();
 
             //Seat
             CreateMap<SeatForm, Seat>()
                 .ForPath(dest => dest.Bus.Id,
-                    opts => opts.MapFrom(x => x.busID));
+                    opts => opts.MapFrom(x => x.BusId));
 
             CreateMap<SeatForm, Seat>()
                 .ForPath(dest => dest.SeatType.Id,
-                    opts => opts.MapFrom(x => x.seatTypeID));
+                    opts => opts.MapFrom(x => x.SeatTypeId));
 
             #endregion -- Configs Buses Module --
 

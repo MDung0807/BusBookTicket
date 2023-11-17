@@ -20,27 +20,27 @@ public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
     #endregion -- Properties --
 
     public GenericRepository(AppDBContext context)
-    {
-        this._context = context;
-        this._dbSet = context.Set<T>();
-    }
-
-    public async Task<List<T>> ToList(ISpecification<T> specification)
-    {
-        try
-        {
-            List<T> listData = await ApplySpecification(specification).ToListAsync();
-            // listData.ForEach(CheckStatus);
-            return listData;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new ExceptionDetail(AppConstants.ERROR);
-        }
-    }
-
-    public bool Contains(ISpecification<T> specification = null)
+                                                            {
+                                                                this._context = context;
+                                                                this._dbSet = context.Set<T>();
+                                                            }
+                                                        
+                                                            public async Task<List<T>> ToList(ISpecification<T> specification)
+                                                            {
+                                                                try
+                                                                {
+                                                                    List<T> listData = await ApplySpecification(specification).ToListAsync();
+                                                                    // listData.ForEach(CheckStatus);
+                                                                    return listData;
+                                                                }
+                                                                catch (Exception e)
+                                                                {
+                                                                    Console.WriteLine(e);
+                                                                    throw new ExceptionDetail(AppConstants.ERROR);
+                                                                }
+                                                            }
+                                                        
+                                                            public bool Contains(ISpecification<T> specification = null)
     {
         return Count(specification) > 0 ? true : false;
     }
