@@ -34,8 +34,8 @@ public class ImageRepository : IImageRepository
         try
         {
             return await _context.Images
-                .Where(x => x.objectModel == objectModel)
-                .Where(x => x.id01 == key)
+                .Where(x => x.ObjectModel == objectModel)
+                .Where(x => x.Id01 == key)
                 .ToListAsync();
         }
         catch

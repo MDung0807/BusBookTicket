@@ -103,7 +103,7 @@ public class BusService : IBusService
             {
                 SeatForm seatForm = new SeatForm();
                 seatForm.SeatNumber = seatType.Type + "_" + i.ToString();
-                seatForm.SeatTypeId = seatType.TypeId;
+                seatForm.SeatTypeId = seatType.Id;
                 seatForm.BusId = bus.Id;
                 seatForm.Description = "";
                 seatForm.Price = seatType.Price;

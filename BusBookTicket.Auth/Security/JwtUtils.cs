@@ -42,8 +42,8 @@ namespace BusBookTicket.Auth.Security
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("UserID", response.Id.ToString()),
-                    new Claim("username", response.username),
-                    new Claim("role", response.roleName)
+                    new Claim("username", response.Username),
+                    new Claim("role", response.RoleName)
                 }),
 
                 Expires = now.AddMinutes(Convert.ToInt32(EXPIRE)),

@@ -9,9 +9,9 @@ public class ImgaesConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Images>
     public void Configure(EntityTypeBuilder<Images> builder)
     {
         #region -- Properties --
-        builder.Property(x => x.image).IsRequired();
-        builder.Property(x => x.id01).IsRequired();
-        builder.Property(x => x.objectModel).IsRequired();
+        builder.Property(x => x.Image).IsRequired();
+        builder.Property(x => x.Id01).IsRequired();
+        builder.Property(x => x.ObjectModel).IsRequired();
 
         #endregion
     }

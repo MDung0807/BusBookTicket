@@ -26,8 +26,8 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthRequest request)
         {
-            AuthResponse response = await _authService.Login(request);
             request.RoleName = AppConstants.CUSTOMER;
+            AuthResponse response = await _authService.Login(request);
             // await _authService.ChangeStatus(request);
             //var attemt = HttpContext.Session.GetInt32("FailLogin") ?? 0;
             

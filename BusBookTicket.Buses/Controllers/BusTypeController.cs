@@ -42,7 +42,7 @@ public class BusTypeController : ControllerBase
         public async Task<IActionResult> Update([FromBody] BusTypeFormUpdate request)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busTypeService.Update(request, request.BusTypeId, userId);
+            bool status = await _busTypeService.Update(request, request.Id, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
