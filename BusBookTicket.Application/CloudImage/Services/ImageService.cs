@@ -30,9 +30,9 @@ public class ImageService : IImageService
             return false;
         Images images = new Images
         {
-            image = imageResult,
-            id01 = key,
-            objectModel = objectModel
+            Image = imageResult,
+            Id01 = key,
+            ObjectModel = objectModel
         };
         await _repository.Create(images, -1);
         return true;
@@ -45,7 +45,7 @@ public class ImageService : IImageService
         List<string> responses = new List<string>();
         foreach (Images images in imagesList)
         {
-            responses.Add(images.image);
+            responses.Add(images.Image);
         }
 
         return responses;

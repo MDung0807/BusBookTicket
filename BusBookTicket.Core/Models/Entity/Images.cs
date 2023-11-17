@@ -2,7 +2,7 @@
 
 public class Images : BaseEntity
 {
-    public string image { get; set; }
-    public int id01 { get; set; }
-    public string objectModel { get; set; }
+    public string Image { get; set; }
+    public int Id01 { get; set; }
+    public string ObjectModel { get; set; }
 }

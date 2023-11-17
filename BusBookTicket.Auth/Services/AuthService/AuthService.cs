@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Exceptions;
@@ -19,12 +20,14 @@ namespace BusBookTicket.Auth.Services.AuthService
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Account> _repository;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
         #endregion -- Properties --
 
         #region -- Public Method --
 
-        public AuthService(IMapper mapper, IRoleService roleService, IUnitOfWork unitOfWork)
+        public AuthService(IMapper mapper, IRoleService roleService, IUnitOfWork unitOfWork, IImageService imageService)
         {
+            _imageService = imageService;
             _mapper = mapper;
             _roleService = roleService;
             _unitOfWork = unitOfWork;
@@ -106,8 +109,8 @@ namespace BusBookTicket.Auth.Services.AuthService
             {
                 if (account.Role.RoleName == request.RoleName)
                 {
-                    response.username = account.Username;
-                    response.roleName = account.Role.RoleName;
+                    response.Username = account.Username;
+                    response.RoleName = account.Role.RoleName;
                     if (request.RoleName == AppConstants.COMPANY)
                     {
                         response.Id = account.Company.Id;
@@ -115,8 +118,13 @@ namespace BusBookTicket.Auth.Services.AuthService
                     else
                     {
                         response.Id = account.Customer.Id;
+                        List<string> images = await _imageService.getImages(typeof(Customer).ToString(), account.Customer.Id);
+                        if (images.Count > 0)
+                        {
+                            response.Avatar = images[0];
+                        }
                     }
-                    response.token = JwtUtils.GenerateToken(response);
+                    response.Token = JwtUtils.GenerateToken(response);
                     return response;
                 }
             }

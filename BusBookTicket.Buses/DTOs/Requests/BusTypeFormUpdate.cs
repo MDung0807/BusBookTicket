@@ -2,7 +2,7 @@
 
 public class BusTypeFormUpdate
 {
-    public int BusTypeId {  get; set; }
+    public int Id {  get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public int TotalSeats { get; set; }
