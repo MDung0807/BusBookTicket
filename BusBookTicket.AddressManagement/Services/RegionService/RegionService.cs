@@ -32,8 +32,7 @@ public class RegionService : IRegionService
         RegionSpecification regionSpecification = new RegionSpecification(id);
         AdministrativeRegion region = await _repository.Get(regionSpecification);
         RegionResponse response = new RegionResponse();
-        response.Name = region.Name;
-        response.Provinces = await AppUtils.MappObject<Province, ProvinceResponse>(region.Provinces.ToList(), _mapper);
+        response = _mapper.Map<RegionResponse>(region);
         return response;
     }
 

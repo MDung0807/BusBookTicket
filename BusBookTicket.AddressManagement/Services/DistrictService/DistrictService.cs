@@ -31,8 +31,8 @@ public class DistrictService : IDistrictService
         DistrictSpecification districtSpecification = new DistrictSpecification(id);
         District district = await _repository.Get(districtSpecification);
         DistrictResponse response = new DistrictResponse();
-        response.FullName = district.FullName;
-        response.Wards = await AppUtils.MappObject<Ward, WardResponse>(district.Wards.ToList(), _mapper);
+
+        response = _mapper.Map<DistrictResponse>(district);
         return response;
     }
 

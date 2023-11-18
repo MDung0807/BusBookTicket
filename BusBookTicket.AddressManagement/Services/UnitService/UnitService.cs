@@ -33,8 +33,7 @@ public class UnitService : IUnitService
         UnitSpecification unitSpecification = new UnitSpecification(id);
         AdministrativeUnit unit = await _repository.Get(unitSpecification);
         UnitResponse response = new UnitResponse();
-        response.FullName = unit.FullName;
-        response.Provinces = await AppUtils.MappObject<Province, ProvinceResponse>(unit.Provinces.ToList(), _mapper);
+        response = _mapper.Map<UnitResponse>(unit);
         return response;
     }
 
