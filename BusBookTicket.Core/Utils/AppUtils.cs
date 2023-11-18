@@ -9,6 +9,7 @@ public class AppUtils
     /// Mapping from T1 to T2
     /// </summary>
     /// <param name="source">List T1</param>
+    /// <param name="_mapper">Mapper object</param>
     /// <typeparam name="T1">Object Source</typeparam>
     /// <typeparam name="T2">Object Dest</typeparam>
     /// <returns></returns>

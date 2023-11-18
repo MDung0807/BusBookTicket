@@ -7,5 +7,5 @@ namespace BusBookTicket.Ticket.Services.TicketItemServices;
 
 public interface ITicketItemService : IService<TicketItemForm, TicketItemForm, int, TicketItemResponse>
 {
-    Task<List<TicketItemResponse>> getAllInTicket(int ticketID);
+    Task<List<TicketItemResponse>> getAllInTicket(int ticketId);
 }

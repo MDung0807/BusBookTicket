@@ -5,9 +5,15 @@ namespace BusBookTicket.Core.Application.Specification;
 
 public class BaseSpecification<T> : ISpecification<T>
 {
-    protected BaseSpecification(Expression<Func<T, bool>> criteria)
+    /// <summary>
+    /// Create Criteria in query
+    /// </summary>
+    /// <param name="criteria">Criteria</param>
+    /// <param name="checkStatus">Default is True, If True then query add condition is active, else query not check condition status</param>
+    protected BaseSpecification(Expression<Func<T, bool>> criteria, bool checkStatus = true)
     {
         Criteria = criteria;
+        CheckStatus = checkStatus;
     }
     protected BaseSpecification()
     {
@@ -15,6 +21,7 @@ public class BaseSpecification<T> : ISpecification<T>
     }
     public Expression<Func<T, bool>> Criteria { get; }
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+    public bool CheckStatus { get; }
     public List<string> IncludeStrings { get; } = new List<string>();
     public Expression<Func<T, object>> OrderBy { get; private set; }
     public Expression<Func<T, object>> OrderByDescending { get; private set; }

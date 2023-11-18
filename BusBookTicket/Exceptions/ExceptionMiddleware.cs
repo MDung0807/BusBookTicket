@@ -78,19 +78,19 @@ namespace BusBookTicket.Exceptions
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "NotFound")));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
             }
             catch (ValidationException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
             }
             catch (BadRequestException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
 
             }
             catch (LockedResource ex)
@@ -101,15 +101,15 @@ namespace BusBookTicket.Exceptions
             }
             catch (ExceptionDetail ex)
             {
-                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, "Validate")));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.message)));
             }
             catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.ToString())));
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<string>(true, ex.Message)));
             }
         }
     }

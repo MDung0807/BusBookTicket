@@ -2,6 +2,8 @@ namespace BusBookTicket.BusStationManage.Utils;
 
 public class BusStationConstants
 {
+    public const string EXIST_RESOURCE = "Station is exist in system";
+    public const string SUSSCESS = "Success";
     public const string NOT_FOUND = "Dont exist Bus Station in system";
     public const string GET_ERROR = "Get Bus Station has Error";
     public const string DELETE_ERROR = "Delete Bus Station has Error ";

@@ -77,6 +77,14 @@ public class AddressController : ControllerBase
         return Ok(new Response<ProvinceResponse>(false, response));
     }
     
+    [HttpGet("provinces/getAll")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAllProvinces()
+    {
+        List<ProvinceResponse> responses = await _provinceService.GetAll();
+        return Ok(new Response<List<ProvinceResponse>>(false, responses));
+    }
+    
 
     #endregion -- Province --
 

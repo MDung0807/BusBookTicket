@@ -8,14 +8,19 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
     public BusStationSpecification(int id) : base(x => x.Id == id)
     {
         AddInclude(x => x.BusStops);
+        AddInclude(x => x.Ward);
     }
 
     public BusStationSpecification()
     {
-        
+        AddInclude(x => x.Ward);
     }
 
     public BusStationSpecification(string name) : base(x => x.Name == name)
+    {
+    }
+    
+    public BusStationSpecification(string name, bool checkStatus) : base(x => x.Name == name, false)
     {
     }
 

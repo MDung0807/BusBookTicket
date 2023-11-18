@@ -4,7 +4,6 @@ using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.Auth.Controllers

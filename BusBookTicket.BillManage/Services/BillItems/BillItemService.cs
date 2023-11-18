@@ -56,6 +56,36 @@ public class BillItemService : IBillItemService
         }
     }
 
+    public Task<bool> ChangeIsActive(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsLock(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsDisable(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<BillItemResponse>> GetItemInBill(int id)
     {
         List<BillItemResponse> responses = new List<BillItemResponse>();

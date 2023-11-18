@@ -81,14 +81,12 @@ namespace BusBookTicket.CustomerManage.Services
                 // Get account
                 AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
                 await _authService.Create(authRequest, -1);
-                // customer.Ward = await _wardService.WardGet(entity.WardId);
                 customer.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
                 customer.Status = (int)EnumsApp.Active;
                 await _repository.Create(customer, -1);
 
                 // Save Image
                 await _imageService.saveImage(entity.Avatar, typeof(Customer).ToString(), customer.Id);
-                List<string> images = await _imageService.getImages(typeof(Customer).ToString(), customer.Id);
 
                 await _unitOfWork.SaveChangesAsync();
                 return true;
@@ -98,6 +96,36 @@ namespace BusBookTicket.CustomerManage.Services
                 await _unitOfWork.RollbackTransactionAsync();
                 return false;
             }
+        }
+
+        public Task<bool> ChangeIsActive(int id, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangeIsLock(int id, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangeIsWaiting(int id, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangeIsDisable(int id, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckIsExistById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckIsExistByParam(string param)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> Delete(int id, int userId)

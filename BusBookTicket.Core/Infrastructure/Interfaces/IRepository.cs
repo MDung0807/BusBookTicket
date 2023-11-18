@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Models.Entity;
+﻿using BusBookTicket.Core.Application.Specification.Interfaces;
+using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.Core.Infrastructure.Interfaces
 {
@@ -36,7 +37,15 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="userId"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         Task<bool> ChangeStatus(T entity, int userId, int status);
+
+        /// <summary>
+        /// Check data is exist in database
+        /// </summary>
+        /// <param name="specification"></param>
+        /// <returns></returns>
+        Task<bool> CheckIsExist(ISpecification<T> specification);
     }
 }

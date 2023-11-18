@@ -9,6 +9,7 @@ public sealed class CompanySpecification : BaseSpecification<Company>
     {
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
+        AddInclude(x => x.Ward);
     }
 
     public CompanySpecification()

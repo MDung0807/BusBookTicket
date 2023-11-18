@@ -2,7 +2,9 @@
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Services;
+using BusBookTicket.BusStationManage.Utils;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +44,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> Update([FromBody] BST_FormUpdate request)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.Update(request, request.BusStationId, userId);
+            bool status = await _busStationService.Update(request, request.Id, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
         
@@ -63,15 +65,41 @@ namespace BusBookTicket.BusStationManage.Controllers
             bool status = await _busStationService.Delete(id, userId);
             return Ok(new Response<string>(!status, "Response"));
         }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("admin/active")]
+        public async Task<IActionResult> Active(int id)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.ChangeIsActive(id, userId);
+            return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
+        }
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("admin/disable")]
+        public async Task<IActionResult> Disable(int id)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.ChangeIsDisable(id, userId);
+            return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
+        }
+        
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("admin/waiting")]
+        public async Task<IActionResult> ChangeIsWaiting(int id)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status = await _busStationService.ChangeIsWaiting(id, userId);
+            return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
+        }
         
         [Authorize(Roles = "COMPANY")]
         [HttpPost("company/create")]
         public async Task<IActionResult> CreateByCompany([FromBody] BST_FormCreate request)
         {
-            request.Status = 0;
+            request.Status = (int)EnumsApp.Waiting;
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busStationService.Create(request, userId);
-            return Ok(new Response<string>(!status, "Response"));
+            return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
         }
 
         [HttpGet("getByName")]
