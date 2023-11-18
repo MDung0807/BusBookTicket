@@ -14,7 +14,6 @@ public sealed class ProvinceSpecification : BaseSpecification<Province>
     
     public ProvinceSpecification() : base()
     {
-        AddInclude(x => x.Districts);
         AddInclude(x => x.AdministrativeUnit);
         AddInclude(x => x.AdministrativeRegion);
     }
