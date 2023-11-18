@@ -168,12 +168,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
                             //Update status
                             statusProperty.SetValue(ob.GetValue(entity), status);
                             updateByProperty?.SetValue(ob.GetValue(entity), userId);
-                            modifyDateProperty?.SetValue(ob.GetValue(entity), userId);
+                            modifyDateProperty?.SetValue(ob.GetValue(entity), DateTime.Now);
                         }
                     }
                 }
             }
-            entity.Status = 0;
+
+            entity.Status = status;
+            entity.UpdateBy = userId;
+            entity.DateUpdate = DateTime.Now;
             _context.Entry(entity).Property(x => x.Status).IsModified = true;
             await _context.SaveChangesAsync();
             return true;

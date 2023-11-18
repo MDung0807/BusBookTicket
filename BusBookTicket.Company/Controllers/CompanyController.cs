@@ -57,7 +57,7 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> Active([FromQuery] int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        bool status = await _companyServices.changeStatus(id, (int)EnumsApp.Active);
+        bool status = await _companyServices.ChangeIsActive(id, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
 

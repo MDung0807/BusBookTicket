@@ -79,7 +79,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> Disable(int id)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.ChangeIsDisable(id, userId);
+            bool status = await _busStationService.ChangeToDisable(id, userId);
             return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
         }
         
@@ -88,7 +88,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> ChangeIsWaiting(int id)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.ChangeIsWaiting(id, userId);
+            bool status = await _busStationService.ChangeToWaiting(id, userId);
             return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
         }
         
