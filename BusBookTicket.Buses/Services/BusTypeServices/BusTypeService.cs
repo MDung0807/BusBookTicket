@@ -62,24 +62,32 @@ public class BusTypeService : IBusTypeService
         return true;
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
+        BusType busType = await _repository.Get(busTypeSpecification);
+        return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Active);
     }
 
-    public Task<bool> ChangeIsLock(int id, int userId)
+    public async Task<bool> ChangeIsLock(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
+        BusType busType = await _repository.Get(busTypeSpecification);
+        return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Lock);
     }
 
-    public Task<bool> ChangeToWaiting(int id, int userId)
+    public async Task<bool> ChangeToWaiting(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
+        BusType busType = await _repository.Get(busTypeSpecification);
+        return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Waiting);
     }
 
-    public Task<bool> ChangeToDisable(int id, int userId)
+    public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
+        BusType busType = await _repository.Get(busTypeSpecification);
+        return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Disable);
     }
 
     public Task<bool> CheckToExistById(int id)

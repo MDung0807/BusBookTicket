@@ -42,7 +42,9 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(id);
         Bus bus = await _repository.Get(busSpecification);
-        return _mapper.Map<BusResponse>(bus);
+        BusResponse response = _mapper.Map<BusResponse>(bus);
+        response.BusStops.RemoveRange(0, response.BusStops.Count);
+        return response;
     }
 
     public async Task<List<BusResponse>> GetAll()
@@ -95,7 +97,7 @@ public class BusService : IBusService
                 await _busStopRepository.Create(busStop, userId);
             }
             
-            int totalSeat = busType.TotalSeats == 0? 1: busType.TotalSeats;
+            int totalSeat = busType.TotalSeats == 0? 0: busType.TotalSeats;
 
             
             //Save Seat in bus

@@ -23,6 +23,10 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
     public BusStationSpecification(string name, bool checkStatus) : base(x => x.Name == name, false)
     {
     }
+    
+    public BusStationSpecification(int id, bool checkStatus) : base(x => x.Id == id, false)
+    {
+    }
 
     public BusStationSpecification(string name, string location) : base(x =>
         x.Name == name || x.Address.Contains(location)){}

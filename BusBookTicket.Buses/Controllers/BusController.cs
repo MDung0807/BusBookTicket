@@ -1,5 +1,6 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Buses.DTOs.Requests;
+using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Core.Common;
 
@@ -39,5 +40,14 @@ public class BusController : ControllerBase
         await _busService.Update(request, request.Id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
+
+    [HttpGet("get")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetById([FromQuery] int id)
+    {
+        BusResponse response = await _busService.GetById(id);
+        return Ok(new Response<BusResponse>(false, response));
+    }
+
     #endregion -- Controller --
 }

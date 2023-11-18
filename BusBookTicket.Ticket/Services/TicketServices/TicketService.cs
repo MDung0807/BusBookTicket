@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -17,6 +18,7 @@ public class TicketService : ITicketService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
+    private readonly IGenericRepository<Bus> _busRepository;
     #endregion -- Properties --
 
     public TicketService(
@@ -28,6 +30,7 @@ public class TicketService : ITicketService
         this._mapper = mapper;
         this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
+        _busRepository = unitOfWork.GenericRepository<Bus>();
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -71,10 +74,12 @@ public class TicketService : ITicketService
             ticket.Status = (int)EnumsApp.Active;
             ticket = await _repository.Create(ticket, userId);
             
-            //Create TicketItem
+            // Create TicketItem
             TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id);
+            BusSpecification busSpecification = new BusSpecification(entity.busID);
+            Bus bus = await _busRepository.Get(busSpecification);
             ticket = await _repository.Get(ticketSpecification);
-            
+            ticket.Bus = bus;
             List<Seat> seats = ticket.Bus.Seats.ToList();
             foreach (Seat seat in seats)
             {

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.BusStationManage.Controllers
 {
     [ApiController]
-    [Route("api/station")]
+    [Route("api/stations")]
     public class BusStationController : ControllerBase
     {
         private readonly IBusStationService _busStationService;

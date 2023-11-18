@@ -2,6 +2,7 @@
 
 public class BusResponse
 {
+    public int Id { get; set; }
     public string BusNumber { get; set; }
     public string BusType { get; set; }
     public List<string> BusStops { get; set; }

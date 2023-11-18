@@ -155,7 +155,8 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Company.Name))
                 .ForPath(dest => dest.BusType,
-                    opts => opts.MapFrom(x => x.BusType.Name));
+                    opts => opts.MapFrom(x => x.BusType.Name))
+                .ForPath(dest => dest.BusStops,opts => opts.MapFrom(x => x.BusStops));
 
             //BusType
             CreateMap<BusTypeForm, BusType>();
