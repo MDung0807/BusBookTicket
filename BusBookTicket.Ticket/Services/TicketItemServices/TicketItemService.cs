@@ -22,7 +22,7 @@ public class TicketItemService : ITicketItemService
     {
         this._mapper = mapper;
         this._unitOfWork = unitOfWork;
-        this._repository = unitOfWork.GenericRepository<TicketItem>();
+        this._repository = _unitOfWork.GenericRepository<TicketItem>();
     }
     
     public async Task<TicketItemResponse> GetById(int id)
@@ -57,9 +57,39 @@ public class TicketItemService : ITicketItemService
         return true;
     }
 
-    public async Task<List<TicketItemResponse>> getAllInTicket(int ticketID)
+    public Task<bool> ChangeIsActive(int id, int userId)
     {
-        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketID);
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsLock(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsDisable(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<TicketItemResponse>> getAllInTicket(int ticketId)
+    {
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId);
         List<TicketItem> items = await _repository.ToList(ticketItemSpecification);
         List<TicketItemResponse> responses = await AppUtils.MappObject<TicketItem, TicketItemResponse>(items, _mapper);
         return responses;

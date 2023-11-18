@@ -61,4 +61,34 @@ public class BusTypeService : IBusTypeService
         await _repository.Create(busType, userId);
         return true;
     }
+
+    public Task<bool> ChangeIsActive(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsLock(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsDisable(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
 }

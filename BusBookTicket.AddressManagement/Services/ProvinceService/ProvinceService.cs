@@ -35,9 +35,12 @@ public class ProvinceService : IProvinceService
         return response;
     }
 
-    public Task<List<ProvinceResponse>> GetAll()
+    public async Task<List<ProvinceResponse>> GetAll()
     {
-        throw new NotImplementedException();
+        ProvinceSpecification provinceSpecification = new ProvinceSpecification();
+        List<Province> provinces = await _repository.ToList(provinceSpecification);
+        List<ProvinceResponse> responses = await AppUtils.MappObject<Province, ProvinceResponse>(provinces, _mapper);
+        return responses;
     }
 
     public Task<bool> Update(ProvinceUpdate entity, int id, int userId)
@@ -51,6 +54,36 @@ public class ProvinceService : IProvinceService
     }
 
     public Task<bool> Create(ProvinceCreate entity, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsActive(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsLock(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsDisable(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistByParam(string param)
     {
         throw new NotImplementedException();
     }

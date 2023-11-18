@@ -55,6 +55,37 @@ public class DistrictService : IDistrictService
     {
         throw new NotImplementedException();
     }
+
+    public Task<bool> ChangeIsActive(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsLock(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ChangeIsDisable(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CheckIsExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion -- Public Method --
 
     public Task<List<DistrictResponse>> GetDistrictByUnit(int provinceId)

@@ -45,5 +45,13 @@
         /// <param name="userId">Is Id for User</param>
         /// <returns></returns>
         Task<bool> Create(TCreate entity, int userId);
+
+        Task<bool> ChangeIsActive(TId id, int userId);
+        Task<bool> ChangeIsLock(TId id, int userId);
+        Task<bool> ChangeIsWaiting(TId id, int userId);
+        Task<bool> ChangeIsDisable(TId id, int userId);
+
+        Task<bool> CheckIsExistById(TId id);
+        Task<bool> CheckIsExistByParam(string param);
     }
 }
