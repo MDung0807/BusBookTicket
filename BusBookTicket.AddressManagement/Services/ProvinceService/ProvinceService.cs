@@ -30,8 +30,7 @@ public class ProvinceService : IProvinceService
         ProvinceSpecification provinceSpecification = new ProvinceSpecification(id);
         Province province = await _repository.Get(provinceSpecification);
         ProvinceResponse response = new ProvinceResponse();
-        response.FullName = province.FullName;
-        response.Districts = await AppUtils.MappObject<District, DistrictResponse>(province.Districts.ToList(), _mapper);
+        response = _mapper.Map<ProvinceResponse>(province);
         return response;
     }
 
