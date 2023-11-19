@@ -69,22 +69,27 @@ public class WardService : IWardService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<WardResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

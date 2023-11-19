@@ -67,7 +67,7 @@ public class SeatTypeController : ControllerBase
     {
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = id;
-        await _seatTypeService.Update(request, request.TypeId, id);
+        await _seatTypeService.Update(request, request.Id, id);
         return Ok(new Response<string>(false, "Response"));
     }
     

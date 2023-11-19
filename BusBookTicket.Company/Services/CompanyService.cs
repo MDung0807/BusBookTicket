@@ -56,6 +56,15 @@ public class CompanyService : ICompanyServices
         List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
         return profileCompanies;
     }
+    
+    public async Task<List<ProfileCompany>> GetAllByAdmin()
+    {
+        CompanySpecification companySpecification = new CompanySpecification(false);
+        List<Company> companies = await _repository.ToList(companySpecification);
+        List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
+        return profileCompanies;
+    }
+
 
     public async Task<bool> Update(FormUpdateCompany entity, int id, int userId)
     {
@@ -76,7 +85,7 @@ public class CompanyService : ICompanyServices
 
     public async Task<bool> changeStatus(int id, int status)
     {
-        CompanySpecification companySpecification = new CompanySpecification(id);
+        CompanySpecification companySpecification = new CompanySpecification(id, false);
         Company company = await _repository.Get(companySpecification);
         company = changeStatus(company, status);
         await _repository.Update(company, id);
@@ -111,9 +120,12 @@ public class CompanyService : ICompanyServices
        
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        CompanySpecification companySpecification = new CompanySpecification(id, false);
+        Company company = await _repository.Get(companySpecification);
+
+        return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Active);
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -121,22 +133,22 @@ public class CompanyService : ICompanyServices
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
     {
         throw new NotImplementedException();
     }

@@ -57,13 +57,13 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> Active([FromQuery] int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        bool status = await _companyServices.changeStatus(id, (int)EnumsApp.Active);
+        bool status = await _companyServices.ChangeIsActive(id, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
 
     [HttpDelete("delete")]
     [Authorize(Roles = ("COMPANY,ADMIN"))]
-    public async Task<IActionResult> delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _companyServices.Delete(id, userId);
@@ -72,7 +72,7 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("get")]
-    public async Task<IActionResult> getById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         ProfileCompany response = await _companyServices.GetById(id);
         return Ok(new Response<ProfileCompany>(false, response));
@@ -80,9 +80,17 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("getAll")]
-    public async Task<IActionResult> getAllCompany()
+    public async Task<IActionResult> GetAllCompany()
     {
         List<ProfileCompany> responses = await _companyServices.GetAll();
+        return Ok(new Response<List<ProfileCompany>>(false, responses));
+    }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("getAll")]
+    public async Task<IActionResult> GetAllCompanyByAdmin()
+    {
+        List<ProfileCompany> responses = await _companyServices.GetAllByAdmin();
         return Ok(new Response<List<ProfileCompany>>(false, responses));
     }
     #endregion

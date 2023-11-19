@@ -6,11 +6,9 @@ namespace BusBookTicket.BillManage.DTOs.Requests;
 [ValidateNever]
 public class BillRequest
 {
-    public int customerID { get; set; }
-    public DateTime dateDeparture { get; set; }
-    public long totolPrice { get; set; }
-    public string busStationStart { get; set; }
-    public string busStationEnd { get; set; }
-    public int discountID { get; set; } 
-    public List<BillItemRequest> itemsRequest { get; set; }
+    public DateTime DateDeparture { get; set; }
+    public int BusStationStartId { get; set; }
+    public int BusStationEndId { get; set; }
+    public int DiscountId { get; set; } 
+    public List<BillItemRequest> ItemsRequest { get; set; }
 }

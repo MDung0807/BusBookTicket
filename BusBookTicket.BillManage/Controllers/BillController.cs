@@ -4,11 +4,14 @@ using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.BillManage.Controllers;
 
+[ApiController]
+[Route("api/bill")]
 public class BillController : ControllerBase
 {
     private readonly IBillService _billService;
@@ -21,7 +24,7 @@ public class BillController : ControllerBase
     }
 
     #region -- Controller --
-    [Authorize(Roles = "CUSTOMER")]
+    [Authorize(Roles = AppConstants.CUSTOMER)]
     [HttpPost("create")]
     public async Task<IActionResult> CreateBill([FromBody] BillRequest billRequest)
     {
@@ -42,7 +45,8 @@ public class BillController : ControllerBase
     [HttpGet("getAll")]
     public async Task<IActionResult> GetAllBill()
     {
-        List<BillResponse> billResponse = await _billService.GetAll();
+        int userId = JwtUtils.GetUserID(HttpContext);
+        List<BillResponse> billResponse = await _billService.GetAllBillInUser(userId);
         return Ok(new Response<List<BillResponse>>(false, billResponse));
     }
     #endregion -- Controller --

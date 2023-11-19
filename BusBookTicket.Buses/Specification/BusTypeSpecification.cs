@@ -9,6 +9,11 @@ public sealed class BusTypeSpecification : BaseSpecification<BusType>
     {
         AddInclude(x => x.Buses);
     }
+    
+    public BusTypeSpecification(int id, bool checkStatus) : base(x => x.Id == id, checkStatus)
+    {
+        AddInclude(x => x.Buses);
+    }
 
     public BusTypeSpecification()
     {

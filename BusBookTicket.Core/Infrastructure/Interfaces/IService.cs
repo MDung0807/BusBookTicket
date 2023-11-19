@@ -46,12 +46,52 @@
         /// <returns></returns>
         Task<bool> Create(TCreate entity, int userId);
 
+        /// <summary>
+        /// Change status is active
+        /// </summary>
+        /// <param name="id">primary key entity</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
         Task<bool> ChangeIsActive(TId id, int userId);
+        
+        /// <summary>
+        /// Change status is Lock
+        /// </summary>
+        /// <param name="id">primary key entity</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
         Task<bool> ChangeIsLock(TId id, int userId);
-        Task<bool> ChangeIsWaiting(TId id, int userId);
-        Task<bool> ChangeIsDisable(TId id, int userId);
+        
+        /// <summary>
+        /// Change status is Waiting
+        /// </summary>
+        /// <param name="id">primary key entity</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
+        Task<bool> ChangeToWaiting(TId id, int userId);
+        
+        /// <summary>
+        /// Change status is diable
+        /// </summary>
+        /// <param name="id">primary key entity</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
+        Task<bool> ChangeToDisable(TId id, int userId);
 
-        Task<bool> CheckIsExistById(TId id);
-        Task<bool> CheckIsExistByParam(string param);
+        /// <summary>
+        /// Check is exist
+        /// </summary>
+        /// <param name="id">Primary key entity</param>
+        /// <returns></returns>
+        Task<bool> CheckToExistById(TId id);
+        
+        /// <summary>
+        /// Check is exist
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        Task<bool> CheckToExistByParam(string param);
+
+        Task<List<TResponse>> GetAllByAdmin();
     }
 }

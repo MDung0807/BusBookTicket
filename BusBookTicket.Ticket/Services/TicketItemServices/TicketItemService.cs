@@ -67,22 +67,27 @@ public class TicketItemService : ITicketItemService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TicketItemResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }
@@ -93,5 +98,20 @@ public class TicketItemService : ITicketItemService
         List<TicketItem> items = await _repository.ToList(ticketItemSpecification);
         List<TicketItemResponse> responses = await AppUtils.MappObject<TicketItem, TicketItemResponse>(items, _mapper);
         return responses;
+    }
+
+    public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
+    {
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
+        TicketItem item = await _repository.Get(ticketItemSpecification);
+        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.AwaitingPayment);
+    }
+
+    public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
+    {
+    
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
+        TicketItem item = await _repository.Get(ticketItemSpecification);
+        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.PaymentComplete);
     }
 }

@@ -41,6 +41,15 @@ public class BusStationService : IBusStationService
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         return responses;
     }
+    
+    public async Task<List<BusStationResponse>> GetAllByAdmin()
+    {
+        BusStationSpecification busStationSpecification = new BusStationSpecification(false);
+        List<BusStationResponse> responses = new List<BusStationResponse>();
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
+        responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        return responses;
+    }
 
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
     {
@@ -72,38 +81,38 @@ public class BusStationService : IBusStationService
 
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
         BusStation busStation = await _repository.Get(busStationSpecification);
-        return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Lock);
+        return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Active);
     }
 
     public async Task<bool> ChangeIsLock(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Lock);
     }
 
-    public async Task<bool> ChangeIsWaiting(int id, int userId)
+    public async Task<bool> ChangeToWaiting(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Waiting);
     }
 
-    public async Task<bool> ChangeIsDisable(int id, int userId)
+    public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Disable);
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
     {
         throw new NotImplementedException();
     }

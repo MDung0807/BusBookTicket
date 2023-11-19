@@ -2,7 +2,7 @@
 
 public class BillItemResponse
 {
-    public List<int> seatNumber { get; set; }
-    public string busNumber { get; set; }
-    public string company { get; set; }
+    public string SeatNumber { get; set; }
+    public string BusNumber { get; set; }
+    public string Company { get; set; }
 }

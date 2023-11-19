@@ -2,10 +2,10 @@
 
 public class TicketItemResponse
 {
-    public int ticketID { get; set; }
-    public int ticketItemID { get; set; }
-    public int status { get; set; }
-    public int price { get; set; }
-    public string seatNumber { get; set; }
-    public string seatType { get; set; }
+    public int TicketId { get; set; }
+    public int Id { get; set; }
+    public int Status { get; set; }
+    public int Price { get; set; }
+    public string SeatNumber { get; set; }
+    public string SeatType { get; set; }
 }

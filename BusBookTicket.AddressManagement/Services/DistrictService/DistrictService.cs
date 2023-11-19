@@ -31,8 +31,8 @@ public class DistrictService : IDistrictService
         DistrictSpecification districtSpecification = new DistrictSpecification(id);
         District district = await _repository.Get(districtSpecification);
         DistrictResponse response = new DistrictResponse();
-        response.FullName = district.FullName;
-        response.Wards = await AppUtils.MappObject<Ward, WardResponse>(district.Wards.ToList(), _mapper);
+
+        response = _mapper.Map<DistrictResponse>(district);
         return response;
     }
 
@@ -66,22 +66,27 @@ public class DistrictService : IDistrictService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<DistrictResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

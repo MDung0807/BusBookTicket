@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.BusStationManage.Controllers
 {
     [ApiController]
-    [Route("api/station")]
+    [Route("api/stations")]
     public class BusStationController : ControllerBase
     {
         private readonly IBusStationService _busStationService;
@@ -28,6 +28,15 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> GetAll()
         {
             List<BusStationResponse> responses = await _busStationService.GetAll();
+            return Ok(new Response<List<BusStationResponse>>(false, responses));
+        }
+        
+        [HttpGet("admin/getAll")]
+        
+        [Authorize(Roles = AppConstants.ADMIN)]
+        public async Task<IActionResult> GetAllByAdmin()
+        {
+            List<BusStationResponse> responses = await _busStationService.GetAllByAdmin();
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         
@@ -79,7 +88,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> Disable(int id)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.ChangeIsDisable(id, userId);
+            bool status = await _busStationService.ChangeToDisable(id, userId);
             return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
         }
         
@@ -88,7 +97,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         public async Task<IActionResult> ChangeIsWaiting(int id)
         {
             int userId = JwtUtils.GetUserID(HttpContext);
-            bool status = await _busStationService.ChangeIsWaiting(id, userId);
+            bool status = await _busStationService.ChangeToWaiting(id, userId);
             return Ok(new Response<string>(!status, BusStationConstants.SUSSCESS));
         }
         

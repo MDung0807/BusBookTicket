@@ -33,8 +33,7 @@ public class UnitService : IUnitService
         UnitSpecification unitSpecification = new UnitSpecification(id);
         AdministrativeUnit unit = await _repository.Get(unitSpecification);
         UnitResponse response = new UnitResponse();
-        response.FullName = unit.FullName;
-        response.Provinces = await AppUtils.MappObject<Province, ProvinceResponse>(unit.Provinces.ToList(), _mapper);
+        response = _mapper.Map<UnitResponse>(unit);
         return response;
     }
 
@@ -70,22 +69,27 @@ public class UnitService : IUnitService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<UnitResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

@@ -42,7 +42,9 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(id);
         Bus bus = await _repository.Get(busSpecification);
-        return _mapper.Map<BusResponse>(bus);
+        BusResponse response = _mapper.Map<BusResponse>(bus);
+        response.BusStops.RemoveRange(0, response.BusStops.Count);
+        return response;
     }
 
     public async Task<List<BusResponse>> GetAll()
@@ -95,7 +97,7 @@ public class BusService : IBusService
                 await _busStopRepository.Create(busStop, userId);
             }
             
-            int totalSeat = busType.TotalSeats == 0? 1: busType.TotalSeats;
+            int totalSeat = busType.TotalSeats == 0? 0: busType.TotalSeats;
 
             
             //Save Seat in bus
@@ -132,22 +134,27 @@ public class BusService : IBusService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<BusResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

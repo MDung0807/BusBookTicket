@@ -117,24 +117,39 @@ namespace BusBookTicket.Configs
 
             #region -- Configs Bill Module --
 
-            CreateMap<BillRequest, Bill>();
-            CreateMap<BillItemRequest, BillItem>();
+            CreateMap<BillRequest, Bill>()
+                .ForPath(dest => dest.BusStationStart.Id,
+                    opts => opts.MapFrom(x => x.BusStationStartId))
+                .ForPath(dest => dest.BusStationEnd.Id,
+                    opts => opts.MapFrom(x => x.BusStationEndId))
+                .ForPath(dest => dest.Discount.Id,
+                    opts => opts.MapFrom(x => x.DiscountId));
+                
+            CreateMap<BillItemRequest, BillItem>()
+                .ForPath(dest => dest.Bill.Id, 
+                    opts => opts.MapFrom(x => x.BillId))
+                .ForPath(dest => dest.TicketItem.Id, 
+                    opts => opts.MapFrom(x => x.TicketItemId));
             
             CreateMap<Bill, BillResponse>()
-                .ForPath(dest => dest.nameCustomer,
+                .ForPath(dest => dest.NameCustomer,
                     opts => opts.MapFrom(x => x.Customer.FullName))
-                .ForPath(dest => dest.busStationStart,
+                .ForPath(dest => dest.BusStationStart,
                     opts => opts.MapFrom(x => x.BusStationStart.Name))
-                .ForPath(dest => dest.busStationEnd,
+                .ForPath(dest => dest.BusStationEnd,
                     opts => opts.MapFrom(x => x.BusStationEnd.Name))
-                .ForPath(dest => dest.discount,
-                    opts => opts.MapFrom(x => x.Discount.Name));
+                .ForPath(dest => dest.Discount,
+                    opts => opts.MapFrom(x => x.Discount.Name))
+                .ForPath( dest => dest.Items, 
+                    opts => opts.MapFrom(x => x.BillItems));
 
             CreateMap<BillItem, BillItemResponse>()
-                .ForPath(dest => dest.company,
+                .ForPath(dest => dest.Company,
                     memberOptions: opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.Company.Name))
-                .ForPath(dest => dest.busNumber,
-                    opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.BusNumber));
+                .ForPath(dest => dest.BusNumber,
+                    opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.BusNumber))
+                .ForPath(dest => dest.SeatNumber, 
+                    opts => opts.MapFrom(x => x.TicketItem.SeatNumber));
 
             #endregion -- Configs Bill Module --
 
@@ -155,7 +170,8 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Company.Name))
                 .ForPath(dest => dest.BusType,
-                    opts => opts.MapFrom(x => x.BusType.Name));
+                    opts => opts.MapFrom(x => x.BusType.Name))
+                .ForPath(dest => dest.BusStops,opts => opts.MapFrom(x => x.BusStops));
 
             //BusType
             CreateMap<BusTypeForm, BusType>();
@@ -196,10 +212,16 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.busID));
 
             CreateMap<Core.Models.Entity.Ticket, TicketResponse>()
-                .ForPath(dest => dest.busNumber,
+                .ForPath(dest => dest.BusNumber,
                     opts => opts.MapFrom(x => x.Bus.BusNumber))
-                .ForPath(dest => dest.company,
+                .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Bus.Company.Name));
+
+            CreateMap<BusStation, StationResponse>()
+                .ForPath(dest => dest.StationId,
+                    opts => opts.MapFrom(x => x.Id))
+                .ForPath(dest => dest.Station,
+                    opts => opts.MapFrom(x => x.Name));
 
             //TicketItem
             CreateMap<TicketItemForm, TicketItem>()

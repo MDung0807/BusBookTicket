@@ -9,7 +9,7 @@ namespace BusBookTicket.Ticket.Specification;
 public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.Ticket>
 {
     /// <summary>
-    /// Find Ticket By TicketId
+    /// Find Ticket By Id
     /// </summary>
     /// <param name="id">Primary key in Ticket</param>
     public TicketSpecification(int id) : base(x => x.Id == id)

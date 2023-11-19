@@ -46,8 +46,7 @@ public class BillItemService : IBillItemService
     {
         try
         {
-            BillItem item = _mapper.Map<BillItem>(entity);
-            await _repository.Create(item, userId);
+            await CreateBillItem(entity, userId);
             return true;
         }
         catch
@@ -55,6 +54,21 @@ public class BillItemService : IBillItemService
             throw new Exception(BillConstants.ERROR_CREATE);
         }
     }
+    
+    public async Task<BillItem> CreateBillItem(BillItemRequest entity, int userId)
+    {
+        try
+        {
+            BillItem item = _mapper.Map<BillItem>(entity);
+            item.Status = (int)EnumsApp.AwaitingPayment;
+            return await _repository.Create(item, userId);
+        }
+        catch
+        {
+            throw new Exception(BillConstants.ERROR_CREATE);
+        }
+    }
+    
 
     public Task<bool> ChangeIsActive(int id, int userId)
     {
@@ -66,22 +80,27 @@ public class BillItemService : IBillItemService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsWaiting(int id, int userId)
+    public Task<bool> ChangeToWaiting(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeIsDisable(int id, int userId)
+    public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistById(int id)
+    public Task<bool> CheckToExistById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CheckIsExistByParam(string param)
+    public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<BillItemResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

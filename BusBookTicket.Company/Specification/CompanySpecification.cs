@@ -12,6 +12,17 @@ public sealed class CompanySpecification : BaseSpecification<Company>
         AddInclude(x => x.Ward);
     }
 
+    public CompanySpecification(int id, bool checkStatus) : base(x => x.Id == id, checkStatus)
+    {
+        AddInclude(x => x.Account);
+        AddInclude(x => x.Account.Role);
+        AddInclude(x => x.Ward);
+    }
+    public CompanySpecification(bool checkStatus) : base(null, checkStatus)
+    {
+        
+    }
+
     public CompanySpecification()
     {
         
