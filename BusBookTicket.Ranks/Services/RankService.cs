@@ -92,5 +92,10 @@ public class RankService : IRankService
         throw new NotImplementedException();
     }
 
+    public Task<List<RankResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion -- Public Method --
 }

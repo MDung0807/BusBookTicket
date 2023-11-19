@@ -132,6 +132,11 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
+    public Task<List<BillResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
     {
         BillSpecification specification = new BillSpecification(id);

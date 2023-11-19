@@ -144,6 +144,11 @@ public class CompanyService : ICompanyServices
         throw new NotImplementedException();
     }
 
+    public Task<List<ProfileCompany>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 
     #region -- Private Method --

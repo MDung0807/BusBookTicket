@@ -91,5 +91,7 @@
         /// <param name="param"></param>
         /// <returns></returns>
         Task<bool> CheckToExistByParam(string param);
+
+        Task<List<TResponse>> GetAllByAdmin();
     }
 }

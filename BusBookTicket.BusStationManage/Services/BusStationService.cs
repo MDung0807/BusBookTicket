@@ -108,6 +108,11 @@ public class BusStationService : IBusStationService
         throw new NotImplementedException();
     }
 
+    public Task<List<BusStationResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<BusStationResponse> getStationByName(string name)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);

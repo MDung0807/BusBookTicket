@@ -80,6 +80,11 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        public Task<List<AuthResponse>> GetAllByAdmin()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> ResetPass(FormResetPass request)
         {
             

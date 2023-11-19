@@ -89,6 +89,11 @@ public class SeatTypeService : ISeatTypeService
         throw new NotImplementedException();
     }
 
+    public Task<List<SeatTypeResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<SeatTypeResponse>> getAll(int companyID)
     {
         SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, companyID);

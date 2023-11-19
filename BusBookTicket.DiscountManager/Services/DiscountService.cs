@@ -11,12 +11,10 @@ namespace BusBookTicket.DiscountManager.Services;
 public class DiscountService : IDiscountService
 {
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Discount> _repository;
     public DiscountService(IMapper mapper, IUnitOfWork unitOfWork)
     {
         this._mapper = mapper;
-        this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Discount>();
     }
     public async Task<DiscountResponse> GetById(int id)
@@ -30,9 +28,8 @@ public class DiscountService : IDiscountService
     {
         DiscountSpecification discountSpecification = new DiscountSpecification();
         List<Discount> discounts = await _repository.ToList(discountSpecification);
-        List<DiscountResponse> responses = new List<DiscountResponse>();
 
-        responses = await AppUtils.MappObject<Discount, DiscountResponse>(discounts, _mapper);
+        List<DiscountResponse> responses = await AppUtils.MappObject<Discount, DiscountResponse>(discounts, _mapper);
         return responses;
     }
 
@@ -87,6 +84,11 @@ public class DiscountService : IDiscountService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<DiscountResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

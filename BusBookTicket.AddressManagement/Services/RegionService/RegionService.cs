@@ -88,6 +88,11 @@ public class RegionService : IRegionService
         throw new NotImplementedException();
     }
 
+    public Task<List<RegionResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
     
 }

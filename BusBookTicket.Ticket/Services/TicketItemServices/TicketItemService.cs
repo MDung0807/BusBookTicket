@@ -87,6 +87,11 @@ public class TicketItemService : ITicketItemService
         throw new NotImplementedException();
     }
 
+    public Task<List<TicketItemResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<TicketItemResponse>> getAllInTicket(int ticketId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId);

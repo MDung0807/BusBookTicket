@@ -153,4 +153,9 @@ public class BusService : IBusService
     {
         throw new NotImplementedException();
     }
+
+    public Task<List<BusResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
 }

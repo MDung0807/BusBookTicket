@@ -100,6 +100,11 @@ public class BillItemService : IBillItemService
         throw new NotImplementedException();
     }
 
+    public Task<List<BillItemResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<BillItemResponse>> GetItemInBill(int id)
     {
         List<BillItemResponse> responses = new List<BillItemResponse>();

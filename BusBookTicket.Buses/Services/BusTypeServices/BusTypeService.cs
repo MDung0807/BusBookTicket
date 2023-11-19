@@ -99,4 +99,9 @@ public class BusTypeService : IBusTypeService
     {
         throw new NotImplementedException();
     }
+
+    public Task<List<BusTypeResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
 }

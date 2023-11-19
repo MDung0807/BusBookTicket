@@ -89,5 +89,10 @@ public class UnitService : IUnitService
         throw new NotImplementedException();
     }
 
+    public Task<List<UnitResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

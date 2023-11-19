@@ -89,6 +89,11 @@ public class WardService : IWardService
         throw new NotImplementedException();
     }
 
+    public Task<List<WardResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Ward> WardGet(int id)
     {
         WardSpecification wardSpecification = new WardSpecification(id);

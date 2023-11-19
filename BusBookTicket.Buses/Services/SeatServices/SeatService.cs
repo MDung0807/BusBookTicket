@@ -92,6 +92,11 @@ public class SeatService : ISeatService
         throw new NotImplementedException();
     }
 
+    public Task<List<SeatResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<SeatResponse>> getSeatInBus(int busID)
     {
         SeatSpecification seatSpecification = new SeatSpecification(0, busID);

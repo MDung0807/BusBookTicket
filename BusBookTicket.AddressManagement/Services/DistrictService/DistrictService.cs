@@ -86,6 +86,11 @@ public class DistrictService : IDistrictService
         throw new NotImplementedException();
     }
 
+    public Task<List<DistrictResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion -- Public Method --
 
     public Task<List<DistrictResponse>> GetDistrictByUnit(int provinceId)

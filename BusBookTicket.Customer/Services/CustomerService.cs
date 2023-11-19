@@ -128,6 +128,11 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
+        public Task<List<ProfileResponse>> GetAllByAdmin()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> Delete(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id);

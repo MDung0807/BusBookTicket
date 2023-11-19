@@ -127,6 +127,11 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
+    public Task<List<TicketResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<TicketResponse>> GetAllTicket(SearchForm searchForm)
     {
         searchForm.dateTime = searchForm.dateTime.Date;
