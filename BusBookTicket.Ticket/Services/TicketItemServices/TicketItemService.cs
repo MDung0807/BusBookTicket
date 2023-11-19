@@ -94,4 +94,19 @@ public class TicketItemService : ITicketItemService
         List<TicketItemResponse> responses = await AppUtils.MappObject<TicketItem, TicketItemResponse>(items, _mapper);
         return responses;
     }
+
+    public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
+    {
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
+        TicketItem item = await _repository.Get(ticketItemSpecification);
+        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.AwaitingPayment);
+    }
+
+    public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
+    {
+    
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
+        TicketItem item = await _repository.Get(ticketItemSpecification);
+        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.PaymentComplete);
+    }
 }

@@ -1,13 +1,18 @@
-﻿namespace BusBookTicket.BillManage.DTOs.Responses;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace BusBookTicket.BillManage.DTOs.Responses;
 
 public class BillResponse
 {
-    public string nameCustomer { get; set; }
-    public DateTime dateDeparture { get; set; }
-    public DateTime dateCreate { get; set; }
-    public long totolPrice { get; set; }
-    public string busStationStart { get; set; }
-    public string busStationEnd { get; set; }
-    public string discount { get; set; } 
-    public List<BillItemResponse> items { get; set; }
+    public string NameCustomer { get; set; }
+    
+    public DateTime DateDeparture { get; set; }
+    
+    public DateTime DateCreate { get; set; }
+    public long TotalPrice { get; set; }
+    public string BusStationStart { get; set; }
+    public string BusStationEnd { get; set; }
+    public string Discount { get; set; } 
+    public List<BillItemResponse> Items { get; set; }
 }

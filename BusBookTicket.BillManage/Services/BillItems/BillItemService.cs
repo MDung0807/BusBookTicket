@@ -46,8 +46,7 @@ public class BillItemService : IBillItemService
     {
         try
         {
-            BillItem item = _mapper.Map<BillItem>(entity);
-            await _repository.Create(item, userId);
+            await CreateBillItem(entity, userId);
             return true;
         }
         catch
@@ -55,6 +54,21 @@ public class BillItemService : IBillItemService
             throw new Exception(BillConstants.ERROR_CREATE);
         }
     }
+    
+    public async Task<BillItem> CreateBillItem(BillItemRequest entity, int userId)
+    {
+        try
+        {
+            BillItem item = _mapper.Map<BillItem>(entity);
+            item.Status = (int)EnumsApp.AwaitingPayment;
+            return await _repository.Create(item, userId);
+        }
+        catch
+        {
+            throw new Exception(BillConstants.ERROR_CREATE);
+        }
+    }
+    
 
     public Task<bool> ChangeIsActive(int id, int userId)
     {
