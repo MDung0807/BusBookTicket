@@ -41,6 +41,15 @@ public class BusStationService : IBusStationService
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         return responses;
     }
+    
+    public async Task<List<BusStationResponse>> GetAllByAdmin()
+    {
+        BusStationSpecification busStationSpecification = new BusStationSpecification(false);
+        List<BusStationResponse> responses = new List<BusStationResponse>();
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
+        responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        return responses;
+    }
 
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
     {
@@ -104,11 +113,6 @@ public class BusStationService : IBusStationService
     }
 
     public Task<bool> CheckToExistByParam(string param)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<BusStationResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }

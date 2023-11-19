@@ -15,6 +15,11 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
     {
         AddInclude(x => x.Ward);
     }
+    
+    public BusStationSpecification(bool checkStatus) : base(null, checkStatus: checkStatus)
+    {
+        AddInclude(x => x.Ward);
+    }
 
     public BusStationSpecification(string name) : base(x => x.Name == name)
     {

@@ -31,6 +31,15 @@ namespace BusBookTicket.BusStationManage.Controllers
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         
+        [HttpGet("admin/getAll")]
+        
+        [Authorize(Roles = AppConstants.ADMIN)]
+        public async Task<IActionResult> GetAllByAdmin()
+        {
+            List<BusStationResponse> responses = await _busStationService.GetAllByAdmin();
+            return Ok(new Response<List<BusStationResponse>>(false, responses));
+        }
+        
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)

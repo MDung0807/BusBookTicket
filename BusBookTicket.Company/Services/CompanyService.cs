@@ -56,6 +56,15 @@ public class CompanyService : ICompanyServices
         List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
         return profileCompanies;
     }
+    
+    public async Task<List<ProfileCompany>> GetAllByAdmin()
+    {
+        CompanySpecification companySpecification = new CompanySpecification(false);
+        List<Company> companies = await _repository.ToList(companySpecification);
+        List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
+        return profileCompanies;
+    }
+
 
     public async Task<bool> Update(FormUpdateCompany entity, int id, int userId)
     {
@@ -140,11 +149,6 @@ public class CompanyService : ICompanyServices
     }
 
     public Task<bool> CheckToExistByParam(string param)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<ProfileCompany>> GetAllByAdmin()
     {
         throw new NotImplementedException();
     }
