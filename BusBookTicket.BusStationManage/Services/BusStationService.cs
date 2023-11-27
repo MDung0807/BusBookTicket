@@ -1,6 +1,7 @@
 using AutoMapper;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
+using BusBookTicket.BusStationManage.Paging;
 using BusBookTicket.BusStationManage.Specification;
 using BusBookTicket.BusStationManage.Utils;
 using BusBookTicket.Core.Common;
@@ -49,6 +50,18 @@ public class BusStationService : IBusStationService
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         return responses;
+    }
+
+    public async Task<StationPagingResult> GetAll(StationPaging request)
+    {
+        BusStationSpecification busStationSpecification = new BusStationSpecification(paging: request);
+        List<BusStationResponse> stationResponses = new List<BusStationResponse>();
+        StationPagingResult response = new StationPagingResult();
+        response.PageIndex = request.PageIndex;
+        response.PageSize = request.PageSize;
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
+        response.Items = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        return response;
     }
 
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
