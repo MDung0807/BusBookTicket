@@ -8,8 +8,8 @@ namespace BusBookTicket.Core.Application.Paging
 {
     public class PagingRequest
     {
-        private int _pageSize = 2;
-        private int _pageIndex = 0;
+        private int _pageSize = 10;
+        private int _pageIndex = 1;
         public int PageIndex 
         {
             get => _pageIndex;
