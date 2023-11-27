@@ -77,8 +77,10 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Ward.Id, 
                     opts => opts.MapFrom(x => x.WardId));
             CreateMap<BusStation, BusStationResponse>()
-                .ForPath(dest => dest.WardId, 
-                    opts => opts.MapFrom(x => x.Ward.Id));
+                .ForPath(dest => dest.WardId,
+                    opts => opts.MapFrom(x => x.Ward.Id))
+                .ForPath(dest => dest.BusStopId,
+                    opts => opts.MapFrom(x => x.BusStops.FirstOrDefault().Id));
             #endregion -- Configs BusStation Module --
 
             #region -- Configs Company Module --
@@ -205,7 +207,7 @@ namespace BusBookTicket.Configs
             //Ticket
             CreateMap<TicketFormCreate, Core.Models.Entity.Ticket>()
                 .ForPath(dest => dest.Bus.Id,
-                    opts => opts.MapFrom(x => x.busID));
+                    opts => opts.MapFrom(x => x.BusId));
             
             CreateMap<TicketFormUpdate, Core.Models.Entity.Ticket>()
                 .ForPath(dest => dest.Bus.Id,
@@ -228,7 +230,11 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Ticket.Id,
                     opts => opts.MapFrom(x => x.ticketID));
             CreateMap<TicketItem, TicketItemResponse>();
-
+            
+            //Ticket BusStop
+            CreateMap<TicketStationDto, Ticket_BusStop>()
+                .ForPath(dest => dest.BusStop.Id,
+                    opts => opts.MapFrom(x => x.BusStopId));
             #endregion -- Configs Ticket Module --
             
             #region -- Address Module --

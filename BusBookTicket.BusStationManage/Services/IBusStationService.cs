@@ -7,6 +7,7 @@ namespace BusBookTicket.BusStationManage.Services;
 
 public interface IBusStationService : IService<BST_FormCreate, BST_FormUpdate, int, BusStationResponse>
 {
-    Task<BusStationResponse> getStationByName(string name);
-    Task<List<BusStationResponse>> getStationByLocation(string location);
+    Task<BusStationResponse> GetStationByName(string name);
+    Task<List<BusStationResponse>> GetStationByLocation(string location);
+    Task<List<BusStationResponse>> GetAllStationInBus(int busId);
 }

@@ -15,10 +15,10 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
         if (specification.Criteria != null)
         {
             query = query.Where(specification.Criteria);
-            if (specification.CheckStatus)
-            {
-                query = query.Where(x => x.Status == (int)EnumsApp.Active);
-            }
+        }
+        if (specification.CheckStatus)
+        {
+            query = query.Where(x => x.Status == (int)EnumsApp.Active);
         }
         
         // Includes all expression-based includes

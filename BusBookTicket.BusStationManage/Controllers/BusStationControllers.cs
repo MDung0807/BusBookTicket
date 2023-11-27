@@ -40,6 +40,14 @@ namespace BusBookTicket.BusStationManage.Controllers
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         
+        [HttpGet("getAllInBus")]
+        [AllowAnonymous]        
+        public async Task<IActionResult> GetAllStationInBus([FromQuery] int busId)
+        {
+            List<BusStationResponse> responses = await _busStationService.GetAllStationInBus(busId);
+            return Ok(new Response<List<BusStationResponse>>(false, responses));
+        }
+        
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
@@ -115,7 +123,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetStationByName([FromQuery]string name)
         {
-            BusStationResponse response = await _busStationService.getStationByName(name);
+            BusStationResponse response = await _busStationService.GetStationByName(name);
             return Ok(new Response<BusStationResponse>(false, response));
         }
         
@@ -123,7 +131,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetStationByLocation([FromQuery] string location)
         {
-            List<BusStationResponse> responses = await _busStationService.getStationByLocation(location);
+            List<BusStationResponse> responses = await _busStationService.GetStationByLocation(location);
             return Ok(new Response<List<BusStationResponse>>(false, responses));
         }
         #endregion -- Controllers --

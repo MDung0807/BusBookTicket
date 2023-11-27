@@ -5,6 +5,16 @@ namespace BusBookTicket.Ticket.DTOs.Requests;
 [ValidateNever]
 public class TicketFormCreate
 {
-    public DateTime date { get; set; }
-    public int busID { get; set; }
+    public DateTime Date { get; set; }
+    public int BusId { get; set; }
+
+    public List<TicketStationDto> TicketStations { get; set; }
+}
+
+public class TicketStationDto
+{
+    public int IndexStation { get; set; }
+    public DateTime DepartureTime { get; set; }
+    public DateTime ArrivalTime { get; set; }
+    public int BusStopId { get; set; }
 }

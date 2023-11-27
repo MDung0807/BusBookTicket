@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.Core.Infrastructure;
 
-public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
+public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     #region -- Properties --
 
@@ -194,6 +194,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T: BaseEntity
         if (ob == null)
             return false;
         return true;
+    }
+
+    public async Task<List<T>> ToListWithSqlQuery(string sqlQuery)
+    {
+        
+        List<T> listData = await _dbSet.FromSqlRaw(sqlQuery).ToListAsync();
+        return listData;
     }
 
     #region -- Private Method --

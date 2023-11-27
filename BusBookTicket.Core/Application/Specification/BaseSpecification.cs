@@ -26,6 +26,7 @@ public class BaseSpecification<T> : ISpecification<T>
     public Expression<Func<T, object>> OrderBy { get; private set; }
     public Expression<Func<T, object>> OrderByDescending { get; private set; }
     public Expression<Func<T, object>> GroupBy { get; private set; }
+    public String SqlQuery { get; private set; }
 
     public int Take { get; private set; }
     public int Skip { get; private set; }
@@ -40,7 +41,10 @@ public class BaseSpecification<T> : ISpecification<T>
     {
         IncludeStrings.Add(includeString);
     }
-
+    protected virtual void AddSqlQuery (string sqlQuery)
+    {
+        SqlQuery = sqlQuery;
+    }
     protected virtual void ApplyPaging(int skip, int take)
     {
         Skip = skip;

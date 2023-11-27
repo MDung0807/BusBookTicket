@@ -1,5 +1,7 @@
 ﻿using BusBookTicket.Core.Application.Specification;
+using BusBookTicket.Core.Application.Specification.Interfaces;
 using BusBookTicket.Core.Models.Entity;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace BusBookTicket.Ticket.Specification;
 
@@ -28,7 +30,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// <param name="stationStart">Station start</param>
     /// <param name="stationEnd">Station end</param>
     public TicketSpecification(DateTime dateTime, string stationStart, string stationEnd)
-        : base(x => x.Date.Date >= dateTime && x.Bus.BusStops.Any(p => p.BusStation.Name.Contains(stationEnd)))
+      
     {
         AddInclude(x => x.Bus);
         AddInclude(x => x.Bus.BusStops);

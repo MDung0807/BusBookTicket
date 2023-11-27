@@ -6,6 +6,7 @@
 
         public BusStation? BusStation { get; set; }
         public Bus? Bus { get; set; }
+        public HashSet<Ticket_BusStop> TicketBusStops { get; set; }
 
         #endregion
     }

@@ -9,5 +9,6 @@ public class Ticket : BaseEntity
     #region -- Relationships --
     public Bus Bus { get; set; }
     public HashSet<TicketItem> TicketItems { get; set; }
+    public HashSet<Ticket_BusStop> TicketBusStops { get; set; }
     #endregion -- Relationships --
 }

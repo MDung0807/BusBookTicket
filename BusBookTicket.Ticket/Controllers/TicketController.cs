@@ -26,7 +26,7 @@ public class TicketController : ControllerBase
 
     [HttpPost("find")]
     [AllowAnonymous]
-    public async Task<IActionResult> getTicket([FromBody] SearchForm searchForm )
+    public async Task<IActionResult> GetTicket([FromBody] SearchForm searchForm )
     {
         List<TicketResponse> response = await _ticketService.GetAllTicket(searchForm);
         return Ok(new Response<List<TicketResponse>>(false, response));
@@ -34,7 +34,7 @@ public class TicketController : ControllerBase
     
     [HttpGet("get")]
     [AllowAnonymous]
-    public async Task<IActionResult> getByID([FromQuery] int id)
+    public async Task<IActionResult> GetByID([FromQuery] int id)
     {
         TicketResponse response = await _ticketService.GetById(id);
         return Ok(new Response<TicketResponse>(false, response));
@@ -42,7 +42,7 @@ public class TicketController : ControllerBase
 
     [HttpPost("create")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> create([FromBody] TicketFormCreate request)
+    public async Task<IActionResult> Create([FromBody] TicketFormCreate request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         await _ticketService.Create(request, userId);
@@ -50,7 +50,7 @@ public class TicketController : ControllerBase
     }
     
     [HttpDelete("delete")]
-    public async Task<IActionResult> delete([FromQuery] int id)
+    public async Task<IActionResult> Delete([FromQuery] int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         await _ticketService.Delete(id, userId);
@@ -58,7 +58,7 @@ public class TicketController : ControllerBase
     }
     
     [HttpPut("update")]
-    public async Task<IActionResult> update([FromBody] TicketFormUpdate request)
+    public async Task<IActionResult> Update([FromBody] TicketFormUpdate request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         await _ticketService.Update(request, request.ticketID, userId);

@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.DTOs.Requests
 {
-    [ValidateNever]
-    public class FormRegister : IActionFilter
+    public class FormRegister
     {
         #region --Customer -- 
         [Required(ErrorMessage = "Require fullname")]
@@ -31,16 +30,5 @@ namespace BusBookTicket.CustomerManage.DTOs.Requests
         public string Password { get; set; }
         public string RoleName { get; set; }
         #endregion -- Account --
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            new Exception("sfgfgg");
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            new Exception("sfgfgg");
-
-        }
     }
 }

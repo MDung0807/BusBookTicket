@@ -87,7 +87,7 @@ public class CompanyController : ControllerBase
     }
     
     [Authorize(Roles = AppConstants.ADMIN)]
-    [HttpGet("getAll")]
+    [HttpGet("admin/getAll")]
     public async Task<IActionResult> GetAllCompanyByAdmin()
     {
         List<ProfileCompany> responses = await _companyServices.GetAllByAdmin();
