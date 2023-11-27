@@ -1,8 +1,10 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
+using BusBookTicket.BusStationManage.Paging;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.BusStationManage.Utils;
+using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -25,10 +27,10 @@ namespace BusBookTicket.BusStationManage.Controllers
 
         [HttpGet("getAll")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] StationPaging request)
         {
-            List<BusStationResponse> responses = await _busStationService.GetAll();
-            return Ok(new Response<List<BusStationResponse>>(false, responses));
+            StationPagingResult response = await _busStationService.GetAll(request);
+            return Ok(new Response<StationPagingResult>(false, response));
         }
         
         [HttpGet("admin/getAll")]

@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Application\Logger\" />
-    <Folder Include="Application\Paging\" />
   </ItemGroup>
 
 </Project>
