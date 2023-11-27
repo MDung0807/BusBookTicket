@@ -117,20 +117,27 @@ public class BusStationService : IBusStationService
         throw new NotImplementedException();
     }
 
-    public async Task<BusStationResponse> getStationByName(string name)
+    public async Task<BusStationResponse> GetStationByName(string name)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return _mapper.Map<BusStationResponse>(busStation);
     }
 
-    public async Task<List<BusStationResponse>> getStationByLocation(string location)
+    public async Task<List<BusStationResponse>> GetStationByLocation(string location)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification("", location);
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
 
         return responses;
+    }
+
+    public async Task<List<BusStationResponse>> GetAllStationInBus(int busId)
+    {
+        BusStationSpecification specification = new BusStationSpecification(0, busId);
+        List<BusStation> busStations = await _repository.ToList(specification);
+        return await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
     }
 
     #endregion

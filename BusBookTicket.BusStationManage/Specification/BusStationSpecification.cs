@@ -11,12 +11,12 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
         AddInclude(x => x.Ward);
     }
 
-    public BusStationSpecification()
+    public BusStationSpecification() :base(null, true)
     {
         AddInclude(x => x.Ward);
     }
     
-    public BusStationSpecification(bool checkStatus) : base(null, checkStatus: checkStatus)
+    public BusStationSpecification(bool checkStatus = true) : base(null, checkStatus: checkStatus)
     {
         AddInclude(x => x.Ward);
     }
@@ -35,4 +35,9 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
 
     public BusStationSpecification(string name, string location) : base(x =>
         x.Name == name || x.Address.Contains(location)){}
+
+    public BusStationSpecification(int id, int busId) : base(x => x.BusStops.Any(y => y.Bus.Id == busId))
+    {
+        AddInclude(x => x.BusStops.Where(b => b.Bus.Id == busId));
+    }
 }

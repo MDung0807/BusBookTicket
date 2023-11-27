@@ -11,6 +11,7 @@ public interface ISpecification<T>
     Expression<Func<T, object>> OrderBy { get; }
     Expression<Func<T, object>> OrderByDescending { get; }
     Expression<Func<T, object>> GroupBy { get; }
+    string SqlQuery { get; }
 
     int Take { get; }
     int Skip { get; }

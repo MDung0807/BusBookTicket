@@ -16,4 +16,5 @@ public interface IGenericRepository<T>: IRepository<T> where T : BaseEntity
     bool Contains(Expression<Func<T, bool>> predicate);
     int Count(ISpecification<T> specification = null);
     int Count(Expression<Func<T, bool>> predicate);
+    Task<List<T>> ToListWithSqlQuery(string sqlQuery);
 }

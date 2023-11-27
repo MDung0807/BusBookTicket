@@ -19,6 +19,7 @@ public class TicketService : ITicketService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
     private readonly IGenericRepository<Bus> _busRepository;
+    private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
     #endregion -- Properties --
 
     public TicketService(
@@ -31,6 +32,7 @@ public class TicketService : ITicketService
         this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
         _busRepository = unitOfWork.GenericRepository<Bus>();
+        _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -73,10 +75,21 @@ public class TicketService : ITicketService
             Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
             ticket.Status = (int)EnumsApp.Active;
             ticket = await _repository.Create(ticket, userId);
+
+            Ticket_BusStop ticketBusStop = new Ticket_BusStop();
+            foreach (var ticketStation in entity.TicketStations)
+            {
+                ticketBusStop = _mapper.Map<Ticket_BusStop>(ticketStation);
+                ticketBusStop.Ticket = new Core.Models.Entity.Ticket
+                {
+                    Id = ticket.Id
+                };
+                await _ticketBusStop.Create(ticketBusStop, userId);
+            }
             
             // Create TicketItem
             TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id);
-            BusSpecification busSpecification = new BusSpecification(entity.busID);
+            BusSpecification busSpecification = new BusSpecification(entity.BusId);
             Bus bus = await _busRepository.Get(busSpecification);
             ticket = await _repository.Get(ticketSpecification);
             ticket.Bus = bus;
@@ -132,24 +145,30 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// FindTicket
+    /// </summary>
+    /// <param name="searchForm"></param>
+    /// <returns></returns>
     public async Task<List<TicketResponse>> GetAllTicket(SearchForm searchForm)
     {
-        searchForm.dateTime = searchForm.dateTime.Date;
-        searchForm.dateTime = Convert.ToDateTime("30/10/2023");
+        //searchForm.dateTime = Convert.ToDateTime(searchForm.dateTime);
+
         
         TicketSpecification ticketSpecification =
             new TicketSpecification(dateTime: searchForm.dateTime, 
                 stationStart: searchForm.stationStart,
                 stationEnd: searchForm.stationEnd);
         
+        string sqlQuery = sqlFindTicket(searchForm.stationStart, searchForm.stationEnd, searchForm.dateTime);
+
+        List<Core.Models.Entity.Ticket> ticket = await _repository.ToListWithSqlQuery(sqlQuery);
         // Find
-        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         List<TicketResponse> responses = new List<TicketResponse>();
 
-        // Map
-        foreach (Core.Models.Entity.Ticket ticket in tickets)
+        foreach (var item in ticket)
         {
-            responses.Add( await GetById(ticket.Id));
+            responses.Add(await GetById(item.Id));
         }
 
         return responses;
@@ -169,4 +188,82 @@ public class TicketService : ITicketService
         return await _itemService.Create(form, userId);
     }
     #endregion -- Private Method --
+
+    #region -- Query --
+    private string sqlFindTicket(string stationStart, string stationEnd, DateTime dateTime)
+    {
+        string query = @"
+        SELECT
+            T.Id,
+            T.Date,
+            T.BusID,
+            T.DateCreate,
+            T.DateUpdate,
+            T.UpdateBy,
+            T.CreateBy,
+            T.Status,
+            Bus.BusNumber,
+            Companies.Name
+        FROM
+            Ticket_BusStop t1
+            INNER JOIN Tickets T ON T.Id = t1.TicketId
+            LEFT JOIN TicketItems TItem ON TItem.TicketID = T.Id
+            LEFT JOIN Buses Bus ON Bus.Id = T.BusID
+            LEFT JOIN Companies ON Companies.Id = Bus.CompanyID
+        WHERE
+            t1.BusStopId IN (
+                SELECT BS.Id
+                FROM BusStations B
+                    LEFT JOIN Wards W ON B.WardId = W.Id
+                    LEFT JOIN Districts D ON W.DistrictId = D.Id
+                    LEFT JOIN Provinces P ON D.ProvinceId = P.Id
+                    INNER JOIN BusStops BS ON BS.BusStationID = B.Id
+                WHERE
+                    B.Name LIKE N'%@StationStart%'
+                    OR W.FullName LIKE N'%@StationStart%'
+                    OR D.FullName LIKE N'%@StationStart%'
+                    OR P.FullName LIKE N'%@StationStart%'
+            )
+            AND t1.DepartureTime > '@DateTime'
+            AND EXISTS (
+                SELECT 1
+                FROM Ticket_BusStop t2
+                WHERE
+                    t2.TicketId = t1.TicketId
+                    AND t2.BusStopId IN (
+                        SELECT BS.Id
+                        FROM BusStations B
+                            LEFT JOIN Wards W ON B.WardId = W.Id
+                            LEFT JOIN Districts D ON W.DistrictId = D.Id
+                            LEFT JOIN Provinces P ON D.ProvinceId = P.Id
+                            INNER JOIN BusStops BS ON BS.BusStationID = B.Id
+                        WHERE
+                            B.Name LIKE N'%@StationEnd%'
+                            OR W.FullName LIKE N'%@StationEnd%'
+                            OR D.FullName LIKE N'%@StationEnd%'
+                            OR P.FullName LIKE N'%@StationEnd%'
+                    )
+                    AND t2.IndexStation > t1.IndexStation
+            )
+        GROUP BY
+            T.Id,
+            T.Date,
+            T.BusID,
+            T.DateCreate,
+            T.DateUpdate,
+            T.UpdateBy,
+            T.CreateBy,
+            T.Status,
+            Bus.BusNumber,
+            Companies.Name;
+    ";
+        // Replace placeholders with actual parameter names
+        query = query.Replace("@StationStart", stationStart)
+                     .Replace("@StationEnd", stationEnd)
+                     .Replace("@DateTime", dateTime.ToString("yyyy-MM-dd HH:mm:ss"));  // Ensure the correct date format
+
+        return query;
+    }
+
+    #endregion -- Query --
 }
