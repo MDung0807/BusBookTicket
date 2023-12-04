@@ -10,7 +10,7 @@ public class BaseSpecification<T> : ISpecification<T>
     /// </summary>
     /// <param name="criteria">Criteria</param>
     /// <param name="checkStatus">Default is True, If True then query add condition is active, else query not check condition status</param>
-    protected BaseSpecification(Expression<Func<T, bool>> criteria, bool checkStatus = true)
+    protected BaseSpecification(Expression<Func<T, bool>> criteria = null, bool checkStatus = true)
     {
         Criteria = criteria;
         CheckStatus = checkStatus;
