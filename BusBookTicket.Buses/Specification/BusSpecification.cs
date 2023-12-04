@@ -1,5 +1,6 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using Mailjet.Client.Resources;
 
 namespace BusBookTicket.Buses.Specification;
 
@@ -13,8 +14,9 @@ public sealed class BusSpecification: BaseSpecification<Bus>
         AddInclude(x => x.Seats);
     }
 
-    public BusSpecification()
+    public BusSpecification(bool checkStatus = true): base(checkStatus:checkStatus)
     {
-        
+        AddInclude(x => x.Company);
+        AddInclude(x => x.BusType);
     }
 }

@@ -49,7 +49,7 @@ public class BusService : IBusService
 
     public async Task<List<BusResponse>> GetAll()
     {
-        BusSpecification busSpecification = new BusSpecification();
+        BusSpecification busSpecification = new BusSpecification(checkStatus:false);
         List<Bus> buses = await _repository.ToList(busSpecification);
         List<BusResponse> responses = await AppUtils.MappObject<Bus, BusResponse>(buses, _mapper);
         return responses;
