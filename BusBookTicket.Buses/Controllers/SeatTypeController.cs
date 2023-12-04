@@ -3,6 +3,7 @@ using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,8 +72,8 @@ public class SeatTypeController : ControllerBase
         return Ok(new Response<string>(false, "Response"));
     }
     
-    [HttpPost("/admin/create")]
-    [Authorize(Roles = "COMPANY")]
+    [HttpPost("admin/create")]
+    [Authorize(Roles = AppConstants.ADMIN)]
     public async Task<IActionResult> CreateByAdmin([FromBody] SeatTypeFormCreate request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
