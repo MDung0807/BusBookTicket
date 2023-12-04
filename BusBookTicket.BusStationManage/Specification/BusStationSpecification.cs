@@ -45,10 +45,19 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
     }
 
     public BusStationSpecification(string name, string location) : base(x =>
-        x.Name == name || x.Address.Contains(location)){}
+        x.Name == name ||
+        x.Address.Contains(location) ||
+        x.Ward.FullName.Contains(location) ||
+        x.Ward.District.FullName.Contains(location) ||
+        x.Ward.District.Province.FullName.Contains(location))
+    {
+        AddInclude(x => x.Ward);
+    }
 
     public BusStationSpecification(int id, int busId) : base(x => x.BusStops.Any(y => y.Bus.Id == busId))
     {
         AddInclude(x => x.BusStops.Where(b => b.Bus.Id == busId));
+        AddInclude(x => x.Ward);
+
     }
 }
