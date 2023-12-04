@@ -16,21 +16,32 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
     public BusStationSpecification(bool checkStatus = true, bool isPaging = true, StationPaging paging = null!) : base(null, checkStatus: checkStatus)
     {
         AddInclude(x => x.Ward);
+        AddInclude(x => x.BusStops);
+
         if (!isPaging)
             return;
         ApplyPaging(paging.PageIndex, paging.PageSize);
     }
 
-    public BusStationSpecification(string name) : base(x => x.Name == name)
+    public BusStationSpecification(string name) : base(x => x.Name.Contains(name))
     {
+        AddInclude(x => x.Ward);
+        AddInclude(x => x.BusStops);
+
     }
     
-    public BusStationSpecification(string name, bool checkStatus) : base(x => x.Name == name, false)
+    public BusStationSpecification(string name, bool checkStatus) : base(x => x.Name.Contains(name), false)
     {
+        AddInclude(x => x.Ward);
+        AddInclude(x => x.BusStops);
+
     }
     
     public BusStationSpecification(int id, bool checkStatus) : base(x => x.Id == id, false)
     {
+        AddInclude(x => x.Ward);
+        AddInclude(x => x.BusStops);
+
     }
 
     public BusStationSpecification(string name, string location) : base(x =>
