@@ -36,7 +36,7 @@ public class BusStationService : IBusStationService
         BusStationSpecification busStationSpecification = new BusStationSpecification(id);
         BusStation busStation = await _repository.Get(busStationSpecification);
         BusStationResponse response = _mapper.Map<BusStationResponse>(busStation);
-        response.AddressDb = response.Address + " " +await AddressResponse.GetAddressDb(response.WardId, _wardService);
+        response.AddressDb = await GetFullAddress(response.Address, response.WardId);
         return response;
     }
 
@@ -48,7 +48,8 @@ public class BusStationService : IBusStationService
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
-            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
+
         }
         return responses;
     }
@@ -61,7 +62,7 @@ public class BusStationService : IBusStationService
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
-            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
         return responses;
     }
@@ -77,7 +78,7 @@ public class BusStationService : IBusStationService
         response.Items = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < response.Items.Count; i++)
         {
-            response.Items[i].AddressDb = response.Items[i].Address + " " + await AddressResponse.GetAddressDb(response.Items[i].WardId, _wardService);
+            response.Items[i].AddressDb = await GetFullAddress(response.Items[i].Address, response.Items[i].WardId);
         }
         return response;
     }
@@ -153,7 +154,7 @@ public class BusStationService : IBusStationService
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);
         BusStation busStation = await _repository.Get(busStationSpecification);
         BusStationResponse response =  _mapper.Map<BusStationResponse>(busStation);
-        response.AddressDb = response.Address + " " +await AddressResponse.GetAddressDb(response.WardId, _wardService);
+        response.AddressDb = await GetFullAddress(response.Address, response.WardId);
         return response;
     }
 
@@ -164,7 +165,7 @@ public class BusStationService : IBusStationService
         List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
-            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
         return responses;
     }
@@ -176,11 +177,20 @@ public class BusStationService : IBusStationService
         List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
-            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
         return responses;
     }
 
     #endregion
+
+    #region -- Private Method --
+
+    private async Task<string> GetFullAddress(string address, int wardId)
+    {
+        string addressDb = address + ", " + await AddressResponse.GetAddressDb(wardId, _wardService);
+        return addressDb;
+    }
+    #endregion -- Private Method --
 
 }
