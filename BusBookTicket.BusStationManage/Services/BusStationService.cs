@@ -1,4 +1,6 @@
 using AutoMapper;
+using BusBookTicket.AddressManagement.Services.WardService;
+using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.BusStationManage.DTOs.Requests;
 using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Paging;
@@ -18,20 +20,24 @@ public class BusStationService : IBusStationService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<BusStation> _repository;
+    private readonly IWardService _wardService;
     #endregion -- Properties --
 
     #region -- Public Method --
-    public BusStationService(IMapper mapper, IUnitOfWork unitOfWork)
+    public BusStationService(IMapper mapper, IUnitOfWork unitOfWork, IWardService wardService)
     {
         _unitOfWork = unitOfWork;
         _repository = _unitOfWork.GenericRepository<BusStation>();
         this._mapper = mapper;
+        _wardService = wardService;
     }
     public async Task<BusStationResponse> GetById(int id)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id);
         BusStation busStation = await _repository.Get(busStationSpecification);
-        return _mapper.Map<BusStationResponse>(busStation);
+        BusStationResponse response = _mapper.Map<BusStationResponse>(busStation);
+        response.AddressDb = response.Address + " " +await AddressResponse.GetAddressDb(response.WardId, _wardService);
+        return response;
     }
 
     public async Task<List<BusStationResponse>> GetAll()
@@ -40,6 +46,10 @@ public class BusStationService : IBusStationService
         List<BusStationResponse> responses = new List<BusStationResponse>();
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+        }
         return responses;
     }
     
@@ -49,6 +59,10 @@ public class BusStationService : IBusStationService
         List<BusStationResponse> responses = new List<BusStationResponse>();
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+        }
         return responses;
     }
 
@@ -61,6 +75,10 @@ public class BusStationService : IBusStationService
         response.PageSize = request.PageSize;
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         response.Items = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        for (int i = 0; i < response.Items.Count; i++)
+        {
+            response.Items[i].AddressDb = response.Items[i].Address + " " + await AddressResponse.GetAddressDb(response.Items[i].WardId, _wardService);
+        }
         return response;
     }
 
@@ -134,7 +152,9 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);
         BusStation busStation = await _repository.Get(busStationSpecification);
-        return _mapper.Map<BusStationResponse>(busStation);
+        BusStationResponse response =  _mapper.Map<BusStationResponse>(busStation);
+        response.AddressDb = response.Address + " " +await AddressResponse.GetAddressDb(response.WardId, _wardService);
+        return response;
     }
 
     public async Task<List<BusStationResponse>> GetStationByLocation(string location)
@@ -142,7 +162,10 @@ public class BusStationService : IBusStationService
         BusStationSpecification busStationSpecification = new BusStationSpecification("", location);
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
-
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+        }
         return responses;
     }
 
@@ -150,8 +173,14 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification specification = new BusStationSpecification(0, busId);
         List<BusStation> busStations = await _repository.ToList(specification);
-        return await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].AddressDb = responses[i].Address + " " + await AddressResponse.GetAddressDb(responses[i].WardId, _wardService);
+        }
+        return responses;
     }
 
     #endregion
+
 }
