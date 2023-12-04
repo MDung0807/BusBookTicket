@@ -124,9 +124,12 @@ public class BusService : IBusService
         }
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusSpecification busSpecification = new BusSpecification(id, false);
+        Bus bus = await _repository.Get(busSpecification);
+        await _repository.ChangeStatus(bus, userId, (int)EnumsApp.Active);
+        return true;
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -139,9 +142,12 @@ public class BusService : IBusService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeToDisable(int id, int userId)
+    public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        throw new NotImplementedException();
+        BusSpecification busSpecification = new BusSpecification(id, false);
+        Bus bus = await _repository.Get(busSpecification);
+        await _repository.ChangeStatus(bus, userId, (int)EnumsApp.Disable);
+        return true;
     }
 
     public Task<bool> CheckToExistById(int id)
