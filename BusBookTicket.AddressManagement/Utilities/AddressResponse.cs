@@ -8,6 +8,6 @@ public class AddressResponse
     public static async Task<string> GetAddressDb(int wardId, IWardService wardService)
     {
         WardResponse response = await wardService.GetById(wardId);
-        return response.FullName + " " + response.District + " "+ response.Province;
+        return response.FullName + ", " + response.District + ", "+ response.Province;
     }
 }
