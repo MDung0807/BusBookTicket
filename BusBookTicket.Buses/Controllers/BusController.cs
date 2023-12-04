@@ -58,6 +58,23 @@ public class BusController : ControllerBase
         return Ok(new Response<List<BusResponse>>(false, responses));
     }
 
+    [HttpGet("changeIsDisable")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> ChangeIsDisable([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _busService.ChangeToDisable(id, userId);
+        return Ok(new Response<string>(!status, "AppConstants"));
+    }
+    
+    [HttpGet("changeIsActive")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> ChangeIsActive([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _busService.ChangeIsActive(id, userId);
+        return Ok(new Response<string>(!status, "AppConstants"));
+    }
 
     #endregion -- Controller --
 }
