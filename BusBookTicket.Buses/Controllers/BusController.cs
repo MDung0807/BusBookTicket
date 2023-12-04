@@ -3,6 +3,7 @@ using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.Buses.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -48,6 +49,15 @@ public class BusController : ControllerBase
         BusResponse response = await _busService.GetById(id);
         return Ok(new Response<BusResponse>(false, response));
     }
+
+    [HttpGet("getAll")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> GetAll()
+    {
+        List<BusResponse> responses = await _busService.GetAll();
+        return Ok(new Response<List<BusResponse>>(false, responses));
+    }
+
 
     #endregion -- Controller --
 }
