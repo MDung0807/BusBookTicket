@@ -1,13 +1,14 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilities;
+using BusBookTicket.CustomerManage.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BusBookTicket.CustomerManage.Controller
 {
@@ -23,11 +24,14 @@ namespace BusBookTicket.CustomerManage.Controller
 
         [HttpPost("register")]
         [AllowAnonymous]
-        [ServiceFilter(typeof(FormRegister))]
         public async Task<IActionResult>Register([FromForm] FormRegister register)
         {
-            if (!ModelState.IsValid)
-                Console.WriteLine("Loi");
+            var validator = new FormRegisterValidator();
+            var result = await validator.ValidateAsync(register);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             try
             {
                 register.RoleName = AppConstants.CUSTOMER;

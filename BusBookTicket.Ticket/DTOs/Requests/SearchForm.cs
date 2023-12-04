@@ -2,7 +2,7 @@
 
 public class SearchForm
 {
-    public DateTime dateTime { get; set; }
-    public string stationStart { get; set; }
-    public string stationEnd { get; set; }
+    public DateTime DateTime { get; set; }
+    public string StationStart { get; set; }
+    public string StationEnd { get; set; }
 }

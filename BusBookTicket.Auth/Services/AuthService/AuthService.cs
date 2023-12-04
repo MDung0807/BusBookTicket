@@ -170,9 +170,9 @@ namespace BusBookTicket.Auth.Services.AuthService
 
             throw new AuthException(AuthConstants.LOGIN_FAIL);
         }
-        // public async Task<AccResponse> getAccByUsername(string username, string roleName)
+        // public async Task<AccResponse> getAccByUsername(string Username, string roleName)
         // {
-        //     AccountSpecification accountSpecification = new AccountSpecification(username, roleName);
+        //     AccountSpecification accountSpecification = new AccountSpecification(Username, roleName);
         //     Account account = await _repository.Get(accountSpecification);
         //
         //     AccResponse response = _mapper.Map<AccResponse>(account);
