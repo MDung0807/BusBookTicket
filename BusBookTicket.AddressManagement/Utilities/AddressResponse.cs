@@ -3,7 +3,7 @@ using BusBookTicket.AddressManagement.Services.WardService;
 
 namespace BusBookTicket.AddressManagement.Utilities;
 
-public class AddressResponse
+public abstract class AddressResponse
 {
     public static async Task<string> GetAddressDb(int wardId, IWardService wardService)
     {
