@@ -55,13 +55,13 @@ namespace BusBookTicket.Auth.Security
             // if (!string.IsNullOrEmpty(token))
             // {
             //     var principal = JwtUtils.GetPrincipal(token);
-            //     string username = principal.Claims.ElementAt(1).Value;
+            //     string Username = principal.Claims.ElementAt(1).Value;
             //     string roleName = principal.Claims.ElementAt(2).Value;
             //     using (var scope = _serviceScopeFactory.CreateScope())
             //     {
             //         var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
             //         // Use the scoped service within the scope of the request
-            //         response = await authService.getAccByUsername(username, roleName);
+            //         response = await authService.getAccByUsername(Username, roleName);
             //         // Check account exist in data
             //         if (response.roleName != principal.Claims.ElementAt(2).Value ||
             //             response.userID.ToString() != principal.Claims.ElementAt(0).Value||

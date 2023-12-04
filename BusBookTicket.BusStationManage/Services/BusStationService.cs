@@ -18,7 +18,6 @@ public class BusStationService : IBusStationService
     #region -- Properties --
 
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<BusStation> _repository;
     private readonly IWardService _wardService;
     #endregion -- Properties --
@@ -26,8 +25,7 @@ public class BusStationService : IBusStationService
     #region -- Public Method --
     public BusStationService(IMapper mapper, IUnitOfWork unitOfWork, IWardService wardService)
     {
-        _unitOfWork = unitOfWork;
-        _repository = _unitOfWork.GenericRepository<BusStation>();
+        _repository = unitOfWork.GenericRepository<BusStation>();
         this._mapper = mapper;
         _wardService = wardService;
     }

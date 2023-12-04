@@ -7,5 +7,6 @@ public class SeatSpecification : BaseSpecification<Seat>
 {
     public SeatSpecification(int id) : base(x => x.Id == id){}
     
-    public SeatSpecification(int id, int busId) : base(x => x.Bus.Id == busId){}
+    public SeatSpecification(int id, int busId) : 
+        base(x => x.Bus.Id == busId){}
 }

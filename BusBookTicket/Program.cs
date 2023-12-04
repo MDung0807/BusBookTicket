@@ -6,6 +6,9 @@ using BusBookTicket.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using BusBookTicket.Application.MailKet.Settings;
 using BusBookTicket.CustomerManage.DTOs.Requests;
+using BusBookTicket.CustomerManage.Validator;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 
 internal class Program

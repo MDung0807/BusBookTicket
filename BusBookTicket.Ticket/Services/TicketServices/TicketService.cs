@@ -156,11 +156,11 @@ public class TicketService : ITicketService
 
         
         TicketSpecification ticketSpecification =
-            new TicketSpecification(dateTime: searchForm.dateTime, 
-                stationStart: searchForm.stationStart,
-                stationEnd: searchForm.stationEnd);
+            new TicketSpecification(dateTime: searchForm.DateTime, 
+                stationStart: searchForm.StationStart,
+                stationEnd: searchForm.StationEnd);
         
-        string sqlQuery = sqlFindTicket(searchForm.stationStart, searchForm.stationEnd, searchForm.dateTime);
+        string sqlQuery = sqlFindTicket(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime);
 
         List<Core.Models.Entity.Ticket> ticket = await _repository.ToListWithSqlQuery(sqlQuery);
         // Find
