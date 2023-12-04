@@ -203,6 +203,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.SeatType.Id,
                     opts => opts.MapFrom(x => x.SeatTypeId));
 
+            CreateMap<Seat, SeatResponse>();
             #endregion -- Configs Buses Module --
 
             #region -- Configs Ticket Module --
