@@ -5,7 +5,7 @@ using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.AddressManagement.Services.WardService;
 
-public interface IWardService : IService<WardCreate, WardUpdate, int, WardResponse>
+public interface IWardService : IService<WardCreate, WardUpdate, int, WardResponse, object, object>
 {
     Task<Ward> WardGet(int id);
 }

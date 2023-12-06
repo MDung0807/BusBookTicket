@@ -4,7 +4,7 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.AddressManagement.Services.UnitService;
 
-public interface IUnitService : IService<UnitCreate, UnitUpdate, int, UnitResponse>
+public interface IUnitService : IService<UnitCreate, UnitUpdate, int, UnitResponse, object, object>
 {
     
 }

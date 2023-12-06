@@ -1,7 +1,9 @@
 ﻿using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Services.AuthService;
+using BusBookTicket.Auth.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,12 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthRequest request)
         {
+            var validator = new AuthRequestValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             request.RoleName = AppConstants.CUSTOMER;
             AuthResponse response = await _authService.Login(request);
             // await _authService.ChangeStatus(request);
@@ -34,18 +42,30 @@ namespace BusBookTicket.Auth.Controllers
         }
         
         [HttpPost("company/login")]
-        public async Task<IActionResult> CompanyLogin([FromBody] AuthRequest requets)
+        public async Task<IActionResult> CompanyLogin([FromBody] AuthRequest request)
         {
-            requets.RoleName = AppConstants.COMPANY;
-            AuthResponse response = await _authService.Login(requets);
+            // var validator = new AuthRequestValidator();
+            // var result = await validator.ValidateAsync(request);
+            // if (!result.IsValid)
+            // {
+            //     throw new ValidatorException(result.Errors);
+            // }
+            request.RoleName = AppConstants.COMPANY;
+            AuthResponse response = await _authService.Login(request);
             return Ok(new Response<AuthResponse>(false, response));
         }
         
         [HttpPost("admin/login")]
-        public async Task<IActionResult> AdminLogin([FromBody] AuthRequest requets)
+        public async Task<IActionResult> AdminLogin([FromBody] AuthRequest request)
         {
-            requets.RoleName = AppConstants.ADMIN;
-            AuthResponse response = await _authService.Login(requets);
+            var validator = new AuthRequestValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
+            request.RoleName = AppConstants.ADMIN;
+            AuthResponse response = await _authService.Login(request);
             return Ok(new Response<AuthResponse>(false, response));
         }
         
@@ -58,9 +78,15 @@ namespace BusBookTicket.Auth.Controllers
         // #endregion -- Controller --
 
         [HttpPost("reset")]
-        public async Task<IActionResult> ResetPassword([FromBody] FormResetPass requets)
+        public async Task<IActionResult> ResetPassword([FromBody] FormResetPass request)
         {
-            bool response = await _authService.ResetPass(requets);
+            var validator = new FormResetPassValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
+            bool response = await _authService.ResetPass(request);
             return Ok(new Response<string>(false, "response"));
         }
         #endregion -- Controller --

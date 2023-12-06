@@ -4,7 +4,7 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.AddressManagement.Services.ProvinceService;
 
-public interface IProvinceService : IService<ProvinceCreate, ProvinceUpdate, int, ProvinceResponse>
+public interface IProvinceService : IService<ProvinceCreate, ProvinceUpdate, int, ProvinceResponse, object, object>
 {
     
 }

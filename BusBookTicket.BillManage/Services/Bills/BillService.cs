@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
+using BusBookTicket.BillManage.Paging;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
+using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -132,7 +134,22 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
-    public Task<List<BillResponse>> GetAllByAdmin()
+    public Task<BillPagingResult> GetAllByAdmin(BillPaging pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BillPagingResult> GetAll(BillPaging pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BillPagingResult> GetAll(BillPaging pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagingResult<BillResponse>> GetAllByAdmin(PagingRequest pagingRequest)
     {
         throw new NotImplementedException();
     }
@@ -153,10 +170,17 @@ public class BillService : IBillService
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.PaymentComplete);
     }
 
-    public async Task<List<BillResponse>> GetAllBillInUser(int userId)
+    public async Task<BillPagingResult> GetAllBillInUser(BillPaging paging, int userId)
     {
-        BillSpecification billSpecification = new BillSpecification(userId, false);
+        BillSpecification billSpecification = new BillSpecification(userId, false, paging: paging);
         List<Bill> bills = await _repository.ToList(billSpecification);
-        return await AppUtils.MappObject<Bill, BillResponse>(bills, _mapper);
+        BillPagingResult result = new BillPagingResult();
+        int count = _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+        result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
+            paging.PageIndex,
+            paging.PageSize,
+            count,
+            await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper));
+        return result;
     }
 }

@@ -4,6 +4,7 @@ using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.CustomerManage.DTOs.Responses;
+using BusBookTicket.CustomerManage.Paging;
 using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilities;
 using BusBookTicket.CustomerManage.Validator;
@@ -58,16 +59,22 @@ namespace BusBookTicket.CustomerManage.Controller
         
         [HttpGet("getAll")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> GetAllCustomer()
+        public async Task<IActionResult> GetAllCustomer([FromQuery] CustomerPaging paging)
         {
-            List<CustomerResponse> responses =  await _customerService.GetAllCustomer();
-            return Ok(new Response<List<CustomerResponse>>(false, responses));
+            CustomerPagingResult responses =  await _customerService.GetAllCustomer(paging:paging);
+            return Ok(new Response<CustomerPagingResult>(false, responses));
         }
 
         [HttpPut("updateProfile")]
         [Authorize(Roles = "CUSTOMER")]
         public async Task<IActionResult> UpdateProfile([FromBody] FormUpdate request)
         {
+            var validator = new FormUpdateValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             int id = JwtUtils.GetUserID(HttpContext);
             bool status = await _customerService.Update(request, id, id);
             return Ok(new Response<string>(false, "response"));

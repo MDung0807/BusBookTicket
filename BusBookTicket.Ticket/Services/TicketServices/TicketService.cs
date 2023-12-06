@@ -5,6 +5,7 @@ using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
+using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 
@@ -39,7 +40,7 @@ public class TicketService : ITicketService
     {
         TicketSpecification ticketSpecification = new TicketSpecification(id);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
-        List<TicketItemResponse> itemResponses = await _itemService.getAllInTicket(id);
+        List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
         TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
         response.ItemResponses = itemResponses;
         return response;
@@ -140,26 +141,24 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
-    public Task<List<TicketResponse>> GetAllByAdmin()
+    public Task<TicketPagingResult> GetAllByAdmin(TicketPaging pagingRequest)
     {
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// FindTicket
-    /// </summary>
-    /// <param name="searchForm"></param>
-    /// <returns></returns>
-    public async Task<List<TicketResponse>> GetAllTicket(SearchForm searchForm)
+    public Task<TicketPagingResult> GetAll(TicketPaging pagingRequest)
     {
-        //searchForm.dateTime = Convert.ToDateTime(searchForm.dateTime);
+        throw new NotImplementedException();
+    }
 
-        
-        TicketSpecification ticketSpecification =
-            new TicketSpecification(dateTime: searchForm.DateTime, 
-                stationStart: searchForm.StationStart,
-                stationEnd: searchForm.StationEnd);
-        
+    public Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
+    {
+  
         string sqlQuery = sqlFindTicket(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime);
 
         List<Core.Models.Entity.Ticket> ticket = await _repository.ToListWithSqlQuery(sqlQuery);
@@ -171,7 +170,9 @@ public class TicketService : ITicketService
             responses.Add(await GetById(item.Id));
         }
 
-        return responses;
+        TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
+            paging.PageIndex, paging.PageSize, count: 10, responses);
+        return result;
     }
 
     #region -- Private Method --

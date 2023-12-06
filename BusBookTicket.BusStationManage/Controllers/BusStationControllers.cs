@@ -4,8 +4,9 @@ using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Paging;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.BusStationManage.Utils;
-using BusBookTicket.Core.Application.Paging;
+using BusBookTicket.BusStationManage.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,20 +35,19 @@ namespace BusBookTicket.BusStationManage.Controllers
         }
         
         [HttpGet("admin/getAll")]
-        
         [Authorize(Roles = AppConstants.ADMIN)]
-        public async Task<IActionResult> GetAllByAdmin()
+        public async Task<IActionResult> GetAllByAdmin([FromQuery] StationPaging paging)
         {
-            List<BusStationResponse> responses = await _busStationService.GetAllByAdmin();
-            return Ok(new Response<List<BusStationResponse>>(false, responses));
+            StationPagingResult responses = await _busStationService.GetAllByAdmin(paging);
+            return Ok(new Response<StationPagingResult>(false, responses));
         }
         
         [HttpGet("getAllInBus")]
         [AllowAnonymous]        
-        public async Task<IActionResult> GetAllStationInBus([FromQuery] int busId)
+        public async Task<IActionResult> GetAllStationInBus([FromQuery] int busId, [FromQuery] StationPaging paging)
         {
-            List<BusStationResponse> responses = await _busStationService.GetAllStationInBus(busId);
-            return Ok(new Response<List<BusStationResponse>>(false, responses));
+            StationPagingResult responses = await _busStationService.GetAllStationInBus(busId, paging);
+            return Ok(new Response<StationPagingResult>(false, responses));
         }
         
         [HttpGet]
@@ -62,6 +62,12 @@ namespace BusBookTicket.BusStationManage.Controllers
         [HttpPut("admin/update")]
         public async Task<IActionResult> Update([FromBody] BST_FormUpdate request)
         {
+            var validator = new BST_FormUpdateValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busStationService.Update(request, request.Id, userId);
             return Ok(new Response<string>(!status, "Response"));
@@ -71,6 +77,14 @@ namespace BusBookTicket.BusStationManage.Controllers
         [HttpPost("admin/create")]
         public async Task<IActionResult> CreateByAdmin([FromBody] BST_FormCreate request)
         {
+            var validator = new BST_FormCreateValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
+
+            request.Status = (int)EnumsApp.Active;
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busStationService.Create(request, userId);
             return Ok(new Response<string>(!status, "Response"));
@@ -115,6 +129,12 @@ namespace BusBookTicket.BusStationManage.Controllers
         [HttpPost("company/create")]
         public async Task<IActionResult> CreateByCompany([FromBody] BST_FormCreate request)
         {
+            var validator = new BST_FormCreateValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             request.Status = (int)EnumsApp.Waiting;
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status = await _busStationService.Create(request, userId);
@@ -131,10 +151,10 @@ namespace BusBookTicket.BusStationManage.Controllers
         
         [HttpGet("getByLocation")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetStationByLocation([FromQuery] string location)
+        public async Task<IActionResult> GetStationByLocation([FromQuery] string location, [FromQuery] StationPaging paging)
         {
-            List<BusStationResponse> responses = await _busStationService.GetStationByLocation(location);
-            return Ok(new Response<List<BusStationResponse>>(false, responses));
+            StationPagingResult responses = await _busStationService.GetStationByLocation(location, paging);
+            return Ok(new Response<StationPagingResult>(false, responses));
         }
         #endregion -- Controllers --
     }

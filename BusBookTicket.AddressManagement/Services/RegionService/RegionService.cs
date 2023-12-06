@@ -40,7 +40,7 @@ public class RegionService : IRegionService
     {
         RegionSpecification regionSpecification = new RegionSpecification();
         List<AdministrativeRegion> regions = await _repository.ToList(regionSpecification);
-        return await AppUtils.MappObject<AdministrativeRegion, RegionResponse>(regions, _mapper);
+        return await AppUtils.MapObject<AdministrativeRegion, RegionResponse>(regions, _mapper);
     }
 
     public Task<bool> Update(RegionUpdate entity, int id, int userId)
@@ -84,6 +84,21 @@ public class RegionService : IRegionService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

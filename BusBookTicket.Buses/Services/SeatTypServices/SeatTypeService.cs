@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.SeatType;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -89,16 +90,31 @@ public class SeatTypeService : ISeatTypeService
         throw new NotImplementedException();
     }
 
-    public Task<List<SeatTypeResponse>> GetAllByAdmin()
+    public Task<SeatTypePagingResult> GetAllByAdmin(SeatTypePaging pagingRequest)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<SeatTypeResponse>> getAll(int companyID)
+    public Task<SeatTypePagingResult> GetAll(SeatTypePaging pagingRequest)
     {
-        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, companyID);
-        List<SeatType> seatTypes = await _repository.ToList(seatTypeSpecification);
-        List<SeatTypeResponse> responses = await AppUtils.MappObject<SeatType, SeatTypeResponse>(seatTypes, _mapper);
-        return responses;
+        throw new NotImplementedException();
     }
+
+    public async Task<SeatTypePagingResult> GetAll(SeatTypePaging pagingRequest, int idMaster)
+    {
+        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, idMaster, paging: pagingRequest);   
+        List<SeatType> seatTypes = await _repository.ToList(seatTypeSpecification);
+        int count = _repository.Count(new SeatTypeSpecification(0, idMaster));
+        List<SeatTypeResponse> responses = await AppUtils.MapObject<SeatType, SeatTypeResponse>(seatTypes, _mapper);
+        SeatTypePagingResult result = AppUtils.ResultPaging<SeatTypePagingResult, SeatTypeResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize,
+            count:count, responses);
+        return result;
+    }
+
+    public Task<List<SeatTypeResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
+    }
+    
 }

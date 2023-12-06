@@ -1,8 +1,11 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.Bus;
 using BusBookTicket.Buses.Services.BusTypeServices;
+using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.Buses.Controllers;
@@ -26,6 +29,12 @@ public class BusController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Create([FromBody] FormCreateBus request)
     {
+        var validator = new FormCreateBusValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = userId;
         await _busService.Create(request, userId);
@@ -36,6 +45,12 @@ public class BusController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Update([FromBody] FormUpdateBus request)
     {
+        var validator = new FormUpdateBusValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = userId;
         await _busService.Update(request, request.Id, userId);
@@ -52,10 +67,11 @@ public class BusController : ControllerBase
 
     [HttpGet("getAll")]
     [Authorize(Roles = AppConstants.COMPANY)]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] BusPaging paging)
     {
-        List<BusResponse> responses = await _busService.GetAll();
-        return Ok(new Response<List<BusResponse>>(false, responses));
+        int userId = JwtUtils.GetUserID(HttpContext);
+        BusPagingResult responses = await _busService.GetAll(paging, userId);
+        return Ok(new Response<BusPagingResult>(false, responses));
     }
 
     [HttpGet("changeIsDisable")]

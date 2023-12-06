@@ -6,8 +6,10 @@ using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
+using BusBookTicket.CompanyManage.Paging;
 using BusBookTicket.CompanyManage.Specification;
 using BusBookTicket.CompanyManage.Utils;
+using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 
@@ -53,16 +55,32 @@ public class CompanyService : ICompanyServices
     {
         CompanySpecification companySpecification = new CompanySpecification();
         List<Company> companies = await _repository.ToList(companySpecification);
-        List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
+        List<ProfileCompany> profileCompanies = await AppUtils.MapObject<Company, ProfileCompany>(companies, _mapper);
         return profileCompanies;
     }
     
-    public async Task<List<ProfileCompany>> GetAllByAdmin()
+    public async Task<CompanyPagingResult> GetAllByAdmin(CompanyPaging paging)
     {
         CompanySpecification companySpecification = new CompanySpecification(false);
         List<Company> companies = await _repository.ToList(companySpecification);
-        List<ProfileCompany> profileCompanies = await AppUtils.MappObject<Company, ProfileCompany>(companies, _mapper);
-        return profileCompanies;
+        List<ProfileCompany> profileCompanies = await AppUtils.MapObject<Company, ProfileCompany>(companies, _mapper);
+        int count = _repository.Count();
+        CompanyPagingResult result = new CompanyPagingResult();
+        result.PageIndex = paging.PageIndex;
+        result.PageSize = paging.PageSize;
+        result.PageTotal = (int)Math.Round((decimal)count / paging.PageSize);
+        result.Items = profileCompanies;
+        return result;
+    }
+
+    public Task<CompanyPagingResult> GetAll(CompanyPaging pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<CompanyPagingResult> GetAll(CompanyPaging pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
     }
 
 
@@ -80,15 +98,6 @@ public class CompanyService : ICompanyServices
         Company company = await _repository.Get(companySpecification);
         company = changeStatus(company, (int)EnumsApp.Delete);
         await _repository.Update(company, userId);
-        return true;
-    }
-
-    public async Task<bool> changeStatus(int id, int status)
-    {
-        CompanySpecification companySpecification = new CompanySpecification(id, false);
-        Company company = await _repository.Get(companySpecification);
-        company = changeStatus(company, status);
-        await _repository.Update(company, id);
         return true;
     }
 

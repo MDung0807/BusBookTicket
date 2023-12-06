@@ -38,7 +38,7 @@ public class ProvinceService : IProvinceService
     {
         ProvinceSpecification provinceSpecification = new ProvinceSpecification();
         List<Province> provinces = await _repository.ToList(provinceSpecification);
-        List<ProvinceResponse> responses = await AppUtils.MappObject<Province, ProvinceResponse>(provinces, _mapper);
+        List<ProvinceResponse> responses = await AppUtils.MapObject<Province, ProvinceResponse>(provinces, _mapper);
         return responses;
     }
 
@@ -83,6 +83,21 @@ public class ProvinceService : IProvinceService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

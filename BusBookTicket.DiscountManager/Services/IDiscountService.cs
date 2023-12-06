@@ -6,7 +6,7 @@ using BusBookTicket.DiscountManager.DTOs.Responses;
 
 namespace BusBookTicket.DiscountManager.Services;
 
-public interface IDiscountService : IService<DiscountCreate, DiscountUpdate, int, DiscountResponse>
+public interface IDiscountService : IService<DiscountCreate, DiscountUpdate, int, DiscountResponse, object, object>
 {
     
 }

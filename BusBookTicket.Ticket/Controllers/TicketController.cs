@@ -1,8 +1,11 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
+using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketServices;
+using BusBookTicket.Ticket.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,15 +29,21 @@ public class TicketController : ControllerBase
 
     [HttpPost("find")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetTicket([FromBody] SearchForm searchForm )
+    public async Task<IActionResult> GetTicket([FromBody] SearchForm searchForm , [FromQuery] TicketPaging paging)
     {
-        List<TicketResponse> response = await _ticketService.GetAllTicket(searchForm);
-        return Ok(new Response<List<TicketResponse>>(false, response));
+        var validator = new SearchFormValidator();
+        var result = await validator.ValidateAsync(searchForm);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
+        TicketPagingResult response = await _ticketService.GetAllTicket(searchForm, paging: paging);
+        return Ok(new Response<TicketPagingResult>(false, response));
     }
     
     [HttpGet("get")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetByID([FromQuery] int id)
+    public async Task<IActionResult> GetById([FromQuery] int id)
     {
         TicketResponse response = await _ticketService.GetById(id);
         return Ok(new Response<TicketResponse>(false, response));
