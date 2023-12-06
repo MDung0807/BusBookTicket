@@ -87,16 +87,26 @@ public class TicketItemService : ITicketItemService
         throw new NotImplementedException();
     }
 
-    public Task<List<TicketItemResponse>> GetAllByAdmin()
+    public Task<object> GetAllByAdmin(object pagingRequest)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<TicketItemResponse>> getAllInTicket(int ticketId)
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<TicketItemResponse>> GetAllInTicket(int ticketId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId);
         List<TicketItem> items = await _repository.ToList(ticketItemSpecification);
-        List<TicketItemResponse> responses = await AppUtils.MappObject<TicketItem, TicketItemResponse>(items, _mapper);
+        List<TicketItemResponse> responses = await AppUtils.MapObject<TicketItem, TicketItemResponse>(items, _mapper);
         return responses;
     }
 

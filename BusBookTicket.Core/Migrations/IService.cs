@@ -1,4 +1,6 @@
-﻿namespace BusBookTicket.Core.Infrastructure.Interfaces
+﻿using BusBookTicket.Core.Application.Paging;
+
+namespace BusBookTicket.Core.Infrastructure.Interfaces
 {
     /// <summary>
     /// Service for API, this is interface common
@@ -7,7 +9,9 @@
     /// <typeparam name="TUpdate">form update</typeparam>
     /// <typeparam name="TId">ID in entity</typeparam>
     /// <typeparam name="TResponse">response to view</typeparam>
-    public interface IService<in TCreate, in TUpdate, in TId, TResponse>
+    /// <typeparam name="TPaging"></typeparam>
+    /// <typeparam name="TPagingResult"></typeparam>
+    public interface IService<in TCreate, in TUpdate, in TId, TResponse, in TPaging, TPagingResult>
     {
         /// <summary>
         /// Get data by id
@@ -92,6 +96,27 @@
         /// <returns></returns>
         Task<bool> CheckToExistByParam(string param);
 
-        Task<List<TResponse>> GetAllByAdmin();
+        /// <summary>
+        /// Get all item with role admin.
+        /// </summary>
+        /// <param name="pagingRequest"></param>
+        /// <returns></returns>
+        Task<TPagingResult> GetAllByAdmin(TPaging pagingRequest);
+
+        /// <summary>
+        /// Get all item, but have paging
+        /// </summary>
+        /// <param name="pagingRequest"></param>
+        /// <returns></returns>
+        Task<TPagingResult> GetAll(TPaging pagingRequest);
+        
+        /// <summary>
+        /// Get all item in master
+        /// </summary>
+        /// <param name="pagingRequest"></param>
+        /// <param name="idMaster">id master</param>
+        /// <returns></returns>
+        Task<TPagingResult> GetAll(TPaging pagingRequest, TId idMaster);
+
     }
 }

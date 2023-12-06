@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Application.Specification;
+﻿using BusBookTicket.CompanyManage.Paging;
+using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.CompanyManage.Specification;
@@ -18,7 +19,7 @@ public sealed class CompanySpecification : BaseSpecification<Company>
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Ward);
     }
-    public CompanySpecification(bool checkStatus) : base(null, checkStatus)
+    public CompanySpecification(bool checkStatus=true, CompanyPaging paging = null) : base(null, checkStatus)
     {
         
     }

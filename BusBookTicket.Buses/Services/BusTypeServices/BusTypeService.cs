@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.Bus;
+using BusBookTicket.Buses.Paging.BusType;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -34,7 +36,7 @@ public class BusTypeService : IBusTypeService
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification();
         List<BusType> busTypes = await _repository.ToList(busTypeSpecification);
-        List<BusTypeResponse> responses = await AppUtils.MappObject<BusType, BusTypeResponse>(busTypes, _mapper);
+        List<BusTypeResponse> responses = await AppUtils.MapObject<BusType, BusTypeResponse>(busTypes, _mapper);
         return responses;
     }
 
@@ -96,6 +98,30 @@ public class BusTypeService : IBusTypeService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BusTypePagingResult> GetAllByAdmin(BusTypePaging pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<BusTypePagingResult> GetAll(BusTypePaging pagingRequest)
+    {
+        BusTypeSpecification busTypeSpecification = new BusTypeSpecification(pagingRequest);
+        List<BusType> busTypes = await _repository.ToList(busTypeSpecification);
+        int count = _repository.Count(new BusTypeSpecification());
+        List<BusTypeResponse> responses = await AppUtils.MapObject<BusType, BusTypeResponse>(busTypes, _mapper);
+        BusTypePagingResult result = AppUtils.ResultPaging<BusTypePagingResult, BusTypeResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count,
+            responses);
+        return result;
+    }
+
+    public Task<BusTypePagingResult> GetAll(BusTypePaging pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

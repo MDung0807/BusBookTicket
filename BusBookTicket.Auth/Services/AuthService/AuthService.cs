@@ -80,6 +80,21 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        public Task<object> GetAllByAdmin(object pagingRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> GetAll(object pagingRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> GetAll(object pagingRequest, int idMaster)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<AuthResponse>> GetAllByAdmin()
         {
             throw new NotImplementedException();

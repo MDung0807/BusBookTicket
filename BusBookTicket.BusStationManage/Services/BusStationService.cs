@@ -43,24 +43,11 @@ public class BusStationService : IBusStationService
         BusStationSpecification busStationSpecification = new BusStationSpecification();
         List<BusStationResponse> responses = new List<BusStationResponse>();
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
-        responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
             responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
 
-        }
-        return responses;
-    }
-    
-    public async Task<List<BusStationResponse>> GetAllByAdmin()
-    {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(false);
-        List<BusStationResponse> responses = new List<BusStationResponse>();
-        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
-        responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
-        for (int i = 0; i < responses.Count; i++)
-        {
-            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
         return responses;
     }
@@ -69,16 +56,30 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(paging: request);
         List<BusStationResponse> stationResponses = new List<BusStationResponse>();
-        StationPagingResult response = new StationPagingResult();
-        response.PageIndex = request.PageIndex;
-        response.PageSize = request.PageSize;
+        int total = _repository.Count(busStationSpecification);
+        
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
-        response.Items = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        stationResponses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
+        StationPagingResult response = AppUtils.ResultPaging<StationPagingResult, BusStationResponse>(
+            request.PageIndex, 
+            request.PageSize, 
+            total,
+            stationResponses);
+
+        // response.PageTotal = (int)Math.Round((decimal)total/request.PageSize);
+        // response.PageIndex = request.PageIndex;
+        // response.PageSize = request.PageSize;
+        // response.Items = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < response.Items.Count; i++)
         {
             response.Items[i].AddressDb = await GetFullAddress(response.Items[i].Address, response.Items[i].WardId);
         }
         return response;
+    }
+
+    public Task<StationPagingResult> GetAll(StationPaging pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
@@ -147,6 +148,26 @@ public class BusStationService : IBusStationService
         throw new NotImplementedException();
     }
 
+    public async Task<StationPagingResult> GetAllByAdmin(StationPaging pagingRequest)
+    {
+        BusStationSpecification busStationSpecification = new BusStationSpecification(false, paging: pagingRequest);
+        List<BusStationResponse> responses = new List<BusStationResponse>();
+        List<BusStation> busStations = await _repository.ToList(busStationSpecification);
+        responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
+        }
+
+        int count = _repository.Count(new BusStationSpecification(false));
+        StationPagingResult result = new StationPagingResult();
+        result.PageIndex = pagingRequest.PageIndex;
+        result.PageSize = pagingRequest.PageSize;
+        result.PageTotal = (int)Math.Round((decimal)count / pagingRequest.PageSize);
+        result.Items = responses;
+        return result;
+    }
+
     public async Task<BusStationResponse> GetStationByName(string name)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);
@@ -156,28 +177,37 @@ public class BusStationService : IBusStationService
         return response;
     }
 
-    public async Task<List<BusStationResponse>> GetStationByLocation(string location)
+    public async Task<StationPagingResult> GetStationByLocation(string location, StationPaging pagingRequest)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification("", location);
+        BusStationSpecification busStationSpecification = new BusStationSpecification("", location, paging: pagingRequest);
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
-        List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
-        for (int i = 0; i < responses.Count; i++)
+        int count = _repository.Count(new BusStationSpecification("", location));
+        List<BusStationResponse> responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
+        foreach (var t in responses)
         {
-            responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
+            t.AddressDb = await GetFullAddress(t.Address, t.WardId);
         }
-        return responses;
+
+        StationPagingResult result = AppUtils.ResultPaging<StationPagingResult, BusStationResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize,
+            count, responses);
+        return result;
     }
 
-    public async Task<List<BusStationResponse>> GetAllStationInBus(int busId)
+    public async Task<StationPagingResult> GetAllStationInBus(int busId, StationPaging pagingRequest)
     {
-        BusStationSpecification specification = new BusStationSpecification(0, busId);
+        BusStationSpecification specification = new BusStationSpecification(0, busId, paging: pagingRequest);
         List<BusStation> busStations = await _repository.ToList(specification);
-        List<BusStationResponse> responses = await AppUtils.MappObject<BusStation, BusStationResponse>(busStations, _mapper);
+        int count = _repository.Count(new BusStationSpecification(0, busId));
+        List<BusStationResponse> responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
             responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
-        return responses;
+        StationPagingResult result = AppUtils.ResultPaging<StationPagingResult, BusStationResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize,
+            count, responses);
+        return result;
     }
 
     #endregion

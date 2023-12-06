@@ -3,6 +3,7 @@ using BusBookTicket.AddressManagement.DTOs.Requests.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.AddressManagement.Specification;
+using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -82,6 +83,21 @@ public class DistrictService : IDistrictService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagingResult<DistrictResponse>> GetAllByAdmin(PagingRequest pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagingResult<DistrictResponse>> GetAll(PagingRequest pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagingResult<DistrictResponse>> GetAll(PagingRequest pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

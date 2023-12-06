@@ -1,9 +1,12 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.BusType;
 using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Buses.Utils;
+using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,10 +53,10 @@ public class BusTypeController : ControllerBase
     
     [HttpGet("getAll")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] BusTypePaging paging)
     {
-        List<BusTypeResponse> responses = await _busTypeService.GetAll();
-        return Ok(new Response<List<BusTypeResponse>>(false, responses));
+        BusTypePagingResult responses = await _busTypeService.GetAll(paging);
+        return Ok(new Response<BusTypePagingResult>(false, responses));
     }
     
     [HttpGet]
@@ -68,6 +71,12 @@ public class BusTypeController : ControllerBase
     [HttpPut("admin/update")]
     public async Task<IActionResult> Update([FromBody] BusTypeFormUpdate request)
     {
+        var validator = new BusTypeFormUpdateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busTypeService.Update(request, request.Id, userId);
         return Ok(new Response<string>(!status, "Response"));
@@ -77,6 +86,12 @@ public class BusTypeController : ControllerBase
     [HttpPost("admin/create")]
     public async Task<IActionResult> CreateByAdmin([FromBody] BusTypeForm request)
     {
+        var validator = new BusTypeFormValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busTypeService.Create(request, userId);
         return Ok(new Response<string>(!status, "Response"));
@@ -95,6 +110,12 @@ public class BusTypeController : ControllerBase
     [HttpPost("company/create")]
     public async Task<IActionResult> CreateByCompany([FromBody] BusTypeForm request)
     {
+        var validator = new BusTypeFormValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         request.Status = 0;
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busTypeService.Create(request, userId);

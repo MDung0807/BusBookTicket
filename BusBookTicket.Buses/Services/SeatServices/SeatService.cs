@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.Seat;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -92,16 +93,32 @@ public class SeatService : ISeatService
         throw new NotImplementedException();
     }
 
-    public Task<List<SeatResponse>> GetAllByAdmin()
+    public Task<SeatPagingResult> GetAllByAdmin(SeatPaging pagingRequest)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<SeatResponse>> getSeatInBus(int busID)
+    public Task<SeatPagingResult> GetAll(SeatPaging pagingRequest)
     {
-        SeatSpecification seatSpecification = new SeatSpecification(0, busID);
+        throw new NotImplementedException();
+    }
+
+    public async Task<SeatPagingResult> GetAll(SeatPaging pagingRequest, int idMaster)
+    {
+        SeatSpecification seatSpecification = new SeatSpecification(busId:idMaster, paging: pagingRequest);
         List<Seat> seats = await _repository.ToList(seatSpecification);
-        List<SeatResponse> responses = await AppUtils.MappObject<Seat, SeatResponse>(seats, _mapper);
-        return responses;
+        int count = _repository.Count(new SeatSpecification(busId:idMaster));
+        List<SeatResponse> responses = await AppUtils.MapObject<Seat, SeatResponse>(seats, _mapper);
+        SeatPagingResult result = AppUtils.ResultPaging<SeatPagingResult, SeatResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count,
+            responses);
+        return result;
+    }
+
+    public Task<List<SeatResponse>> GetAllByAdmin()
+    {
+        throw new NotImplementedException();
     }
 }

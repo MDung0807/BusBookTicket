@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Application.Specification;
+﻿using BusBookTicket.Buses.Paging.BusType;
+using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.Buses.Specification;
@@ -10,13 +11,16 @@ public sealed class BusTypeSpecification : BaseSpecification<BusType>
         AddInclude(x => x.Buses);
     }
     
-    public BusTypeSpecification(int id, bool checkStatus) : base(x => x.Id == id, checkStatus)
+    public BusTypeSpecification(int id, bool checkStatus = true) : base(x => x.Id == id, checkStatus)
     {
         AddInclude(x => x.Buses);
     }
 
-    public BusTypeSpecification()
+    public BusTypeSpecification(BusTypePaging paging = null)
     {
-        
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
     }
 }

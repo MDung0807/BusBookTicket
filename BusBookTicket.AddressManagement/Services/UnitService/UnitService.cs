@@ -41,7 +41,7 @@ public class UnitService : IUnitService
     {
         UnitSpecification unitSpecification = new UnitSpecification();
         List<AdministrativeUnit> units = await _repository.ToList(unitSpecification);
-        return await AppUtils.MappObject<AdministrativeUnit, UnitResponse>(units, _mapper);
+        return await AppUtils.MapObject<AdministrativeUnit, UnitResponse>(units, _mapper);
     }
 
     public Task<bool> Update(UnitUpdate entity, int id, int userId)
@@ -85,6 +85,21 @@ public class UnitService : IUnitService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

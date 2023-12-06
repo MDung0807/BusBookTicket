@@ -13,14 +13,13 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
         AddInclude(x => x.Ward);
     }
 
-    public BusStationSpecification(bool checkStatus = true, bool isPaging = true, StationPaging paging = null!) : base(null, checkStatus: checkStatus)
+    public BusStationSpecification(bool checkStatus = true, StationPaging paging = null) : base(null, checkStatus: checkStatus)
     {
         AddInclude(x => x.Ward);
         AddInclude(x => x.BusStops);
 
-        if (!isPaging)
-            return;
-        ApplyPaging(paging.PageIndex, paging.PageSize);
+        if (paging != null)
+            ApplyPaging(paging.PageIndex, paging.PageSize);
     }
 
     public BusStationSpecification(string name) : base(x => x.Name.Contains(name))
@@ -44,7 +43,7 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
 
     }
 
-    public BusStationSpecification(string name, string location) : base(x =>
+    public BusStationSpecification(string name, string location, StationPaging paging = null) : base(x =>
         x.Name == name ||
         x.Address.Contains(location) ||
         x.Ward.FullName.Contains(location) ||
@@ -52,12 +51,19 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
         x.Ward.District.Province.FullName.Contains(location))
     {
         AddInclude(x => x.Ward);
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
     }
 
-    public BusStationSpecification(int id, int busId) : base(x => x.BusStops.Any(y => y.Bus.Id == busId))
+    public BusStationSpecification(int id, int busId, StationPaging paging = null) : base(x => x.BusStops.Any(y => y.Bus.Id == busId))
     {
         AddInclude(x => x.BusStops.Where(b => b.Bus.Id == busId));
         AddInclude(x => x.Ward);
-
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
     }
 }

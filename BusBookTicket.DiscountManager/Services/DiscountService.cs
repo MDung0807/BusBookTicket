@@ -29,7 +29,7 @@ public class DiscountService : IDiscountService
         DiscountSpecification discountSpecification = new DiscountSpecification();
         List<Discount> discounts = await _repository.ToList(discountSpecification);
 
-        List<DiscountResponse> responses = await AppUtils.MappObject<Discount, DiscountResponse>(discounts, _mapper);
+        List<DiscountResponse> responses = await AppUtils.MapObject<Discount, DiscountResponse>(discounts, _mapper);
         return responses;
     }
 
@@ -84,6 +84,21 @@ public class DiscountService : IDiscountService
     }
 
     public Task<bool> CheckToExistByParam(string param)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
     {
         throw new NotImplementedException();
     }

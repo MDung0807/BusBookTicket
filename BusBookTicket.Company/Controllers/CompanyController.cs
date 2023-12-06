@@ -2,6 +2,7 @@ using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
+using BusBookTicket.CompanyManage.Paging;
 using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CompanyManage.Utils;
 using BusBookTicket.Core.Utils;
@@ -80,7 +81,7 @@ public class CompanyController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("getAll")]
-    public async Task<IActionResult> GetAllCompany()
+    public async Task<IActionResult> GetAllCompany([FromQuery] CompanyPaging paging)
     {
         List<ProfileCompany> responses = await _companyServices.GetAll();
         return Ok(new Response<List<ProfileCompany>>(false, responses));
@@ -88,10 +89,10 @@ public class CompanyController : ControllerBase
     
     [Authorize(Roles = AppConstants.ADMIN)]
     [HttpGet("admin/getAll")]
-    public async Task<IActionResult> GetAllCompanyByAdmin()
+    public async Task<IActionResult> GetAllCompanyByAdmin([FromQuery] CompanyPaging paging)
     {
-        List<ProfileCompany> responses = await _companyServices.GetAllByAdmin();
-        return Ok(new Response<List<ProfileCompany>>(false, responses));
+        CompanyPagingResult responses = await _companyServices.GetAllByAdmin(paging);
+        return Ok(new Response<CompanyPagingResult>(false, responses));
     }
     #endregion
 }

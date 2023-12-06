@@ -12,6 +12,10 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
         var query = inputQuery;
 
         // modify the IQueryable using the specification's criteria expression
+        if (specification == null)
+        {
+            return query;
+        }
         if (specification.Criteria != null)
         {
             query = query.Where(specification.Criteria);

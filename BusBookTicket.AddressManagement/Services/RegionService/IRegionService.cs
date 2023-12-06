@@ -4,7 +4,7 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.AddressManagement.Services;
 
-public interface IRegionService : IService<RegionCreate, RegionUpdate, int, RegionResponse>
+public interface IRegionService : IService<RegionCreate, RegionUpdate, int, RegionResponse, object, object>
 {
     
 }

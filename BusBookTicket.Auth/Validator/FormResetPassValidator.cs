@@ -1,5 +1,8 @@
-﻿namespace BusBookTicket.Auth.Validator;
+﻿using BusBookTicket.Auth.DTOs.Requests;
+using FluentValidation;
 
-public class FormResetPassValidator
+namespace BusBookTicket.Auth.Validator;
+
+public class FormResetPassValidator : AbstractValidator<FormResetPass>
 {
 }

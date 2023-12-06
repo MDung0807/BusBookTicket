@@ -89,6 +89,21 @@ public class WardService : IWardService
         throw new NotImplementedException();
     }
 
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<WardResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

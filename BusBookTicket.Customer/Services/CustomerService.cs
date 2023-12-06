@@ -8,6 +8,7 @@ using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Utils;
+using BusBookTicket.CustomerManage.Paging;
 using BusBookTicket.CustomerManage.Specification;
 
 namespace BusBookTicket.CustomerManage.Services
@@ -40,23 +41,6 @@ namespace BusBookTicket.CustomerManage.Services
         #endregion -- Contructor --
 
         #region -- Public method --
-
-        /// <summary>
-        /// Get all customer by admin
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<CustomerResponse>> GetAllCustomer()
-        {
-            List<Customer> customers = new List<Customer>();
-            List<CustomerResponse> responses = new List<CustomerResponse>();
-            CustomerSpecification specification = new CustomerSpecification();
-            customers = await _repository.ToList(specification);
-            foreach(Customer customer in customers)
-            {
-                responses.Add(_mapper.Map<CustomerResponse>(customer));
-            }
-            return responses;
-        }
 
         /// <summary>
         /// Create Customer and account genera
@@ -128,7 +112,39 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<ProfileResponse>> GetAllByAdmin()
+        public async Task<CustomerPagingResult> GetAllByAdmin(CustomerPaging pagingRequest)
+        {
+            List<Customer> customers = new List<Customer>();
+            List<CustomerResponse> responses = new List<CustomerResponse>();
+            CustomerSpecification specification = new CustomerSpecification(paging:pagingRequest);
+            customers = await _repository.ToList(specification);
+            int count = _repository.Count(new CustomerSpecification());
+            foreach(Customer customer in customers)
+            {
+                responses.Add(_mapper.Map<CustomerResponse>(customer));
+            }
+
+            CustomerPagingResult result =
+                AppUtils.ResultPaging<CustomerPagingResult, CustomerResponse>(pagingRequest.PageIndex,
+                    pagingRequest.PageSize, count, responses);
+            result.Items = responses;
+            result.PageIndex = pagingRequest.PageIndex;
+            result.PageSize = pagingRequest.PageSize;
+            result.PageTotal = (int)Math.Round((decimal)count / pagingRequest.PageSize);
+            return result;
+        }
+
+        public Task<CustomerPagingResult> GetAll(CustomerPaging pagingRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CustomerPagingResult> GetAll(CustomerPaging pagingRequest, int idMaster)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@ using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.BillManage.Services.BillItems;
 
-public interface IBillItemService : IService<BillItemRequest, BillItemRequest, int, BillItemResponse>
+public interface IBillItemService : IService<BillItemRequest, BillItemRequest, int, BillItemResponse, object, object>
 {
     /// <summary>
     /// Get all item in ticket

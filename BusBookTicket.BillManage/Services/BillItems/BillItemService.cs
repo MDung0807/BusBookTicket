@@ -100,6 +100,21 @@ public class BillItemService : IBillItemService
         throw new NotImplementedException();
     }
 
+    public Task<object> GetAllByAdmin(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object> GetAll(object pagingRequest, int idMaster)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<BillItemResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
@@ -113,7 +128,7 @@ public class BillItemService : IBillItemService
             BillItemSpecification billItemSpecification = new BillItemSpecification(id);
             List<BillItem> ticketItems = await _repository.ToList(billItemSpecification);
 
-            responses = await AppUtils.MappObject<BillItem, BillItemResponse>(ticketItems, _mapper);
+            responses = await AppUtils.MapObject<BillItem, BillItemResponse>(ticketItems, _mapper);
             return responses;
         }
         catch

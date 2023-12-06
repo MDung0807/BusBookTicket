@@ -1,8 +1,11 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.Seat;
 using BusBookTicket.Buses.Services.SeatServices;
+using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,10 +27,10 @@ public class SeatController : ControllerBase
 
     [HttpGet("getAll")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAllInBus([FromQuery] int busID)
+    public async Task<IActionResult> GetAllInBus([FromQuery] int busId, [FromQuery] SeatPaging paging)
     {
-        List<SeatResponse> responses = await _seatService.getSeatInBus(busID);
-        return Ok(new Response<List<SeatResponse>>(false, responses));
+        SeatPagingResult responses = await _seatService.GetAll(paging, busId);
+        return Ok(new Response<SeatPagingResult>(false, responses));
     }
 
     [HttpGet("get")]
@@ -42,6 +45,12 @@ public class SeatController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Create([FromBody] SeatForm request)
     {
+        var validator = new SeatFormValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         request.SeatId = 0;
         int userId = JwtUtils.GetUserID(HttpContext);
         await _seatService.Create(request, userId);
@@ -61,6 +70,12 @@ public class SeatController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Update([FromBody] SeatForm request)
     {
+        var validator = new SeatFormValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         await _seatService.Update(request, request.SeatId, userId);
         return Ok(new Response<string>(false, "Response"));

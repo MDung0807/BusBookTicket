@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.Bus;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Buses.Specification;
@@ -51,7 +52,7 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(checkStatus:false);
         List<Bus> buses = await _repository.ToList(busSpecification);
-        List<BusResponse> responses = await AppUtils.MappObject<Bus, BusResponse>(buses, _mapper);
+        List<BusResponse> responses = await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper);
         return responses;
     }
 
@@ -160,8 +161,25 @@ public class BusService : IBusService
         throw new NotImplementedException();
     }
 
-    public Task<List<BusResponse>> GetAllByAdmin()
+    public Task<BusPagingResult> GetAllByAdmin(BusPaging pagingRequest)
     {
         throw new NotImplementedException();
+    }
+
+    public Task<BusPagingResult> GetAll(BusPaging pagingRequest)
+    {
+        throw new NotImplementedException();
+
+    }
+
+    public async Task<BusPagingResult> GetAll(BusPaging pagingRequest, int idMaster)
+    {
+        BusSpecification busSpecification = new BusSpecification(checkStatus:false);
+        List<Bus> buses = await _repository.ToList(busSpecification);
+        int count = _repository.Count(new BusSpecification(checkStatus:false));
+        List<BusResponse> responses = await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper);
+        BusPagingResult result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(pagingRequest.PageIndex,
+            pagingRequest.PageSize, count, responses);
+        return result;
     }
 }

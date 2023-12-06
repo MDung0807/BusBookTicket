@@ -1,8 +1,11 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
+using BusBookTicket.Buses.Paging.SeatType;
 using BusBookTicket.Buses.Services.SeatTypServices;
+using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +31,11 @@ public class SeatTypeController : ControllerBase
 
     [HttpGet("getAll")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery]SeatTypePaging paging)
     {
         int companyID = JwtUtils.GetUserID(HttpContext);
-        List<SeatTypeResponse> responses = await _seatTypeService.getAll(companyID);
-        return Ok(new Response<List<SeatTypeResponse>>(false, responses));
+        SeatTypePagingResult responses = await _seatTypeService.GetAll(paging, companyID);
+        return Ok(new Response<SeatTypePagingResult>(false, responses));
     }
 
     [HttpGet("getByID")]
@@ -47,6 +50,12 @@ public class SeatTypeController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Create([FromBody] SeatTypeFormCreate request)
     {
+        var validator = new SeatTypeFormCreateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = id;
         await _seatTypeService.Create(request, id);
@@ -66,6 +75,12 @@ public class SeatTypeController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Update([FromBody] SeatTypeFormUpdate request)
     {
+        var validator = new SeatTypeFormUpdateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = id;
         await _seatTypeService.Update(request, request.Id, id);
@@ -76,6 +91,12 @@ public class SeatTypeController : ControllerBase
     [Authorize(Roles = AppConstants.ADMIN)]
     public async Task<IActionResult> CreateByAdmin([FromBody] SeatTypeFormCreate request)
     {
+        var validator = new SeatTypeFormCreateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         int id = 0;
         request.CompanyId = id;
