@@ -40,24 +40,24 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
-    public bool Contains(ISpecification<T> specification = null)
+    public async Task<bool> Contains(ISpecification<T> specification = null)
     {
-        return Count(specification) > 0 ? true : false;
+        return await Count(specification) > 0 ? true : false;
     }
 
-    public bool Contains(Expression<Func<T, bool>> predicate)
+    public async Task<bool> Contains(Expression<Func<T, bool>> predicate)
     {
-        return Count(predicate) > 0 ? true : false;
+        return await Count(predicate) > 0 ? true : false;
     }
 
-    public int Count(ISpecification<T> specification = null)
+    public async Task<int> Count(ISpecification<T> specification = null)
     {
-        return ApplySpecification(specification).Count();
+        return await ApplySpecification(specification).CountAsync();
     }
 
-    public int Count(Expression<Func<T, bool>> predicate)
+    public async Task<int> Count(Expression<Func<T, bool>> predicate)
     {
-        return _context.Set<T>().Where(predicate).Count();
+        return await _context.Set<T>().Where(predicate).CountAsync();
     }
 
     public async Task<T> Get(ISpecification<T> specification)
@@ -196,17 +196,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return true;
     }
 
-    public async Task<List<T>> ToListWithSqlQuery(string sqlQuery)
-    {
-        
-        List<T> listData = await _dbSet.FromSqlRaw(sqlQuery).ToListAsync();
-        return listData;
-    }
-
     #region -- Private Method --
     private IQueryable<T> ApplySpecification(ISpecification<T> specifications)
     {
-        return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specifications);
+        return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specifications, _dbSet);
     }
 
     private void CheckStatus(T data)

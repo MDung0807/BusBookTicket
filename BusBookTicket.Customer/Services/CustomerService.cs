@@ -118,7 +118,7 @@ namespace BusBookTicket.CustomerManage.Services
             List<CustomerResponse> responses = new List<CustomerResponse>();
             CustomerSpecification specification = new CustomerSpecification(paging:pagingRequest);
             customers = await _repository.ToList(specification);
-            int count = _repository.Count(new CustomerSpecification());
+            int count = await _repository.Count(new CustomerSpecification());
             foreach(Customer customer in customers)
             {
                 responses.Add(_mapper.Map<CustomerResponse>(customer));

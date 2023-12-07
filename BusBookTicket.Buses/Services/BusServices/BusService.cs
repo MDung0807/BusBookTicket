@@ -176,7 +176,7 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(checkStatus:false);
         List<Bus> buses = await _repository.ToList(busSpecification);
-        int count = _repository.Count(new BusSpecification(checkStatus:false));
+        int count = await _repository.Count(new BusSpecification(checkStatus:false));
         List<BusResponse> responses = await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper);
         BusPagingResult result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(pagingRequest.PageIndex,
             pagingRequest.PageSize, count, responses);

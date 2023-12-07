@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
+using System.Numerics;
 using BusBookTicket.Core.Application.Specification.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace BusBookTicket.Core.Application.Specification;
 
@@ -15,11 +17,7 @@ public class BaseSpecification<T> : ISpecification<T>
         Criteria = criteria;
         CheckStatus = checkStatus;
     }
-    protected BaseSpecification()
-    {
-
-    }
-    public Expression<Func<T, bool>> Criteria { get; }
+    public Expression<Func<T, bool>> Criteria { get; set; }
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
     public bool CheckStatus { get; }
     public List<string> IncludeStrings { get; } = new List<string>();
@@ -27,6 +25,7 @@ public class BaseSpecification<T> : ISpecification<T>
     public Expression<Func<T, object>> OrderByDescending { get; private set; }
     public Expression<Func<T, object>> GroupBy { get; private set; }
     public String SqlQuery { get; private set; }
+    private readonly List<SqlParameter> _parameters = new List<SqlParameter>();
 
     public int Take { get; private set; }
     public int Skip { get; private set; }
@@ -41,10 +40,17 @@ public class BaseSpecification<T> : ISpecification<T>
     {
         IncludeStrings.Add(includeString);
     }
-    protected virtual void AddSqlQuery (string sqlQuery)
+
+    public virtual void AddSqlQuery (string sqlQuery)
     {
         SqlQuery = sqlQuery;
     }
+
+    public virtual IEnumerable<SqlParameter> GetParameters()
+    {
+        return _parameters;
+    }
+
     protected virtual void ApplyPaging(int skip, int take)
     {
         Skip = (skip - 1)*take;
@@ -65,6 +71,12 @@ public class BaseSpecification<T> : ISpecification<T>
     protected virtual void ApplyGroupBy(Expression<Func<T, object>> groupByExpression)
     {
         GroupBy = groupByExpression;
+    }
+
+    protected void AddParameter(string parameterName, object value)
+    {
+        var sqlParameter = new SqlParameter(parameterName: parameterName, value: value);
+        _parameters.Add(sqlParameter);
     }
     
 }
