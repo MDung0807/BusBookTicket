@@ -4,7 +4,10 @@ namespace BusBookTicket.Application.MailKet.DTO.Request;
 
 public class MailRequest
 {
-    public string toMail { get; set; }
-    public string subject { get; set; }
-    public string body { get; set; }
+    public string ToMail { get; set; }
+    public string Subject { get; set; }
+    public string Content { get; set; }
+    public string Message { get; set; }
+    public string LinkImage { get; set; }
+    public string FullName { get; set; }
 }
