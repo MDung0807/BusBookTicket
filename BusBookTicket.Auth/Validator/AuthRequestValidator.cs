@@ -9,7 +9,7 @@ public class AuthRequestValidator : AbstractValidator<AuthRequest>
     {
         RuleFor(x => x.Username)
             .NotEmpty().WithMessage("is required")
-            .Length(8, 50).WithMessage("must be between 8 and 50 characters");
+            .Length(4, 50).WithMessage("must be between 8 and 50 characters");
         
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("is required")
