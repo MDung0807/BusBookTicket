@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using System.Numerics;
+using Microsoft.Data.SqlClient;
 
 namespace BusBookTicket.Core.Application.Specification.Interfaces;
 
@@ -16,4 +18,6 @@ public interface ISpecification<T>
     int Take { get; }
     int Skip { get; }
     bool IsPagingEnabled { get; }
+    void AddSqlQuery(string sqlQuery);
+    IEnumerable<SqlParameter> GetParameters();
 }

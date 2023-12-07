@@ -175,7 +175,7 @@ public class BillService : IBillService
         BillSpecification billSpecification = new BillSpecification(userId, false, paging: paging);
         List<Bill> bills = await _repository.ToList(billSpecification);
         BillPagingResult result = new BillPagingResult();
-        int count = _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+        int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
         result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
             paging.PageIndex,
             paging.PageSize,

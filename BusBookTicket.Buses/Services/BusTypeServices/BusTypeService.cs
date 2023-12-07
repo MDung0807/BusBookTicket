@@ -111,7 +111,7 @@ public class BusTypeService : IBusTypeService
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(pagingRequest);
         List<BusType> busTypes = await _repository.ToList(busTypeSpecification);
-        int count = _repository.Count(new BusTypeSpecification());
+        int count = await _repository.Count(new BusTypeSpecification());
         List<BusTypeResponse> responses = await AppUtils.MapObject<BusType, BusTypeResponse>(busTypes, _mapper);
         BusTypePagingResult result = AppUtils.ResultPaging<BusTypePagingResult, BusTypeResponse>(
             pagingRequest.PageIndex,

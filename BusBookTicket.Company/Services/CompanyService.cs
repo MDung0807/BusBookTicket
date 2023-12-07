@@ -64,7 +64,7 @@ public class CompanyService : ICompanyServices
         CompanySpecification companySpecification = new CompanySpecification(false);
         List<Company> companies = await _repository.ToList(companySpecification);
         List<ProfileCompany> profileCompanies = await AppUtils.MapObject<Company, ProfileCompany>(companies, _mapper);
-        int count = _repository.Count();
+        int count = await _repository.Count();
         CompanyPagingResult result = new CompanyPagingResult();
         result.PageIndex = paging.PageIndex;
         result.PageSize = paging.PageSize;

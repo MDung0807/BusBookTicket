@@ -12,9 +12,8 @@ public interface IGenericRepository<T>: IRepository<T> where T : BaseEntity
 {
     Task<T> Get(ISpecification<T> specification);
     Task<List<T>> ToList(ISpecification<T> specification);
-    bool Contains(ISpecification<T> specification = null);
-    bool Contains(Expression<Func<T, bool>> predicate);
-    int Count(ISpecification<T> specification = null);
-    int Count(Expression<Func<T, bool>> predicate);
-    Task<List<T>> ToListWithSqlQuery(string sqlQuery);
+    Task<bool> Contains(ISpecification<T> specification = null);
+    Task<bool> Contains(Expression<Func<T, bool>> predicate);
+    Task<int> Count(ISpecification<T> specification = null);
+    Task<int> Count(Expression<Func<T, bool>> predicate);
 }

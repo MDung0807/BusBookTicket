@@ -158,10 +158,10 @@ public class TicketService : ITicketService
     
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
     {
-  
-        string sqlQuery = sqlFindTicket(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime);
-
-        List<Core.Models.Entity.Ticket> ticket = await _repository.ToListWithSqlQuery(sqlQuery);
+        TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging);
+        List<Core.Models.Entity.Ticket> ticket = await _repository.ToList(ticketSpecification);
+        int count = await _repository.Count(new TicketSpecification(searchForm.StationStart, searchForm.StationEnd,
+            searchForm.DateTime));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
 
@@ -171,7 +171,7 @@ public class TicketService : ITicketService
         }
 
         TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
-            paging.PageIndex, paging.PageSize, count: 10, responses);
+            paging.PageIndex, paging.PageSize, count: count, responses);
         return result;
     }
 
@@ -189,82 +189,4 @@ public class TicketService : ITicketService
         return await _itemService.Create(form, userId);
     }
     #endregion -- Private Method --
-
-    #region -- Query --
-    private string sqlFindTicket(string stationStart, string stationEnd, DateTime dateTime)
-    {
-        string query = @"
-        SELECT
-            T.Id,
-            T.Date,
-            T.BusID,
-            T.DateCreate,
-            T.DateUpdate,
-            T.UpdateBy,
-            T.CreateBy,
-            T.Status,
-            Bus.BusNumber,
-            Companies.Name
-        FROM
-            Ticket_BusStop t1
-            INNER JOIN Tickets T ON T.Id = t1.TicketId
-            LEFT JOIN TicketItems TItem ON TItem.TicketID = T.Id
-            LEFT JOIN Buses Bus ON Bus.Id = T.BusID
-            LEFT JOIN Companies ON Companies.Id = Bus.CompanyID
-        WHERE
-            t1.BusStopId IN (
-                SELECT BS.Id
-                FROM BusStations B
-                    LEFT JOIN Wards W ON B.WardId = W.Id
-                    LEFT JOIN Districts D ON W.DistrictId = D.Id
-                    LEFT JOIN Provinces P ON D.ProvinceId = P.Id
-                    INNER JOIN BusStops BS ON BS.BusStationID = B.Id
-                WHERE
-                    B.Name LIKE N'%@StationStart%'
-                    OR W.FullName LIKE N'%@StationStart%'
-                    OR D.FullName LIKE N'%@StationStart%'
-                    OR P.FullName LIKE N'%@StationStart%'
-            )
-            AND t1.DepartureTime > '@DateTime'
-            AND EXISTS (
-                SELECT 1
-                FROM Ticket_BusStop t2
-                WHERE
-                    t2.TicketId = t1.TicketId
-                    AND t2.BusStopId IN (
-                        SELECT BS.Id
-                        FROM BusStations B
-                            LEFT JOIN Wards W ON B.WardId = W.Id
-                            LEFT JOIN Districts D ON W.DistrictId = D.Id
-                            LEFT JOIN Provinces P ON D.ProvinceId = P.Id
-                            INNER JOIN BusStops BS ON BS.BusStationID = B.Id
-                        WHERE
-                            B.Name LIKE N'%@StationEnd%'
-                            OR W.FullName LIKE N'%@StationEnd%'
-                            OR D.FullName LIKE N'%@StationEnd%'
-                            OR P.FullName LIKE N'%@StationEnd%'
-                    )
-                    AND t2.IndexStation > t1.IndexStation
-            )
-        GROUP BY
-            T.Id,
-            T.Date,
-            T.BusID,
-            T.DateCreate,
-            T.DateUpdate,
-            T.UpdateBy,
-            T.CreateBy,
-            T.Status,
-            Bus.BusNumber,
-            Companies.Name;
-    ";
-        // Replace placeholders with actual parameter names
-        query = query.Replace("@StationStart", stationStart)
-                     .Replace("@StationEnd", stationEnd)
-                     .Replace("@DateTime", dateTime.ToString("yyyy-MM-dd HH:mm:ss"));  // Ensure the correct date format
-
-        return query;
-    }
-
-    #endregion -- Query --
 }

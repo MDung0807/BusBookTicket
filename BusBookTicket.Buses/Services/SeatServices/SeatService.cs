@@ -107,7 +107,7 @@ public class SeatService : ISeatService
     {
         SeatSpecification seatSpecification = new SeatSpecification(busId:idMaster, paging: pagingRequest);
         List<Seat> seats = await _repository.ToList(seatSpecification);
-        int count = _repository.Count(new SeatSpecification(busId:idMaster));
+        int count = await _repository.Count(new SeatSpecification(busId:idMaster));
         List<SeatResponse> responses = await AppUtils.MapObject<Seat, SeatResponse>(seats, _mapper);
         SeatPagingResult result = AppUtils.ResultPaging<SeatPagingResult, SeatResponse>(
             pagingRequest.PageIndex,

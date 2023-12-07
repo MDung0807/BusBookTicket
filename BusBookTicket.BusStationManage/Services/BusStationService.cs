@@ -56,7 +56,7 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(paging: request);
         List<BusStationResponse> stationResponses = new List<BusStationResponse>();
-        int total = _repository.Count(busStationSpecification);
+        int total = await _repository.Count(busStationSpecification);
         
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         stationResponses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
@@ -159,7 +159,7 @@ public class BusStationService : IBusStationService
             responses[i].AddressDb = await GetFullAddress(responses[i].Address, responses[i].WardId);
         }
 
-        int count = _repository.Count(new BusStationSpecification(false));
+        int count = await _repository.Count(new BusStationSpecification(false));
         StationPagingResult result = new StationPagingResult();
         result.PageIndex = pagingRequest.PageIndex;
         result.PageSize = pagingRequest.PageSize;
@@ -181,7 +181,7 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification("", location, paging: pagingRequest);
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
-        int count = _repository.Count(new BusStationSpecification("", location));
+        int count = await _repository.Count(new BusStationSpecification("", location));
         List<BusStationResponse> responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
         foreach (var t in responses)
         {
@@ -198,7 +198,7 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification specification = new BusStationSpecification(0, busId, paging: pagingRequest);
         List<BusStation> busStations = await _repository.ToList(specification);
-        int count = _repository.Count(new BusStationSpecification(0, busId));
+        int count = await _repository.Count(new BusStationSpecification(0, busId));
         List<BusStationResponse> responses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
         for (int i = 0; i < responses.Count; i++)
         {
