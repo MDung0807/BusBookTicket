@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.MailKet.DTO.Request;
+using BusBookTicket.Application.MailKet.Service;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
@@ -9,6 +11,7 @@ using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
+using BusBookTicket.CustomerManage.Specification;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 
@@ -21,11 +24,15 @@ public class BillService : IBillService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Bill> _repository;
     private readonly ITicketItemService _ticketItemService;
+    private readonly IMailService _mailService;
+    private readonly IGenericRepository<Customer> _customerRepo;
+
     public BillService(
         IMapper mapper,
         ITicketItemService itemService,
         IBillItemService billItemService,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IMailService mailService
         )
     {
         _billItemService = billItemService;
@@ -33,6 +40,8 @@ public class BillService : IBillService
         _repository = unitOfWork.GenericRepository<Bill>();
         _mapper = mapper;
         _ticketItemService = itemService;
+        _mailService = mailService;
+        _customerRepo = unitOfWork.GenericRepository<Customer>();
     }
     public async Task<BillResponse> GetById(int id)
     {
@@ -66,7 +75,8 @@ public class BillService : IBillService
         {
             // Create bill
             Bill bill = _mapper.Map<Bill>(entity);
-            bill.Customer = new Customer();
+            CustomerSpecification customerSpecification = new CustomerSpecification(userId);
+            bill.Customer = await _customerRepo.Get(customerSpecification);
             bill.Customer.Id = userId;
             bill = await _repository.Create(bill, userId);
             
@@ -91,7 +101,18 @@ public class BillService : IBillService
             
             // Change status in Bill
             await ChangeStatusToWaitingPayment(bill.Id, userId);
+            
+            //Send mail
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.ToMail = bill.Customer.Email;
+            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {bill.BusStationStart.Name} đến {bill.BusStationEnd.Name}";
+            mailRequest.Content = $"Ghế của bạn là: {bill.BillItems}";
+            mailRequest.Subject = "Hóa đơn của bạn";
+            mailRequest.FullName = bill.Customer.FullName;
+            await _mailService.SendEmailAsync(mailRequest);
+
             await _unitOfWork.SaveChangesAsync();
+            
             _unitOfWork.Dispose();
         }
         catch
