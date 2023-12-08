@@ -97,7 +97,7 @@ public class TicketService : ITicketService
             List<Seat> seats = ticket.Bus.Seats.ToList();
             foreach (Seat seat in seats)
             {
-                await createItem(seat, ticket.Id, userId);
+                await CreateItem(seat, ticket.Id, userId, entity.Price);
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -177,14 +177,14 @@ public class TicketService : ITicketService
 
     #region -- Private Method --
 
-    private async Task<bool> createItem(Seat seat, int ticketID, int userId)
+    private async Task<bool> CreateItem(Seat seat, int ticketID, int userId, int price)
     {
         TicketItemForm form = new TicketItemForm();
         form.ticketID = ticketID;
         form.status = seat.Status;
         form.ticketItemID = 0;
         form.seatNumber = seat.SeatNumber;
-        form.price = seat.Price;
+        form.price = seat.Price + price;
 
         return await _itemService.Create(form, userId);
     }
