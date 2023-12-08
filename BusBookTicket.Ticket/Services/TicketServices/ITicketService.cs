@@ -1,6 +1,5 @@
 ﻿using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Infrastructure.Interfaces;
-using BusBookTicket.Core.Migrations;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;

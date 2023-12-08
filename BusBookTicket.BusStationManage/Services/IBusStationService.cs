@@ -3,7 +3,6 @@ using BusBookTicket.BusStationManage.DTOs.Responses;
 using BusBookTicket.BusStationManage.Paging;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Infrastructure.Interfaces;
-using BusBookTicket.Core.Migrations;
 
 namespace BusBookTicket.BusStationManage.Services;
 

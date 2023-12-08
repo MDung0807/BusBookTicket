@@ -1,7 +1,7 @@
 ﻿using BusBookTicket.AddressManagement.DTOs.Requests.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.District;
 using BusBookTicket.Core.Application.Paging;
-using BusBookTicket.Core.Migrations;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.AddressManagement.Services.DistrictService;
 
