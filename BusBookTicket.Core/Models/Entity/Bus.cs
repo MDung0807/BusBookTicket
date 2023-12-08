@@ -3,7 +3,9 @@ namespace BusBookTicket.Core.Models.Entity
 {
     public class Bus : BaseEntity
     {
-        public string? BusNumber { get; set; }
+        public string BusNumber { get; set; }
+        public string Description { get; set; }
+        
         #region -- Relationship --
 
         public Company Company { get; set; }

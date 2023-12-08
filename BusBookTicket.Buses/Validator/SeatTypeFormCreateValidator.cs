@@ -13,7 +13,7 @@ public class SeatTypeFormCreateValidator : AbstractValidator<SeatTypeFormCreate>
             .NotEmpty().WithMessage("is required");
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("is required");
-        RuleFor(x => x.CompanyId)
-            .NotEmpty().WithMessage("is required");
+        // RuleFor(x => x.CompanyId)
+        //     .NotEmpty().WithMessage("is required");
     }
 }
