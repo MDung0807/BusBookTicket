@@ -4,6 +4,7 @@ using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CompanyManage.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.Core.Migrations;
 
 namespace BusBookTicket.CompanyManage.Services;
 
