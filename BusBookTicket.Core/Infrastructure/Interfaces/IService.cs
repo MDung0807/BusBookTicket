@@ -1,6 +1,4 @@
-﻿using BusBookTicket.Core.Application.Paging;
-
-namespace BusBookTicket.Core.Infrastructure.Interfaces
+﻿namespace BusBookTicket.Core.Infrastructure.Interfaces
 {
     /// <summary>
     /// Service for API, this is interface common

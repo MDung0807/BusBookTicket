@@ -7,9 +7,9 @@ public class FormCreateBusValidator : AbstractValidator<FormCreateBus>
 {
     public FormCreateBusValidator()
     {
-        RuleFor(x => x.CompanyId)
-            .NotEmpty().WithMessage("is required")
-            .GreaterThan(0).WithMessage("is greater than 0");
+        // RuleFor(x => x.CompanyId)
+        //     .NotEmpty().WithMessage("is required")
+        //     .GreaterThan(0).WithMessage("is greater than 0");
         RuleFor(x => x.BusNumber)
             .NotEmpty().WithMessage("is required")
             .MaximumLength(50).WithMessage("must be max 50 characters");
@@ -22,6 +22,7 @@ public class FormCreateBusValidator : AbstractValidator<FormCreateBus>
         
         RuleForEach(x => x.ListBusStopId)
             .GreaterThan(0).WithMessage("is greater than 0");
-        
+
+        RuleFor(x => x.BusNumber);
     }
 }

@@ -182,4 +182,34 @@ public class BusService : IBusService
             pagingRequest.PageSize, count, responses);
         return result;
     }
+
+    public async Task<BusResponse> AddBusStops(FormAddBusStop request, int userId)
+    {
+        try
+        {
+            await _unitOfWork.BeginTransaction();
+            
+            
+            foreach (int stationID in request.BusStopIds)
+            {
+                BusStop busStop = new BusStop();
+                busStop.BusStation ??= new BusStation();
+                busStop.BusStation.Id = stationID;
+                busStop.Bus ??= new Bus();
+                busStop.Bus.Id= request.Id;
+
+                await _busStopRepository.Create(busStop, userId);
+
+            }
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            Console.WriteLine(e);
+            throw new Exception("ERRROR");
+        }
+
+        return await GetById(request.Id);
+    }
 }

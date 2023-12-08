@@ -8,8 +8,8 @@ public sealed class SeatSpecification : BaseSpecification<Seat>
 {
     public SeatSpecification(int id) : base(x => x.Id == id){}
 
-    public SeatSpecification(int? id = null, int? busId = null, SeatPaging paging = null) :
-        base(x => x.Bus.Id == busId)
+    public SeatSpecification(int? id = null, int? busId = null, SeatPaging paging = null, bool checkStatus = true) :
+        base(x => x.Bus.Id == busId, checkStatus:checkStatus)
     {
         if (paging != null)
         {

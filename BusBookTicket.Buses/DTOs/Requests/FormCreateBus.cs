@@ -6,5 +6,6 @@ public class FormCreateBus
     public string BusNumber { get; set; }
     public int BusTypeId { get; set; }
     public int SeatTypeId { get; set; }
+    public string Description { get; set; }
     public List<int> ListBusStopId { get; set; }
 }

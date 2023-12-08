@@ -8,5 +8,5 @@ namespace BusBookTicket.Buses.Services.BusTypeServices;
 
 public interface IBusService : IService<FormCreateBus, FormUpdateBus, int, BusResponse, BusPaging, BusPagingResult>
 {
-    
+    Task<BusResponse> AddBusStops(FormAddBusStop request, int userId);
 }

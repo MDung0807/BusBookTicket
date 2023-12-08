@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/bus")]
+[Route("api/buses")]
 public class BusController : ControllerBase
 {
     private readonly IBusService _busService;
@@ -55,6 +55,21 @@ public class BusController : ControllerBase
         request.CompanyId = userId;
         await _busService.Update(request, request.Id, userId);
         return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPut("addBusStops")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> AddBusStops([FromBody] FormAddBusStop request)
+    {
+        var validator = new FormAddBusStopValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
+        int userId = JwtUtils.GetUserID(HttpContext);
+        BusResponse response = await _busService.AddBusStops(request, userId);
+        return Ok(new Response<BusResponse>(false, response));
     }
 
     [HttpGet("get")]

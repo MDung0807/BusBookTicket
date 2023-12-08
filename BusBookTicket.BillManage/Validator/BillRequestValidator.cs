@@ -13,8 +13,8 @@ public class BillRequestValidator : AbstractValidator<BillRequest>
         RuleFor(x => x.BusStationEndId)
             .GreaterThan(0).WithMessage("must greater 0");
         
-        RuleFor(x => x.DiscountId)
-            .GreaterThan(0).WithMessage("must greater 0");
+        // RuleFor(x => x.DiscountId)
+        //     .GreaterThan(0).WithMessage("must greater 0");
 
         RuleForEach(x => x.ItemsRequest).SetValidator(new BillItemRequestValidator());
     }

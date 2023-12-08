@@ -12,8 +12,8 @@ public class FormRegisterValidator : AbstractValidator<FormRegister>
             .NotEmpty().WithMessage("is required")
             .Length(10, 50).WithMessage("must be between 8 and 50 characters");
 
-        RuleFor(x => x.DateOfBirth)
-            .Empty();
+        // RuleFor(x => x.DateOfBirth)
+        //     .Empty();
 
         RuleFor(x => x.Address);
 
@@ -24,8 +24,8 @@ public class FormRegisterValidator : AbstractValidator<FormRegister>
             .NotEmpty().WithMessage("is required")
             .Matches("^0[0-9]{9}$").WithMessage("Invalid format phoneNumber");
 
-        RuleFor(x => x.Gender)
-            .Empty();
+        // RuleFor(x => x.Gender)
+        //     .Empty();
 
         RuleFor(x => x.WardId);
 
@@ -33,7 +33,7 @@ public class FormRegisterValidator : AbstractValidator<FormRegister>
 
         RuleFor(x => x.Username)
             .NotEmpty().WithMessage("is required")
-            .Length(8, 50).WithMessage("must be between 8 and 50 characters");
+            .Length(4, 50).WithMessage("must be between 8 and 50 characters");
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("is required")
             .Matches("[A-Z]").WithMessage("must contain at least one uppercase letter")

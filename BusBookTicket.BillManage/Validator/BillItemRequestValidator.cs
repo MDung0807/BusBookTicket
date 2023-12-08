@@ -9,8 +9,8 @@ public class BillItemRequestValidator : AbstractValidator<BillItemRequest>
     {
         RuleFor(x => x.TicketItemId)
             .GreaterThan(0).WithMessage("must greater 0");
-        
-        RuleFor(x => x.BillId)
-            .GreaterThan(0).WithMessage("must greater 0");
+        //
+        // RuleFor(x => x.BillId)
+        //     .GreaterThan(0).WithMessage("must greater 0");
     }
 }

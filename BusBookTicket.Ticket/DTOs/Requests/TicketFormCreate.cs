@@ -7,7 +7,7 @@ public class TicketFormCreate
 {
     public DateTime Date { get; set; }
     public int BusId { get; set; }
-
+    public int Price { get; set; }
     public List<TicketStationDto> TicketStations { get; set; }
 }
 
@@ -16,5 +16,6 @@ public class TicketStationDto
     public int IndexStation { get; set; }
     public DateTime DepartureTime { get; set; }
     public DateTime ArrivalTime { get; set; }
+    public int Price { get; set; }
     public int BusStopId { get; set; }
 }
