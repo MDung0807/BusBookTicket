@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231208115851_data")]
-    partial class data
+    [Migration("20231122143359_dataNew3")]
+    partial class dataNew3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,9 +80,11 @@ namespace BusBookTicket.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CodeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -95,9 +97,11 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -120,9 +124,11 @@ namespace BusBookTicket.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CodeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -135,15 +141,19 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -275,9 +285,6 @@ namespace BusBookTicket.Core.Migrations
 
                     b.Property<DateTime>("DateUpdate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -428,6 +435,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -601,10 +609,11 @@ namespace BusBookTicket.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AdministrativeUnitId")
+                    b.Property<int>("AdministrativeUnitId")
                         .HasColumnType("int");
 
                     b.Property<string>("CodeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -617,18 +626,22 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProvinceId")
+                    b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -693,13 +706,14 @@ namespace BusBookTicket.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AdministrativeRegionId")
+                    b.Property<int>("AdministrativeRegionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AdministrativeUnitId")
+                    b.Property<int>("AdministrativeUnitId")
                         .HasColumnType("int");
 
                     b.Property<string>("CodeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -712,15 +726,19 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -837,6 +855,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
@@ -877,12 +896,14 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<string>("SeatNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SeatTypeID")
@@ -924,6 +945,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
@@ -933,6 +955,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UpdateBy")
@@ -1002,6 +1025,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SeatNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -1031,7 +1055,7 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime>("ArrivalTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("BusStopId")
+                    b.Property<int>("BusStopId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreateBy")
@@ -1046,13 +1070,13 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IndexStation")
+                    b.Property<int>("Index")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TicketId")
+                    b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.Property<int>("UpdateBy")
@@ -1079,6 +1103,7 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CodeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreateBy")
@@ -1094,15 +1119,19 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -1290,12 +1319,14 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.AdministrativeUnit", "AdministrativeUnit")
                         .WithMany("Districts")
                         .HasForeignKey("AdministrativeUnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.Province", "Province")
                         .WithMany("Districts")
                         .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("AdministrativeUnit");
 
@@ -1307,12 +1338,14 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.AdministrativeRegion", "AdministrativeRegion")
                         .WithMany("Provinces")
                         .HasForeignKey("AdministrativeRegionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.AdministrativeUnit", "AdministrativeUnit")
                         .WithMany("Provinces")
                         .HasForeignKey("AdministrativeUnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("AdministrativeRegion");
 
@@ -1394,12 +1427,14 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.BusStop", "BusStop")
                         .WithMany("TicketBusStops")
                         .HasForeignKey("BusStopId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.Ticket", "Ticket")
                         .WithMany("TicketBusStops")
                         .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("BusStop");
 
@@ -1427,9 +1462,11 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Account", b =>
                 {
-                    b.Navigation("Company");
+                    b.Navigation("Company")
+                        .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.AdministrativeRegion", b =>
@@ -1536,7 +1573,8 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.TicketItem", b =>
                 {
-                    b.Navigation("BillItem");
+                    b.Navigation("BillItem")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ward", b =>

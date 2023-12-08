@@ -2,6 +2,7 @@
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.Core.Migrations;
 
 namespace BusBookTicket.BillManage.Services.Bills;
 
