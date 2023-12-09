@@ -126,7 +126,7 @@ namespace BusBookTicket.BusStationManage.Controllers
         }
         
         [Authorize(Roles = "COMPANY")]
-        [HttpPost("company/create")]
+        [HttpPost("companies/create")]
         public async Task<IActionResult> CreateByCompany([FromBody] BST_FormCreate request)
         {
             var validator = new BST_FormCreateValidator();

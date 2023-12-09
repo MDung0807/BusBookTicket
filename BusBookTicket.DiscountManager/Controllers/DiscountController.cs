@@ -8,7 +8,7 @@ namespace BusBookTicket.DiscountManager.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/discount")]
+[Route("api/discounts")]
 public class DiscountController : ControllerBase
 {
     private readonly IDiscountService _discountService;

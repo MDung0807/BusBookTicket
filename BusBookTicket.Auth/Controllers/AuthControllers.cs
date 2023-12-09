@@ -41,7 +41,7 @@ namespace BusBookTicket.Auth.Controllers
             return Ok(new Response<AuthResponse>(false, response));
         }
         
-        [HttpPost("company/login")]
+        [HttpPost("companies/login")]
         public async Task<IActionResult> CompanyLogin([FromBody] AuthRequest request)
         {
             // var validator = new AuthRequestValidator();

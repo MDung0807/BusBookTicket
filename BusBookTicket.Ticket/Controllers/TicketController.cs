@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.Ticket.Controllers;
 
 [ApiController]
-[Route("api/ticket")]
+[Route("api/ticketes")]
 public class TicketController : ControllerBase
 {
     #region -- Properties --

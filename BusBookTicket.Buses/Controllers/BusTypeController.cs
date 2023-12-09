@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.Buses.Controllers;
 
 [ApiController]
-[Route("api/bustype")]
+[Route("api/bustypes")]
 public class BusTypeController : ControllerBase
 {
     private readonly IBusTypeService _busTypeService;
@@ -107,7 +107,7 @@ public class BusTypeController : ControllerBase
     }
     
     [Authorize(Roles = "COMPANY")]
-    [HttpPost("company/create")]
+    [HttpPost("companies/create")]
     public async Task<IActionResult> CreateByCompany([FromBody] BusTypeForm request)
     {
         var validator = new BusTypeFormValidator();
