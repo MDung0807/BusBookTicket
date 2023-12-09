@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Auth.Security;
+﻿using BusBookTicket.Application.OTP.Models;
+using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.CustomerManage.Controller
 {
     [ApiController]
-    [Route("api/customer")]
+    [Route("api/customers")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -33,19 +34,11 @@ namespace BusBookTicket.CustomerManage.Controller
             {
                 throw new ValidatorException(result.Errors);
             }
-            try
-            {
-                register.RoleName = AppConstants.CUSTOMER;
-                bool status = await _customerService.Create(register, -1);
-                var mess = status ? CusConstants.REGISTER_SUCCESS : CusConstants.REGISTER_FAIL;
+            register.RoleName = AppConstants.CUSTOMER;
+            bool status = await _customerService.Create(register, -1);
+            var mess = status ? CusConstants.REGISTER_SUCCESS : CusConstants.REGISTER_FAIL;
 
-                return Ok(new Response<string>(!status, mess));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return Ok(new Response<string>(!status, mess));
         }
 
         [HttpGet("profile")]
@@ -78,6 +71,14 @@ namespace BusBookTicket.CustomerManage.Controller
             int id = JwtUtils.GetUserID(HttpContext);
             bool status = await _customerService.Update(request, id, id);
             return Ok(new Response<string>(false, "response"));
+        }
+
+        [HttpPost("authOtp")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AuthOtpCode([FromBody] OtpRequest request)
+        {
+            bool status = await _customerService.AuthOtp(request);
+            return Ok(new Response<string>(!status, "response"));
         }
 
     }

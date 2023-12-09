@@ -4,12 +4,18 @@ using BusBookTicket.Core.Models.Entity;
 using AutoMapper;
 using BusBookTicket.AddressManagement.Services.WardService;
 using BusBookTicket.Application.CloudImage.Services;
+using BusBookTicket.Application.MailKet.DTO.Request;
+using BusBookTicket.Application.MailKet.Service;
+using BusBookTicket.Application.OTP.Models;
+using BusBookTicket.Application.OTP.Services;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
+using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.Paging;
 using BusBookTicket.CustomerManage.Specification;
+using BusBookTicket.CustomerManage.Utilities;
 
 namespace BusBookTicket.CustomerManage.Services
 {
@@ -22,6 +28,8 @@ namespace BusBookTicket.CustomerManage.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Customer> _repository;
         private readonly IWardService _wardService;
+        private readonly IOtpService _otpService;
+        private readonly IMailService _mailService;
         #endregion --  Properties --
 
         #region -- Constructor --
@@ -29,7 +37,9 @@ namespace BusBookTicket.CustomerManage.Services
             IAuthService authService,
             IImageService imageService,
             IUnitOfWork unitOfWork,
-            IWardService wardService)
+            IWardService wardService,
+            IOtpService opOtpService,
+            IMailService mailService)
         {
             _mapper = mapper;
             _authService = authService;
@@ -37,6 +47,8 @@ namespace BusBookTicket.CustomerManage.Services
             _unitOfWork = unitOfWork;
             _repository = _unitOfWork.GenericRepository<Customer>();
             _wardService = wardService;
+            _otpService = opOtpService;
+            _mailService = mailService;
         }
         #endregion -- Contructor --
 
@@ -65,13 +77,23 @@ namespace BusBookTicket.CustomerManage.Services
                 // Get account
                 AuthRequest authRequest = _mapper.Map<AuthRequest>(entity);
                 await _authService.Create(authRequest, -1);
-                customer.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
-                customer.Status = (int)EnumsApp.Active;
+                customer.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName, checkStatus:false);
+                customer.Status = (int)EnumsApp.Waiting;
                 await _repository.Create(customer, -1);
 
                 // Save Image
                 await _imageService.saveImage(entity.Avatar, typeof(Customer).ToString(), customer.Id);
 
+                OtpResponse response = await _otpService.CreateOtp(new OtpRequest(email: customer.Email), userId: customer.Id);
+                
+                // Send mail with OTP code
+                MailRequest mailRequest = new MailRequest();
+                mailRequest.ToMail = customer.Email;
+                mailRequest.Content = "OTP code";
+                mailRequest.FullName = customer.FullName;
+                mailRequest.Subject = "Authentication OTP code";
+                mailRequest.Message = response.Code;
+                await _mailService.SendEmailAsync(mailRequest);
                 await _unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -82,9 +104,11 @@ namespace BusBookTicket.CustomerManage.Services
             }
         }
 
-        public Task<bool> ChangeIsActive(int id, int userId)
+        public async Task<bool> ChangeIsActive(int id, int userId)
         {
-            throw new NotImplementedException();
+            CustomerSpecification customerSpecification = new CustomerSpecification(id, false);
+            Customer customer = await _repository.Get(customerSpecification);
+            return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Active);
         }
 
         public Task<bool> ChangeIsLock(int id, int userId)
@@ -147,6 +171,17 @@ namespace BusBookTicket.CustomerManage.Services
         public Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> AuthOtp(OtpRequest request)
+        {
+            CustomerSpecification customerSpecification = new CustomerSpecification(request.Email, checkStatus:false);
+            Customer customer = await _repository.Get(customerSpecification);
+            if (! await _otpService.AuthenticationOtp(request, customer.Id))
+            {
+                throw new ExceptionDetail(CusConstants.OTP_NOT_AUTH);
+            }
+            return await ChangeIsActive(customer.Id, customer.Id);
         }
 
         public async Task<bool> Delete(int id, int userId)

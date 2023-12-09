@@ -11,7 +11,8 @@ public sealed class AccountSpecification : BaseSpecification<Account>
     /// </summary>
     /// <param name="username">Username in account</param>
     /// <param name="roleName">Role name</param>
-    public AccountSpecification(string username, string roleName) : base(x => x.Username == username)
+    /// <param name="checkStatus"></param>
+    public AccountSpecification(string username, string roleName, bool checkStatus = true) : base(x => x.Username == username, checkStatus)
     {
         if (roleName == AppConstants.COMPANY)
             AddInclude(x => x.Company);

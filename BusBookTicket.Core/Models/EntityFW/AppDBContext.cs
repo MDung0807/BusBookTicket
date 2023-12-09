@@ -37,7 +37,8 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration<Ward>(new WardConfigs());
             modelBuilder.ApplyConfiguration<District>(new DistrictConfigs());
             modelBuilder.ApplyConfiguration<Images>(new ImgaesConfigs());
-
+            modelBuilder.ApplyConfiguration<OtpCode>(new OtpCodeConfigs());
+            
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -67,5 +68,6 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<Province> Provinces { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Ward> Wards { get; set; }
+        public DbSet<OtpCode> OtpCodes { get; set; }
 }
 }

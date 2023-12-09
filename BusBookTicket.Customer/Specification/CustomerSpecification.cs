@@ -20,10 +20,17 @@ public sealed class CustomerSpecification : BaseSpecification<Customer>
         }
     }
 
-    public CustomerSpecification(int id) : base(x => x.Id == id)
+    public CustomerSpecification(int id, bool checkStatus = true) : base(x => x.Id == id, checkStatus: checkStatus)
+    {
+        AddInclude(x => x.Account);
+        AddInclude(x => x.Account.Role);
+        AddInclude(x => x.Rank);
+    }public CustomerSpecification(string email, bool checkStatus = true) : base(x => x.Email == email, checkStatus)
     {
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
     }
+    
+    
 }
