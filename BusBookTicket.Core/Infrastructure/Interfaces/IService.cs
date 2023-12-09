@@ -1,4 +1,4 @@
-﻿namespace BusBookTicket.Core.Migrations
+﻿namespace BusBookTicket.Core.Infrastructure.Interfaces
 {
     /// <summary>
     /// Service for API, this is interface common

@@ -2,11 +2,11 @@
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
-using BusBookTicket.DiscountManager.DTOs.Requests;
-using BusBookTicket.DiscountManager.DTOs.Responses;
-using BusBookTicket.DiscountManager.Specification;
+using BusBookTicket.DiscountManage.DTOs.Requests;
+using BusBookTicket.DiscountManage.DTOs.Responses;
+using BusBookTicket.DiscountManage.Specification;
 
-namespace BusBookTicket.DiscountManager.Services;
+namespace BusBookTicket.DiscountManage.Services;
 
 public class DiscountService : IDiscountService
 {

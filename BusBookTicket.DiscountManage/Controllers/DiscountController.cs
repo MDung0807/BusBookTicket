@@ -1,10 +1,10 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
-using BusBookTicket.DiscountManager.DTOs.Requests;
-using BusBookTicket.DiscountManager.DTOs.Responses;
-using BusBookTicket.DiscountManager.Services;
+using BusBookTicket.DiscountManage.DTOs.Requests;
+using BusBookTicket.DiscountManage.DTOs.Responses;
+using BusBookTicket.DiscountManage.Services;
 
-namespace BusBookTicket.DiscountManager.Controllers;
+namespace BusBookTicket.DiscountManage.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

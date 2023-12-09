@@ -1,10 +1,10 @@
 ﻿
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Migrations;
-using BusBookTicket.DiscountManager.DTOs.Requests;
-using BusBookTicket.DiscountManager.DTOs.Responses;
+using BusBookTicket.DiscountManage.DTOs.Requests;
+using BusBookTicket.DiscountManage.DTOs.Responses;
 
-namespace BusBookTicket.DiscountManager.Services;
+namespace BusBookTicket.DiscountManage.Services;
 
 public interface IDiscountService : IService<DiscountCreate, DiscountUpdate, int, DiscountResponse, object, object>
 {

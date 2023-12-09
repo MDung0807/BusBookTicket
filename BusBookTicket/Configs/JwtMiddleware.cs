@@ -4,7 +4,7 @@ using BusBookTicket.Auth.DTOs.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BusBookTicket.Auth.Security
+namespace BusBookTicket.Configs
 {
     public class JwtMiddleware
     {

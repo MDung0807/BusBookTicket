@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace BusBookTicket.DiscountManager.DTOs.Requests;
+namespace BusBookTicket.DiscountManage.DTOs.Requests;
 
 [ValidateNever]
 public class DiscountCreate

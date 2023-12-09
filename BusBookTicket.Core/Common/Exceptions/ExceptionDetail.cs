@@ -1,5 +1,5 @@
 ﻿
-namespace BusBookTicket.Core.Common
+namespace BusBookTicket.Core.Common.Exceptions
 {
     public class ExceptionDetail : Exception
     {

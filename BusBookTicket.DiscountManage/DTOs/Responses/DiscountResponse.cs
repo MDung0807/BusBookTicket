@@ -1,4 +1,4 @@
-﻿namespace BusBookTicket.DiscountManager.DTOs.Responses;
+﻿namespace BusBookTicket.DiscountManage.DTOs.Responses;
 
 public class DiscountResponse
 {
