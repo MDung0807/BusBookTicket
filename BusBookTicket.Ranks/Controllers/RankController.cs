@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/rank")]
+[Route("api/ranks")]
 public class RankController : ControllerBase
 {
     private readonly IRankService _rankService;

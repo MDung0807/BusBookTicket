@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.BillManage.Controllers;
 
 [ApiController]
-[Route("api/bill")]
+[Route("api/billes")]
 public class BillController : ControllerBase
 {
     private readonly IBillService _billService;
