@@ -27,6 +27,7 @@ using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
+using BusBookTicket.ReviewManage.DTOs.Responses;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
@@ -274,6 +275,16 @@ namespace BusBookTicket.Configs
             CreateMap<OtpCode, OtpResponse>();
 
             #endregion -- Application Module --
+
+            #region -- Review Module --
+
+            CreateMap<Review, ReviewResponse>()
+                .ForPath(dest => dest.FullName, 
+                    opts => opts.MapFrom(x => x.Customer.FullName))
+                .ForPath(dest => dest.CustomerId, 
+                    opts => opts.MapFrom(x => x.Customer.Id));
+
+            #endregion -- Review Module --
         }
     }
 }

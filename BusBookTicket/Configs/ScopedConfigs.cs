@@ -24,6 +24,7 @@ using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
 
@@ -118,6 +119,12 @@ namespace BusBookTicket.Configs
             services.AddScoped<IWardService, WardService>();
 
             #endregion -- Add Scoped Address --
+
+            #region -- Add Scoped Review --
+
+            services.AddScoped<IReviewService, ReviewService>();
+
+            #endregion -- Add Scoped Review --
         }
     }
 }
