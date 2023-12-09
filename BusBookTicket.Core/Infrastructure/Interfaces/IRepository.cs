@@ -47,5 +47,13 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="specification"></param>
         /// <returns></returns>
         Task<bool> CheckIsExist(ISpecification<T> specification);
+
+        /// <summary>
+        /// Create or Update entity. Create if not exist
+        /// </summary>
+        /// <param name="entity">entity</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
+        Task<T> CreateOrUpdate(T entity, int userId);
     }
 }

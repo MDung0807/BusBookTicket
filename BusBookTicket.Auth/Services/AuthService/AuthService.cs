@@ -7,6 +7,7 @@ using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.RoleService;
 using BusBookTicket.Auth.Specification;
 using BusBookTicket.Auth.Utils;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -40,7 +41,7 @@ namespace BusBookTicket.Auth.Services.AuthService
             Role role = await _roleService.getRole(request.RoleName);
             account.Password = PassEncrypt.hashPassword(request.Password);
             account.Role = role;
-            account.Status = (int) EnumsApp.Active;
+            account.Status = (int) EnumsApp.Waiting;
             if (account.Role.RoleName == AppConstants.COMPANY)
             {
                 account.Status = (int)EnumsApp.Lock;
@@ -157,8 +158,7 @@ namespace BusBookTicket.Auth.Services.AuthService
             AuthResponse response = new AuthResponse();
 
             Account accountRequest = _mapper.Map<Account>(request);
-            Account account = await GetAccountByUsername(request.Username, request.RoleName);
-            
+            Account account = await GetAccountByUsername(request.Username, request.RoleName) ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
             if (PassEncrypt.VerifyPassword(accountRequest.Password, account.Password))
             {
                 if (account.Role.RoleName == request.RoleName)
@@ -199,9 +199,9 @@ namespace BusBookTicket.Auth.Services.AuthService
         //     return response;
         // }
 
-        public async Task<Account> GetAccountByUsername(string username, string roleName)
+        public async Task<Account> GetAccountByUsername(string username, string roleName, bool checkStatus = true)
         {
-            AccountSpecification accountSpecification = new AccountSpecification(username, roleName);
+            AccountSpecification accountSpecification = new AccountSpecification(username, roleName, checkStatus);
             Account account = await _repository.Get(accountSpecification);
             return account;
         }

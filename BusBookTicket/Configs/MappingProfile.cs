@@ -9,6 +9,7 @@ using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.DTOs.Responses.Region;
 using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
 using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
+using BusBookTicket.Application.OTP.Models;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Buses.DTOs.Requests;
@@ -267,6 +268,12 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Province,
                     opts => opts.MapFrom(x => x.District.Province.FullName));
             #endregion -- Address Module --
+
+            #region -- Application Module --
+
+            CreateMap<OtpCode, OtpResponse>();
+
+            #endregion -- Application Module --
         }
     }
 }

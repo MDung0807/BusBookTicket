@@ -64,8 +64,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         try
         {
-            var ob = await ApplySpecification(specification).FirstOrDefaultAsync()
-                     ?? throw new NotFoundException(AppConstants.NOT_FOUND);
+            var ob = await ApplySpecification(specification).FirstOrDefaultAsync();
+                     // ?? throw new NotFoundException(AppConstants.NOT_FOUND);
             return ob;
         }
         catch (LockedResource ex)
@@ -194,6 +194,25 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         if (ob == null)
             return false;
         return true;
+    }
+
+    public async Task<T> CreateOrUpdate(T entity, int userId)
+    {
+        try
+        {
+            entity.DateCreate = DateTime.Now;
+            entity.DateUpdate = DateTime.Now;
+            entity.CreateBy = userId;
+            entity.UpdateBy = userId;
+            _dbSet.Entry(entity).State = entity.Id > 0 ? EntityState.Modified : EntityState.Added;
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            throw new ExceptionDetail(AppConstants.ERROR);
+        }
     }
 
     #region -- Private Method --
