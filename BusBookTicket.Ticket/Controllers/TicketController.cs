@@ -83,5 +83,14 @@ public class TicketController : ControllerBase
         await _ticketService.ChangeCompleteStatus(id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
+
+    [HttpGet("getAll")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> GetAll([FromQuery] TicketPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        TicketPagingResult result = await _ticketService.GetAll(paging, userId);
+        return Ok(new Response<TicketPagingResult>(false, result));
+    }
     #endregion -- Controller --
 }

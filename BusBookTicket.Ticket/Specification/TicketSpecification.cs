@@ -102,4 +102,20 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddParameter("@StationEnd", stationEnd);
         AddParameter("@DateTime", dateTime.ToString("yyyy-MM-dd"));
     }
+
+    public TicketSpecification(int companyId, TicketPaging paging = null)
+        : base(x => x.CreateBy == companyId)
+    {
+        if(paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+        
+        AddInclude(x => x.Bus);
+        AddInclude(x => x.Bus.Seats);
+        AddInclude(x => x.Bus.Company);
+        AddInclude(x => x.Bus.BusType);
+        AddInclude(x => x.Bus.BusStops); 
+        AddInclude(x => x.TicketBusStops);
+    }
 }
