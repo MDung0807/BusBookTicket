@@ -179,12 +179,25 @@ public class TicketService : ITicketService
 
     public async Task<bool> ChangeCompleteStatus(int id, int userId)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id, true);
-        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
-        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, id, true, checkStatus:false);
-        List<TicketItem> items = await _ticketItemRepository.ToList(ticketItemSpecification);
-        ticket.TicketItems = new HashSet<TicketItem>(items);
-        await _repository.ChangeStatus(ticket, userId, (int)EnumsApp.Complete);
+        try
+        {
+            await _unitOfWork.BeginTransaction();
+            TicketSpecification ticketSpecification = new TicketSpecification(id, true);
+            Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+            TicketItemSpecification ticketItemSpecification =
+                new TicketItemSpecification(0, id, true, checkStatus: false);
+            List<TicketItem> items = await _ticketItemRepository.ToList(ticketItemSpecification);
+            ticket.TicketItems = new HashSet<TicketItem>(items);
+            await _repository.ChangeStatus(ticket, userId, (int)EnumsApp.Complete);
+
+            await _unitOfWork.SaveChangesAsync();
+            _unitOfWork.Dispose();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+             _unitOfWork.Dispose();
+        }
         return true;
     }
 

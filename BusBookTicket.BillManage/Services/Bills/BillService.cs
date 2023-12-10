@@ -45,7 +45,7 @@ public class BillService : IBillService
     }
     public async Task<BillResponse> GetById(int id)
     {
-        BillSpecification specification = new BillSpecification(id);
+        BillSpecification specification = new BillSpecification(id: id, checkStatus: false);
         Bill bill = await _repository.Get(specification);
         BillResponse response = _mapper.Map<BillResponse>(bill);
         response.Items = await _billItemService.GetItemInBill(bill.Id);
@@ -193,7 +193,7 @@ public class BillService : IBillService
 
     public async Task<BillPagingResult> GetAllBillInUser(BillPaging paging, int userId)
     {
-        BillSpecification billSpecification = new BillSpecification(userId, false, paging: paging);
+        BillSpecification billSpecification = new BillSpecification(userId:userId, checkStatus:false, paging: paging);
         List<Bill> bills = await _repository.ToList(billSpecification);
         BillPagingResult result = new BillPagingResult();
         int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
