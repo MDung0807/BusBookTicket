@@ -59,6 +59,7 @@ public class TicketController : ControllerBase
     }
     
     [HttpDelete("delete")]
+    [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
@@ -70,7 +71,16 @@ public class TicketController : ControllerBase
     public async Task<IActionResult> Update([FromBody] TicketFormUpdate request)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        await _ticketService.Update(request, request.ticketID, userId);
+        await _ticketService.Update(request, request.TicketId, userId);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPut("ChangeCompleteStatus")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> ChangeCompleteStatus([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _ticketService.ChangeCompleteStatus(id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
     #endregion -- Controller --

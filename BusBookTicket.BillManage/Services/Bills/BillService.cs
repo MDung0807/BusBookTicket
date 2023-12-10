@@ -204,4 +204,20 @@ public class BillService : IBillService
             await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper));
         return result;
     }
+
+    public async Task<bool> ChangeCompleteStatus(int billId, int userId)
+    {
+        BillSpecification specification = new BillSpecification(billId, checkStatus:false);
+        Bill bill = await _repository.Get(specification);
+        await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Active);
+        return true;
+    }
+
+    public async Task<BillResponse> GetBillByUserAndBus(int userId, int busId)
+    {
+        BillSpecification specification = new BillSpecification(userId: userId, busId: busId);
+        Bill bill =await _repository.Get(specification);
+        BillResponse response = _mapper.Map<BillResponse>(bill);
+        return response;
+    }
 }

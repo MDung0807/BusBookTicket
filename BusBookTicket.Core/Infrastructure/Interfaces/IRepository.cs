@@ -39,7 +39,7 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="userId"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        Task<bool> ChangeStatus(T entity, int userId, int status);
+        Task<bool> ChangeStatus(object entity, int userId, int status);
 
         /// <summary>
         /// Check data is exist in database

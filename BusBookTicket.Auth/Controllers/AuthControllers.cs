@@ -44,12 +44,12 @@ namespace BusBookTicket.Auth.Controllers
         [HttpPost("companies/login")]
         public async Task<IActionResult> CompanyLogin([FromBody] AuthRequest request)
         {
-            // var validator = new AuthRequestValidator();
-            // var result = await validator.ValidateAsync(request);
-            // if (!result.IsValid)
-            // {
-            //     throw new ValidatorException(result.Errors);
-            // }
+            var validator = new AuthRequestValidator();
+            var result = await validator.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                throw new ValidatorException(result.Errors);
+            }
             request.RoleName = AppConstants.COMPANY;
             AuthResponse response = await _authService.Login(request);
             return Ok(new Response<AuthResponse>(false, response));

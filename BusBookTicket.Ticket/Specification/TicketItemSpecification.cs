@@ -9,16 +9,31 @@ public sealed class TicketItemSpecification : BaseSpecification<TicketItem>
     /// Constructor
     /// </summary>
     /// <param name="id">id is primary key in TicketItem</param>
-    public TicketItemSpecification(int id) : base(x => x.Id == id){}
+    /// <param name="getAll"></param>
+    public TicketItemSpecification(int id) : base(x => x.Id == id)
+    {
+        
+    }
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="ticketItemId">is primary key in TicketItem</param>
     /// <param name="ticketId">is primary key in Ticket</param>
-    public TicketItemSpecification(int ticketItemId, int ticketId) : base(x => x.Ticket.Id == ticketId)
+    /// <param name="getAll">is true then get all reference</param>
+    /// <param name="checkStatus"></param>
+    public TicketItemSpecification(int ticketItemId, int ticketId, bool getAll = false, bool checkStatus = true) 
+        : base(x => x.Ticket.Id == ticketId, checkStatus)
     {
-        AddInclude(x => x.Ticket.Bus.Seats);    
+        if (getAll)
+        {
+            AddInclude(x => x.BillItem);
+            AddInclude(x => x.BillItem.Bill);
+            return;
+        }
+        
+        AddInclude(x => x.Ticket.Bus.Seats);
+        
     }
 
 }

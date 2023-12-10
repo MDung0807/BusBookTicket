@@ -16,4 +16,12 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="paging"></param>
     /// <returns></returns>
     Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging);
+
+    /// <summary>
+    /// Change status is complete
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<bool> ChangeCompleteStatus(int id, int userId);
 }

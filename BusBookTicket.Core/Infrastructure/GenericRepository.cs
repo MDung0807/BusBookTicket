@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections;
+using System.Linq.Expressions;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Application.Specification.Interfaces;
 using BusBookTicket.Core.Common;
@@ -8,6 +9,7 @@ using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Core.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BusBookTicket.Core.Infrastructure;
 
@@ -143,46 +145,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
-    public async Task<bool> ChangeStatus(T entity, int userId, int status)
+    public async Task<bool> ChangeStatus(object entity, int userId, int status)
     {
         try
         {
-            foreach (var ob in entity.GetType().GetProperties())
-            {
-                if (ob.PropertyType.IsClass && ob.GetValue(entity) != null) // Check property is a Class
-                {
-                    if (ob.PropertyType.GetProperty(entity.GetType().Name + "s") != null)
-                    {
-                        continue;
-                    }
-                    var statusProperty = ob.PropertyType.GetProperty("Status"); // Get property in this class
-                    var updateByProperty = ob.PropertyType.GetProperty("UpdateBy"); // Get property in this class
-                    var modifyDateProperty = ob.PropertyType.GetProperty("DateUpdate"); // Get property in this class
-
-                    // Check status property is exists
-                    if (statusProperty != null)
-                    {
-                        //check status property is type of int
-                        if (statusProperty.PropertyType == typeof(int))
-                        {
-                            //Update status
-                            statusProperty.SetValue(ob.GetValue(entity), status);
-                            updateByProperty?.SetValue(ob.GetValue(entity), userId);
-                            modifyDateProperty?.SetValue(ob.GetValue(entity), DateTime.Now);
-                        }
-                    }
-                }
-            }
-
-            entity.Status = status;
-            entity.UpdateBy = userId;
-            entity.DateUpdate = DateTime.Now;
-            _context.Entry(entity).Property(x => x.Status).IsModified = true;
-            await _context.SaveChangesAsync();
+            await _context.Database.BeginTransactionAsync();
+            List<string> checkedObject = new List<string>();
+            await ChangeStatusImpl(entity, userId, status, checkedObject);
+            await _context.Database.CommitTransactionAsync();
             return true;
         }
         catch (Exception e)
         {
+            await _context.Database.RollbackTransactionAsync();
             Console.WriteLine(e.ToString());
             throw;
         }
@@ -237,6 +212,67 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         {
             throw new StatusException(AppConstants.NOT_USED);
         }
+    }
+
+    private async Task<bool> ChangeStatusImpl(object entity, int userId, int status, List<string> checkedObject)
+    {
+        if (!checkedObject.Contains(entity.GetType().Name))
+            checkedObject.Add(entity.GetType().Name);
+        foreach (var ob in entity.GetType().GetProperties())
+        {
+            if (ob.PropertyType.IsClass && ob.GetValue(entity) != null  &&  ob.PropertyType != typeof(string)) // Check property is a Class
+            {
+                if (ob.PropertyType.IsGenericType)
+                {
+                    // Kiểm tra xem ob có phải là List<> hoặc HashSet<> không
+                    var genericType = ob.PropertyType.GetGenericTypeDefinition();
+                    if (genericType == typeof(List<>) || genericType == typeof(HashSet<>))
+                    {
+                        var collection = (IEnumerable)ob.GetValue(entity);
+                
+                        foreach (var item in collection)
+                        {
+                            if (item != null && item.GetType().IsClass)
+                            {
+                                await ChangeStatusImpl(item, userId, status, checkedObject);
+                            }
+                        }
+                    }
+                }
+                
+                else
+                {
+                    if (!checkedObject.Contains(ob.Name))
+                    {
+                        await ChangeStatusImpl(ob.GetValue(entity), userId, status, checkedObject);
+                    }
+                }
+            }
+            else
+            {
+                if (ob.Name == "Status")
+                {
+                    ob.SetValue(entity, status);
+                }
+
+                else if (ob.Name == "UpdateBy")
+                {
+                    ob.SetValue(entity, userId);
+                }
+                else if (ob.Name == "DateUpdate")
+                {
+                    ob.SetValue(entity, DateTime.Now);
+                }
+            }
+        }
+
+        // entity. = status;
+        // entity.UpdateBy = userId;
+        // entity.DateUpdate = DateTime.Now;
+        // _context.Entry(entity).Property(x => x.Status).IsModified = true;
+        _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        return true;
     }
     #endregion -- Private Method --
 }

@@ -9,4 +9,5 @@ public enum EnumsApp
     Lock = 4,
     AwaitingPayment = 5,
     PaymentComplete = 6,
+    Complete = 7,
 }

@@ -15,8 +15,10 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// Find Ticket By Id
     /// </summary>
     /// <param name="id">Primary key in Ticket</param>
-    public TicketSpecification(int id) : base(x => x.Id == id)
+    /// <param name="getAll"></param>
+    public TicketSpecification(int id, bool getAll = false) : base(x => x.Id == id)
     {
+        if(getAll) return;
         AddInclude(x => x.Bus);
         AddInclude(x => x.Bus.Seats);
         AddInclude(x => x.Bus.Company);
