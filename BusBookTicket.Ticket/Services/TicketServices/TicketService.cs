@@ -8,6 +8,7 @@ using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
+using ElasticEmailClient;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
 
@@ -40,7 +41,7 @@ public class TicketService : ITicketService
     
     public async Task<TicketResponse> GetById(int id)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id);
+        TicketSpecification ticketSpecification = new TicketSpecification(id,false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
         TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
@@ -62,7 +63,7 @@ public class TicketService : ITicketService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id);
+        TicketSpecification ticketSpecification = new TicketSpecification(id, false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         ticket.Status = (int)EnumsApp.Delete;
         await _repository.Delete(ticket, userId);
@@ -91,7 +92,7 @@ public class TicketService : ITicketService
             }
             
             // Create TicketItem
-            TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id);
+            TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id, false);
             BusSpecification busSpecification = new BusSpecification(entity.BusId);
             Bus bus = await _busRepository.Get(busSpecification);
             ticket = await _repository.Get(ticketSpecification);
@@ -153,9 +154,15 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
-    public Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster)
+    public async Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster)
     {
-        throw new NotImplementedException();
+        TicketSpecification ticketSpecification = new TicketSpecification(companyId:idMaster, paging:pagingRequest);
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
+        int count = await _repository.Count(new TicketSpecification(idMaster, paging:null));
+        List<TicketResponse> responses =
+            await AppUtils.MapObject<Core.Models.Entity.Ticket, TicketResponse>(tickets, _mapper);
+        TicketPagingResult result = new TicketPagingResult(pagingRequest.PageIndex, pagingRequest.PageSize, count, responses);
+        return result;
     }
     
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
