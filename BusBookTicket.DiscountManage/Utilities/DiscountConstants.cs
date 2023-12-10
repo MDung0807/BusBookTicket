@@ -1,4 +1,4 @@
-﻿namespace BusBookTicket.DiscountManager.Utilities;
+﻿namespace BusBookTicket.DiscountManage.Utilities;
 
 public class DiscountConstants
 {

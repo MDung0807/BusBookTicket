@@ -1,4 +1,4 @@
-﻿namespace BusBookTicket.DiscountManager.DTOs.Requests;
+﻿namespace BusBookTicket.DiscountManage.DTOs.Requests;
 
 public class DiscountUpdate
 {

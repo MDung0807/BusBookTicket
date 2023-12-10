@@ -17,17 +17,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.BusStationMan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Auth", "BusBookTicket.Auth\BusBookTicket.Auth.csproj", "{A82CBE24-A688-4BB9-BE53-D40A74FA9225}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.DiscountManager", "BusBookTicket.DiscountManager\BusBookTicket.DiscountManager.csproj", "{9978C954-7D33-4774-AFF2-A7493DFBAA0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.DiscountManage", "BusBookTicket.DiscountManage\BusBookTicket.DiscountManage.csproj", "{9978C954-7D33-4774-AFF2-A7493DFBAA0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Ranks", "BusBookTicket.Ranks\BusBookTicket.Ranks.csproj", "{22F65EC8-CD11-4720-8D11-F799DF65554E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Ranks", "BusBookTicket.Ranks\BusBookTicket.Ranks.csproj", "{22F65EC8-CD11-4720-8D11-F799DF65554E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Application", "BusBookTicket.Application\BusBookTicket.Application.csproj", "{AB94413E-D0F9-4EA3-A7AF-31B4EF25F65F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Application", "BusBookTicket.Application\BusBookTicket.Application.csproj", "{AB94413E-D0F9-4EA3-A7AF-31B4EF25F65F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Buses", "BusBookTicket.Buses\BusBookTicket.Buses.csproj", "{1394D66A-316C-424B-8A2E-5E9397471AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Buses", "BusBookTicket.Buses\BusBookTicket.Buses.csproj", "{1394D66A-316C-424B-8A2E-5E9397471AE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.Ticket", "BusBookTicket.Ticket\BusBookTicket.Ticket.csproj", "{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.Ticket", "BusBookTicket.Ticket\BusBookTicket.Ticket.csproj", "{68CDE45D-E3BD-4C8A-A7B2-D5F54A5183F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.AddressManagement", "BusBookTicket.AddressManagement\BusBookTicket.AddressManagement.csproj", "{C83B588B-9E87-4FC0-83C5-59C1B4338F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.AddressManagement", "BusBookTicket.AddressManagement\BusBookTicket.AddressManagement.csproj", "{C83B588B-9E87-4FC0-83C5-59C1B4338F2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.ReviewManage", "BusBookTicket.ReviewManage\BusBookTicket.ReviewManage.csproj", "{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{C83B588B-9E87-4FC0-83C5-59C1B4338F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C83B588B-9E87-4FC0-83C5-59C1B4338F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C83B588B-9E87-4FC0-83C5-59C1B4338F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

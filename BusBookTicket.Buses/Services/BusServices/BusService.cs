@@ -2,6 +2,7 @@
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Paging.Bus;
+using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Buses.Specification;
@@ -9,7 +10,7 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
-namespace BusBookTicket.Buses.Services.BusTypeServices;
+namespace BusBookTicket.Buses.Services.BusServices;
 
 public class BusService : IBusService
 {

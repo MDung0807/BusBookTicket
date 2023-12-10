@@ -11,6 +11,7 @@ using BusBookTicket.CompanyManage.Specification;
 using BusBookTicket.CompanyManage.Utils;
 using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 
 namespace BusBookTicket.CompanyManage.Services;

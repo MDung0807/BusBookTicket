@@ -1,7 +1,7 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 
-namespace BusBookTicket.DiscountManager.Specification;
+namespace BusBookTicket.DiscountManage.Specification;
 
 /// <summary>
 /// Specification in Discount

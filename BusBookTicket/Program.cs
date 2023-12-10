@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using BusBookTicket.Auth.Security;
-using BusBookTicket.Core.Models.EntityFW;
+using BusBookTicket.Application.MailKet.Settings;
 using BusBookTicket.Configs;
+using BusBookTicket.Core.Models.EntityFW;
+using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using BusBookTicket.Application.MailKet.Settings;
-using BusBookTicket.CustomerManage.DTOs.Requests;
-using BusBookTicket.CustomerManage.Validator;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+
+namespace BusBookTicket;
 
 internal class Program
 {
@@ -20,8 +18,8 @@ internal class Program
 
         #region -- Config auto mapping --
         var mapperConfigs = new MapperConfiguration(cfg =>
-        cfg.AddProfile(new MappingProfile())
-      );
+            cfg.AddProfile(new MappingProfile())
+        );
         IMapper mapper = mapperConfigs.CreateMapper();
         services.AddSingleton(mapper);
         #endregion -- Config auto mapping --
@@ -50,19 +48,19 @@ internal class Program
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
                 }
-            },
-            new string[] { }
-        }
-    });
+            });
         });
 
 
@@ -97,7 +95,7 @@ internal class Program
             app.UseSwaggerUI();
         }
         app.UseEndpoints(endpoints =>
-        endpoints.MapControllers()) ;
+            endpoints.MapControllers()) ;
         
         app.UseSwaggerUI(options =>
         {

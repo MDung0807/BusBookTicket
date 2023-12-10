@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.AddressManagement.Services;
 using BusBookTicket.AddressManagement.Services.DistrictService;
 using BusBookTicket.AddressManagement.Services.ProvinceService;
+using BusBookTicket.AddressManagement.Services.RegionService;
 using BusBookTicket.AddressManagement.Services.UnitService;
 using BusBookTicket.AddressManagement.Services.WardService;
 using BusBookTicket.Application.CloudImage;
@@ -14,14 +15,16 @@ using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.CompanyManage.Services;
 using BusBookTicket.CustomerManage.Services;
-using BusBookTicket.DiscountManager.Services;
+using BusBookTicket.DiscountManage.Services;
 using BusBookTicket.Ranks.Services;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
+using BusBookTicket.Buses.Services.BusServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
 
@@ -116,6 +119,12 @@ namespace BusBookTicket.Configs
             services.AddScoped<IWardService, WardService>();
 
             #endregion -- Add Scoped Address --
+
+            #region -- Add Scoped Review --
+
+            services.AddScoped<IReviewService, ReviewService>();
+
+            #endregion -- Add Scoped Review --
         }
     }
 }

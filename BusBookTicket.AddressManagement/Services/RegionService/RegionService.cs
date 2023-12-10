@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.Region;
-using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.DTOs.Responses.Region;
 using BusBookTicket.AddressManagement.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 
-namespace BusBookTicket.AddressManagement.Services;
+namespace BusBookTicket.AddressManagement.Services.RegionService;
 
 public class RegionService : IRegionService
 {
