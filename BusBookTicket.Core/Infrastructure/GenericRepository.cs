@@ -149,15 +149,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         try
         {
-            await _context.Database.BeginTransactionAsync();
             List<string> checkedObject = new List<string>();
             await ChangeStatusImpl(entity, userId, status, checkedObject);
-            await _context.Database.CommitTransactionAsync();
             return true;
         }
         catch (Exception e)
         {
-            await _context.Database.RollbackTransactionAsync();
             Console.WriteLine(e.ToString());
             throw;
         }
@@ -244,6 +241,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
                 {
                     if (!checkedObject.Contains(ob.Name))
                     {
+                        checkedObject.Add(ob.Name);
                         await ChangeStatusImpl(ob.GetValue(entity), userId, status, checkedObject);
                     }
                 }
