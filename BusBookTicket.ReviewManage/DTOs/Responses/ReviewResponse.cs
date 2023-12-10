@@ -8,4 +8,5 @@ public class ReviewResponse
     public DateTime DateUpdate { get; set; }
     public int CustomerId { get; set; }
     public string FullName { get; set; }
+    public string Image { get; set; }
 }

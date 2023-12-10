@@ -27,6 +27,7 @@ using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
+using BusBookTicket.ReviewManage.DTOs.Requests;
 using BusBookTicket.ReviewManage.DTOs.Responses;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
@@ -217,7 +218,7 @@ namespace BusBookTicket.Configs
             
             CreateMap<TicketFormUpdate, Core.Models.Entity.Ticket>()
                 .ForPath(dest => dest.Bus.Id,
-                    opts => opts.MapFrom(x => x.busID));
+                    opts => opts.MapFrom(x => x.BusId));
 
             CreateMap<Core.Models.Entity.Ticket, TicketResponse>()
                 .ForPath(dest => dest.BusNumber,
@@ -278,6 +279,10 @@ namespace BusBookTicket.Configs
 
             #region -- Review Module --
 
+            CreateMap<ReviewRequest, Review>()
+                .ForPath(dest => dest.Bus.Id,
+                    opts => opts.MapFrom(x => x.BusId));
+            
             CreateMap<Review, ReviewResponse>()
                 .ForPath(dest => dest.FullName, 
                     opts => opts.MapFrom(x => x.Customer.FullName))

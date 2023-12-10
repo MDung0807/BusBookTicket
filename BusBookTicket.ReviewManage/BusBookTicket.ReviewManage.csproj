@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BusBookTicket.Auth\BusBookTicket.Auth.csproj" />
+      <ProjectReference Include="..\BusBookTicket.BillManage\BusBookTicket.BillManage.csproj" />
       <ProjectReference Include="..\BusBookTicket.Core\BusBookTicket.Core.csproj" />
     </ItemGroup>
 
