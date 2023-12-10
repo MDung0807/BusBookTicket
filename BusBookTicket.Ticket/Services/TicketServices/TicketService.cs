@@ -21,6 +21,7 @@ public class TicketService : ITicketService
     private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
     private readonly IGenericRepository<Bus> _busRepository;
     private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
+    private readonly IGenericRepository<TicketItem> _ticketItemRepository;
     #endregion -- Properties --
 
     public TicketService(
@@ -34,6 +35,7 @@ public class TicketService : ITicketService
         this._repository = unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
         _busRepository = unitOfWork.GenericRepository<Bus>();
         _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
+        _ticketItemRepository = unitOfWork.GenericRepository<TicketItem>();
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -173,6 +175,17 @@ public class TicketService : ITicketService
         TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
             paging.PageIndex, paging.PageSize, count: count, responses);
         return result;
+    }
+
+    public async Task<bool> ChangeCompleteStatus(int id, int userId)
+    {
+        TicketSpecification ticketSpecification = new TicketSpecification(id, true);
+        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, id, true, checkStatus:false);
+        List<TicketItem> items = await _ticketItemRepository.ToList(ticketItemSpecification);
+        ticket.TicketItems = new HashSet<TicketItem>(items);
+        await _repository.ChangeStatus(ticket, userId, (int)EnumsApp.Complete);
+        return true;
     }
 
     #region -- Private Method --

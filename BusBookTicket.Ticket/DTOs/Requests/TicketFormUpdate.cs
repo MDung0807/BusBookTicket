@@ -2,7 +2,7 @@
 
 public class TicketFormUpdate
 {
-    public int ticketID { get; set; }
-    public DateTime date { get; set; }
-    public int busID { get; set; }
+    public int TicketId { get; set; }
+    public DateTime Date { get; set; }
+    public int BusId { get; set; }
 }

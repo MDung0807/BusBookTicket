@@ -4,6 +4,7 @@ using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
+using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.BillManage.Validator;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.BillManage.Controllers;
 
 [ApiController]
-[Route("api/billes")]
+[Route("api/bills")]
 public class BillController : ControllerBase
 {
     private readonly IBillService _billService;
@@ -60,4 +61,12 @@ public class BillController : ControllerBase
     }
     #endregion -- Controller --
 
+    [HttpPut("changeCompleteStatus")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> ChangeCompleteStatus([FromQuery] int billId)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _billService.ChangeCompleteStatus(billId, userId);
+        return Ok(new Response<string>(!status, BillConstants.SUCCESS));
+    }
 }
