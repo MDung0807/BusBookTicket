@@ -67,10 +67,9 @@ public class BusService : IBusService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        BusSpecification busSpecification = new BusSpecification(id);
+        BusSpecification busSpecification = new BusSpecification(id, getChangeStatus:true);
         Bus bus = await _repository.Get(busSpecification);
-        bus.Status = (int)EnumsApp.Delete;
-        await _repository.Update(bus, userId);
+        await _repository.ChangeStatus(bus, userId, (int)EnumsApp.Delete);
         return true;
     }
 

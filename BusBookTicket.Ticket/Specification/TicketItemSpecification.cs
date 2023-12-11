@@ -1,5 +1,6 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using CloudinaryDotNet.Actions;
 
 namespace BusBookTicket.Ticket.Specification;
 
@@ -33,7 +34,8 @@ public sealed class TicketItemSpecification : BaseSpecification<TicketItem>
         }
         
         AddInclude(x => x.Ticket.Bus.Seats);
-        
+        AddInclude(x => ((TicketItem)x).Ticket.Bus.Seats); 
+
     }
 
 }
