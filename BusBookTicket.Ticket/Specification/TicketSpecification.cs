@@ -116,6 +116,5 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.Bus.Company);
         AddInclude(x => x.Bus.BusType);
         AddInclude(x => x.Bus.BusStops); 
-        AddInclude(x => x.TicketBusStops);
     }
 }

@@ -6,8 +6,14 @@ namespace BusBookTicket.Buses.Specification;
 
 public sealed class BusSpecification : BaseSpecification<Bus>
 {
-    public BusSpecification(int id, bool checkStatus = true) : base(x => x.Id == id, checkStatus: checkStatus)
+    public BusSpecification(int id, bool checkStatus = true, bool getChangeStatus = false) : base(x => x.Id == id, checkStatus: checkStatus)
     {
+        if (getChangeStatus)
+        {
+            AddInclude(x => x.Seats);
+            AddInclude(x => x.BusStops);
+            return;
+        }
         AddInclude(x => x.Company);
         AddInclude(x => x.BusStops);
         AddInclude(x => x.BusType);

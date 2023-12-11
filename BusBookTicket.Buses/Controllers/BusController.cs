@@ -108,5 +108,13 @@ public class BusController : ControllerBase
         return Ok(new Response<string>(!status, "AppConstants"));
     }
 
+    [HttpDelete("delete")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> DeleteBus([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _busService.Delete(id, userId);
+        return Ok(new Response<string>(!status, "AppConstants"));
+    }
     #endregion -- Controller --
 }
