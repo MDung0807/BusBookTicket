@@ -224,13 +224,15 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.BusNumber,
                     opts => opts.MapFrom(x => x.Bus.BusNumber))
                 .ForPath(dest => dest.Company,
-                    opts => opts.MapFrom(x => x.Bus.Company.Name));
+                    opts => opts.MapFrom(x => x.Bus.Company.Name))
+                .ForPath(dest => dest.BusType,
+                    opts => opts.MapFrom(x => x.Bus.BusType.Name));
 
-            CreateMap<BusStation, StationResponse>()
-                .ForPath(dest => dest.StationId,
+            CreateMap<Ticket_BusStop, StationResponse>()
+                .ForPath(dest => dest.TicketStopId,
                     opts => opts.MapFrom(x => x.Id))
                 .ForPath(dest => dest.Station,
-                    opts => opts.MapFrom(x => x.Name));
+                    opts => opts.MapFrom(x => x.BusStop.BusStation.Name));
 
             //TicketItem
             CreateMap<TicketItemForm, TicketItem>()

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -23,12 +24,14 @@ public class TicketService : ITicketService
     private readonly IGenericRepository<Bus> _busRepository;
     private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
     private readonly IGenericRepository<TicketItem> _ticketItemRepository;
+    private readonly IImageService _imageService;
     #endregion -- Properties --
 
     public TicketService(
         ITicketItemService itemService, 
         IMapper mapper, 
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IImageService imageService)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -37,6 +40,7 @@ public class TicketService : ITicketService
         _busRepository = unitOfWork.GenericRepository<Bus>();
         _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
         _ticketItemRepository = unitOfWork.GenericRepository<TicketItem>();
+        _imageService = imageService;
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -45,7 +49,10 @@ public class TicketService : ITicketService
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
         TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
+        List<string> images = await _imageService.getImages(typeof(Company).ToString(), id);
+        response.CompanyLogo = images.Count > 0 ? images[0] : null;
         response.ItemResponses = itemResponses;
+        response.ListStation = await GetAllBusStopInTicket(id);
         return response;
     }
 
@@ -168,13 +175,13 @@ public class TicketService : ITicketService
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
     {
         TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging);
-        List<Core.Models.Entity.Ticket> ticket = await _repository.ToList(ticketSpecification);
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         int count = await _repository.Count(new TicketSpecification(searchForm.StationStart, searchForm.StationEnd,
             searchForm.DateTime));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
-
-        foreach (var item in ticket)
+        
+        foreach (var item in tickets)
         {
             responses.Add(await GetById(item.Id));
         }
@@ -220,6 +227,13 @@ public class TicketService : ITicketService
         form.price = seat.Price + price;
 
         return await _itemService.Create(form, userId);
+    }
+
+    private async Task<List<StationResponse>> GetAllBusStopInTicket(int ticketId)
+    {
+        TicketBusStopSpecification ticketBusStopSpecification = new TicketBusStopSpecification(ticketId);
+        List<Ticket_BusStop> ticketBusStop = await _ticketBusStop.ToList(ticketBusStopSpecification);
+        return await AppUtils.MapObject<Ticket_BusStop, StationResponse>(ticketBusStop, _mapper);
     }
     #endregion -- Private Method --
 }
