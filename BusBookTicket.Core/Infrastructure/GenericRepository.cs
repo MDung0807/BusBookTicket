@@ -151,6 +151,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         {
             List<string> checkedObject = new List<string>();
             await ChangeStatusImpl(entity, userId, status, checkedObject);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -268,8 +270,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         // entity.UpdateBy = userId;
         // entity.DateUpdate = DateTime.Now;
         // _context.Entry(entity).Property(x => x.Status).IsModified = true;
-        _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
         return true;
     }
     #endregion -- Private Method --
