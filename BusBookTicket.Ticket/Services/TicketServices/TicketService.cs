@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Buses.Specification;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -9,6 +10,7 @@ using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
+using BusBookTicket.Ticket.Utils;
 using ElasticEmailClient;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
@@ -48,7 +50,16 @@ public class TicketService : ITicketService
         TicketSpecification ticketSpecification = new TicketSpecification(id,false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
+        int totalEmptySeat = 0;
+        foreach (var item in itemResponses)
+        {
+            if (item.Status == 1)
+            {
+                totalEmptySeat++;
+            }
+        }
         TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
+        response.TotalEmptySeat = totalEmptySeat;
         List<string> images = await _imageService.getImages(typeof(Company).ToString(), id);
         response.CompanyLogo = images.Count > 0 ? images[0] : null;
         response.ItemResponses = itemResponses;
@@ -79,6 +90,8 @@ public class TicketService : ITicketService
 
     public async Task<bool> Create(TicketFormCreate entity, int userId)
     {
+        if (!await CheckTicketIsExist(entity.BusId, entity.TicketStations))
+            throw new ExceptionDetail(TicketConstants.TICKET_EXIST);
         await _unitOfWork.BeginTransaction();
         try
         {
@@ -234,6 +247,21 @@ public class TicketService : ITicketService
         TicketBusStopSpecification ticketBusStopSpecification = new TicketBusStopSpecification(ticketId);
         List<Ticket_BusStop> ticketBusStop = await _ticketBusStop.ToList(ticketBusStopSpecification);
         return await AppUtils.MapObject<Ticket_BusStop, StationResponse>(ticketBusStop, _mapper);
+    }
+
+    private async Task<bool> CheckTicketIsExist(int busId, List<TicketStationDto> ticketStationDtos)
+    {
+        DateTime dePartureTime = ticketStationDtos[0].DepartureTime;
+        foreach (var item in ticketStationDtos)
+        {
+            if (item.DepartureTime < dePartureTime)
+                dePartureTime = item.DepartureTime;
+        }
+        TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, dePartureTime);
+        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+        if (ticket == null)
+            return true;
+        return false;
     }
     #endregion -- Private Method --
 }
