@@ -104,7 +104,7 @@ public class TicketItemService : ITicketItemService
 
     public async Task<List<TicketItemResponse>> GetAllInTicket(int ticketId)
     {
-        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId);
+        TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId, checkStatus:false);
         List<TicketItem> items = await _repository.ToList(ticketItemSpecification);
         List<TicketItemResponse> responses = await AppUtils.MapObject<TicketItem, TicketItemResponse>(items, _mapper);
         return responses;

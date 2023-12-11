@@ -118,4 +118,13 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.Bus.BusType);
         AddInclude(x => x.Bus.BusStops); 
     }
+
+    public TicketSpecification(int busId, DateTime DepartureTime)
+    {
+        Criteria = x => x.Bus.Id == busId &&
+            x.TicketBusStops.Any(p => p.DepartureTime <= DepartureTime &&
+                                      p.ArrivalTime>= DepartureTime);
+        
+        AddInclude(x => x.TicketBusStops);
+    }
 }

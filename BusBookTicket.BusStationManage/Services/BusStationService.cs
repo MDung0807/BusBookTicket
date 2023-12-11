@@ -57,7 +57,7 @@ public class BusStationService : IBusStationService
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(paging: request);
         List<BusStationResponse> stationResponses = new List<BusStationResponse>();
-        int total = await _repository.Count(busStationSpecification);
+        int total = await _repository.Count(new BusStationSpecification());
         
         List<BusStation> busStations = await _repository.ToList(busStationSpecification);
         stationResponses = await AppUtils.MapObject<BusStation, BusStationResponse>(busStations, _mapper);
@@ -172,7 +172,7 @@ public class BusStationService : IBusStationService
     public async Task<BusStationResponse> GetStationByName(string name)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(name);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification) ?? throw new Exception(BusStationConstants.NOT_FOUND);
         BusStationResponse response =  _mapper.Map<BusStationResponse>(busStation);
         response.AddressDb = await GetFullAddress(response.Address, response.WardId);
         return response;

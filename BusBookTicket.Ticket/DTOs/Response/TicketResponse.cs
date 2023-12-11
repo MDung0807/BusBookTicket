@@ -9,6 +9,7 @@ public class TicketResponse
     public string Company { get; set; }
     public string CompanyLogo { get; set; }
     public string BusType { get; set; }
+    public int TotalEmptySeat { get; set; }
     public List<StationResponse> ListStation { get; set; }
     public List<TicketItemResponse> ItemResponses { get; set; }
 }

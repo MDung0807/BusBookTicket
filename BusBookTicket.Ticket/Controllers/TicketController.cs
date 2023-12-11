@@ -53,6 +53,12 @@ public class TicketController : ControllerBase
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Create([FromBody] TicketFormCreate request)
     {
+        var validator = new TicketFormCreateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
         int userId = JwtUtils.GetUserID(HttpContext);
         await _ticketService.Create(request, userId);
         return Ok(new Response<string>(false, "Response"));
