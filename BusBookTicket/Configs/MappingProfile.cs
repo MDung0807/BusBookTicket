@@ -144,9 +144,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.NameCustomer,
                     opts => opts.MapFrom(x => x.Customer.FullName))
                 .ForPath(dest => dest.BusStationStart,
-                    opts => opts.MapFrom(x => x.BusStationStart.Name))
+                    opts => opts.MapFrom(x => x.BusStationStart.BusStop.BusStation.Name))
                 .ForPath(dest => dest.BusStationEnd,
-                    opts => opts.MapFrom(x => x.BusStationEnd.Name))
+                    opts => opts.MapFrom(x => x.BusStationEnd.BusStop.BusStation.Name))
                 .ForPath(dest => dest.Discount,
                     opts => opts.MapFrom(x => x.Discount.Name))
                 .ForPath( dest => dest.Items, 

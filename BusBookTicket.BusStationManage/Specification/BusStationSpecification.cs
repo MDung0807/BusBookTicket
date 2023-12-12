@@ -19,7 +19,11 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
         AddInclude(x => x.BusStops);
 
         if (paging != null)
+        {
             ApplyPaging(paging.PageIndex, paging.PageSize);
+            ApplyOrderBy(x => x.DateCreate);
+            ApplyOrderBy(x => x.DateUpdate);
+        }    
     }
 
     public BusStationSpecification(string name) : base(x => x.Name.Contains(name))

@@ -84,6 +84,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                                 OR P.FullName LIKE N'%' + @StationEnd + N'%'
                         )
                         AND t2.IndexStation > t1.IndexStation
+                    AND T.Status = 1
                 )
             GROUP BY
                 T.Id,

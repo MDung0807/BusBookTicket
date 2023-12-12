@@ -105,7 +105,7 @@ public class BillService : IBillService
             //Send mail
             MailRequest mailRequest = new MailRequest();
             mailRequest.ToMail = bill.Customer.Email;
-            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {bill.BusStationStart.Name} đến {bill.BusStationEnd.Name}";
+            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {bill.BusStationStart.BusStop.BusStation.Name} đến {bill.BusStationStart.BusStop.BusStation.Name}";
             mailRequest.Content = $"Ghế của bạn là: {bill.BillItems}";
             mailRequest.Subject = "Hóa đơn của bạn";
             mailRequest.FullName = bill.Customer.FullName;

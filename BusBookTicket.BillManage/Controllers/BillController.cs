@@ -69,4 +69,13 @@ public class BillController : ControllerBase
         bool status = await _billService.ChangeCompleteStatus(billId, userId);
         return Ok(new Response<string>(!status, BillConstants.SUCCESS));
     }
+    
+    [HttpPut("changeIsDelete")]
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    public async Task<IActionResult> ChangeIsDelete([FromQuery] int billId)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status = await _billService.Delete(billId, userId);
+        return Ok(new Response<string>(!status, BillConstants.SUCCESS));
+    }
 }

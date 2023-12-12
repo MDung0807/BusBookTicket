@@ -10,8 +10,6 @@
 
         #endregion -- Properties --
 
-        public HashSet<Bill>? TicketStarts { get; set; }
-        public HashSet<Bill>? TicketEnds { get; set; }
         public HashSet<BusStop>? BusStops { get; set; }
         public Ward Ward { get; set; }
     }
