@@ -11,8 +11,8 @@ public class FormUpdateValidator : AbstractValidator<FormUpdate>
             .NotEmpty().WithMessage("is required")
             .Length(10, 50).WithMessage("must be between 8 and 50 characters");
 
-        RuleFor(x => x.DateOfBirth)
-            .Empty();
+        // RuleFor(x => x.DateOfBirth)
+        //     .Empty();
 
         RuleFor(x => x.Address);
 
@@ -23,8 +23,8 @@ public class FormUpdateValidator : AbstractValidator<FormUpdate>
             .NotEmpty().WithMessage("is required")
             .Matches("^0[0-9]{9}$").WithMessage("Invalid format phoneNumber");
 
-        RuleFor(x => x.Gender)
-            .Empty();
+        // RuleFor(x => x.Gender)
+        //     .Empty();
 
         RuleFor(x => x.WardId);
     }

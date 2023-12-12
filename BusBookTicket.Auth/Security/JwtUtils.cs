@@ -17,7 +17,7 @@ namespace BusBookTicket.Auth.Security
         /// <summary>
         /// Minutes
         /// </summary>
-        private static readonly long EXPIRE = 1;
+        private static readonly long EXPIRE = 10;
         #endregion -- Private properties --
 
         #region -- Public properties -- 
