@@ -8,12 +8,14 @@ using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.Core.Application.Paging;
+using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.Specification;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
+using BusBookTicket.Ticket.Specification;
 
 namespace BusBookTicket.BillManage.Services.Bills;
 
@@ -26,6 +28,7 @@ public class BillService : IBillService
     private readonly ITicketItemService _ticketItemService;
     private readonly IMailService _mailService;
     private readonly IGenericRepository<Customer> _customerRepo;
+    private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
 
     public BillService(
         IMapper mapper,
@@ -42,6 +45,8 @@ public class BillService : IBillService
         _ticketItemService = itemService;
         _mailService = mailService;
         _customerRepo = unitOfWork.GenericRepository<Customer>();
+        _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
+
     }
     public async Task<BillResponse> GetById(int id)
     {
@@ -76,23 +81,28 @@ public class BillService : IBillService
             // Create bill
             Bill bill = _mapper.Map<Bill>(entity);
             CustomerSpecification customerSpecification = new CustomerSpecification(userId);
-            bill.Customer = await _customerRepo.Get(customerSpecification);
+
+            Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
+            Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
+
+            bill.Customer = new Customer();
             bill.Customer.Id = userId;
             bill = await _repository.Create(bill, userId);
             
+
             // Create item
             foreach (BillItemRequest item in itemsRequest)
             {
                 item.BillId = bill.Id;
                 BillItem billItem = await _billItemService.CreateBillItem(item, userId);
-                
                 //Cacl total Price
                 TicketItemResponse ticketItem = await _ticketItemService.GetById(item.TicketItemId);
                 
                 // Change status in ticket item
                 await _ticketItemService.ChangeStatusToWaitingPayment(item.TicketItemId, userId);
 
-                bill.TotalPrice += ticketItem.Price;
+                bill.TotalPrice += ticketItem.Price + ticketBusStopStart.DiscountPrice + ticketBusStopEnd.DiscountPrice;
+                
             }
 
             // Update total price in bill
@@ -100,15 +110,15 @@ public class BillService : IBillService
             await _repository.Update(bill, userId);
             
             // Change status in Bill
-            await ChangeStatusToWaitingPayment(bill.Id, userId);
-            
+            // await ChangeStatusToWaitingPayment(bill.Id, userId);
+            Customer customer = await _customerRepo.Get(customerSpecification);
             //Send mail
             MailRequest mailRequest = new MailRequest();
-            mailRequest.ToMail = bill.Customer.Email;
-            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {bill.BusStationStart.BusStop.BusStation.Name} đến {bill.BusStationStart.BusStop.BusStation.Name}";
-            mailRequest.Content = $"Ghế của bạn là: {bill.BillItems}";
+            mailRequest.ToMail = customer.Email;
+            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation.Name} đến {ticketBusStopEnd.BusStop.BusStation.Name}";
+            mailRequest.Content = $"Giá: {bill.TotalPrice}";
             mailRequest.Subject = "Hóa đơn của bạn";
-            mailRequest.FullName = bill.Customer.FullName;
+            mailRequest.FullName = customer.FullName;
             await _mailService.SendEmailAsync(mailRequest);
 
             await _unitOfWork.SaveChangesAsync();
@@ -177,15 +187,18 @@ public class BillService : IBillService
 
     public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
     {
-        BillSpecification specification = new BillSpecification(id);
+        BillSpecification specification = new BillSpecification(id, checkStatus:false);
         Bill bill = await _repository.Get(specification);
+        bill.Customer = null;
+        bill.BusStationEnd = null;
+        bill.BusStationStart = null;
 
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.AwaitingPayment);
     }
 
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
     {
-        BillSpecification specification = new BillSpecification(id);
+        BillSpecification specification = new BillSpecification(id, checkStatus:false);
         Bill bill = await _repository.Get(specification);
 
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.PaymentComplete);

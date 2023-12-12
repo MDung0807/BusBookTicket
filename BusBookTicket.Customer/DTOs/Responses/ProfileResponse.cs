@@ -1,4 +1,6 @@
-﻿namespace BusBookTicket.CustomerManage.DTOs.Responses
+﻿using BusBookTicket.AddressManagement.DTOs.Responses;
+
+namespace BusBookTicket.CustomerManage.DTOs.Responses
 {
     public class ProfileResponse
     {
@@ -14,5 +16,6 @@
         public string Username { get; set; }
         public string Rank { get; set; }
         public int WardId { get; set; }
+        public AddressResponse AddressResponse { get; set; }
     }
 }

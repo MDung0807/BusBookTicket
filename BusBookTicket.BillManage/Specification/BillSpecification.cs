@@ -10,7 +10,13 @@ public sealed class BillSpecification : BaseSpecification<Bill>
     public BillSpecification(int id = default, int userId = default, bool checkStatus = true, BillPaging paging = null)
         : base(x => userId == default || x.Customer.Id == userId && (id == default|| x.Id == id), checkStatus)
     {
+        if (id != default)
+        {
+            // AddInclude(x => x.BillItems);
+            return;
+        }
         AddInclude(x => x.BusStationEnd);
+
         AddInclude(x => x.BusStationStart);
         AddInclude(x => x.Customer);
         

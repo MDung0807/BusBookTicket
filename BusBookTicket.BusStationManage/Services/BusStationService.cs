@@ -216,7 +216,7 @@ public class BusStationService : IBusStationService
 
     private async Task<string> GetFullAddress(string address, int wardId)
     {
-        string addressDb = address + ", " + await AddressResponse.GetAddressDb(wardId, _wardService);
+        string addressDb = address + ", " + await AddressUtils.GetAddressDb(wardId, _wardService);
         return addressDb;
     }
     #endregion -- Private Method --

@@ -94,6 +94,7 @@ public class BusService : IBusService
                 busStop.BusStation.Id = stationID;
                 busStop.Bus ??= new Bus();
                 busStop.Bus.Id= bus.Id;
+                busStop.Bus.Status = (int)EnumsApp.Active;
 
                 await _busStopRepository.Create(busStop, userId);
             }

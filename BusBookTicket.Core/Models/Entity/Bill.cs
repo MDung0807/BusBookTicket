@@ -9,11 +9,11 @@ namespace BusBookTicket.Core.Models.Entity
         #endregion -- Properties --
 
         #region -- Relationship -- 
-        public Ticket_BusStop? BusStationStart { get; set; }
-        public Ticket_BusStop? BusStationEnd { get; set; }
-        public Customer? Customer { get; set; }
-        public HashSet<BillItem>? BillItems { get; set; }
-        public Discount? Discount { get; set; }
+        public Ticket_BusStop BusStationStart { get; set; }
+        public Ticket_BusStop BusStationEnd { get; set; }
+        public Customer Customer { get; set; }
+        public HashSet<BillItem> BillItems { get; set; }
+        public Discount Discount { get; set; }
         #endregion  -- Relationship -- 
     }
 }
