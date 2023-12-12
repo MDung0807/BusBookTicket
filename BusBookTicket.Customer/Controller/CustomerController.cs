@@ -81,5 +81,31 @@ namespace BusBookTicket.CustomerManage.Controller
             return Ok(new Response<string>(!status, "response"));
         }
 
+        [HttpPut("changeIsActive")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ChangeIsActive([FromQuery] int customerId)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status =  await _customerService.ChangeIsActive(customerId, userId);
+            return Ok(new Response<string>(!status, "responses"));
+        }
+        
+        [HttpPut("changeIsDelete")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ChangeIsDelete([FromQuery] int customerId)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status =  await _customerService.Delete(customerId, userId);
+            return Ok(new Response<string>(!status, "responses"));
+        }
+        
+        [HttpPut("ChangeIsLock")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ChangIsLock([FromQuery] int customerId)
+        {
+            int userId = JwtUtils.GetUserID(HttpContext);
+            bool status =  await _customerService.ChangeIsLock(customerId, userId);
+            return Ok(new Response<string>(!status, "responses"));
+        }
     }
 }
