@@ -107,14 +107,16 @@ namespace BusBookTicket.CustomerManage.Services
 
         public async Task<bool> ChangeIsActive(int id, int userId)
         {
-            CustomerSpecification customerSpecification = new CustomerSpecification(id, false);
+            CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
             Customer customer = await _repository.Get(customerSpecification);
             return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Active);
         }
 
-        public Task<bool> ChangeIsLock(int id, int userId)
+        public async Task<bool> ChangeIsLock(int id, int userId)
         {
-            throw new NotImplementedException();
+            CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
+            Customer customer = await _repository.Get(customerSpecification);
+            return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Lock);
         }
 
         public Task<bool> ChangeToWaiting(int id, int userId)
@@ -169,9 +171,15 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
+        public async Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
         {
-            throw new NotImplementedException();
+            CustomerSpecification specification = new CustomerSpecification(paging, false);
+            List<Customer> customers = await _repository.ToList(specification);
+            int count = await _repository.Count(new CustomerSpecification(checkStatus:false));
+            CustomerPagingResult result = AppUtils.ResultPaging<CustomerPagingResult, CustomerResponse>(
+                paging.PageIndex, paging.PageSize, count,
+                await AppUtils.MapObject<Customer, CustomerResponse>(customers, _mapper));
+            return result;
         }
 
         public async Task<bool> AuthOtp(OtpRequest request)
@@ -187,11 +195,9 @@ namespace BusBookTicket.CustomerManage.Services
 
         public async Task<bool> Delete(int id, int userId)
         {
-            CustomerSpecification customerSpecification = new CustomerSpecification(id);
+            CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
             Customer customer = await _repository.Get(customerSpecification);
-            customer = setStatus(customer, (int)EnumsApp.Delete);
-            await _repository.Update(customer, userId);
-            return true;
+            return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Delete);
         }
 
         public async Task<ProfileResponse> GetById(int id)

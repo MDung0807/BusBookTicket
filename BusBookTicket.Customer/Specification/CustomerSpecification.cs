@@ -8,7 +8,7 @@ namespace BusBookTicket.CustomerManage.Specification;
 
 public sealed class CustomerSpecification : BaseSpecification<Customer>
 {
-    public CustomerSpecification(CustomerPaging paging = null)
+    public CustomerSpecification(CustomerPaging paging = null, bool checkStatus = true) : base(null, checkStatus)
     {
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
@@ -20,8 +20,13 @@ public sealed class CustomerSpecification : BaseSpecification<Customer>
         }
     }
 
-    public CustomerSpecification(int id, bool checkStatus = true) : base(x => x.Id == id, checkStatus: checkStatus)
+    public CustomerSpecification(int id, bool checkStatus = true, bool getAll = true) : base(x => x.Id == id, checkStatus: checkStatus)
     {
+        if (!getAll)
+        {
+            AddInclude(x => x.Account);
+            return;
+        }
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
