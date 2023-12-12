@@ -5,14 +5,14 @@
 namespace BusBookTicket.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class data : Migration
+    public partial class dataNew : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "BusesType",
+                name: "BusNumber",
+                table: "Buses",
                 type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "",
@@ -21,21 +21,21 @@ namespace BusBookTicket.Core.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddUniqueConstraint(
-                name: "AK_BusesType_Name",
-                table: "BusesType",
-                column: "Name");
+                name: "AK_Buses_BusNumber",
+                table: "Buses",
+                column: "BusNumber");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropUniqueConstraint(
-                name: "AK_BusesType_Name",
-                table: "BusesType");
+                name: "AK_Buses_BusNumber",
+                table: "Buses");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "BusesType",
+                name: "BusNumber",
+                table: "Buses",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),

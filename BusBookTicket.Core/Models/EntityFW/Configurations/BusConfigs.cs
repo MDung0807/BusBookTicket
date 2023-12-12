@@ -9,6 +9,8 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
         public void Configure(EntityTypeBuilder<Bus> builder)
         {
             #region -- Properties --
+
+            builder.HasAlternateKey(x => x.BusNumber);
             #endregion -- Properties --
 
             #region -- Relationship --

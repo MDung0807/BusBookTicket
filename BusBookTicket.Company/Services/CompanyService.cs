@@ -9,8 +9,6 @@ using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CompanyManage.Paging;
 using BusBookTicket.CompanyManage.Specification;
 using BusBookTicket.CompanyManage.Utils;
-using BusBookTicket.Core.Application.Paging;
-using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 
@@ -65,7 +63,7 @@ public class CompanyService : ICompanyServices
         CompanySpecification companySpecification = new CompanySpecification(false);
         List<Company> companies = await _repository.ToList(companySpecification);
         List<ProfileCompany> profileCompanies = await AppUtils.MapObject<Company, ProfileCompany>(companies, _mapper);
-        int count = await _repository.Count();
+        int count = await _repository.Count(companySpecification);
         CompanyPagingResult result = new CompanyPagingResult();
         result.PageIndex = paging.PageIndex;
         result.PageSize = paging.PageSize;
@@ -95,7 +93,7 @@ public class CompanyService : ICompanyServices
 
     public async Task<bool> Delete(int id, int userId)
     {
-        CompanySpecification companySpecification = new CompanySpecification(id);
+        CompanySpecification companySpecification = new CompanySpecification(id, checkStatus:false, getAll:false);
         Company company = await _repository.Get(companySpecification);
         company = changeStatus(company, (int)EnumsApp.Delete);
         await _repository.Update(company, userId);
@@ -112,7 +110,7 @@ public class CompanyService : ICompanyServices
             // Set data
             company.Status = (int)EnumsApp.Lock;
             await _authService.Create(account, -1);
-            company.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName);
+            company.Account = await _authService.GetAccountByUsername(entity.Username, entity.RoleName, false);
             company = await _repository.Create(company, -1);
             
             // Save Image
@@ -132,15 +130,18 @@ public class CompanyService : ICompanyServices
 
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        CompanySpecification companySpecification = new CompanySpecification(id, false);
+        CompanySpecification companySpecification = new CompanySpecification(id, checkStatus: false, getAll:false);
         Company company = await _repository.Get(companySpecification);
 
         return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Active);
     }
 
-    public Task<bool> ChangeIsLock(int id, int userId)
+    public async Task<bool> ChangeIsLock(int id, int userId)
     {
-        throw new NotImplementedException();
+        CompanySpecification companySpecification = new CompanySpecification(id, checkStatus: false, getAll:false);
+        Company company = await _repository.Get(companySpecification);
+
+        return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Lock);
     }
 
     public Task<bool> ChangeToWaiting(int id, int userId)

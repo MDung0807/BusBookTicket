@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace BusBookTicket.Application.MailKet.DTO.Request;
+﻿namespace BusBookTicket.Application.MailKet.DTO.Request;
 
 public class MailRequest
 {

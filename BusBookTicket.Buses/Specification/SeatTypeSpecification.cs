@@ -12,7 +12,7 @@ public sealed class SeatTypeSpecification : BaseSpecification<SeatType>
     }
     
     public SeatTypeSpecification(int? id = null, int? companyId = null, SeatTypePaging paging = null) 
-        : base(x => x.Id == id || x.Company.Id == companyId || x.Company.Id == 0)
+        : base(x => x.Id == id || x.Company.Id == companyId || x.Company.Id == null)
     {
         AddInclude(x => x.Company);
         if (paging!= null)

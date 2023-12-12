@@ -1,5 +1,4 @@
-﻿using System.Net;
-using BusBookTicket.Auth.Exceptions;
+﻿using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.CustomerManage.Exceptions;

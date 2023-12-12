@@ -1,7 +1,6 @@
 ﻿using BusBookTicket.BillManage.Paging;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace BusBookTicket.BillManage.Specification;
 

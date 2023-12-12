@@ -1,5 +1,4 @@
-﻿using System.Data;
-using BusBookTicket.CustomerManage.DTOs.Requests;
+﻿using BusBookTicket.CustomerManage.DTOs.Requests;
 using FluentValidation;
 
 namespace BusBookTicket.CustomerManage.Validator;

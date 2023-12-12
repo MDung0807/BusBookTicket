@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.Intrinsics.X86;
-using BusBookTicket.Core.Application.Specification;
+﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.CustomerManage.Paging;
 

@@ -1,5 +1,4 @@
-﻿using BusBookTicket.AddressManagement.Services;
-using BusBookTicket.AddressManagement.Services.DistrictService;
+﻿using BusBookTicket.AddressManagement.Services.DistrictService;
 using BusBookTicket.AddressManagement.Services.ProvinceService;
 using BusBookTicket.AddressManagement.Services.RegionService;
 using BusBookTicket.AddressManagement.Services.UnitService;

@@ -10,7 +10,6 @@ using BusBookTicket.Application.OTP.Models;
 using BusBookTicket.Application.OTP.Services;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.DTOs.Requests;
-using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Utils;

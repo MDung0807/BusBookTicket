@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace BusBookTicket.BillManage.DTOs.Responses;
+﻿namespace BusBookTicket.BillManage.DTOs.Responses;
 
 public class BillResponse
 {

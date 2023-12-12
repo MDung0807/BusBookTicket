@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.Province;
-using BusBookTicket.AddressManagement.DTOs.Responses.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
-using BusBookTicket.Core.Models.EntityFW.Configurations;
 using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.AddressManagement.Services.ProvinceService;

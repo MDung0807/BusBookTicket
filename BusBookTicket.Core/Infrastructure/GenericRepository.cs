@@ -2,14 +2,12 @@
 using System.Linq.Expressions;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Application.Specification.Interfaces;
-using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.Core.Utils;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BusBookTicket.Core.Infrastructure;
 

@@ -1,7 +1,6 @@
 ﻿using BusBookTicket.AddressManagement.DTOs.Requests.Unit;
 using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
 using BusBookTicket.Core.Infrastructure.Interfaces;
-using BusBookTicket.Core.Migrations;
 
 namespace BusBookTicket.AddressManagement.Services.UnitService;
 

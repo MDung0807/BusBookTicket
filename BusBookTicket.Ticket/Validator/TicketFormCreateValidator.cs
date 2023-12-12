@@ -1,5 +1,4 @@
-﻿using BusBookTicket.Core.Models.Entity;
-using BusBookTicket.Ticket.DTOs.Requests;
+﻿using BusBookTicket.Ticket.DTOs.Requests;
 using FluentValidation;
 
 namespace BusBookTicket.Ticket.Validator;

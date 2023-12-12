@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
-using BusBookTicket.Buses.Paging.Bus;
 using BusBookTicket.Buses.Paging.BusType;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;

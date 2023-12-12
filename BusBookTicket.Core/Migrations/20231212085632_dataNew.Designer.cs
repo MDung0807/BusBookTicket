@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231208164714_dataNew4")]
-    partial class dataNew4
+    [Migration("20231212085632_dataNew")]
+    partial class dataNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace BusBookTicket.Core.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleID")
@@ -165,10 +168,10 @@ namespace BusBookTicket.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BusStationEndID")
+                    b.Property<int>("BusStationEndId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BusStationStartID")
+                    b.Property<int>("BusStationStartId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreateBy")
@@ -200,9 +203,9 @@ namespace BusBookTicket.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusStationEndID");
+                    b.HasIndex("BusStationEndId");
 
-                    b.HasIndex("BusStationStartID");
+                    b.HasIndex("BusStationStartId");
 
                     b.HasIndex("CustomerID");
 
@@ -259,7 +262,8 @@ namespace BusBookTicket.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BusNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BusTypeID")
                         .HasColumnType("int");
@@ -286,6 +290,8 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("BusNumber");
 
                     b.HasIndex("BusTypeID");
 
@@ -685,6 +691,46 @@ namespace BusBookTicket.Core.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.OtpCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("Email");
+
+                    b.ToTable("OtpCodes");
+                });
+
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Province", b =>
                 {
                     b.Property<int>("Id")
@@ -1046,6 +1092,9 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DiscountPrice")
+                        .HasColumnType("int");
+
                     b.Property<int>("IndexStation")
                         .HasColumnType("int");
 
@@ -1133,15 +1182,15 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Bill", b =>
                 {
-                    b.HasOne("BusBookTicket.Core.Models.Entity.BusStation", "BusStationEnd")
-                        .WithMany("TicketEnds")
-                        .HasForeignKey("BusStationEndID")
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Ticket_BusStop", "BusStationEnd")
+                        .WithMany("BillEnds")
+                        .HasForeignKey("BusStationEndId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BusBookTicket.Core.Models.Entity.BusStation", "BusStationStart")
-                        .WithMany("TicketStarts")
-                        .HasForeignKey("BusStationStartID")
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Ticket_BusStop", "BusStationStart")
+                        .WithMany("BillStarts")
+                        .HasForeignKey("BusStationStartId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1465,10 +1514,6 @@ namespace BusBookTicket.Core.Migrations
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStation", b =>
                 {
                     b.Navigation("BusStops");
-
-                    b.Navigation("TicketEnds");
-
-                    b.Navigation("TicketStarts");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStop", b =>
@@ -1537,6 +1582,13 @@ namespace BusBookTicket.Core.Migrations
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.TicketItem", b =>
                 {
                     b.Navigation("BillItem");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_BusStop", b =>
+                {
+                    b.Navigation("BillEnds");
+
+                    b.Navigation("BillStarts");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ward", b =>

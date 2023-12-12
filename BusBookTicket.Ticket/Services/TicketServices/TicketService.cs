@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusBookTicket.AddressManagement.Services.WardService;
+using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Common.Exceptions;
@@ -11,7 +13,6 @@ using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 using BusBookTicket.Ticket.Utils;
-using ElasticEmailClient;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
 
@@ -27,13 +28,15 @@ public class TicketService : ITicketService
     private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
     private readonly IGenericRepository<TicketItem> _ticketItemRepository;
     private readonly IImageService _imageService;
+    private readonly IWardService _wardService;
     #endregion -- Properties --
 
     public TicketService(
         ITicketItemService itemService, 
         IMapper mapper, 
         IUnitOfWork unitOfWork,
-        IImageService imageService)
+        IImageService imageService,
+        IWardService wardService)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -43,6 +46,7 @@ public class TicketService : ITicketService
         _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
         _ticketItemRepository = unitOfWork.GenericRepository<TicketItem>();
         _imageService = imageService;
+        _wardService = wardService;
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -247,7 +251,17 @@ public class TicketService : ITicketService
     {
         TicketBusStopSpecification ticketBusStopSpecification = new TicketBusStopSpecification(ticketId);
         List<Ticket_BusStop> ticketBusStop = await _ticketBusStop.ToList(ticketBusStopSpecification);
-        return await AppUtils.MapObject<Ticket_BusStop, StationResponse>(ticketBusStop, _mapper);
+
+        List<StationResponse> stationResponses = new List<StationResponse>();
+        StationResponse stationResponse = new StationResponse();
+        foreach (var item in ticketBusStop)
+        {
+            stationResponse = _mapper.Map<StationResponse>(item);
+            stationResponse.Address = item.BusStop.BusStation.Address+ " "+  await AddressResponse.GetAddressDb(item.BusStop.BusStation.Ward.Id, _wardService);
+            stationResponses.Add(stationResponse);
+        }
+
+        return stationResponses;
     }
 
     private async Task<bool> CheckTicketIsExist(int busId, List<TicketStationDto> ticketStationDtos)

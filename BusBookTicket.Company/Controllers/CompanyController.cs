@@ -94,5 +94,14 @@ public class CompanyController : ControllerBase
         CompanyPagingResult responses = await _companyServices.GetAllByAdmin(paging);
         return Ok(new Response<CompanyPagingResult>(false, responses));
     }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpPut("admin/ChangeIsLock")]
+    public async Task<IActionResult> ChangeIsLock([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        bool status =  await _companyServices.ChangeIsLock(id, userId:userId);
+        return Ok(new Response<string>(false, "responses"));
+    }
     #endregion
 }

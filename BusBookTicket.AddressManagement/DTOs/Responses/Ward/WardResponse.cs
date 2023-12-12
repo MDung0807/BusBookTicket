@@ -1,6 +1,4 @@
-﻿using BusBookTicket.AddressManagement.DTOs.Responses.District;
-
-namespace BusBookTicket.AddressManagement.DTOs.Responses.Ward;
+﻿namespace BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 
 public class WardResponse
 {

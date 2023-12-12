@@ -1,8 +1,5 @@
 ﻿using BusBookTicket.Core.Application.Specification;
-using BusBookTicket.Core.Application.Specification.Interfaces;
-using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Ticket.Paging;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace BusBookTicket.Ticket.Specification;
 
@@ -84,6 +81,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                                 OR P.FullName LIKE N'%' + @StationEnd + N'%'
                         )
                         AND t2.IndexStation > t1.IndexStation
+                    AND T.Status = 1
                 )
             GROUP BY
                 T.Id,

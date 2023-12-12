@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Numerics;
 using Microsoft.Data.SqlClient;
 
 namespace BusBookTicket.Core.Application.Specification.Interfaces;

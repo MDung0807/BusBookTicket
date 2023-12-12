@@ -1,5 +1,4 @@
-﻿using BusBookTicket.Core.Common;
-using BusBookTicket.Core.Models.Entity;
+﻿using BusBookTicket.Core.Models.Entity;
 
 namespace BusBookTicket.Application.CloudImage.Repositories;
 
