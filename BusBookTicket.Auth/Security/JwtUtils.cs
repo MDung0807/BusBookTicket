@@ -17,7 +17,7 @@ namespace BusBookTicket.Auth.Security
         /// <summary>
         /// Minutes
         /// </summary>
-        private static readonly long EXPIRE = 60;
+        private static readonly long EXPIRE = 10;
         #endregion -- Private properties --
 
         #region -- Public properties -- 
@@ -26,8 +26,7 @@ namespace BusBookTicket.Auth.Security
         /// <summary>
         /// When login success. Reponse token
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="role"></param>
+        /// <param name="response"></param>
         /// <returns></returns>
         public static string GenerateToken (AuthResponse response)
         {
@@ -124,5 +123,15 @@ namespace BusBookTicket.Auth.Security
             string id = principal.Claims.ElementAt(0).Value;
             return int.Parse(id);
         }
+        
+        public static string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create()){
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
     }
 }

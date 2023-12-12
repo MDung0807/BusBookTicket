@@ -1,6 +1,9 @@
 ﻿using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
+using BusBookTicket.Auth.Exceptions;
+using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.AuthService;
+using BusBookTicket.Auth.Utils;
 using BusBookTicket.Auth.Validator;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
@@ -89,6 +92,14 @@ namespace BusBookTicket.Auth.Controllers
             bool response = await _authService.ResetPass(request);
             return Ok(new Response<string>(false, "response"));
         }
+        
+        [HttpPost("refreshToken")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+        {                   
+            AuthResponse response = new AuthResponse();
+            response = await _authService.RefreshToken(request: request);
+            return Ok(new Response<AuthResponse>(false, response));
+        } 
         #endregion -- Controller --
     }
 }

@@ -69,6 +69,10 @@ namespace BusBookTicket.Configs
             CreateMap<Account, AccResponse>()
                 .ForPath(dest => dest.roleName,
                     opts => opts.MapFrom(x => x.Role.RoleName));
+
+            CreateMap<Account, AuthResponse>()
+                .ForPath(dest => dest.RoleName,
+                opts => opts.MapFrom(x => x.Role.RoleName));
             CreateMap<FormRegisterCompany, AuthRequest>();
             #endregion -- Configs Auth Module --
 

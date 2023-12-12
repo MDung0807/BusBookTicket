@@ -12,5 +12,8 @@ namespace BusBookTicket.Auth.Services.AuthService
         Task<Account> GetAccountByUsername(string username, string roleName, bool checkStatus = true);
         Task<bool> ResetPass(FormResetPass request);
         // Task<bool> ChangeStatus(AuthRequest request);
+
+        Task<AuthResponse> RefreshToken(RefreshTokenRequest request);
+        Task<Account> GetAccountByUsername(string username, bool checkStatus = true);
     }
 }

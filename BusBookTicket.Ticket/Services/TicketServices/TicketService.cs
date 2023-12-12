@@ -258,10 +258,8 @@ public class TicketService : ITicketService
                 dePartureTime = item.DepartureTime;
         }
         TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, dePartureTime);
-        Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
-        if (ticket == null)
-            return true;
-        return false;
+        bool status = await _repository.Contains(ticketSpecification);
+        return !status;
     }
     #endregion -- Private Method --
 }
