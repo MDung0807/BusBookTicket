@@ -24,7 +24,6 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.Bus.Seats);
         AddInclude(x => x.Bus.Company);
         AddInclude(x => x.Bus.BusType);
-        AddInclude(x => x.Bus.BusStops);
     }
 
     public TicketSpecification(string stationStart, string stationEnd, DateTime dateTime,TicketPaging paging = null)
