@@ -104,6 +104,7 @@ public class TicketService : ITicketService
             foreach (var ticketStation in entity.TicketStations)
             {
                 ticketBusStop = _mapper.Map<Ticket_BusStop>(ticketStation);
+                ticketBusStop.Status = (int)EnumsApp.Active;
                 ticketBusStop.Ticket = new Core.Models.Entity.Ticket
                 {
                     Id = ticket.Id
