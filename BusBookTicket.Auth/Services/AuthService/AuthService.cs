@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
@@ -110,6 +111,27 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        public async Task<AuthResponse> RefreshToken(RefreshTokenRequest request)
+        {
+            var principal = JwtUtils.GetPrincipal(request.Token);
+            var username = principal.FindFirstValue("Username");
+            var account = await GetAccountByUsername(username); //retrieve the refresh token from a data store
+            if (account.RefreshToken != request.RefreshToken)
+                throw new AuthException(AuthConstants.REFRESH_TOKEN_FAIL);
+            account.RefreshToken = JwtUtils.GenerateRefreshToken();
+            AuthResponse response = _mapper.Map<AuthResponse>(account);
+            if (response.RoleName == AppConstants.COMPANY)
+                response.Id = account.Company.Id;
+            else
+                response.Id = account.Customer.Id;
+            if (!await SaveRefreshToken(account, response.Id))
+                throw new AuthException(AuthConstants.REFRESH_TOKEN_FAIL);
+            
+            
+            response.Token = JwtUtils.GenerateToken(response);
+            return response;
+        }
+
         /// <summary>
         /// Change status account
         /// </summary>
@@ -159,6 +181,7 @@ namespace BusBookTicket.Auth.Services.AuthService
 
             Account accountRequest = _mapper.Map<Account>(request);
             Account account = await GetAccountByUsername(request.Username, request.RoleName) ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+            account.RefreshToken = JwtUtils.GenerateRefreshToken();
             if (PassEncrypt.VerifyPassword(accountRequest.Password, account.Password))
             {
                 if (account.Role.RoleName == request.RoleName)
@@ -178,7 +201,11 @@ namespace BusBookTicket.Auth.Services.AuthService
                             response.Avatar = images[0];
                         }
                     }
+
+                    if (!await SaveRefreshToken(account, response.Id))
+                        throw new ExceptionDetail(AuthConstants.ERROR);
                     response.Token = JwtUtils.GenerateToken(response);
+                    response.RefreshToken = account.RefreshToken;
                     return response;
                 }
             }
@@ -205,9 +232,22 @@ namespace BusBookTicket.Auth.Services.AuthService
             Account account = await _repository.Get(accountSpecification);
             return account;
         }
+        
+        public async Task<Account> GetAccountByUsername(string username, bool checkStatus = true)
+        {
+            AccountSpecification specification = new AccountSpecification(username:username);
+            Account account = await _repository.Get(specification);
+            return account;
+        }
         #endregion -- Public Method --
 
         #region -- Private Method --
+
+        private async Task<bool> SaveRefreshToken(Account account, int userId)
+        {
+            await _repository.Update(account, userId: userId);
+            return true;
+        }
         #endregion -- Private Method --
     }
 }

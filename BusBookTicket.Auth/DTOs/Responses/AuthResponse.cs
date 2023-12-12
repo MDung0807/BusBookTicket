@@ -14,6 +14,7 @@ namespace BusBookTicket.Auth.DTOs.Responses
         public string RoleName { get; set; }
         public string Type { get; set; }
         public string Avatar { get; set; }
+        public string RefreshToken { get; set; }
 
         public AuthResponse(int userID, string username, string token, string role)
         {

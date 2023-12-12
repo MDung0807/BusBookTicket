@@ -22,4 +22,11 @@ public sealed class AccountSpecification : BaseSpecification<Account>
         }
         AddInclude(x => x.Role);
     }
+
+    public AccountSpecification(string username, bool checkStatus = true): base(x => x.Username == username, checkStatus)
+    {
+        AddInclude(x => x.Company);
+        AddInclude(x => x.Customer);
+        AddInclude(x => x.Role);
+    }
 }
