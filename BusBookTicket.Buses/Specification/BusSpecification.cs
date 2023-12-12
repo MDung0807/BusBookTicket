@@ -5,12 +5,20 @@ namespace BusBookTicket.Buses.Specification;
 
 public sealed class BusSpecification : BaseSpecification<Bus>
 {
-    public BusSpecification(int id, bool checkStatus = true, bool getChangeStatus = false) : base(x => x.Id == id, checkStatus: checkStatus)
+    public BusSpecification(int id = default, bool checkStatus = true, bool getChangeStatus = false, int idMaster = default) 
+        : base(x =>(id == default||  x.Id == id) && (idMaster ==default || x.Company.Id == idMaster), checkStatus: checkStatus)
     {
         if (getChangeStatus)
         {
             AddInclude(x => x.Seats);
             AddInclude(x => x.BusStops);
+            return;
+        }
+
+        if (idMaster != default)
+        {
+            AddInclude(x => x.Company);
+            AddInclude(x => x.BusType);
             return;
         }
         AddInclude(x => x.Company);
