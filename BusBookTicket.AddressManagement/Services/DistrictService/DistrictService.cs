@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.District;
-using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.AddressManagement.Specification;
 using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
-using BusBookTicket.Core.Utils;
 
 namespace BusBookTicket.AddressManagement.Services.DistrictService;
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.Unit;
-using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
 using BusBookTicket.AddressManagement.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;

@@ -136,7 +136,7 @@ INSERT INTO districts_tmp (code,name,name_en,full_name,full_name_en,code_name,pr
 	 ('274',N'Hoài Đức',N'Hoai Duc',N'Huyện Hoài Đức',N'Hoai Duc District',N'hoai_duc',N'01',7),
 	 ('275',N'Quốc Oai',N'Quoc Oai',N'Huyện Quốc Oai',N'Quoc Oai District',N'quoc_oai',N'01',7),
 	 ('276',N'Thạch Thất',N'Thach That',N'Huyện Thạch Thất',N'Thach That District',N'thach_that',N'01',7),
-	 ('277',N'Chương Mỹ'',N''Chuong My'',N''Huyện Chương Mỹ'',N''Chuong My District',N'chuong_my',N'01',7),
+	 ('277',N'Chương Mỹ',N'Chuong My',N'Huyện Chương Mỹ',N'Chuong My District',N'chuong_my',N'01',7),
 	 ('278',N'Thanh Oai',N'Thanh Oai',N'Huyện Thanh Oai',N'Thanh Oai District',N'thanh_oai',N'01',7),
 	 ('279',N'Thường Tín',N'Thuong Tin',N'Huyện Thường Tín',N'Thuong Tin District',N'thuong_tin',N'01',7),
 	 ('280',N'Phú Xuyên',N'Phu Xuyen',N'Huyện Phú Xuyên',N'Phu Xuyen District',N'phu_xuyen',N'01',7),

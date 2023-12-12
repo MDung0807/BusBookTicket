@@ -1,5 +1,4 @@
 ﻿using BusBookTicket.BusStationManage.Paging;
-using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 

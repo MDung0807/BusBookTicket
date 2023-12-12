@@ -1,8 +1,5 @@
 ﻿using BusBookTicket.Core.Application.Specification;
-using BusBookTicket.Core.Application.Specification.Interfaces;
-using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Ticket.Paging;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace BusBookTicket.Ticket.Specification;
 

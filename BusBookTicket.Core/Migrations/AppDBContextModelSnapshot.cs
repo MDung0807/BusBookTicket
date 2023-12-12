@@ -259,7 +259,8 @@ namespace BusBookTicket.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BusNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BusTypeID")
                         .HasColumnType("int");
@@ -286,6 +287,8 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("BusNumber");
 
                     b.HasIndex("BusTypeID");
 

@@ -1,9 +1,6 @@
 ﻿using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
-using BusBookTicket.Auth.Exceptions;
-using BusBookTicket.Auth.Security;
 using BusBookTicket.Auth.Services.AuthService;
-using BusBookTicket.Auth.Utils;
 using BusBookTicket.Auth.Validator;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;

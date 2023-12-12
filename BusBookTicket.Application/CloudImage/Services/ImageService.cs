@@ -1,10 +1,7 @@
-﻿using BusBookTicket.Application.CloudImage.Repositories;
-using BusBookTicket.Application.CloudImage.Specification;
+﻿using BusBookTicket.Application.CloudImage.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 
 namespace BusBookTicket.Application.CloudImage.Services;

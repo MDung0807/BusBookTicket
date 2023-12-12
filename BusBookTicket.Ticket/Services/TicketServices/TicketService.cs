@@ -13,7 +13,6 @@ using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 using BusBookTicket.Ticket.Utils;
-using ElasticEmailClient;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
 

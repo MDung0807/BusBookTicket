@@ -1,6 +1,5 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
-using Mailjet.Client.Resources;
 
 namespace BusBookTicket.Buses.Specification;
 

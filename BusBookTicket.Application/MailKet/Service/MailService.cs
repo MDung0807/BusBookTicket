@@ -1,10 +1,7 @@
-﻿using System.Net;
-using System.Net.Mail;
-using BusBookTicket.Application.MailKet.DTO.Request;
+﻿using BusBookTicket.Application.MailKet.DTO.Request;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
 using Mailjet.Client.TransactionalEmails;
-using Newtonsoft.Json.Linq;
 
 namespace BusBookTicket.Application.MailKet.Service;
 

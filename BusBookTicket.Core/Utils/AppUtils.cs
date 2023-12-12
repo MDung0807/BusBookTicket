@@ -1,6 +1,4 @@
 using AutoMapper;
-using AutoMapper.Internal;
-using Mapper = AutoMapper.Mapper;
 
 namespace BusBookTicket.Core.Utils;
 

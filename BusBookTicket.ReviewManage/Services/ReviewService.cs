@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Services.Bills;
-using BusBookTicket.BillManage.Specification;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
