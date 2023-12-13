@@ -78,7 +78,7 @@ namespace BusBookTicket.Exceptions
             }
             catch (ValidatorException ex)
             {
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response<List<string>>(true, ex.Errors)));
             }

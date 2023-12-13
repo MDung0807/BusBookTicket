@@ -12,5 +12,7 @@ public class BillResponse
     public string BusStationStart { get; set; }
     public string BusStationEnd { get; set; }
     public string Discount { get; set; } 
+    public int Status { get; set; }
     public List<BillItemResponse> Items { get; set; }
+    
 }

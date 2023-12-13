@@ -5,6 +5,7 @@ using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Responses;
 using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.AddressManagement.Services.WardService;
+using BusBookTicket.AddressManagement.Specification;
 using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Application.MailKet.DTO.Request;
@@ -33,6 +34,8 @@ namespace BusBookTicket.CustomerManage.Services
         private readonly IWardService _wardService;
         private readonly IOtpService _otpService;
         private readonly IMailService _mailService;
+        private readonly IGenericRepository<Ward> _wardRepo;
+
         #endregion --  Properties --
 
         #region -- Constructor --
@@ -52,6 +55,7 @@ namespace BusBookTicket.CustomerManage.Services
             _wardService = wardService;
             _otpService = opOtpService;
             _mailService = mailService;
+            _wardRepo = unitOfWork.GenericRepository<Ward>();
         }
         #endregion -- Contructor --
 
@@ -239,6 +243,9 @@ namespace BusBookTicket.CustomerManage.Services
             
             customer = _mapper.Map<Customer>(entity);
             customer.Id = userId;
+            customer.Status = (int)EnumsApp.Active;
+            WardSpecification wardSpecification = new WardSpecification(customer.Ward.Id);
+            customer.Ward = await _wardRepo.Get(wardSpecification);
             await _repository.Update(customer, userId);
             return true;
         }
