@@ -61,7 +61,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                         OR D.FullName LIKE N'%' + @StationStart + N'%'
                         OR P.FullName LIKE N'%' + @StationStart + N'%'
                 )
-                AND t1.DepartureTime = @DateTime
+                AND DATEDIFF(day,t1.DepartureTime, @DateTime) = 0
                 AND EXISTS (
                     SELECT 1
                     FROM Ticket_BusStop t2

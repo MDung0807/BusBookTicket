@@ -11,6 +11,6 @@ namespace BusBookTicket.CustomerManage.DTOs.Requests
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
-        public string WardId { get; set; }
+        public int WardId { get; set; }
     }
 }
