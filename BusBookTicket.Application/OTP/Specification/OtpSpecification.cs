@@ -13,7 +13,7 @@ public class OtpSpecification : BaseSpecification<OtpCode>
     }
     
     public OtpSpecification( int userId, string email, bool checkStatus = true) 
-        : base(x => x.UserId == userId && x.Email == email,
+        : base(x => x.Email == email,
             checkStatus:checkStatus)
     {
         
