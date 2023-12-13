@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Runtime.InteropServices.JavaScript;
+using AutoMapper;
 using BusBookTicket.AddressManagement.Services.WardService;
 using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.Application.CloudImage.Services;
@@ -238,6 +239,25 @@ public class TicketService : ITicketService
         return true;
     }
 
+    public async Task<TicketPagingResult> GetAllTicketOnDate(int idMaster, DateOnly date, TicketPaging paging)
+    {
+        TicketSpecification ticketSpecification = 
+            new TicketSpecification(companyId:idMaster, dateTime: date, checkStatus:false, paging: paging);
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
+        int count = await _repository.Count(new TicketSpecification(companyId:idMaster, dateTime: date, checkStatus:false));
+        // Find
+        List<TicketResponse> responses = new List<TicketResponse>();
+        
+        foreach (var item in tickets)
+        {
+            responses.Add(await GetById(item.Id));
+        }
+
+        TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
+            paging.PageIndex, paging.PageSize, count: count, responses);
+        return result;
+    }
+
     #region -- Private Method --
 
     private async Task<bool> CreateItem(Seat seat, int ticketID, int userId, int price)
@@ -277,7 +297,7 @@ public class TicketService : ITicketService
             if (item.DepartureTime < dePartureTime)
                 dePartureTime = item.DepartureTime;
         }
-        TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, dePartureTime);
+        TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: dePartureTime);
         bool status = await _repository.Contains(ticketSpecification);
         return !status;
     }

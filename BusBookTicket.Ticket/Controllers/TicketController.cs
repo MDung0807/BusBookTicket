@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Auth.Security;
+﻿using System.Runtime.InteropServices.JavaScript;
+using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Ticket.DTOs.Requests;
@@ -96,6 +97,15 @@ public class TicketController : ControllerBase
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         TicketPagingResult result = await _ticketService.GetAll(paging, userId);
+        return Ok(new Response<TicketPagingResult>(false, result));
+    }
+    
+    [HttpGet("getAllInDate")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> GetAllInDate([FromQuery] TicketPaging paging, [FromQuery] DateOnly date)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        TicketPagingResult result = await _ticketService.GetAllTicketOnDate(userId, date, paging);
         return Ok(new Response<TicketPagingResult>(false, result));
     }
     #endregion -- Controller --
