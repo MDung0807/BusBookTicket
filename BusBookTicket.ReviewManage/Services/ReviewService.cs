@@ -123,6 +123,24 @@ namespace BusBookTicket.ReviewManage.Services
             throw new NotImplementedException();
         }
 
+        public async Task<float> GetRateAverage(int busId)
+        {
+            ReviewSpecification specification = new ReviewSpecification(busId:busId);
+            List<Review> reviews = await _repository.ToList(specification);
+            float rateAverage = 0;
+            foreach (var item in reviews)
+            {
+                rateAverage += item.Rate;
+            }
+
+            if (reviews.Count != 0)
+            {
+                rateAverage /= reviews.Count();
+            }
+
+            return rateAverage;
+        }
+
         #endregion -- Public Method --
 
         #region -- Private Method --
