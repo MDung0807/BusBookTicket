@@ -16,9 +16,12 @@ public sealed class BillSpecification : BaseSpecification<Bill>
             return;
         }
         AddInclude(x => x.BusStationEnd);
-
+        AddInclude(x => x.BusStationEnd.BusStop.BusStation);
+        AddInclude(x => x.BusStationStart.BusStop.BusStation);
         AddInclude(x => x.BusStationStart);
         AddInclude(x => x.Customer);
+        AddInclude(x => x.BillItems);
+        
         
         if (paging != null)
             ApplyPaging(paging.PageIndex, paging.PageSize);
