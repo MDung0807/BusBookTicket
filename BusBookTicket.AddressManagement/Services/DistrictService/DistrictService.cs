@@ -100,6 +100,11 @@ public class DistrictService : IDistrictService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<DistrictResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

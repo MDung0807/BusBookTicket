@@ -180,6 +180,11 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<PagingResult<BillResponse>> GetAllByAdmin(PagingRequest pagingRequest)
     {
         throw new NotImplementedException();

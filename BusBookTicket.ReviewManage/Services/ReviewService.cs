@@ -118,6 +118,11 @@ namespace BusBookTicket.ReviewManage.Services
             return result;
         }
 
+        public Task<bool> DeleteHard(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion -- Public Method --
 
         #region -- Private Method --

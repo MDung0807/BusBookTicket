@@ -82,6 +82,11 @@ public class CompanyService : ICompanyServices
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
 
     public async Task<bool> Update(FormUpdateCompany entity, int id, int userId)
     {

@@ -107,6 +107,11 @@ public class RankService : IRankService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<RankResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

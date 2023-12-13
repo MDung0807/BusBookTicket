@@ -103,6 +103,11 @@ public class DiscountService : IDiscountService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<DiscountResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

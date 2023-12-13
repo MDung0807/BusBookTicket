@@ -173,6 +173,11 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
+        public Task<bool> DeleteHard(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
         {
             CustomerSpecification specification = new CustomerSpecification(paging, false);

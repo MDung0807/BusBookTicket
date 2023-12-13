@@ -117,6 +117,11 @@ public class SeatService : ISeatService
         return result;
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<SeatResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

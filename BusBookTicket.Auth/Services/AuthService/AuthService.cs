@@ -97,6 +97,11 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        public Task<bool> DeleteHard(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<AuthResponse>> GetAllByAdmin()
         {
             throw new NotImplementedException();
