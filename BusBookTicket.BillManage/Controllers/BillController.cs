@@ -78,4 +78,31 @@ public class BillController : ControllerBase
         bool status = await _billService.Delete(id, userId);
         return Ok(new Response<string>(!status, BillConstants.SUCCESS));
     }
+    
+    [Authorize(Roles = "CUSTOMER")]
+    [HttpGet("getAllInWaitingStatus")]
+    public async Task<IActionResult> GetAllInWaitingStatus([FromQuery] BillPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        BillPagingResult billResponse = await _billService.GetAllInWaitingStatus(paging, userId);
+        return Ok(new Response<BillPagingResult>(false, billResponse));
+    }
+    
+    [Authorize(Roles = "CUSTOMER")]
+    [HttpGet("getAllInDeleteStatus")]
+    public async Task<IActionResult> GetAllInDeleteStatus([FromQuery] BillPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        BillPagingResult billResponse = await _billService.GetAllInDeleteStatus(paging, userId);
+        return Ok(new Response<BillPagingResult>(false, billResponse));
+    }
+    
+    [Authorize(Roles = "CUSTOMER")]
+    [HttpGet("getAllInCompleteStatus")]
+    public async Task<IActionResult> GetAllInCompleteStatus([FromQuery] BillPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        BillPagingResult billResponse = await _billService.GetAllInCompleteStatus(paging, userId);
+        return Ok(new Response<BillPagingResult>(false, billResponse));
+    }
 }
