@@ -143,12 +143,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
-    public async Task<bool> ChangeStatus(object entity, int userId, int status)
+    public async Task<bool> ChangeStatus(object entity, int userId, int status, List<string> listObjectNotChange = null)
     {
         try
         {
-            List<string> checkedObject = new List<string>();
-            await ChangeStatusImpl(entity, userId, status, checkedObject);
+            if (listObjectNotChange == null)
+                listObjectNotChange = new List<string>();
+            await ChangeStatusImpl(entity, userId, status, listObjectNotChange);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;

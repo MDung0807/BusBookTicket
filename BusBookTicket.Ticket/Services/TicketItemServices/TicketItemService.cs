@@ -57,9 +57,12 @@ public class TicketItemService : ITicketItemService
         return true;
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        TicketItemSpecification specification = new TicketItemSpecification(id, checkStatus:false, isGetChangeStatus:true, action:"BillItem");
+        TicketItem item = await _repository.Get(specification);
+        await _repository.ChangeStatus(item, userId, (int)EnumsApp.Active);
+        return true;
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -124,7 +127,6 @@ public class TicketItemService : ITicketItemService
 
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
     {
-    
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
         TicketItem item = await _repository.Get(ticketItemSpecification);
         return await _repository.ChangeStatus(item, userId, (int)EnumsApp.PaymentComplete);
