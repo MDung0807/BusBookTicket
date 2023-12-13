@@ -215,11 +215,19 @@ public class BillService : IBillService
         List<Bill> bills = await _repository.ToList(billSpecification);
         BillPagingResult result = new BillPagingResult();
         int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+
+        List<BillResponse> billResponses = await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper);
+
+        foreach (var item in billResponses)
+        {
+            item.Items = await _billItemService.GetItemInBill(item.Id);
+        }
         result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
             paging.PageIndex,
             paging.PageSize,
             count,
-            await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper));
+            items: billResponses
+            );
         return result;
     }
 

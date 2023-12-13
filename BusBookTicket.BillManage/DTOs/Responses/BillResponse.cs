@@ -2,6 +2,7 @@
 
 public class BillResponse
 {
+    public int Id { get; set; }
     public string NameCustomer { get; set; }
     
     public DateTime DateDeparture { get; set; }
