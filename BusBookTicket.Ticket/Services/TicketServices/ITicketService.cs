@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Core.Infrastructure.Interfaces;
+﻿using System.Runtime.InteropServices.JavaScript;
+using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;
@@ -22,4 +23,12 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<bool> ChangeCompleteStatus(int id, int userId);
+
+    /// <summary>
+    /// Get all ticket on date
+    /// </summary>
+    /// <param name="idMaster"></param>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    Task<TicketPagingResult> GetAllTicketOnDate(int idMaster, DateOnly date, TicketPaging paging);
 }
