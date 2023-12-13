@@ -39,9 +39,6 @@ public class ReviewController : ControllerBase
         float result = await _service.GetRateAverage(busId);
         return Ok (new Response<float>(false, result));
     }
-        
-
-
     
     [HttpPost("create")]
     [Authorize(Roles = AppConstants.CUSTOMER)]
