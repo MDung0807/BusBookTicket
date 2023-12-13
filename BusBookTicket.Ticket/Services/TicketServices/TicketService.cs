@@ -257,7 +257,7 @@ public class TicketService : ITicketService
         foreach (var item in ticketBusStop)
         {
             stationResponse = _mapper.Map<StationResponse>(item);
-            stationResponse.Address = item.BusStop.BusStation.Address+ " "+  await AddressResponse.GetAddressDb(item.BusStop.BusStation.Ward.Id, _wardService);
+            stationResponse.Address = item.BusStop.BusStation.Address+ " "+  await AddressUtils.GetAddressDb(item.BusStop.BusStation.Ward.Id, _wardService);
             stationResponses.Add(stationResponse);
         }
 

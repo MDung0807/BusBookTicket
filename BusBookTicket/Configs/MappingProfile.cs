@@ -4,6 +4,7 @@ using BusBookTicket.AddressManagement.DTOs.Requests.Province;
 using BusBookTicket.AddressManagement.DTOs.Requests.Region;
 using BusBookTicket.AddressManagement.DTOs.Requests.Unit;
 using BusBookTicket.AddressManagement.DTOs.Requests.Ward;
+using BusBookTicket.AddressManagement.DTOs.Responses;
 using BusBookTicket.AddressManagement.DTOs.Responses.District;
 using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.DTOs.Responses.Region;
@@ -273,8 +274,27 @@ namespace BusBookTicket.Configs
             CreateMap<Ward, WardResponse>()
                 .ForPath(dest => dest.District, 
                     opts => opts.MapFrom(x => x.District.FullName))
+                .ForPath(dest => dest.DistrictId, 
+                    opts => opts.MapFrom(x => x.District.Id))
                 .ForPath(dest => dest.Province,
-                    opts => opts.MapFrom(x => x.District.Province.FullName));
+                    opts => opts.MapFrom(x => x.District.Province.FullName))
+                .ForPath(dest => dest.ProvinceId,
+                    opts => opts.MapFrom(x => x.District.Province.Id));
+
+            CreateMap<WardResponse, AddressResponse>()
+                .ForPath(dest => dest.WardId,
+                    opts => opts.MapFrom(x => x.Id))
+                .ForPath(dest => dest.FullNameWard,
+                    opts => opts.MapFrom(x => x.FullName))
+                .ForPath(dest => dest.DistrictId,
+                    opts => opts.MapFrom(x => x.DistrictId))
+                .ForPath(dest => dest.FullNameDistrict,
+                    opts => opts.MapFrom(x => x.District))
+                .ForPath(dest => dest.ProvinceId,
+                    opts => opts.MapFrom(x => x.ProvinceId))
+                .ForPath(dest => dest.FullNameProvince,
+                    opts => opts.MapFrom(x => x.Province))
+                ;
             #endregion -- Address Module --
 
             #region -- Application Module --

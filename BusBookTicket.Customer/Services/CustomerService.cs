@@ -2,7 +2,10 @@
 using BusBookTicket.CustomerManage.DTOs.Responses;
 using BusBookTicket.Core.Models.Entity;
 using AutoMapper;
+using BusBookTicket.AddressManagement.DTOs.Responses;
+using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
 using BusBookTicket.AddressManagement.Services.WardService;
+using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Application.MailKet.DTO.Request;
 using BusBookTicket.Application.MailKet.Service;
@@ -204,6 +207,7 @@ namespace BusBookTicket.CustomerManage.Services
             CustomerSpecification specification = new CustomerSpecification(id);
             Customer customer = await _repository.Get(specification);
             ProfileResponse response = _mapper.Map<ProfileResponse>(customer);
+            response.AddressResponse = _mapper.Map<AddressResponse>(await AddressUtils.GetFullAddressDb(customer.Ward.Id, _wardService));
             List<string> images = await _imageService.getImages(typeof(Customer).ToString(), id);
             if (images.Count > 0)
             {

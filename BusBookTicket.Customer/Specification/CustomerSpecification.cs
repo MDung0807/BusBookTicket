@@ -28,6 +28,7 @@ public sealed class CustomerSpecification : BaseSpecification<Customer>
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
+        AddInclude(x => x.Ward);
     }public CustomerSpecification(string email, bool checkStatus = true) : base(x => x.Email == email, checkStatus)
     {
         AddInclude(x => x.Account);

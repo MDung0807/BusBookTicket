@@ -9,7 +9,7 @@ public class FormRegisterValidator : AbstractValidator<FormRegister>
     {
         RuleFor(x => x.FullName)
             .NotEmpty().WithMessage("is required")
-            .Length(10, 50).WithMessage("must be between 8 and 50 characters");
+            .Length(3, 50).WithMessage("must be between 3 and 50 characters");
 
         // RuleFor(x => x.DateOfBirth)
         //     .Empty();
