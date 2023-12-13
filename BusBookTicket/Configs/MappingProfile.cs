@@ -163,7 +163,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.SeatNumber, 
                     opts => opts.MapFrom(x => x.TicketItem.SeatNumber))
                 .ForPath(dest => dest.BusId, 
-                    opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.Idgs));
+                    opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.Id));
 
             #endregion -- Configs Bill Module --
 
