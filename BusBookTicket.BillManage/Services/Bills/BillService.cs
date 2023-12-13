@@ -70,10 +70,10 @@ public class BillService : IBillService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        if (! await ChangeBillCanDelete(id))
-        {
-            throw new ExceptionDetail(BillConstants.DELETE_ERROR);
-        }
+        // if (! await ChangeBillCanDelete(id))
+        // {
+        //     throw new ExceptionDetail(BillConstants.DELETE_ERROR);
+        // }
         try
         {
             await _unitOfWork.BeginTransaction();
@@ -84,7 +84,13 @@ public class BillService : IBillService
             {
                 await _ticketItemService.ChangeIsActive(item.Id, userId);
             }
-            List<string> listObjectNotChange = new List<string>(new[] { "TicketItem" });
+            List<Dictionary<string, int>> listObjectNotChange = new List<Dictionary<string, int>>
+            {
+                new Dictionary<string, int>
+                {
+                    {"TicketItem", 0} // You can set the integer value accordingly
+                }
+            };
             await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Delete, listObjectNotChange);
             await _unitOfWork.SaveChangesAsync();
             return true;
