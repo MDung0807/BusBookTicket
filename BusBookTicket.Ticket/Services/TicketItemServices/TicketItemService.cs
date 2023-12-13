@@ -102,6 +102,11 @@ public class TicketItemService : ITicketItemService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<TicketItemResponse>> GetAllInTicket(int ticketId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId, checkStatus:false);

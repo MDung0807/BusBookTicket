@@ -82,6 +82,11 @@ public class BusStationService : IBusStationService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);

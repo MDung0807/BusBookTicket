@@ -125,6 +125,11 @@ public class BusTypeService : IBusTypeService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<BusTypeResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

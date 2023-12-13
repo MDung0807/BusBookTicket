@@ -104,6 +104,11 @@ public class WardService : IWardService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<WardResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

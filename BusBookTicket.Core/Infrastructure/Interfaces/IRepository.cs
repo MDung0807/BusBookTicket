@@ -55,5 +55,12 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="userId">userId</param>
         /// <returns></returns>
         Task<T> CreateOrUpdate(T entity, int userId);
+
+        /// <summary>
+        /// Permanently deleted in database
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<bool> DeleteHard(T entity);
     }
 }

@@ -116,5 +116,12 @@
         /// <returns></returns>
         Task<TPagingResult> GetAll(TPaging pagingRequest, TId idMaster);
 
+        /// <summary>
+        /// Permanently deleted in database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> DeleteHard(TId id);
+
     }
 }

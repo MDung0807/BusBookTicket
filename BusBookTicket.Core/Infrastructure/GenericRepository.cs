@@ -187,6 +187,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
+    public async Task<bool> DeleteHard(T entity)
+    {
+        try
+        {
+            _dbSet.Entry(entity).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ExceptionDetail(AppConstants.ERROR);
+        }
+    }
+
     #region -- Private Method --
     private IQueryable<T> ApplySpecification(ISpecification<T> specifications)
     {

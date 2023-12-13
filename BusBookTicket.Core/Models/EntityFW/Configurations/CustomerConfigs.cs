@@ -31,6 +31,7 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             builder.HasOne(x => x.Account)
                 .WithOne(x => x.Customer)
                 .HasForeignKey<Customer>("AccountID")
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
             builder.HasOne(x => x.Rank)

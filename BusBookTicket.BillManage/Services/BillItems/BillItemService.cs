@@ -115,6 +115,11 @@ public class BillItemService : IBillItemService
         throw new NotImplementedException();
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<BillItemResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

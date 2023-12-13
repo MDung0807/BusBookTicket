@@ -184,6 +184,11 @@ public class BusService : IBusService
         return result;
     }
 
+    public Task<bool> DeleteHard(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<BusResponse> AddBusStops(FormAddBusStop request, int userId)
     {
         try
