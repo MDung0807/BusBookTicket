@@ -70,6 +70,10 @@ public class BillService : IBillService
 
     public async Task<bool> Delete(int id, int userId)
     {
+        if (! await ChangeBillCanDelete(id))
+        {
+            throw new ExceptionDetail(BillConstants.DELETE_ERROR);
+        }
         try
         {
             await _unitOfWork.BeginTransaction();
@@ -266,4 +270,13 @@ public class BillService : IBillService
         BillResponse response = _mapper.Map<BillResponse>(bill);
         return response;
     }
+
+    #region  -- Private Method --
+
+    private async Task<bool> ChangeBillCanDelete(int id)
+    {
+        BillSpecification specification = new BillSpecification(id, getIsChangeStatus: false, checkStatus:false, dateTime:DateTime.Now);
+        return await _repository.Contains(specification);
+    }
+    #endregion -- Private Method --
 }

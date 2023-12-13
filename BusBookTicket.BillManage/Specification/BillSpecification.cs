@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.BillManage.Paging;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace BusBookTicket.BillManage.Specification;
 
@@ -33,13 +34,19 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         
     }
 
-    public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true)
-        : base(x => x.Id == id, checkStatus)
+    public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, DateTime dateTime = default)
+        : base(x => x.Id == id  &&(dateTime == default 
+                                   || x.DateDeparture >= dateTime.AddDays(3)),
+            checkStatus)
     {
         if (getIsChangeStatus)
         {
             AddInclude(x => x.BillItems);
             return;
         }
+        
+        AddInclude(x => x.BusStationStart.BusStop.BusStation);
+        AddInclude(x => x.BusStationStart);
+
     }
 }
