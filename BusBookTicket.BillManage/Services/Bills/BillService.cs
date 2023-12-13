@@ -271,6 +271,72 @@ public class BillService : IBillService
         return response;
     }
 
+    public async Task<BillPagingResult> GetAllInWaitingStatus(BillPaging paging, int userId)
+    {
+        BillSpecification billSpecification = new BillSpecification(userId:userId, checkStatus:false, paging: paging, status: (int)EnumsApp.AwaitingPayment);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+        BillPagingResult result = new BillPagingResult();
+        int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+
+        List<BillResponse> billResponses = await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper);
+
+        foreach (var item in billResponses)
+        {
+            item.Items = await _billItemService.GetItemInBill(item.Id);
+        }
+        result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
+            paging.PageIndex,
+            paging.PageSize,
+            count,
+            items: billResponses
+        );
+        return result;
+    }
+
+    public async Task<BillPagingResult> GetAllInDeleteStatus(BillPaging paging, int userId)
+    {
+        BillSpecification billSpecification = new BillSpecification(userId:userId, checkStatus:false, paging: paging, status: (int)EnumsApp.Delete, delete:true);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+        BillPagingResult result = new BillPagingResult();
+        int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+
+        List<BillResponse> billResponses = await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper);
+
+        foreach (var item in billResponses)
+        {
+            item.Items = await _billItemService.GetItemInBill(item.Id);
+        }
+        result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
+            paging.PageIndex,
+            paging.PageSize,
+            count,
+            items: billResponses
+        );
+        return result;
+    }
+
+    public async Task<BillPagingResult> GetAllInCompleteStatus(BillPaging paging, int userId)
+    {
+        BillSpecification billSpecification = new BillSpecification(userId:userId, checkStatus:false, paging: paging, status: (int)EnumsApp.Complete);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+        BillPagingResult result = new BillPagingResult();
+        int count = await _repository.Count(new BillSpecification(userId:userId, checkStatus:false));
+
+        List<BillResponse> billResponses = await AppUtils.MapObject<Bill, BillResponse>(bills, _mapper);
+
+        foreach (var item in billResponses)
+        {
+            item.Items = await _billItemService.GetItemInBill(item.Id);
+        }
+        result = AppUtils.ResultPaging<BillPagingResult, BillResponse>(
+            paging.PageIndex,
+            paging.PageSize,
+            count,
+            items: billResponses
+        );
+        return result;
+    }
+
     #region  -- Private Method --
 
     private async Task<bool> ChangeBillCanDelete(int id)

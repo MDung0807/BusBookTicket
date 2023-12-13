@@ -7,5 +7,6 @@ namespace BusBookTicket.ReviewManage.Services
 {
     public interface IReviewService : IService<ReviewRequest, object, int, ReviewResponse, ReviewPaging, ReviewPagingResult>
     {
+        public Task<float> GetRateAverage(int busId);
     }
 }

@@ -46,4 +46,30 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// <param name="busId"></param>
     /// <returns></returns>
     Task<BillResponse> GetBillByUserAndBus(int userId, int busId);
+    
+    /// <summary>
+    /// Get all bill for user have status is waiting
+    /// </summary>
+    /// <param name="paging"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<BillPagingResult> GetAllInWaitingStatus(BillPaging paging, int userId);
+
+    /// <summary>
+    /// Get all bill for user have status is canceled
+    /// </summary>
+    /// <param name="paging"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<BillPagingResult> GetAllInDeleteStatus(BillPaging paging, int userId);
+    
+    /// <summary>
+    /// Get all bill for user have status is complete
+    /// </summary>
+    /// <param name="paging"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<BillPagingResult> GetAllInCompleteStatus(BillPaging paging, int userId);
+
+
 }

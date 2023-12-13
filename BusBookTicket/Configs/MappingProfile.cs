@@ -317,7 +317,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.FullName, 
                     opts => opts.MapFrom(x => x.Customer.FullName))
                 .ForPath(dest => dest.CustomerId, 
-                    opts => opts.MapFrom(x => x.Customer.Id));
+                    opts => opts.MapFrom(x => x.Customer.Id))
+                .ForPath(dest => dest.BusId, 
+                    opts => opts.MapFrom(x => x.Bus.Id));
 
             #endregion -- Review Module --
         }

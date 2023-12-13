@@ -31,6 +31,16 @@ public class ReviewController : ControllerBase
         ReviewPagingResult result = await _service.GetAll(paging, busId);
         return Ok (new Response<ReviewPagingResult>(false, result));
     }
+    
+    [HttpGet("getRateAverageInBus")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetRateAverage([FromQuery] int busId)
+    {
+        float result = await _service.GetRateAverage(busId);
+        return Ok (new Response<float>(false, result));
+    }
+        
+
 
     
     [HttpPost("create")]
