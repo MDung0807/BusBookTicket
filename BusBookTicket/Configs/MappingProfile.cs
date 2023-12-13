@@ -148,6 +148,8 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.BusStationStart.BusStop.BusStation.Name))
                 .ForPath(dest => dest.BusStationEnd,
                     opts => opts.MapFrom(x => x.BusStationEnd.BusStop.BusStation.Name))
+                .ForPath(dest => dest.DateDeparture,
+                    opts => opts.MapFrom(x => x.BusStationEnd.DepartureTime))
                 .ForPath(dest => dest.Discount,
                     opts => opts.MapFrom(x => x.Discount.Name))
                 .ForPath( dest => dest.Items, 
@@ -159,7 +161,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.BusNumber,
                     opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.BusNumber))
                 .ForPath(dest => dest.SeatNumber, 
-                    opts => opts.MapFrom(x => x.TicketItem.SeatNumber));
+                    opts => opts.MapFrom(x => x.TicketItem.SeatNumber))
+                .ForPath(dest => dest.BusId, 
+                    opts => opts.MapFrom(x => x.TicketItem.Ticket.Bus.Idgs));
 
             #endregion -- Configs Bill Module --
 

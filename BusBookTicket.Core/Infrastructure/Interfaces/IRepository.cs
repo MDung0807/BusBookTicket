@@ -38,8 +38,9 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="entity"></param>
         /// <param name="userId"></param>
         /// <param name="status"></param>
+        /// <param name="listObjectNotChange">List object not change status</param>
         /// <returns></returns>
-        Task<bool> ChangeStatus(object entity, int userId, int status);
+        Task<bool> ChangeStatus(object entity, int userId, int status, List<string> listObjectNotChange = null);
 
         /// <summary>
         /// Check data is exist in database
