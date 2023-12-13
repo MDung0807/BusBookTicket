@@ -1,5 +1,6 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.Paging;
 
 namespace BusBookTicket.CustomerManage.Specification;
@@ -29,12 +30,17 @@ public sealed class CustomerSpecification : BaseSpecification<Customer>
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
         AddInclude(x => x.Ward);
-    }public CustomerSpecification(string email, bool checkStatus = true) : base(x => x.Email == email, checkStatus)
+    }public CustomerSpecification(string email, bool checkStatus = true, bool isDelete = false) 
+        : base(x => x.Email == email 
+                    || (checkStatus == false && isDelete == true && x.Status == (int)EnumsApp.Waiting), checkStatus)
     {
+        if (isDelete)
+        {
+            AddInclude(x => x.Account);
+            return;
+        }
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
     }
-    
-    
 }

@@ -97,9 +97,11 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteHard(int id)
+        public async Task<bool> DeleteHard(int id)
         {
-            throw new NotImplementedException();
+            AccountSpecification accountSpecification = new AccountSpecification(id, checkStatus:false, isDelete:true);
+            Account account = await _repository.Get(accountSpecification);
+            return await _repository.DeleteHard(account);
         }
 
         public Task<List<AuthResponse>> GetAllByAdmin()

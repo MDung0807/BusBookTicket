@@ -70,7 +70,14 @@ namespace BusBookTicket.CustomerManage.Services
             await _unitOfWork.BeginTransaction();
             try
             {
+                CustomerSpecification specification = new CustomerSpecification(entity.Email, checkStatus:false, isDelete:true);
                 Customer customer = new Customer();
+                customer = await _repository.Get(specification);
+                if (customer != null)
+                {
+                    await _repository.DeleteHard(customer);
+                    await _authService.DeleteHard(customer.Account.Id);
+                }
                 customer = _mapper.Map<Customer>(entity);
 
                 // Set Full data in form regisger

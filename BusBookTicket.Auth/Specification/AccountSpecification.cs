@@ -29,4 +29,12 @@ public sealed class AccountSpecification : BaseSpecification<Account>
         AddInclude(x => x.Customer);
         AddInclude(x => x.Role);
     }
+
+    public AccountSpecification(int id, bool checkStatus = true, bool isDelete = false)
+        : base(x => x.Id == id 
+                    && ((isDelete && x.Status == (int)EnumsApp.Waiting) || true),
+            checkStatus: checkStatus)
+    {
+        
+    }
 }
