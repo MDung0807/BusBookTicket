@@ -126,7 +126,8 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     }
 
     public TicketSpecification(int companyId, DateOnly dateTime, bool checkStatus = true, TicketPaging paging = null)
-        : base(x => x.Bus.Company.Id == companyId, checkStatus: false)
+        : base(x => x.Bus.Company.Id == companyId
+            && x.Date.Day == dateTime.Day && x.Date.Month == dateTime.Month && x.Date.Year == dateTime.Year, checkStatus: false)
     {
         if (paging != null)
         {

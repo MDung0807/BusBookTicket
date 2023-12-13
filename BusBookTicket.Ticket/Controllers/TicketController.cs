@@ -100,9 +100,9 @@ public class TicketController : ControllerBase
         return Ok(new Response<TicketPagingResult>(false, result));
     }
     
-    [HttpGet("getAllInDate")]
+    [HttpGet("getAllOnDate")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> GetAllInDate([FromQuery] TicketPaging paging, [FromQuery] DateOnly date)
+    public async Task<IActionResult> GetAllOnDate([FromQuery] TicketPaging paging, [FromQuery] DateOnly date)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         TicketPagingResult result = await _ticketService.GetAllTicketOnDate(userId, date, paging);
