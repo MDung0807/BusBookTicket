@@ -8,6 +8,7 @@ using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.Core.Application.Paging;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -50,7 +51,7 @@ public class BillService : IBillService
     }
     public async Task<BillResponse> GetById(int id)
     {
-        BillSpecification specification = new BillSpecification(id: id, checkStatus: false);
+        BillSpecification specification = new BillSpecification(id: id, checkStatus: false, getIsChangeStatus:false);
         Bill bill = await _repository.Get(specification);
         BillResponse response = _mapper.Map<BillResponse>(bill);
         response.Items = await _billItemService.GetItemInBill(bill.Id);
@@ -67,9 +68,29 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
-    public Task<bool> Delete(int id, int userId)
+    public async Task<bool> Delete(int id, int userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _unitOfWork.BeginTransaction();
+            BillSpecification billSpecification =
+                new BillSpecification(id, checkStatus: false, getIsChangeStatus: true);
+            Bill bill = await _repository.Get(billSpecification);
+            foreach (var item in bill.BillItems)
+            {
+                await _ticketItemService.ChangeIsActive(item.Id, userId);
+            }
+            List<string> listObjectNotChange = new List<string>(new[] { "TicketItem" });
+            await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Delete, listObjectNotChange);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await _unitOfWork.RollbackTransactionAsync();
+            throw new ExceptionDetail(BillConstants.ERROR);
+        }
     }
 
     public async Task<bool> Create(BillRequest entity, int userId)
@@ -84,12 +105,12 @@ public class BillService : IBillService
 
             Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
             Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
-
+            
             bill.Customer = new Customer();
             bill.Customer.Id = userId;
             bill = await _repository.Create(bill, userId);
-            
 
+            bool isFirst = true;
             // Create item
             foreach (BillItemRequest item in itemsRequest)
             {
@@ -97,7 +118,6 @@ public class BillService : IBillService
                 BillItem billItem = await _billItemService.CreateBillItem(item, userId);
                 //Cacl total Price
                 TicketItemResponse ticketItem = await _ticketItemService.GetById(item.TicketItemId);
-                
                 // Change status in ticket item
                 await _ticketItemService.ChangeStatusToWaitingPayment(item.TicketItemId, userId);
 
@@ -192,7 +212,7 @@ public class BillService : IBillService
 
     public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
     {
-        BillSpecification specification = new BillSpecification(id, checkStatus:false);
+        BillSpecification specification = new BillSpecification(id, checkStatus:false, getIsChangeStatus:true);
         Bill bill = await _repository.Get(specification);
         bill.Customer = null;
         bill.BusStationEnd = null;
@@ -203,7 +223,7 @@ public class BillService : IBillService
 
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
     {
-        BillSpecification specification = new BillSpecification(id, checkStatus:false);
+        BillSpecification specification = new BillSpecification(id, checkStatus:false, getIsChangeStatus:true);
         Bill bill = await _repository.Get(specification);
 
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.PaymentComplete);
@@ -233,7 +253,7 @@ public class BillService : IBillService
 
     public async Task<bool> ChangeCompleteStatus(int billId, int userId)
     {
-        BillSpecification specification = new BillSpecification(billId, checkStatus:false);
+        BillSpecification specification = new BillSpecification(billId, checkStatus:false, getIsChangeStatus: true);
         Bill bill = await _repository.Get(specification);
         await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Active);
         return true;

@@ -32,4 +32,14 @@ public sealed class BillSpecification : BaseSpecification<Bill>
     {
         
     }
+
+    public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true)
+        : base(x => x.Id == id, checkStatus)
+    {
+        if (getIsChangeStatus)
+        {
+            AddInclude(x => x.BillItems);
+            return;
+        }
+    }
 }
