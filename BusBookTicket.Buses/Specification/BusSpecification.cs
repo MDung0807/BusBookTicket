@@ -31,7 +31,7 @@ public sealed class BusSpecification : BaseSpecification<Bus>
     }
 
 
-    public BusSpecification(int id, int idCompany, bool checkStatus = true, bool getIsChangeStatus = false) 
+    public BusSpecification(int id, int idCompany, bool checkStatus = true, bool getIsChangeStatus = false, DateTime dateTime = default) 
         : base(x => x.Id == id 
                     && x.Company.Id == idCompany,
             checkStatus: checkStatus)
@@ -39,8 +39,12 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         if (getIsChangeStatus)
         {
             AddInclude(x => x.BusStops);
-            AddInclude("BusStops.TicketBusStops", tbs => tbs.Where(tb => tb.BusStops.Any(p => p.TicketBusStops.Any(p2 => p2.DepartureTime > DateTime.Now))));
-            AddInclude("BusStops.TicketBusStops.Ticket");
+            if (dateTime != default)
+            {
+                Criteria = x => x.BusStops.Any(bs => bs.TicketBusStops.Any(tbs => (tbs.DepartureTime >= dateTime))); 
+                AddInclude("BusStops.TicketBusStops.Ticket");
+            }
+            return;
         }
         AddInclude(x => x.Company);
         AddInclude(x => x.BusStops);
