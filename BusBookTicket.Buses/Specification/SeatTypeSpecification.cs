@@ -19,9 +19,9 @@ public sealed class SeatTypeSpecification : BaseSpecification<SeatType>
     }
     
     public SeatTypeSpecification(int? id = null, int? companyId = null, SeatTypePaging paging = null, int userId = default) 
-        : base(x => x.Id == id 
+        : base(x => (id == default || x.Id == id )
                     || x.Company.Id == companyId || x.Company.Id == default
-                    && (userId == default || x.CreateBy == userId))
+                    || (x.IsCommon == true)) 
     {
         AddInclude(x => x.Company);
         if (paging!= null)

@@ -6,6 +6,7 @@ public class SeatType : BaseEntity
     public string Type { get; set; }
     public string Description { get; set; }
     public int Price { get; set; }
+    public bool IsCommon { get; set; }
     #endregion -- Properties --
 
     #region -- Relationships --
