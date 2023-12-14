@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.District;
 using BusBookTicket.AddressManagement.DTOs.Requests.Province;
 using BusBookTicket.AddressManagement.DTOs.Requests.Region;
@@ -149,7 +150,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.BusStationEnd,
                     opts => opts.MapFrom(x => x.BusStationEnd.BusStop.BusStation.Name))
                 .ForPath(dest => dest.DateDeparture,
-                    opts => opts.MapFrom(x => x.BusStationEnd.DepartureTime))
+                    opts => opts.MapFrom(x => x.BusStationStart.DepartureTime))
                 .ForPath(dest => dest.Discount,
                     opts => opts.MapFrom(x => x.Discount.Name))
                 .ForPath( dest => dest.Items, 

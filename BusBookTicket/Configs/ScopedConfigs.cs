@@ -26,6 +26,7 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BusBookTicket.Configs
 {

@@ -376,7 +376,7 @@ public class BillService : IBillService
 
     private async Task<bool> SendMail(int billId, string message, string subject, string content)
     {
-        BillSpecification specification = new BillSpecification(billId, false);
+        BillSpecification specification = new BillSpecification(billId, false, checkStatus:false);
         Bill bill = await _repository.Get(specification);
         Company company = bill.BillItems.ToList()[0].TicketItem.Ticket.Bus.Company;
         MailRequest mailRequest = new MailRequest();

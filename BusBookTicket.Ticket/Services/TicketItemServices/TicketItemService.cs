@@ -122,7 +122,9 @@ public class TicketItemService : ITicketItemService
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
         TicketItem item = await _repository.Get(ticketItemSpecification);
-        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.AwaitingPayment);
+        List<Dictionary<string, int>> listCheckObject = 
+            new List<Dictionary<string, int>> { new Dictionary<string, int> { { "Ticket", 0 } } };
+        return await _repository.ChangeStatus(item, userId, (int)EnumsApp.AwaitingPayment, listCheckObject);
     }
 
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
