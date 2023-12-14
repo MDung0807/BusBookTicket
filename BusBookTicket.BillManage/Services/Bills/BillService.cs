@@ -70,10 +70,10 @@ public class BillService : IBillService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        // if (! await ChangeBillCanDelete(id))
-        // {
-        //     throw new ExceptionDetail(BillConstants.DELETE_ERROR);
-        // }
+        if (! await ChangeBillCanDelete(id))
+        {
+            throw new ExceptionDetail(BillConstants.DELETE_ERROR);
+        }
         try
         {
             await _unitOfWork.BeginTransaction();
@@ -92,6 +92,12 @@ public class BillService : IBillService
                 }
             };
             await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Delete, listObjectNotChange);
+            await SendMail(
+                bill.Id,
+                $"Đơn hàng {bill.Id} từ vé {bill.BillItems.ToList()[0].TicketItem.Ticket.Id} vừa bị hủy, ghế ngồi vừa được khôi phục",
+                $"Ôii, mất đơn rồi!!",
+                ""
+            );
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -143,14 +149,17 @@ public class BillService : IBillService
             // await ChangeStatusToWaitingPayment(bill.Id, userId);
             Customer customer = await _customerRepo.Get(customerSpecification);
             //Send mail
-            MailRequest mailRequest = new MailRequest();
-            mailRequest.ToMail = customer.Email;
-            mailRequest.Message = $"Bạn vừa có một hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation.Name} đến {ticketBusStopEnd.BusStop.BusStation.Name}";
-            mailRequest.Content = $"Giá: {bill.TotalPrice}";
-            mailRequest.Subject = "Hóa đơn của bạn";
-            mailRequest.FullName = customer.FullName;
-            await _mailService.SendEmailAsync(mailRequest);
-
+            await SendMail(customer,
+                $"Bạn vừa có một hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation!.Name} đến {ticketBusStopEnd.BusStop.BusStation!.Name}",
+                "Hóa đơn của bạn",
+                $"Giá: {bill.TotalPrice}"
+            );
+            await SendMail(ticketBusStopStart.Ticket.Bus.Company,
+                $"Khách hàng: {customer.FullName} đã đặt hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation!.Name} đến {ticketBusStopEnd.BusStop.BusStation!.Name}",
+                "Thần tài đến",
+                $"Giá: {bill.TotalPrice}"
+            );
+            
             await _unitOfWork.SaveChangesAsync();
             
             _unitOfWork.Dispose();
@@ -349,6 +358,35 @@ public class BillService : IBillService
     {
         BillSpecification specification = new BillSpecification(id, getIsChangeStatus: false, checkStatus:false, dateTime:DateTime.Now);
         return await _repository.Contains(specification);
+    }
+
+    private async Task<bool> SendMail(Object obj, string message, string subject, string content)
+    {
+        MailRequest mailRequest = new MailRequest();
+        mailRequest.ToMail = (string)obj.GetType().GetProperty("Email")?.GetValue(obj);
+        mailRequest.Message = message;
+        mailRequest.Content = content;
+        mailRequest.Subject = subject;
+        mailRequest.FullName = (string)(obj.GetType().GetProperty("FullName")?.GetValue(obj) == null
+            ? obj.GetType().GetProperty("Name")?.GetValue(obj)
+            : obj.GetType().GetProperty("FullName")?.GetValue(obj));
+        await _mailService.SendEmailAsync(mailRequest);
+        return true;
+    }
+
+    private async Task<bool> SendMail(int billId, string message, string subject, string content)
+    {
+        BillSpecification specification = new BillSpecification(billId, false);
+        Bill bill = await _repository.Get(specification);
+        Company company = bill.BillItems.ToList()[0].TicketItem.Ticket.Bus.Company;
+        MailRequest mailRequest = new MailRequest();
+        mailRequest.ToMail = company.Email;
+        mailRequest.Message = message;
+        mailRequest.Content = content;
+        mailRequest.Subject = subject;
+        mailRequest.FullName = company.Name;
+        await _mailService.SendEmailAsync(mailRequest);
+        return true;
     }
     #endregion -- Private Method --
 }

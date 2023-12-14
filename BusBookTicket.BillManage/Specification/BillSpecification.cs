@@ -47,7 +47,8 @@ public sealed class BillSpecification : BaseSpecification<Bill>
             AddInclude(x => x.BillItems);
             return;
         }
-        
+        AddInclude(x => x.BillItems);
+        AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
         AddInclude(x => x.BusStationStart.BusStop.BusStation);
         AddInclude(x => x.BusStationStart);
 
