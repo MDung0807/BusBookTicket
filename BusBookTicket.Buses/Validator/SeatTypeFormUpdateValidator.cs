@@ -16,8 +16,5 @@ public class SeatTypeFormUpdateValidator : AbstractValidator<SeatTypeFormUpdate>
             .NotEmpty().WithMessage("is required");
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("is required");
-        RuleFor(x => x.CompanyId)
-            .NotEmpty().WithMessage("is required")
-            .GreaterThan(0).WithMessage("greater 0");
     }
 }

@@ -12,11 +12,11 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// Find Ticket By Id
     /// </summary>
     /// <param name="id">Primary key in Ticket</param>
-    /// <param name="getAll"></param>
+    /// <param name="getIsChangeStatus"></param>
     /// <param name="checkStatus"></param>
-    public TicketSpecification(int id, bool getAll = false, bool checkStatus = true) : base(x => x.Id == id, checkStatus)
+    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true) : base(x => x.Id == id, checkStatus)
     {
-        if(getAll) return;
+        if(getIsChangeStatus) return;
         AddInclude(x => x.Bus);
         AddInclude(x => x.Bus.Seats);
         AddInclude(x => x.Bus.Company);
@@ -101,21 +101,6 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddParameter("@DateTime", dateTime.ToString("yyyy-MM-dd"));
     }
 
-    public TicketSpecification(int companyId, TicketPaging paging = null)
-        : base(x => x.CreateBy == companyId)
-    {
-        if(paging != null)
-        {
-            ApplyPaging(paging.PageIndex, paging.PageSize);
-        }
-        
-        AddInclude(x => x.Bus);
-        AddInclude(x => x.Bus.Seats);
-        AddInclude(x => x.Bus.Company);
-        AddInclude(x => x.Bus.BusType);
-        AddInclude(x => x.Bus.BusStops); 
-    }
-
     public TicketSpecification(int busId, DateTime departureTime= default)
     {
         Criteria = x => x.Bus.Id == busId &&
@@ -125,17 +110,12 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.TicketBusStops);
     }
 
-    public TicketSpecification(int companyId, DateOnly dateTime, bool checkStatus = true, TicketPaging paging = null)
-        : base(x => x.Bus.Company.Id == companyId
-            && x.Date.Day == dateTime.Day && x.Date.Month == dateTime.Month && x.Date.Year == dateTime.Year, checkStatus: false)
+    public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null)
+        : base(x => x.Bus.Company.Id == companyId, checkStatus: false)
     {
         if (paging != null)
         {
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
-        AddInclude(x => x.Bus);
-        AddInclude(x => x.Bus.Seats);
-        AddInclude(x => x.Bus.Company);
-        AddInclude(x => x.Bus.BusType);
     }
 }
