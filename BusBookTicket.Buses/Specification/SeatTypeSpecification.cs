@@ -13,6 +13,7 @@ public sealed class SeatTypeSpecification : BaseSpecification<SeatType>
     {
         if (getIsChangeStatus)
         {
+            AddInclude(x => x.Seats);
             return;
         }
         AddInclude(x => x.Company);

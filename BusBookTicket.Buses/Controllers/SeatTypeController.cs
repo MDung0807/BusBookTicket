@@ -91,7 +91,7 @@ public class SeatTypeController : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(Roles = "COMPANY")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
     public async Task<IActionResult> Update([FromBody] SeatTypeFormUpdate request)
     {
         var validator = new SeatTypeFormUpdateValidator();
@@ -102,6 +102,24 @@ public class SeatTypeController : ControllerBase
         }
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = id;
+        request.Status = 1;
+        await _seatTypeService.Update(request, request.Id, id);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPut("admin/update")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
+    public async Task<IActionResult> UpdateByAdmin([FromBody] SeatTypeFormUpdate request)
+    {
+        var validator = new SeatTypeFormUpdateValidator();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
+        int id = JwtUtils.GetUserID(HttpContext);
+        request.CompanyId = 0;
+        request.Status = 1;
         await _seatTypeService.Update(request, request.Id, id);
         return Ok(new Response<string>(false, "Response"));
     }
