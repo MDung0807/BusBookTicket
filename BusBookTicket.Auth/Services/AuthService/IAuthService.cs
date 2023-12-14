@@ -9,7 +9,7 @@ namespace BusBookTicket.Auth.Services.AuthService
     {
         Task<AuthResponse> Login(AuthRequest request);
         Task<Account> GetAccountByUsername(string username, string roleName, bool checkStatus = true);
-        Task<bool> ResetPass(FormResetPass request);
+        Task<bool> ResetPass(FormResetPass request, int userId);
         // Task<bool> ChangeStatus(AuthRequest request);
 
         Task<AuthResponse> RefreshToken(RefreshTokenRequest request);

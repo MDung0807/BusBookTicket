@@ -109,13 +109,32 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public async Task<bool> ResetPass(FormResetPass request)
+        public async Task<bool> ResetPass(FormResetPass request, int userId)
         {
-            
-            // request.password = PassEncrypt.hashPassword(request.password);
-            // await _authRepository.resetPass(request);
-            // return true;
-            throw new NotImplementedException();
+
+            AccountSpecification accountSpecification = new AccountSpecification(request.Username);
+            Account account = await _repository.Get(accountSpecification) ?? throw new AuthException(AuthConstants.UNAUTHORIZATION);
+            if (account.Customer != null)
+            {
+                if (account.Customer.Email != request.Email ||
+                    account.Customer.PhoneNumber != request.PhoneNumber)
+                    throw new AuthException(AuthConstants.UNAUTHORIZATION);
+            }
+            else 
+            {
+                if(account.Company.Email != request.Email ||
+                   account.Company.PhoneNumber != request.PhoneNumber)
+                    throw new AuthException(AuthConstants.UNAUTHORIZATION);
+            }
+
+            if (!PassEncrypt.VerifyPassword(request.PasswordOld, account.Password))
+            {
+                throw new AuthException(AuthConstants.UNAUTHORIZATION);
+            }
+
+            account.Password = PassEncrypt.hashPassword(request.PasswordNew);
+            await _repository.Update(account, userId:userId);
+            return true;
         }
 
         public async Task<AuthResponse> RefreshToken(RefreshTokenRequest request)

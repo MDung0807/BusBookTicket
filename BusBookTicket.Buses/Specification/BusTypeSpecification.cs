@@ -16,7 +16,7 @@ public sealed class BusTypeSpecification : BaseSpecification<BusType>
         AddInclude(x => x.Buses);
     }
 
-    public BusTypeSpecification(BusTypePaging paging = null)
+    public BusTypeSpecification(BusTypePaging paging = null, bool checkStatus = false) : base(null, checkStatus:checkStatus)
     {
         if (paging != null)
         {
