@@ -21,5 +21,6 @@ public sealed class TicketBusStopSpecification : BaseSpecification<Ticket_BusSto
     {
         AddInclude(x => x.BusStop.BusStation);
         AddInclude(x => x.BusStop.BusStation.Ward);
+        AddInclude(x => x.Ticket.Bus.Company);
     }
 }

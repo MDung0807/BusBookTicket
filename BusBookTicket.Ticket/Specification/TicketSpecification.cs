@@ -14,9 +14,14 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// <param name="id">Primary key in Ticket</param>
     /// <param name="getIsChangeStatus"></param>
     /// <param name="checkStatus"></param>
-    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true) : base(x => x.Id == id, checkStatus)
+    /// <param name="userId"></param>
+    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, int userId = default) : base(x => x.Id == id, checkStatus)
     {
-        if(getIsChangeStatus) return;
+        if (getIsChangeStatus)
+        {
+            Criteria = x => x.CreateBy == userId;
+            return;
+        }
         AddInclude(x => x.Bus);
         AddInclude(x => x.Bus.Seats);
         AddInclude(x => x.Bus.Company);
