@@ -45,7 +45,8 @@ public class SeatTypeService : ISeatTypeService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(id);
+        SeatTypeSpecification seatTypeSpecification = 
+            new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
         SeatType seatType = await _repository.Get(seatTypeSpecification);
         seatType.Status = (int)EnumsApp.Delete;
         await _repository.Delete(seatType, userId);
@@ -60,9 +61,13 @@ public class SeatTypeService : ISeatTypeService
         return true;
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        SeatTypeSpecification seatTypeSpecification = 
+            new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
+        SeatType seatType = await _repository.Get(seatTypeSpecification);
+        await _repository.ChangeStatus(seatType, userId: userId, (int)EnumsApp.Active);
+        return true;
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -75,9 +80,13 @@ public class SeatTypeService : ISeatTypeService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeToDisable(int id, int userId)
+    public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        throw new NotImplementedException();
+        SeatTypeSpecification seatTypeSpecification = 
+            new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
+        SeatType seatType = await _repository.Get(seatTypeSpecification);
+        await _repository.ChangeStatus(seatType, userId: userId, (int)EnumsApp.Disable);
+        return true;
     }
 
     public Task<bool> CheckToExistById(int id)

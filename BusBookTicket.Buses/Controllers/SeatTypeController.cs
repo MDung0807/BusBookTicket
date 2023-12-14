@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.Buses.Controllers;
 
 [ApiController]
-[Route("api/seatType")]
+[Route("api/seatTypes")]
 public class SeatTypeController : ControllerBase
 {
     #region -- Properties --
@@ -30,7 +30,7 @@ public class SeatTypeController : ControllerBase
     #region -- Controllers --
 
     [HttpGet("getAll")]
-    [Authorize(Roles = "COMPANY")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
     public async Task<IActionResult> GetAll([FromQuery]SeatTypePaging paging)
     {
         int companyID = JwtUtils.GetUserID(HttpContext);
@@ -63,11 +63,29 @@ public class SeatTypeController : ControllerBase
     }
 
     [HttpDelete("delete")]
-    [Authorize(Roles = "COMPANY")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         await _seatTypeService.Delete(id, userId);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPut("changeIsActive")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
+    public async Task<IActionResult> ChangeIsActive([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _seatTypeService.ChangeIsActive(id, userId);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
+    [HttpPut("changeToDisable")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
+    public async Task<IActionResult> ChangeIsDisable([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _seatTypeService.ChangeToDisable(id, userId);
         return Ok(new Response<string>(false, "Response"));
     }
 
