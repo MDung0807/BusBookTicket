@@ -3,6 +3,7 @@ using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Paging.Bus;
 using BusBookTicket.Buses.Services.BusServices;
+using BusBookTicket.Buses.Utils;
 using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
@@ -95,7 +96,7 @@ public class BusController : ControllerBase
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busService.ChangeToDisable(id, userId);
-        return Ok(new Response<string>(!status, "AppConstants"));
+        return Ok(new Response<string>(!status, BusConstants.CHANGE_SUCCESS));
     }
     
     [HttpGet("changeIsActive")]
@@ -104,7 +105,7 @@ public class BusController : ControllerBase
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busService.ChangeIsActive(id, userId);
-        return Ok(new Response<string>(!status, "AppConstants"));
+        return Ok(new Response<string>(!status, BusConstants.CHANGE_SUCCESS));
     }
 
     [HttpDelete("delete")]

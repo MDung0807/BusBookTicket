@@ -39,7 +39,7 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
             (current, include) => current.Include(include));
 
         // Include any conditions-based include statements
-        query = specification.IncludeConditions.Aggregate(query, (current, include) => include(current));
+        query = specification.IncludeConditions.Aggregate(query, (current, condition) => condition(current));
         // Apply ordering if expressions are set
         if (specification.OrderBy != null)
         {
