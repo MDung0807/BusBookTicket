@@ -3,6 +3,7 @@
 public class TicketResponse
 {
     public int Id { get; set; }
+    public int Status { get; set; }
     public DateTime Date { get; set; }
     public string BusNumber { get; set; }
     public string Introduction { get; set; }
