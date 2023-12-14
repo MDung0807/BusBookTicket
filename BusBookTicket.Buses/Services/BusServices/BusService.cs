@@ -146,7 +146,7 @@ public class BusService : IBusService
 
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        BusSpecification busSpecification = new BusSpecification(id, userId, false);
+        BusSpecification busSpecification = new BusSpecification(id, userId, false, getIsChangeStatus: true);
         Bus bus = await _repository.Get(busSpecification);
         await _repository.ChangeStatus(bus, userId, (int)EnumsApp.Disable);
         return true;

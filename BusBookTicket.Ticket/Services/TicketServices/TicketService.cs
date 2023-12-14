@@ -52,7 +52,7 @@ public class TicketService : ITicketService
     
     public async Task<TicketResponse> GetById(int id)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id,false);
+        TicketSpecification ticketSpecification = new TicketSpecification(id,checkStatus:true, getIsChangeStatus:false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
         int totalEmptySeat = 0;
@@ -86,7 +86,8 @@ public class TicketService : ITicketService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id, false);
+        TicketSpecification ticketSpecification =
+            new TicketSpecification(id, checkStatus: false, getIsChangeStatus: true);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         ticket.Status = (int)EnumsApp.Delete;
         await _repository.Delete(ticket, userId);
@@ -118,7 +119,7 @@ public class TicketService : ITicketService
             }
             
             // Create TicketItem
-            TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id, false);
+            TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id, checkStatus: false, getIsChangeStatus: false);
             BusSpecification busSpecification = new BusSpecification(entity.BusId);
             Bus bus = await _busRepository.Get(busSpecification);
             ticket = await _repository.Get(ticketSpecification);
@@ -183,11 +184,15 @@ public class TicketService : ITicketService
 
     public async Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(companyId:idMaster, paging:pagingRequest);
+        TicketSpecification ticketSpecification = 
+            new TicketSpecification(companyId:idMaster, checkStatus:false, paging: pagingRequest);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         int count = await _repository.Count(new TicketSpecification(idMaster, paging:null));
-        List<TicketResponse> responses =
-            await AppUtils.MapObject<Core.Models.Entity.Ticket, TicketResponse>(tickets, _mapper);
+        List<TicketResponse> responses = new List<TicketResponse>();
+        foreach (var item in tickets)
+        {
+            responses.Add( await GetById(item.Id));
+        }
         TicketPagingResult result = new TicketPagingResult(pagingRequest.PageIndex, pagingRequest.PageSize, count, responses);
         return result;
     }
@@ -221,7 +226,7 @@ public class TicketService : ITicketService
         try
         {
             await _unitOfWork.BeginTransaction();
-            TicketSpecification ticketSpecification = new TicketSpecification(id, true);
+            TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true);
             Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
             TicketItemSpecification ticketItemSpecification =
                 new TicketItemSpecification(0, id, true, checkStatus: false);
@@ -243,9 +248,9 @@ public class TicketService : ITicketService
     public async Task<TicketPagingResult> GetAllTicketOnDate(int idMaster, DateOnly date, TicketPaging paging)
     {
         TicketSpecification ticketSpecification = 
-            new TicketSpecification(companyId:idMaster, dateTime: date, checkStatus:false, paging: paging);
+            new TicketSpecification(companyId:idMaster, checkStatus:false, paging: paging);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
-        int count = await _repository.Count(new TicketSpecification(companyId:idMaster, dateTime: date, checkStatus:false));
+        int count = await _repository.Count(new TicketSpecification(companyId:idMaster, checkStatus:false));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
         

@@ -18,6 +18,7 @@ public class BaseSpecification<T> : ISpecification<T>
     }
     public Expression<Func<T, bool>> Criteria { get; set; }
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+    public List<Func<IQueryable<T>, IQueryable<T>>> IncludeConditions { get; } = new List<Func<IQueryable<T>, IQueryable<T>>>();
     public bool CheckStatus { get; }
     public List<string> IncludeStrings { get; } = new List<string>();
     public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -35,9 +36,23 @@ public class BaseSpecification<T> : ISpecification<T>
         Includes.Add(includeExpression);
     }
 
-    protected virtual void AddInclude(string includeString)
+    protected virtual void AddInclude(string includeString, Func<IQueryable<T>, IQueryable<T>> condition = null)
     {
         IncludeStrings.Add(includeString);
+        if (condition != null)
+        {
+            IncludeConditions.Add(condition);
+        }
+    }
+    
+    public virtual IQueryable<T> ApplyIncludeConditions(IQueryable<T> query)
+    {
+        foreach (var condition in IncludeConditions)
+        {
+            query = condition(query);
+        }
+
+        return query;
     }
 
     public virtual void AddSqlQuery (string sqlQuery)
