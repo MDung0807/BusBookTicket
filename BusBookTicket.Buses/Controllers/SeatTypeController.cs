@@ -103,6 +103,7 @@ public class SeatTypeController : ControllerBase
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = id;
         request.Status = 1;
+        request.IsCommon = false;
         await _seatTypeService.Update(request, request.Id, id);
         return Ok(new Response<string>(false, "Response"));
     }
@@ -120,6 +121,7 @@ public class SeatTypeController : ControllerBase
         int id = JwtUtils.GetUserID(HttpContext);
         request.CompanyId = 0;
         request.Status = 1;
+        request.IsCommon = true;
         await _seatTypeService.Update(request, request.Id, id);
         return Ok(new Response<string>(false, "Response"));
     }

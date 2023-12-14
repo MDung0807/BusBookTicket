@@ -8,4 +8,5 @@ public class SeatTypeFormUpdate
     public string Description { get; set; }
     public int Status { get; set; }
     public int CompanyId { get; set; }
+    public bool IsCommon { get; set; }
 }
