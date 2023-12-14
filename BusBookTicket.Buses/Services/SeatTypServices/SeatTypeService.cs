@@ -39,7 +39,7 @@ public class SeatTypeService : ISeatTypeService
     public async Task<bool> Update(SeatTypeFormUpdate entity, int id, int userId)
     {
         SeatType seatType = _mapper.Map<SeatType>(entity);
-        await _repository.Update(seatType, userId);
+        await _repository.Update(seatType, userId); 
         return true;
     }
 

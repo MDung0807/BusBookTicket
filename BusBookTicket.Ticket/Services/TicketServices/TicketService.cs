@@ -126,9 +126,10 @@ public class TicketService : ITicketService
             List<Seat> seats = ticket.Bus.Seats.ToList();
             foreach (Seat seat in seats)
             {
+                if (seat.Status != (int)EnumsApp.Active && seat.Status != (int)EnumsApp.AwaitingPayment)
+                    throw new ExceptionDetail();
                 await CreateItem(seat, ticket.Id, userId, entity.Price);
             }
-
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -136,7 +137,7 @@ public class TicketService : ITicketService
         {
             await _unitOfWork.RollbackTransactionAsync();
             Console.WriteLine(e.ToString());
-            throw new Exception("ERROR");
+            throw new ExceptionDetail(TicketConstants.ERROR);
         }
     }
 
