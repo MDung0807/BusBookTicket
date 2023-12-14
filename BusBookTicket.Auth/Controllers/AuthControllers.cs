@@ -86,7 +86,8 @@ namespace BusBookTicket.Auth.Controllers
             {
                 throw new ValidatorException(result.Errors);
             }
-            bool response = await _authService.ResetPass(request);
+            
+            bool response = await _authService.ResetPass(request, -1);
             return Ok(new Response<string>(false, "response"));
         }
         
