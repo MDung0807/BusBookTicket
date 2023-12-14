@@ -70,10 +70,10 @@ public class BillService : IBillService
 
     public async Task<bool> Delete(int id, int userId)
     {
-        // if (! await ChangeBillCanDelete(id))
-        // {
-        //     throw new ExceptionDetail(BillConstants.DELETE_ERROR);
-        // }
+        if (! await ChangeBillCanDelete(id))
+        {
+            throw new ExceptionDetail(BillConstants.DELETE_ERROR);
+        }
         try
         {
             await _unitOfWork.BeginTransaction();
@@ -92,6 +92,12 @@ public class BillService : IBillService
                 }
             };
             await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Delete, listObjectNotChange);
+            await SendMail(
+                bill.Id,
+                $"Đơn hàng {bill.Id} từ vé {bill.BillItems.ToList()[0].TicketItem.Ticket.Id} vừa bị hủy, ghế ngồi vừa được khôi phục",
+                $"Ôii, mất đơn rồi!!",
+                ""
+            );
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -367,6 +373,20 @@ public class BillService : IBillService
         await _mailService.SendEmailAsync(mailRequest);
         return true;
     }
-    
+
+    private async Task<bool> SendMail(int billId, string message, string subject, string content)
+    {
+        BillSpecification specification = new BillSpecification(billId, false);
+        Bill bill = await _repository.Get(specification);
+        Company company = bill.BillItems.ToList()[0].TicketItem.Ticket.Bus.Company;
+        MailRequest mailRequest = new MailRequest();
+        mailRequest.ToMail = company.Email;
+        mailRequest.Message = message;
+        mailRequest.Content = content;
+        mailRequest.Subject = subject;
+        mailRequest.FullName = company.Name;
+        await _mailService.SendEmailAsync(mailRequest);
+        return true;
+    }
     #endregion -- Private Method --
 }

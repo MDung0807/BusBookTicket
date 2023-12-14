@@ -5,4 +5,5 @@ namespace BusBookTicket.Application.MailKet.Service;
 public interface IMailService
 {
     Task SendEmailAsync(MailRequest mailRequest);
+    Task SendEmailsAsync(List<MailRequest> mailRequests);
 }

@@ -1,8 +1,10 @@
-﻿using System.Runtime.InteropServices.JavaScript;
+﻿
 using AutoMapper;
 using BusBookTicket.AddressManagement.Services.WardService;
 using BusBookTicket.AddressManagement.Utilities;
 using BusBookTicket.Application.CloudImage.Services;
+using BusBookTicket.Application.MailKet.DTO.Request;
+using BusBookTicket.Application.MailKet.Service;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
@@ -30,6 +32,7 @@ public class TicketService : ITicketService
     private readonly IGenericRepository<TicketItem> _ticketItemRepository;
     private readonly IImageService _imageService;
     private readonly IWardService _wardService;
+    private readonly IMailService _mailService;
     #endregion -- Properties --
 
     public TicketService(
@@ -37,7 +40,8 @@ public class TicketService : ITicketService
         IMapper mapper, 
         IUnitOfWork unitOfWork,
         IImageService imageService,
-        IWardService wardService)
+        IWardService wardService,
+        IMailService mailService)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -48,6 +52,7 @@ public class TicketService : ITicketService
         _ticketItemRepository = unitOfWork.GenericRepository<TicketItem>();
         _imageService = imageService;
         _wardService = wardService;
+        _mailService = mailService;
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -97,6 +102,11 @@ public class TicketService : ITicketService
             ticket.TicketItems = new HashSet<TicketItem>(items);
             await _repository.ChangeStatus(ticket, userId, (int)EnumsApp.Delete);
 
+            await SendMails(
+                ticket,
+                $"Vé đã bị vì lý do khách quan",
+                "Hủy Vé",
+                "");
             await _unitOfWork.SaveChangesAsync();
             _unitOfWork.Dispose();
         }
@@ -146,6 +156,12 @@ public class TicketService : ITicketService
                     throw new ExceptionDetail();
                 await CreateItem(seat, ticket.Id, userId, entity.Price);
             }
+
+            SendMail(
+                ticket,
+                $"Bạn vừa tạo một vé cho ngày: {ticket.Date} cho xe: {ticket.Bus.BusNumber}",
+                $"Vé vừa tạo",
+                $"");
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -321,6 +337,44 @@ public class TicketService : ITicketService
         TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: dePartureTime);
         bool status = await _repository.Contains(ticketSpecification);
         return !status;
+    }
+    
+    private async Task<bool> SendMail(Core.Models.Entity.Ticket ticket, string message, string subject, string content)
+    {
+        Company company = ticket.Bus.Company;
+        MailRequest mailRequest = new MailRequest();
+        mailRequest.ToMail = company.Email;
+        mailRequest.Message = message;
+        mailRequest.Content = content;
+        mailRequest.Subject = subject;
+        mailRequest.FullName = company.Name;
+        await _mailService.SendEmailAsync(mailRequest);
+        return true;
+    }
+    
+    private async Task<bool> SendMails(Core.Models.Entity.Ticket ticket, string message, string subject, string content)
+    {
+            List<int> checkBillId = new List<int>();
+            List<MailRequest> mailRequests = new List<MailRequest>();
+            foreach (var ticketItem in ticket.TicketItems)
+            {
+                if ( checkBillId.Contains(ticketItem.BillItem.Bill.Id))
+                {
+                    checkBillId.Add(ticketItem.BillItem.Bill.Id);
+                    var customer = ticketItem.BillItem.Bill.Customer;
+                    MailRequest mailRequest = new MailRequest();
+                    mailRequest.ToMail = customer.Email;
+                    mailRequest.Message = message;
+                    mailRequest.Content = content;
+                    mailRequest.Subject = subject;
+                    mailRequest.FullName = customer.FullName;
+                    
+                    mailRequests.Add(mailRequest);
+                }
+            }
+
+            await _mailService.SendEmailsAsync(mailRequests);
+            return true;
     }
     #endregion -- Private Method --
 }
