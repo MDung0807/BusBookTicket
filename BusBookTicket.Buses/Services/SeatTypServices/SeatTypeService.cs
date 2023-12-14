@@ -111,7 +111,7 @@ public class SeatTypeService : ISeatTypeService
 
     public async Task<SeatTypePagingResult> GetAll(SeatTypePaging pagingRequest, int idMaster)
     {
-        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, idMaster, paging: pagingRequest);   
+        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, idMaster, paging: pagingRequest, checkStatus: false);   
         List<SeatType> seatTypes = await _repository.ToList(seatTypeSpecification);
         int count = await _repository.Count(new SeatTypeSpecification(0, idMaster));
         List<SeatTypeResponse> responses = await AppUtils.MapObject<SeatType, SeatTypeResponse>(seatTypes, _mapper);
