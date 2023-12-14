@@ -68,12 +68,14 @@ public class TicketService : ITicketService
                 totalEmptySeat++;
             }
         }
-        TicketResponse response = _mapper.Map<Core.Models.Entity.Ticket, TicketResponse>(ticket);
+        TicketResponse response = _mapper.Map<TicketResponse>(ticket);
         response.TotalEmptySeat = totalEmptySeat;
         List<string> images = await _imageService.getImages(typeof(Company).ToString(), id);
         response.CompanyLogo = images.Count > 0 ? images[0] : null;
+        response.ItemResponses = new List<TicketItemResponse>();
         response.ItemResponses = itemResponses;
-        response.ListStation = await GetAllBusStopInTicket(id);
+        response.ListStation = new List<StationResponse>();
+            response.ListStation= await GetAllBusStopInTicket(id);
         return response;
     }
 

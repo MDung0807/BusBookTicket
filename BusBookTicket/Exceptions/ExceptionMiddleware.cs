@@ -1,7 +1,11 @@
-﻿using BusBookTicket.Auth.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BusBookTicket.Auth.Exceptions;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.CustomerManage.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SendGrid.Helpers.Errors.Model;
 using NotFoundException = BusBookTicket.Core.Common.Exceptions.NotFoundException;

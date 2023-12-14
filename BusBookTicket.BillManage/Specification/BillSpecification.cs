@@ -39,15 +39,19 @@ public sealed class BillSpecification : BaseSpecification<Bill>
 
     public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, DateTime dateTime = default)
         : base(x => x.Id == id  &&(dateTime == default 
-                                   || x.DateDeparture >= dateTime.AddDays(3)),
+                                   || x.BusStationStart.DepartureTime >= dateTime.AddDays(3)),
             checkStatus)
     {
         if (getIsChangeStatus)
         {
             AddInclude(x => x.BillItems);
+            AddInclude("BillItems.TicketItem.Ticket");
+
             return;
         }
         AddInclude(x => x.BillItems);
+        AddInclude("BillItems.TicketItem.Ticket");
+        AddInclude("BillItems.TicketItem.Ticket.Bus");
         AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
         AddInclude(x => x.BusStationStart.BusStop.BusStation);
         AddInclude(x => x.BusStationStart);
