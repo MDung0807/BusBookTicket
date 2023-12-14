@@ -103,6 +103,7 @@ public class TicketService : ITicketService
         {
             //Create Ticket
             Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
+            ticket.Date = entity.TicketStations[0].DepartureTime;
             ticket.Status = (int)EnumsApp.Active;
             ticket = await _repository.Create(ticket, userId);
 
