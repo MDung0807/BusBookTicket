@@ -233,6 +233,8 @@ namespace BusBookTicket.Configs
             CreateMap<Core.Models.Entity.Ticket, TicketResponse>()
                 .ForPath(dest => dest.BusNumber,
                     opts => opts.MapFrom(x => x.Bus.BusNumber))
+                .ForPath(dest => dest.BusId,
+                    opts => opts.MapFrom(x => x.Bus.Id))
                 .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Bus.Company.Name))
                 .ForPath(dest => dest.BusType,

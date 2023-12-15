@@ -6,6 +6,7 @@ public class TicketResponse
     public int Status { get; set; }
     public DateTime Date { get; set; }
     public string BusNumber { get; set; }
+    public string BusId { get; set; }
     public string Introduction { get; set; }
     public string Company { get; set; }
     public string CompanyLogo { get; set; }
