@@ -3,10 +3,10 @@
     public class Company : BaseEntity
     {
         #region -- Properties --
-        public string? Name { get; set; }
-        public string? Introduction { get; set; }
-        public string? Email { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string Name { get; set; }
+        public string Introduction { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
         #endregion -- Properties --
@@ -16,7 +16,9 @@
         public Account Account { get; set; }
         public HashSet<SeatType> SeatTypes { get; set; }
         public Ward Ward { get; set; }
+        public PriceClassification PriceClassification;
+
         #endregion -- Relationship --
-       
+
     }
 }

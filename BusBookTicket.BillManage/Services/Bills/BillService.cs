@@ -431,7 +431,7 @@ public class BillService : IBillService
 
     public async Task<object> GetStatisticsStationByCompany(int companyId, int year, int take, bool desc = true)
     {
-         BillSpecification billSpecification = new BillSpecification();
+        BillSpecification billSpecification = new BillSpecification();
         billSpecification.Statistics(year, companyId);
         List<Bill> bills = await _repository.ToList(billSpecification);
 
