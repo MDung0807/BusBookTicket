@@ -80,11 +80,21 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     Task<object> RevenueStatistics(int companyId, int year);
 
     /// <summary>
-    /// Get Statistics Station
+    /// Get Statistics Station by admin
     /// </summary>
     /// <param name="year"></param>
     /// <param name="take"></param>
     /// <param name="desc"></param>
     /// <returns></returns>
-    Task<object> GetStatisticsStation(int year, int take, bool desc = true);
+    Task<object> GetStatisticsStationByAdmin(int year, int take, bool desc = true);
+
+    /// <summary>
+    /// Get Statistics Station by company
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <param name="year"></param>
+    /// <param name="take"></param>
+    /// <param name="desc"></param>
+    /// <returns></returns>
+    Task<object> GetStatisticsStationByCompany(int companyId, int year, int take, bool desc = true);
 }
