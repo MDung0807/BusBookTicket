@@ -40,7 +40,7 @@ public sealed class BillSpecification : BaseSpecification<Bill>
 
     public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, DateTime dateTime = default)
         : base(x => x.Id == id  &&(dateTime == default 
-                                   || x.BusStationStart.DepartureTime >= dateTime.AddDays(3)),
+                                   || x.BusStationStart.DepartureTime >= dateTime.AddHours(2)),
             checkStatus)
     {
         if (getIsChangeStatus)
