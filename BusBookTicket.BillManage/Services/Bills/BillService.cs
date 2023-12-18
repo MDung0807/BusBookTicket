@@ -376,6 +376,47 @@ public class BillService : IBillService
             .ToList();
         return result;
     }
+    
+    public async Task<object> GetStatisticsStation(int year)
+    {
+        BillSpecification billSpecification = new BillSpecification();
+        billSpecification.GetStatisticsStation(year);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+
+        var result = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                PassengerCountArrival = b.BillItems.Count
+            }))
+            .Where(x => x.StationStartId != null)
+            .GroupBy(x => x.StationStartId)
+            .Select(group => new
+            {
+                StationStartId = group.Key,
+                TotalPassengerCountArrival = group.Sum(x => x.PassengerCountArrival)
+            })
+            .ToList();
+
+        var resultDeparture = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                PassengerCountDeparture = b.BillItems.Count
+            }))
+            .Where(x => x.StationEndId != null)
+            .GroupBy(x => x.StationEndId)
+            .Select(group => new
+            {
+                StationEndId = group.Key,
+                TotalPassengerCountDeparture = group.Sum(x => x.PassengerCountDeparture)
+            })
+            .ToList();
+
+        return new { Arrival = result, Departure = resultDeparture };
+    }
 
     #region  -- Private Method --
 

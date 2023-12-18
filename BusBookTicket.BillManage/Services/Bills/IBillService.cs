@@ -72,4 +72,6 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     Task<BillPagingResult> GetAllInCompleteStatus(BillPaging paging, int userId);
 
     Task<object> RevenueStatistics(int companyId, int year);
+
+    Task<object> GetStatisticsStation(int year);
 }
