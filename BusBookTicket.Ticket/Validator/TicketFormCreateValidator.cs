@@ -7,6 +7,8 @@ public class TicketFormCreateValidator : AbstractValidator<TicketFormCreate>
 {
     public TicketFormCreateValidator()
     {
+        RuleFor(x => x.Price)
+            .GreaterThanOrEqualTo(0).WithMessage("Have value Greater or equal 0");
         RuleForEach(x => x.TicketStations).SetValidator(new TicketStationDtoValidator());
 
         RuleFor(form => form.TicketStations)
