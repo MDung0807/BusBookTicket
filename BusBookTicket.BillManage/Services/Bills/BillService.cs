@@ -9,7 +9,6 @@ using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common.Exceptions;
-using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -17,6 +16,7 @@ using BusBookTicket.CustomerManage.Specification;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
+using MailKit.Search;
 
 namespace BusBookTicket.BillManage.Services.Bills;
 
@@ -377,13 +377,13 @@ public class BillService : IBillService
         return result;
     }
     
-    public async Task<object> GetStatisticsStation(int year)
+    public async Task<object> GetStatisticsStation(int year, int take, bool desc = true)
     {
         BillSpecification billSpecification = new BillSpecification();
         billSpecification.GetStatisticsStation(year);
         List<Bill> bills = await _repository.ToList(billSpecification);
 
-        var result = bills
+        var resultArrival = bills
             .SelectMany(b => b.BillItems.Select(bi => new
             {
                 StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
@@ -415,7 +415,18 @@ public class BillService : IBillService
             })
             .ToList();
 
-        return new { Arrival = result, Departure = resultDeparture };
+        if (desc)
+        {
+            resultArrival = resultArrival.OrderByDescending(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderByDescending(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+        else
+        {
+            resultArrival = resultArrival.OrderBy(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderBy(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+
+        return new { Arrival = resultArrival, Departure = resultDeparture };
     }
 
     #region  -- Private Method --
