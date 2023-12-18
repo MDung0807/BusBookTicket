@@ -110,11 +110,8 @@ namespace BusBookTicket.ReviewManage.Services
             int count = await _repository.Count(new ReviewSpecification(idMaster));
             List<Review> reviews = await _repository.ToList(specification);
             List<ReviewResponse> responses = await AppUtils.MapObject<Review, ReviewResponse>(reviews, _mapper);
-            ReviewPagingResult result = new ReviewPagingResult();
-            result.Items = responses;
-            result.PageIndex = pagingRequest.PageIndex;
-            result.PageSize = pagingRequest.PageSize;
-            result.PageTotal = count;
+            ReviewPagingResult result = AppUtils.ResultPaging<ReviewPagingResult, ReviewResponse>(
+                pagingRequest.PageIndex, pagingRequest.PageSize, count, responses);
             return result;
         }
 

@@ -4,13 +4,13 @@
     {
         #region -- Properties --
 
-        public string? Name { get; set; }
-        public string? Address { get; set; }
-        public string? Description { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
 
         #endregion -- Properties --
 
-        public HashSet<BusStop>? BusStops { get; set; }
+        public HashSet<BusStop> BusStops { get; set; }
         public Ward Ward { get; set; }
     }
 }

@@ -96,7 +96,7 @@ public class TicketService : ITicketService
         try
         {
             await _unitOfWork.BeginTransaction();
-            TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true);
+            TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true, userId:userId);
             Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
             TicketItemSpecification ticketItemSpecification =
                 new TicketItemSpecification(0, id, true, checkStatus: false);
@@ -104,20 +104,22 @@ public class TicketService : ITicketService
             ticket.TicketItems = new HashSet<TicketItem>(items);
             await _repository.ChangeStatus(ticket, userId, (int)EnumsApp.Delete);
 
-            await SendMails(
-                ticket,
-                $"Vé đã bị vì lý do khách quan",
-                "Hủy Vé",
-                "");
+            // await SendMails(
+            //     ticket,
+            //     $"Vé đã bị vì lý do khách quan",
+            //     "Hủy Vé",
+            //     "");
             await _unitOfWork.SaveChangesAsync();
             _unitOfWork.Dispose();
+            return true;
+
         }
         catch
         {
             await _unitOfWork.RollbackTransactionAsync();
+            throw new ExceptionDetail("Errpr");
             _unitOfWork.Dispose();
         }
-        return true;
     }
 
     public async Task<bool> Create(TicketFormCreate entity, int userId)

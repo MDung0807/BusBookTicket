@@ -19,7 +19,7 @@ public class BaseSpecification<T> : ISpecification<T>
     public Expression<Func<T, bool>> Criteria { get; set; }
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
     public List<Func<IQueryable<T>, IQueryable<T>>> IncludeConditions { get; } = new List<Func<IQueryable<T>, IQueryable<T>>>();
-    public bool CheckStatus { get; }
+    public bool CheckStatus { get; set; }
     public List<string> IncludeStrings { get; } = new List<string>();
     public Expression<Func<T, object>> OrderBy { get; private set; }
     public Expression<Func<T, object>> OrderByDescending { get; private set; }

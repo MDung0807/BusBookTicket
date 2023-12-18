@@ -105,4 +105,13 @@ public class BillController : ControllerBase
         BillPagingResult billResponse = await _billService.GetAllInCompleteStatus(paging, userId);
         return Ok(new Response<BillPagingResult>(false, billResponse));
     }
+
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("revenueStatistics")]
+    public async Task<IActionResult> RevenueStatistics([FromQuery] int year)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        object result = await _billService.RevenueStatistics(userId, year);
+        return Ok(new Response<object>(false, result));
+    }
 }
