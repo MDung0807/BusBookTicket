@@ -9,7 +9,6 @@ using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common.Exceptions;
-using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -17,6 +16,7 @@ using BusBookTicket.CustomerManage.Specification;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
+using MailKit.Search;
 
 namespace BusBookTicket.BillManage.Services.Bills;
 
@@ -375,6 +375,58 @@ public class BillService : IBillService
             })
             .ToList();
         return result;
+    }
+    
+    public async Task<object> GetStatisticsStation(int year, int take, bool desc = true)
+    {
+        BillSpecification billSpecification = new BillSpecification();
+        billSpecification.GetStatisticsStation(year);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+
+        var resultArrival = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                PassengerCountArrival = b.BillItems.Count
+            }))
+            .Where(x => x.StationStartId != null)
+            .GroupBy(x => x.StationStartId)
+            .Select(group => new
+            {
+                StationStartId = group.Key,
+                TotalPassengerCountArrival = group.Sum(x => x.PassengerCountArrival)
+            })
+            .ToList();
+
+        var resultDeparture = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                PassengerCountDeparture = b.BillItems.Count
+            }))
+            .Where(x => x.StationEndId != null)
+            .GroupBy(x => x.StationEndId)
+            .Select(group => new
+            {
+                StationEndId = group.Key,
+                TotalPassengerCountDeparture = group.Sum(x => x.PassengerCountDeparture)
+            })
+            .ToList();
+
+        if (desc)
+        {
+            resultArrival = resultArrival.OrderByDescending(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderByDescending(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+        else
+        {
+            resultArrival = resultArrival.OrderBy(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderBy(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+
+        return new { Arrival = resultArrival, Departure = resultDeparture };
     }
 
     #region  -- Private Method --

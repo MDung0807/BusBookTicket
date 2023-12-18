@@ -70,5 +70,17 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
         // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
     }
+    
+    
+    public void GetStatisticsStation(int year)
+    {
+        Criteria = x => x.Status == (int)EnumsApp.Complete
+                        && x.BillItems.Any()
+            ? x.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Year == year : year == default;
+        CheckStatus = false;
+        AddInclude(b => b.BillItems);
+        AddInclude("BillItems.TicketItem.Ticket.TicketBusStops");
+        // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
+    }
 
 }

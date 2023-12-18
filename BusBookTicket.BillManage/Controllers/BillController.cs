@@ -114,4 +114,13 @@ public class BillController : ControllerBase
         object result = await _billService.RevenueStatistics(userId, year);
         return Ok(new Response<object>(false, result));
     }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("getStatisticsStation")]
+    public async Task<IActionResult> GetStatisticsStation([FromQuery] int year, int take, bool desc)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        object result = await _billService.GetStatisticsStation(year, take, desc);
+        return Ok(new Response<object>(false, result));
+    }
 }

@@ -71,5 +71,20 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// <returns></returns>
     Task<BillPagingResult> GetAllInCompleteStatus(BillPaging paging, int userId);
 
+    /// <summary>
+    /// Get Revenue Statistics in Company
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <param name="year"></param>
+    /// <returns></returns>
     Task<object> RevenueStatistics(int companyId, int year);
+
+    /// <summary>
+    /// Get Statistics Station
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="take"></param>
+    /// <param name="desc"></param>
+    /// <returns></returns>
+    Task<object> GetStatisticsStation(int year, int take, bool desc = true);
 }
