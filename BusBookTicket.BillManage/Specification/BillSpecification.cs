@@ -59,11 +59,12 @@ public sealed class BillSpecification : BaseSpecification<Bill>
 
     }
 
-    public void GetRevenue(int companyId, int year)
+    public void Statistics(int year, int companyId = default)
     {
         Criteria = x => x.Status == (int)EnumsApp.Complete
-                        && x.BillItems.Any()
-            ? x.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Year == year : year == default;
+                        && (companyId == default || x.BillItems.Any(bi => bi.TicketItem.Ticket.Bus.Company.Id == companyId))
+                        && (year == default || x.BillItems.Any(bi => bi.TicketItem.Ticket.TicketBusStops.Any(tbs => tbs.DepartureTime.Year == year)));
+
         CheckStatus = false;
         AddInclude(b => b.BillItems);
         AddInclude("BillItems.TicketItem.Ticket.TicketBusStops");

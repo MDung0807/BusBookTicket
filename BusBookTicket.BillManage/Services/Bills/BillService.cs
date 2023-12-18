@@ -355,7 +355,7 @@ public class BillService : IBillService
     public async Task<object> RevenueStatistics(int companyId, int year)
     {
         BillSpecification billSpecification = new BillSpecification();
-        billSpecification.GetRevenue(companyId, year: year);
+        billSpecification.Statistics(year: year, companyId);
         List<Bill> bills = await _repository.ToList(billSpecification);
         var result = bills
             .Select(b => new
@@ -377,10 +377,10 @@ public class BillService : IBillService
         return result;
     }
     
-    public async Task<object> GetStatisticsStation(int year, int take, bool desc = true)
+    public async Task<object> GetStatisticsStationByAdmin(int year, int take, bool desc = true)
     {
         BillSpecification billSpecification = new BillSpecification();
-        billSpecification.GetStatisticsStation(year);
+        billSpecification.Statistics(year);
         List<Bill> bills = await _repository.ToList(billSpecification);
 
         var resultArrival = bills
@@ -411,6 +411,76 @@ public class BillService : IBillService
             .Select(group => new
             {
                 StationEndId = group.Key,
+                TotalPassengerCountDeparture = group.Sum(x => x.PassengerCountDeparture)
+            })
+            .ToList();
+
+        if (desc)
+        {
+            resultArrival = resultArrival.OrderByDescending(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderByDescending(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+        else
+        {
+            resultArrival = resultArrival.OrderBy(x => x.TotalPassengerCountArrival).Take(take).ToList();
+            resultDeparture = resultDeparture.OrderBy(x => x.TotalPassengerCountDeparture).Take(take).ToList();
+        }
+
+        return new { Arrival = resultArrival, Departure = resultDeparture };
+    }
+
+    public async Task<object> GetStatisticsStationByCompany(int companyId, int year, int take, bool desc = true)
+    {
+         BillSpecification billSpecification = new BillSpecification();
+        billSpecification.Statistics(year, companyId);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+
+        var resultArrival = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
+                CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
+                PassengerCountArrival = b.BillItems.Count
+            }))
+            .Where(x => x.StationStartId != null)
+            .GroupBy(x => new
+            {
+                x.StationStartId,
+                x.CompanyName,    
+                x.CompanyId
+            })
+            .Select(group => new
+            {
+                StationStartId = group.Key.StationStartId,
+                CompanyId = group.Key.CompanyId,
+                CompanyName = group.Key.CompanyName,
+                TotalPassengerCountArrival = group.Sum(x => x.PassengerCountArrival)
+            })
+            .ToList();
+
+        var resultDeparture = bills
+            .SelectMany(b => b.BillItems.Select(bi => new
+            {
+                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
+                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
+                CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
+                PassengerCountDeparture = b.BillItems.Count
+            }))
+            .Where(x => x.StationEndId != null)
+            .GroupBy(x => new
+            {
+                x.StationEndId,
+                x.CompanyName,
+                x.CompanyId
+            })
+            .Select(group => new
+            {
+                StationEndId = group.Key.StationEndId,
+                CompanyId = group.Key.CompanyId,
+                CompanyName = group.Key.CompanyName,
                 TotalPassengerCountDeparture = group.Sum(x => x.PassengerCountDeparture)
             })
             .ToList();
