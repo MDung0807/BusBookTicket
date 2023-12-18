@@ -352,6 +352,31 @@ public class BillService : IBillService
         return result;
     }
 
+    public async Task<object> RevenueStatistics(int companyId, int year)
+    {
+        BillSpecification billSpecification = new BillSpecification();
+        billSpecification.GetRevenue(companyId, year: year);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+        var result = bills
+            .Select(b => new
+            {
+                Revenue = b.TotalPrice,
+                CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
+                CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
+                Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month : 0 : 0
+            })
+            .GroupBy(x => new { x.CompanyId, x.CompanyName, x.Month})
+            .Select(group => new
+            {
+                CompanyId = group.Key.CompanyId,
+                CompanyName = group.Key.CompanyName,
+                Month = group.Key.Month,
+                TotalRevenue = group.Sum(b => b.Revenue) // Adjust this part based on your actual property
+            })
+            .ToList();
+        return result;
+    }
+
     #region  -- Private Method --
 
     private async Task<bool> ChangeBillCanDelete(int id)

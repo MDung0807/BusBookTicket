@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.BillManage.Paging;
 using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace BusBookTicket.BillManage.Specification;
@@ -57,4 +58,17 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         AddInclude(x => x.BusStationStart);
 
     }
+
+    public void GetRevenue(int companyId, int year)
+    {
+        Criteria = x => x.Status == (int)EnumsApp.Complete
+                        && x.BillItems.Any()
+            ? x.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Year == year : year == default;
+        CheckStatus = false;
+        AddInclude(b => b.BillItems);
+        AddInclude("BillItems.TicketItem.Ticket.TicketBusStops");
+        AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
+        // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
+    }
+
 }
