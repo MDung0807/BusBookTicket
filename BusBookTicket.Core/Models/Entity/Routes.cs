@@ -8,8 +8,10 @@ public class Routes : BaseEntity
 
     #region -- Relationships --
 
-    public BusStation BusStationStart;
-    public BusStation BusStationEnd;
+    public BusStation BusStationStart { get; set; }
+    public BusStation BusStationEnd { get; set; }
+    public RouteDetail RouteDetail { get; set; }
+    public Prices Prices { get; set; }
 
     #endregion -- Relationships --
 }

@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.AddressManage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusBookTicket.ReviewManage", "BusBookTicket.ReviewManage\BusBookTicket.ReviewManage.csproj", "{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBookTicket.RoutesManage", "BusBookTicket.RoutesManage\BusBookTicket.RoutesManage.csproj", "{4EEF4B46-4BFD-44C0-A331-28E697BD1AEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8B0AA5C-97DF-41B6-8D22-0DB9D8D1D2E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EEF4B46-4BFD-44C0-A331-28E697BD1AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EEF4B46-4BFD-44C0-A331-28E697BD1AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EEF4B46-4BFD-44C0-A331-28E697BD1AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EEF4B46-4BFD-44C0-A331-28E697BD1AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

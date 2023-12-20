@@ -11,6 +11,10 @@
         #endregion -- Properties --
 
         public HashSet<BusStop> BusStops { get; set; }
+        public HashSet<Routes> StationStart { get; set; }
+        public HashSet<Routes> StationEnd { get; set; }
+        public HashSet<RouteDetail> RouteDetails { get; set; }
+
         public Ward Ward { get; set; }
     }
 }

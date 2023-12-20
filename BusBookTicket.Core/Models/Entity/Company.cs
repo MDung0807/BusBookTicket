@@ -16,7 +16,9 @@
         public Account Account { get; set; }
         public HashSet<SeatType> SeatTypes { get; set; }
         public Ward Ward { get; set; }
-        public PriceClassification PriceClassification;
+        public PriceClassification PriceClassification { get; set; }
+        public HashSet<RouteDetail> RouteDetails { get; set; }
+        public HashSet<Prices> Prices { get; set; }
 
         #endregion -- Relationship --
 

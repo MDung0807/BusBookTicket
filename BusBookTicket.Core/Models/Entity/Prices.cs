@@ -4,8 +4,8 @@ public class Prices: BaseEntity
 {
     #region -- Relationship --
 
-    public Routes Routes;
-    public PriceClassification PriceClassification;
+    public Routes Routes { get; set; }
+    public Company Company { get; set; }
 
     #endregion -- Relationship --
 }
