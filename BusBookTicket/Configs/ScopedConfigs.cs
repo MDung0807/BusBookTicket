@@ -24,6 +24,7 @@ using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.ReviewManage.Services;
+using BusBookTicket.RoutesManage.Service;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -125,6 +126,13 @@ namespace BusBookTicket.Configs
             services.AddScoped<IReviewService, ReviewService>();
 
             #endregion -- Add Scoped Review --
+
+            #region -- Add Scoped Route --
+
+            services.AddScoped<IRoutesService, RoutesService>();
+            services.AddScoped<IRouteDetailService, RouteDetailService>();
+
+            #endregion -- Add Scoped Route --
         }
     }
 }
