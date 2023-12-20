@@ -78,6 +78,14 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// <param name="year"></param>
     /// <returns></returns>
     Task<object> RevenueStatistics(int companyId, int year);
+    
+    /// <summary>
+    /// Get Revenue Statistics in Company
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <param name="year"></param>
+    /// <returns></returns>
+    Task<object> RevenueStatisticsByQuarter(int companyId, int year);
 
     /// <summary>
     /// Get Statistics Station by admin
