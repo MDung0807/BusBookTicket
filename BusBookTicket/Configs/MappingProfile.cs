@@ -31,6 +31,8 @@ using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.ReviewManage.DTOs.Requests;
 using BusBookTicket.ReviewManage.DTOs.Responses;
+using BusBookTicket.RoutesManage.DTOs.Requests;
+using BusBookTicket.RoutesManage.DTOs.Responses;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
@@ -325,6 +327,17 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.Bus.Id));
 
             #endregion -- Review Module --
+
+            #region -- Route Modules --
+
+            CreateMap<RoutesCreate, Routes>();
+            CreateMap<Routes, RoutesResponse>();
+
+            CreateMap<RouteDetailCreate, RouteDetail>();
+            CreateMap<RouteDetail, RouteDetailResponse>();
+
+
+            #endregion -- Route Modules --
         }
     }
 }
