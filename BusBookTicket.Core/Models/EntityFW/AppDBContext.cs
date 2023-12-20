@@ -38,6 +38,12 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration<District>(new DistrictConfigs());
             modelBuilder.ApplyConfiguration<Images>(new ImgaesConfigs());
             modelBuilder.ApplyConfiguration<OtpCode>(new OtpCodeConfigs());
+            modelBuilder.ApplyConfiguration<PriceClassification>(new PriceClassificationConfig());
+            modelBuilder.ApplyConfiguration<Routes>(new RouteConfigs());
+            modelBuilder.ApplyConfiguration<RouteDetail>(new RouteDetailConfigs());
+            modelBuilder.ApplyConfiguration<StopStation>(new StopStationConfigs());
+            modelBuilder.ApplyConfiguration<Prices>(new PricesConfigs());
+            modelBuilder.ApplyConfiguration<Ticket_RouteDetail>(new Ticket_RouteDetailConfigs());
             
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -69,5 +75,12 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<District> Districts { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<OtpCode> OtpCodes { get; set; }
+        public DbSet<PriceClassification> PriceClassifications { get; set; }
+        public DbSet<Routes>Routes { get; set; }
+        public DbSet<RouteDetail>RouteDetails { get; set; }
+        public DbSet<StopStation>StopStations { get; set; }
+        public DbSet<Ticket_RouteDetail> TicketRouteDetails { get; set; }
+        public DbSet<Prices>Prices { get; set; }
+        
 }
 }

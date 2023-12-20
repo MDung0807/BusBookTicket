@@ -2,6 +2,7 @@
 
 public class PriceClassification : BaseEntity
 {
-    public Company Company;
-    public HashSet<StopStationDetail> StopStationDetails;
+    public Company Company { get; set; }
+    public HashSet<RouteDetail> StopStationDetails { get; set; }
+    public HashSet<Ticket> Tickets { get; set; }
 }

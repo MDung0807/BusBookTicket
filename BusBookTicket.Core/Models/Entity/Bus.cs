@@ -14,6 +14,7 @@ namespace BusBookTicket.Core.Models.Entity
         public HashSet<Review> Reviews { get; set; }
         public HashSet<Seat> Seats { get; set; }
         public HashSet<Ticket> Tickets { get; set; }
+        public HashSet<StopStation> StopStations { get; set; }
         #endregion -- Relationship --
 
     }

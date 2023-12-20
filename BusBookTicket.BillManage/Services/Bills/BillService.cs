@@ -377,6 +377,31 @@ public class BillService : IBillService
         return result;
     }
     
+    public async Task<object> RevenueStatisticsByQuarter(int companyId, int year)
+    {
+        BillSpecification billSpecification = new BillSpecification();
+        billSpecification.Statistics(year: year, companyId);
+        List<Bill> bills = await _repository.ToList(billSpecification);
+        var result = bills
+            .Select(b => new
+            {
+                Revenue = b.TotalPrice,
+                CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
+                CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
+                Quarter = GetQuarter(b, true)
+            })
+            .GroupBy(x => new { x.CompanyId, x.CompanyName, x.Quarter})
+            .Select(group => new
+            {
+                CompanyId = group.Key.CompanyId,
+                CompanyName = group.Key.CompanyName,
+                Month = group.Key.Quarter,
+                TotalRevenue = group.Sum(b => b.Revenue) // Adjust this part based on your actual property
+            })
+            .ToList();
+        return result;
+    }
+    
     public async Task<object> GetStatisticsStationByAdmin(int year, int take, bool desc = true)
     {
         BillSpecification billSpecification = new BillSpecification();
@@ -535,5 +560,33 @@ public class BillService : IBillService
         await _mailService.SendEmailAsync(mailRequest);
         return true;
     }
+
+    private int GetQuarter(Bill b, bool isQuarter = false)
+    {
+        int month =  b.BillItems.Any()
+            ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any()
+                ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month
+                : 0
+            : 0;
+        if (!isQuarter)
+            return month;
+        if (month >= 1 && month <= 3)
+        {
+            return 1; // Quý 1: Tháng 1, 2, 3
+        }
+        else if (month >= 4 && month <= 6)
+        {
+            return 2; // Quý 2: Tháng 4, 5, 6
+        }
+        else if (month >= 7 && month <= 9)
+        {
+            return 3; // Quý 3: Tháng 7, 8, 9
+        }
+        else
+        {
+            return 4; // Quý 4: Tháng 10, 11, 12
+        }
+    }
+
     #endregion -- Private Method --
 }

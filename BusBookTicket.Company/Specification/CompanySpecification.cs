@@ -17,6 +17,7 @@ public sealed class CompanySpecification : BaseSpecification<Company>
     {
         if (!getAll)
         {
+            AddInclude(x => x.Account);
             return;
         }
         AddInclude(x => x.Account);

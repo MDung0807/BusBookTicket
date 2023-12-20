@@ -8,6 +8,15 @@ public class RouteConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Routes>
 {
     public void Configure(EntityTypeBuilder<Routes> builder)
     {
-        
+        #region --Relationship --
+
+        builder.HasOne(x => x.BusStationStart)
+            .WithMany(x => x.StationStart)
+            .HasForeignKey("StationStartId");
+
+        builder.HasOne(x => x.BusStationEnd)
+            .WithMany(x => x.StationEnd)
+            .HasForeignKey("StationEndId");
+        #endregion --Relationship --
     }
 }
