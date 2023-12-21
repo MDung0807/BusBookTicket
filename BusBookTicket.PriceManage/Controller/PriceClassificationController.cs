@@ -41,7 +41,7 @@ public class PriceClassificationController : ControllerBase
     }
     
     [Authorize(Roles = AppConstants.COMPANY)]
-    [HttpPost("getInCompany")]
+    [HttpGet("getInCompany")]
     public async Task<IActionResult> GetInCompany([FromQuery] PriceClassificationPaging paging)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
