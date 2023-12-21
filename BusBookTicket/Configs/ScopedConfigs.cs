@@ -23,6 +23,7 @@ using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Services;
 using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.RoutesManage.Service;
@@ -138,6 +139,7 @@ namespace BusBookTicket.Configs
             #region -- Add Scoped Price --
 
             services.AddScoped<IPriceService, PriceService>();
+            services.AddScoped<IPriceClassificationService, PriceClassificationService>();
 
             #endregion -- Add Scoped Price --
         }
