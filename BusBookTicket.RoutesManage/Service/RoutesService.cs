@@ -50,6 +50,8 @@ public class RoutesService : IRoutesService
         Routes routes = _mapper.Map<Routes>(entity);
         try
         {
+            routes.Status = (int)EnumsApp.Active;
+
             await _repository.Create(routes, userId);
         }
         catch (Exception e)
