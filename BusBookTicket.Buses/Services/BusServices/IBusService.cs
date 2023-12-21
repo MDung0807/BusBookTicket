@@ -8,4 +8,6 @@ namespace BusBookTicket.Buses.Services.BusServices;
 public interface IBusService : IService<FormCreateBus, FormUpdateBus, int, BusResponse, BusPaging, BusPagingResult>
 {
     Task<BusResponse> AddBusStops(FormAddBusStop request, int userId);
+
+    Task<bool> RegisRouteDetail(int id, int routeDetailId, int userId);
 }
