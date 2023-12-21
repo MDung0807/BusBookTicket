@@ -11,8 +11,8 @@ public class PriceClassificationConfig : IEntityTypeConfiguration<PriceClassific
         #region -- Relationship --
 
         builder.HasOne(x => x.Company)
-            .WithOne(x => x.PriceClassification)
-            .HasForeignKey<PriceClassification>("CompanyId");
+            .WithMany(x => x.PriceClassifications)
+            .HasForeignKey("CompanyId");
 
         #endregion -- Relationship --
     }

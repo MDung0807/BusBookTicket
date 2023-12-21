@@ -344,7 +344,20 @@ namespace BusBookTicket.Configs
             #region -- Price Module --
 
             CreateMap<PriceCreate, Prices>();
-            CreateMap<Prices, PriceResponse>();
+            CreateMap<Prices, PriceResponse>()
+                .ForPath(dest => dest.CompanyId,
+                    opts => opts.MapFrom(x => x.Company.Id))
+                .ForPath(dest => dest.CompanyName,
+                    opts => opts.MapFrom(x => x.Company.Name));
+
+
+            CreateMap<PriceClassificationCreate, PriceClassification>();
+            CreateMap<PriceClassificationUpdate, PriceClassification>();
+            CreateMap<PriceClassification, PriceClassificationResponse>()
+                .ForPath(dest => dest.CompanyId,
+                    opts => opts.MapFrom(x => x.Company.Id))
+                .ForPath(dest => dest.CompanyName,
+                    opts => opts.MapFrom(x => x.Company.Name));
 
             #endregion -- Price Module --
         }
