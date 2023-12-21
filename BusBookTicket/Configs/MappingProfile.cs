@@ -29,6 +29,8 @@ using BusBookTicket.Ranks.DTOs.Requests;
 using BusBookTicket.Ranks.DTOs.Responses;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
+using BusBookTicket.PriceManage.DTOs.Requests;
+using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.ReviewManage.DTOs.Requests;
 using BusBookTicket.ReviewManage.DTOs.Responses;
 using BusBookTicket.RoutesManage.DTOs.Requests;
@@ -338,6 +340,13 @@ namespace BusBookTicket.Configs
 
 
             #endregion -- Route Modules --
+
+            #region -- Price Module --
+
+            CreateMap<PriceCreate, Prices>();
+            CreateMap<Prices, PriceResponse>();
+
+            #endregion -- Price Module --
         }
     }
 }

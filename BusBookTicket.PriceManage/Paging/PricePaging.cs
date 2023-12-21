@@ -1,6 +1,8 @@
-﻿namespace BusBookTicket.PriceManage.Paging;
+﻿using BusBookTicket.Core.Application.Paging;
 
-public class PricePaging
+namespace BusBookTicket.PriceManage.Paging;
+
+public class PricePaging: PagingRequest
 {
     
 }

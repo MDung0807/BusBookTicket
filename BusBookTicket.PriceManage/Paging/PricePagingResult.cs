@@ -1,6 +1,9 @@
-﻿namespace BusBookTicket.PriceManage.Paging;
+﻿using BusBookTicket.Core.Application.Paging;
+using BusBookTicket.PriceManage.DTOs.Responses;
 
-public class PricePagingResult
+namespace BusBookTicket.PriceManage.Paging;
+
+public class PricePagingResult : PagingResult<PriceResponse>
 {
     
 }

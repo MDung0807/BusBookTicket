@@ -1,6 +1,9 @@
-﻿namespace BusBookTicket.PriceManage.Validator;
+﻿using BusBookTicket.PriceManage.DTOs.Requests;
+using FluentValidation;
 
-public class PriceClassificationCreateValidator
+namespace BusBookTicket.PriceManage.Validator;
+
+public class PriceClassificationCreateValidator : AbstractValidator<PriceClassificationCreate>
 {
     
 }
