@@ -23,6 +23,7 @@ public class BusService : IBusService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Bus> _repository;
     private readonly IGenericRepository<BusStop> _busStopRepository;
+    private readonly IGenericRepository<StopStation> _stopStationRepository;
     #endregion -- Properties --
 
     public BusService(
@@ -39,6 +40,7 @@ public class BusService : IBusService
         this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Bus>();
         this._busStopRepository = unitOfWork.GenericRepository<BusStop>();
+        _stopStationRepository = unitOfWork.GenericRepository<StopStation>();
     }
     public async Task<BusResponse> GetById(int id)
     {
@@ -232,5 +234,12 @@ public class BusService : IBusService
         }
 
         return await GetById(request.Id);
+    }
+
+    public async Task<bool> RegisRouteDetail(int id, int routeDetailId, int userId)
+    {
+        StopStation stopStation = new StopStation();
+        await _stopStationRepository.Create(stopStation, userId: userId);
+        return true;
     }
 }

@@ -38,6 +38,7 @@
     <ProjectReference Include="..\BusBookTicket.Company\BusBookTicket.CompanyManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.Customer\BusBookTicket.CustomerManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.DiscountManage\BusBookTicket.DiscountManage.csproj" />
+    <ProjectReference Include="..\BusBookTicket.PriceManage\BusBookTicket.PriceManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.Ranks\BusBookTicket.Ranks.csproj" />
     <ProjectReference Include="..\BusBookTicket.BillManage\BusBookTicket.BillManage.csproj" />
     <ProjectReference Include="..\BusBookTicket.ReviewManage\BusBookTicket.ReviewManage.csproj" />

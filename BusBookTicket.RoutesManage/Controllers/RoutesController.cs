@@ -47,8 +47,8 @@ public class RoutesController : ControllerBase
     [HttpGet("getAll")]
     public async Task<IActionResult> GetAll([FromQuery] RoutesPaging paging)
     {
-        var responses = await _service.GetAll();
-        return Ok(new Response<List<RoutesResponse>>(false, responses));
+        var responses = await _service.GetAll(paging);
+        return Ok(new Response<RoutesPagingResult>(false, responses));
     }
     #endregion -- Controller --
 } 
