@@ -333,7 +333,15 @@ namespace BusBookTicket.Configs
             #region -- Route Modules --
 
             CreateMap<RoutesCreate, Routes>();
-            CreateMap<Routes, RoutesResponse>();
+            CreateMap<Routes, RoutesResponse>()
+                .ForPath(dest => dest.StationStartId, 
+                    opts=> opts.MapFrom(x => x.BusStationStart.Id))
+                .ForPath(dest => dest.StationStartName, 
+                    opts=> opts.MapFrom(x => x.BusStationStart.Name))
+                .ForPath(dest => dest.StationEndId, 
+                    opts=> opts.MapFrom(x => x.BusStationEnd.Id))
+                .ForPath(dest => dest.StationEndName, 
+                    opts=> opts.MapFrom(x => x.BusStationEnd.Name));
 
             CreateMap<RouteDetailCreate, RouteDetail>();
             CreateMap<RouteDetail, RouteDetailResponse>();

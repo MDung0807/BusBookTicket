@@ -47,6 +47,7 @@ public class RouteDetailService : IRouteDetailService
         foreach (var item in entity.Items)
         {
             RouteDetail detail = _mapper.Map<RouteDetail>(item);
+            detail.Status = (int)EnumsApp.Active;
             await _repository.Create(detail, userId);
         }
 
