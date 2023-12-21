@@ -51,7 +51,6 @@ public class RoutesService : IRoutesService
         try
         {
             routes.Status = (int)EnumsApp.Active;
-
             await _repository.Create(routes, userId);
         }
         catch (Exception e)
@@ -99,7 +98,7 @@ public class RoutesService : IRoutesService
 
     public async Task<RoutesPagingResult> GetAll(RoutesPaging pagingRequest)
     {
-        RouteSpecifications specifications = new RouteSpecifications(paging: pagingRequest);
+        RouteSpecifications specifications = new RouteSpecifications(paging: pagingRequest, checkStatus:false);
         List<Routes> routes = await _repository.ToList(specifications);
         int count = await _repository.Count(new RouteSpecifications());
         List<RoutesResponse> responses = await AppUtils.MapObject<Routes, RoutesResponse>(routes, _mapper);
