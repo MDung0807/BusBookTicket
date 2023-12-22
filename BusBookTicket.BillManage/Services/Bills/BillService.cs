@@ -13,6 +13,8 @@ using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.Specification;
+using BusBookTicket.RoutesManage.DTOs.Responses;
+using BusBookTicket.RoutesManage.Service;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
@@ -30,13 +32,15 @@ public class BillService : IBillService
     private readonly IMailService _mailService;
     private readonly IGenericRepository<Customer> _customerRepo;
     private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
+    private readonly IRouteDetailService _routeDetailService;
 
     public BillService(
         IMapper mapper,
         ITicketItemService itemService,
         IBillItemService billItemService,
         IUnitOfWork unitOfWork,
-        IMailService mailService
+        IMailService mailService,
+        IRouteDetailService routeDetailService
         )
     {
         _billItemService = billItemService;
@@ -47,6 +51,7 @@ public class BillService : IBillService
         _mailService = mailService;
         _customerRepo = unitOfWork.GenericRepository<Customer>();
         _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
+        _routeDetailService = routeDetailService;
 
     }
     public async Task<BillResponse> GetById(int id)
@@ -118,10 +123,11 @@ public class BillService : IBillService
             // Create bill
             Bill bill = _mapper.Map<Bill>(entity);
             CustomerSpecification customerSpecification = new CustomerSpecification(userId);
+            RouteDetailResponse detailStart = await _routeDetailService.GetById(entity.RouteDetailStartId);
+            RouteDetailResponse detailEnd = await _routeDetailService.GetById(entity.RouteDetailStartId);
 
-            Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
-            Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
-            
+            // Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
+            // Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
             bill.Customer = new Customer();
             bill.Customer.Id = userId;
             bill = await _repository.Create(bill, userId);
@@ -137,7 +143,7 @@ public class BillService : IBillService
                 // Change status in ticket item
                 await _ticketItemService.ChangeStatusToWaitingPayment(item.TicketItemId, userId);
 
-                bill.TotalPrice += ticketItem.Price + ticketBusStopStart.DiscountPrice + ticketBusStopEnd.DiscountPrice;
+                bill.TotalPrice += ticketItem.Price + (int)detailStart.DiscountPrice + (int)detailEnd.DiscountPrice;
                 
             }
 
@@ -150,12 +156,12 @@ public class BillService : IBillService
             Customer customer = await _customerRepo.Get(customerSpecification);
             //Send mail
             await SendMail(customer,
-                $"Bạn vừa có một hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation!.Name} đến {ticketBusStopEnd.BusStop.BusStation!.Name}",
+                $"Bạn vừa có một hóa đơn cho chuyến đi từ: {detailStart.BusStationName} đến {detailEnd.BusStationName}",
                 "Hóa đơn của bạn",
                 $"Giá: {bill.TotalPrice}"
             );
-            await SendMail(ticketBusStopStart.Ticket.Bus.Company,
-                $"Khách hàng: {customer.FullName} đã đặt hóa đơn cho chuyến đi từ: {ticketBusStopStart.BusStop.BusStation!.Name} đến {ticketBusStopEnd.BusStop.BusStation!.Name}",
+            await SendMail(detailStart.CompanyId,
+                $"Khách hàng: {customer.FullName} đã đặt hóa đơn cho chuyến đi từ: {detailStart.BusStationName} đến {detailEnd.BusStationName}",
                 "Thần tài đến",
                 $"Giá: {bill.TotalPrice}"
             );

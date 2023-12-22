@@ -7,10 +7,10 @@ public class BillRequestValidator : AbstractValidator<BillRequest>
 {
     public BillRequestValidator()
     {
-        RuleFor(x => x.BusStationStartId)
+        RuleFor(x => x.RouteDetailStartId)
             .GreaterThan(0).WithMessage("must greater 0");
         
-        RuleFor(x => x.BusStationEndId)
+        RuleFor(x => x.RouteDetailEndId)
             .GreaterThan(0).WithMessage("must greater 0");
         
         // RuleFor(x => x.DiscountId)

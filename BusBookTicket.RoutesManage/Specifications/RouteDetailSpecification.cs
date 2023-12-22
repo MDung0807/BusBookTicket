@@ -8,10 +8,11 @@ namespace BusBookTicket.RoutesManage.Specifications;
 
 public sealed class RouteDetailSpecification : BaseSpecification<RouteDetail>
 {
-    public RouteDetailSpecification(int routeId = default, int companyId = default, bool checkStatus = true,
+    public RouteDetailSpecification(int id = default, int routeId = default, int companyId = default, bool checkStatus = true,
         bool isGetChangeStatus = false, RouteDetailPaging paging = null)
-        : base(x => (routeId == default || x.Routes.Id == routeId)
-        && (companyId == default || x.Company.Id == companyId), checkStatus)
+        : base(x =>  (id == default || x.Id == id)
+            && (routeId == default || x.Routes.Id == routeId)
+            && (companyId == default || x.Company.Id == companyId), checkStatus)
     {
         if (isGetChangeStatus)
         {

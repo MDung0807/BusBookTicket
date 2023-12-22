@@ -22,9 +22,11 @@ public class RouteDetailService : IRouteDetailService
         _unitOfWork = unitOfWork;
         _repository = unitOfWork.GenericRepository<RouteDetail>();
     }
-    public Task<RouteDetailResponse> GetById(int id)
+    public async Task<RouteDetailResponse> GetById(int id)
     {
-        throw new NotImplementedException();
+        RouteDetailSpecification specification = new RouteDetailSpecification(id: id);
+        RouteDetail detail = await _repository.Get(specification);
+        return _mapper.Map<RouteDetailResponse>(detail);
     }
 
     public Task<List<RouteDetailResponse>> GetAll()

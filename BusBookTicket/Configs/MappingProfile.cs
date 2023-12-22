@@ -133,10 +133,10 @@ namespace BusBookTicket.Configs
             #region -- Configs Bill Module --
 
             CreateMap<BillRequest, Bill>()
-                .ForPath(dest => dest.BusStationStart.Id,
-                    opts => opts.MapFrom(x => x.BusStationStartId))
-                .ForPath(dest => dest.BusStationEnd.Id,
-                    opts => opts.MapFrom(x => x.BusStationEndId))
+                .ForPath(dest => dest.RouteDetailStart.RouteDetail.Id,
+                    opts => opts.MapFrom(x => x.RouteDetailStartId))
+                .ForPath(dest => dest.RouteDetailEnd.RouteDetail.Id,
+                    opts => opts.MapFrom(x => x.RouteDetailEndId))
                 .ForPath(dest => dest.Discount.Id,
                     opts => opts.MapFrom(x => x.DiscountId));
                 
