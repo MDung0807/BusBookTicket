@@ -349,7 +349,17 @@ namespace BusBookTicket.Configs
                     opts=> opts.MapFrom(x => x.BusStationEnd.Name));
 
             CreateMap<RouteDetailCreateItem, RouteDetail>();
-            CreateMap<RouteDetail, RouteDetailResponse>();
+            CreateMap<RouteDetail, RouteDetailResponse>()
+                .ForPath(dest => dest.CompanyId,
+                    opts => opts.MapFrom(x => x.Company.Id))
+                .ForPath(dest => dest.CompanyName,
+                    opts => opts.MapFrom(x => x.Company.Name))
+                .ForPath(dest => dest.BusStationId,
+                    opts => opts.MapFrom(x => x.Station.Id))
+                .ForPath(dest => dest.BusStationName,
+                    opts => opts.MapFrom(x => x.Station.Name))
+                .ForPath(dest => dest.RouteId,
+                    opts => opts.MapFrom(x => x.Routes.Id));
 
 
             #endregion -- Route Modules --

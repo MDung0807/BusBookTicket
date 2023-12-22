@@ -48,6 +48,18 @@ public class RouteDetailService : IRouteDetailService
         {
             RouteDetail detail = _mapper.Map<RouteDetail>(item);
             detail.Status = (int)EnumsApp.Active;
+            detail.Company = new Company
+            {
+                Id = userId
+            };
+            detail.Routes = new Routes
+            {
+                Id = item.RouteId
+            };
+            detail.Station = new BusStation
+            {
+                Id = item.BusStationId
+            };
             await _repository.Create(detail, userId);
         }
 
