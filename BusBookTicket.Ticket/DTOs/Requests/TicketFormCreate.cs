@@ -6,15 +6,18 @@ namespace BusBookTicket.Ticket.DTOs.Requests;
 public class TicketFormCreate
 {
     public int BusId { get; set; }
-    public int Price { get; set; }
+    public DateOnly Date { get; set; }
+    public int PriceClassificationId { get; set; }
     public List<TicketStationDto> TicketStations { get; set; }
 }
 
 public class TicketStationDto
 {
-    public int IndexStation { get; set; }
-    public DateTime DepartureTime { get; set; }
-    public DateTime ArrivalTime { get; set; }
-    public int DiscountPrice { get; set; }
-    public int BusStopId { get; set; }
+    // public int IndexStation { get; set; }
+    // public DateTime DepartureTime { get; set; }
+    // public DateTime ArrivalTime { get; set; }
+    // public int DiscountPrice { get; set; }
+    // public int BusStopId { get; set; }
+    
+    public int RouteDetailId { get; set; }
 }

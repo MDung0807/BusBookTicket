@@ -10,6 +10,10 @@ using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
+using BusBookTicket.PriceManage.DTOs.Responses;
+using BusBookTicket.PriceManage.Services;
+using BusBookTicket.RoutesManage.DTOs.Responses;
+using BusBookTicket.RoutesManage.Service;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;
@@ -33,6 +37,11 @@ public class TicketService : ITicketService
     private readonly IImageService _imageService;
     private readonly IWardService _wardService;
     private readonly IMailService _mailService;
+    private readonly IGenericRepository<Ticket_RouteDetail> _ticketRouteDetail;
+    private readonly IRouteDetailService _routeDetail;
+    private readonly IPriceService _priceService;
+    private readonly IPriceClassificationService _priceClassification;
+
     #endregion -- Properties --
 
     public TicketService(
@@ -41,7 +50,10 @@ public class TicketService : ITicketService
         IUnitOfWork unitOfWork,
         IImageService imageService,
         IWardService wardService,
-        IMailService mailService)
+        IMailService mailService,
+        IRouteDetailService routeDetailService,
+        IPriceService priceService,
+        IPriceClassificationService priceClassificationService)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -53,6 +65,10 @@ public class TicketService : ITicketService
         _imageService = imageService;
         _wardService = wardService;
         _mailService = mailService;
+        _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
+        _routeDetail = routeDetailService;
+        _priceClassification = priceClassificationService;
+        _priceService = priceService;
     }
     
     public async Task<TicketResponse> GetById(int id)
@@ -124,28 +140,60 @@ public class TicketService : ITicketService
 
     public async Task<bool> Create(TicketFormCreate entity, int userId)
     {
-        if (!await CheckTicketIsExist(entity.BusId, entity.TicketStations))
+        if (!await CheckTicketIsExist(entity.BusId, entity))
             throw new ExceptionDetail(TicketConstants.TICKET_EXIST);
         await _unitOfWork.BeginTransaction();
         try
         {
             //Create Ticket
             Core.Models.Entity.Ticket ticket = _mapper.Map<Core.Models.Entity.Ticket>(entity);
-            ticket.Date = entity.TicketStations[0].DepartureTime;
+            
+            PriceClassificationResponse priceClassificationResponse =
+                await _priceClassification.GetById(entity.PriceClassificationId);
+            RouteDetailResponse response = await _routeDetail.GetById(entity.TicketStations[0].RouteDetailId);
+            PriceResponse priceResponse = await _priceService.GetInRoute(response.RouteId, userId);
+
+            ticket.Date = new DateTime(
+                entity.Date.Year, entity.Date.Month, entity.Date.Day, response.DepartureTime.Hour,
+                response.DepartureTime.Minute, response.DepartureTime.Microsecond);
             ticket.Status = (int)EnumsApp.Active;
             ticket = await _repository.Create(ticket, userId);
 
-            Ticket_BusStop ticketBusStop = new Ticket_BusStop();
+            // Ticket_BusStop ticketBusStop = new Ticket_BusStop();
+            // foreach (var ticketStation in entity.TicketStations)
+            // {
+            //     ticketBusStop = _mapper.Map<Ticket_BusStop>(ticketStation);
+            //     ticketBusStop.Status = (int)EnumsApp.Active;
+            //     ticketBusStop.Ticket = new Core.Models.Entity.Ticket
+            //     {
+            //         Id = ticket.Id
+            //     };
+            //     await _ticketBusStop.Create(ticketBusStop, userId);
+            // }
+
             foreach (var ticketStation in entity.TicketStations)
             {
-                ticketBusStop = _mapper.Map<Ticket_BusStop>(ticketStation);
-                ticketBusStop.Status = (int)EnumsApp.Active;
-                ticketBusStop.Ticket = new Core.Models.Entity.Ticket
-                {
-                    Id = ticket.Id
-                };
-                await _ticketBusStop.Create(ticketBusStop, userId);
+                Ticket_RouteDetail ticketRouteDetail = new Ticket_RouteDetail();
+                ticketRouteDetail.RouteDetail.Id = ticketStation.RouteDetailId;
+                ticketRouteDetail.Ticket.Id = ticket.Id;
+                ticketRouteDetail.Status = (int)EnumsApp.Active;
+                
+                RouteDetailResponse routeDetailResponse = await _routeDetail.GetById(ticketStation.RouteDetailId);
+                DateOnly date = entity.Date;
+                date.AddDays(routeDetailResponse.AddDay);
+                
+                ticketRouteDetail.DepartureTime = new DateTime(date.Year, date.Month, date.Day,
+                    routeDetailResponse.DepartureTime.Hour, routeDetailResponse.DepartureTime.Minute,
+                    routeDetailResponse.DepartureTime.Microsecond);
+                
+                ticketRouteDetail.ArrivalTime = new DateTime(date.Year, date.Month, date.Day,
+                    routeDetailResponse.DepartureTime.Hour, routeDetailResponse.DepartureTime.Minute,
+                    routeDetailResponse.DepartureTime.Microsecond);
+
+                await _ticketRouteDetail.Create(ticketRouteDetail, userId);
             }
+
+            
             
             // Create TicketItem
             TicketSpecification ticketSpecification = new TicketSpecification(ticket.Id, checkStatus: false, getIsChangeStatus: false);
@@ -158,7 +206,9 @@ public class TicketService : ITicketService
             {
                 if (seat.Status != (int)EnumsApp.Active && seat.Status != (int)EnumsApp.AwaitingPayment)
                     throw new ExceptionDetail();
-                await CreateItem(seat, ticket.Id, userId, entity.Price);
+                double price = seat.Price;
+                price += (priceResponse.Price + priceResponse.Price * priceClassificationResponse.Value);
+                await CreateItem(seat, ticket.Id, userId, (int)price);
             }
 
             SendMail(
@@ -330,17 +380,18 @@ public class TicketService : ITicketService
         return stationResponses;
     }
 
-    private async Task<bool> CheckTicketIsExist(int busId, List<TicketStationDto> ticketStationDtos)
+    private async Task<bool> CheckTicketIsExist(int busId, TicketFormCreate request)
     {
-        DateTime dePartureTime = ticketStationDtos[0].DepartureTime;
-        foreach (var item in ticketStationDtos)
-        {
-            if (item.DepartureTime < dePartureTime)
-                dePartureTime = item.DepartureTime;
-        }
-        TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: dePartureTime);
-        bool status = await _repository.Contains(ticketSpecification);
-        return !status;
+        // int stationStartId = request.TicketStations[0].RouteDetailId;
+        // foreach (var item in ticketStationDtos)
+        // {
+        //     if (item.DepartureTime < dePartureTime)
+        //         dePartureTime = item.DepartureTime;
+        // }
+        // TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: dePartureTime);
+        // bool status = await _repository.Contains(ticketSpecification);
+        // return !status;
+        return true;
     }
     
     private async Task<bool> SendMail(Core.Models.Entity.Ticket ticket, string message, string subject, string content)

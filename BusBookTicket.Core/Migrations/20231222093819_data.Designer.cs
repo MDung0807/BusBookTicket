@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231222051529_newVer4")]
-    partial class newVer4
+    [Migration("20231222093819_data")]
+    partial class data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1001,8 +1001,8 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("AddDay")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("ArrivalTime")
+                        .HasColumnType("time");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -1016,8 +1016,8 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime>("DateUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("DepartureTime")
+                        .HasColumnType("time");
 
                     b.Property<double>("DiscountPrice")
                         .HasColumnType("float");
@@ -1364,6 +1364,9 @@ namespace BusBookTicket.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("ArrivalTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("CreateBy")
                         .HasColumnType("int");
 
@@ -1371,6 +1374,9 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("RouteDetail Id")
