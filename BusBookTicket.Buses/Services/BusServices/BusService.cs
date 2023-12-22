@@ -236,7 +236,7 @@ public class BusService : IBusService
         return await GetById(request.Id);
     }
 
-    public async Task<bool> RegisRouteDetail(int id, int routeId, int userId)
+    public async Task<bool> RegisRoute(int id, int routeId, int userId)
     {
         StopStation stopStation = new StopStation
         {

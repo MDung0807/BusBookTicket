@@ -122,7 +122,7 @@ public class BusController : ControllerBase
     public async Task<IActionResult> RegisterRoute([FromQuery] int id, int routeId)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        bool status = await _busService.Delete(id, userId);
+        bool status = await _busService.RegisRoute(id, routeId, userId);
         return Ok(new Response<string>(!status, "AppConstants"));
     }
     #endregion -- Controller --

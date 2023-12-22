@@ -9,5 +9,5 @@ public interface IBusService : IService<FormCreateBus, FormUpdateBus, int, BusRe
 {
     Task<BusResponse> AddBusStops(FormAddBusStop request, int userId);
 
-    Task<bool> RegisRouteDetail(int id, int routeId, int userId);
+    Task<bool> RegisRoute(int id, int routeId, int userId);
 }
