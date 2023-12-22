@@ -13,9 +13,9 @@ public class StopStationConfigs : BaseEntityConfigs, IEntityTypeConfiguration<St
             .HasForeignKey("BusId");
         
 
-        builder.HasOne(x => x.RouteDetail)
-            .WithOne(x => x.StopStation)
-            .HasForeignKey("RouteDetail");
+        builder.HasOne(x => x.Route)
+            .WithMany(x => x.StopStations)
+            .HasForeignKey("RouteId");
 
     }
 }

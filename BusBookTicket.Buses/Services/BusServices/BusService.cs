@@ -236,9 +236,20 @@ public class BusService : IBusService
         return await GetById(request.Id);
     }
 
-    public async Task<bool> RegisRouteDetail(int id, int routeDetailId, int userId)
+    public async Task<bool> RegisRouteDetail(int id, int routeId, int userId)
     {
-        StopStation stopStation = new StopStation();
+        StopStation stopStation = new StopStation
+        {
+            Status = (int)EnumsApp.Active,
+            Route =
+            {
+                Id = routeId
+            },
+            Bus =
+            {
+                Id = id
+            }
+        };
         await _stopStationRepository.Create(stopStation, userId: userId);
         return true;
     }

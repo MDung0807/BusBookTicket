@@ -119,7 +119,7 @@ public class BusController : ControllerBase
     
     [HttpDelete("registerRoute")]
     [Authorize(Roles = AppConstants.COMPANY)]
-    public async Task<IActionResult> RegisterRoute([FromQuery] int id, int routeDetailId)
+    public async Task<IActionResult> RegisterRoute([FromQuery] int id, int routeId)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busService.Delete(id, userId);
