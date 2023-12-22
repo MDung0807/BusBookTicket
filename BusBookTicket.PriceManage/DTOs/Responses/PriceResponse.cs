@@ -7,4 +7,5 @@ public class PriceResponse
     public double Surcharges { get; set; }
     public double Price { get; set; }
     public string CompanyName { get; set; }
+    public int Status { get; set; }
 }

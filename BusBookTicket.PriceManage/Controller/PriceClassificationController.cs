@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusBookTicket.PriceManage.Controller;
 
 [ApiController]
-[Route("api/PriceClassification")]
+[Route("api/PriceClassifications")]
 public class PriceClassificationController : ControllerBase
 {
     private readonly IPriceClassificationService _service;
