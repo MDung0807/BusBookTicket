@@ -54,9 +54,12 @@ public class PriceClassificationService : IPriceClassificationService
         return true;
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        PriceClassificationSpecification specification = new PriceClassificationSpecification(id: id, checkStatus: false, getIsChangeStatus: true);
+        PriceClassification priceClassification = await _repository.Get(specification);
+        await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Active);
+        return true;
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -64,9 +67,12 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeToWaiting(int id, int userId)
+    public async Task<bool> ChangeToWaiting(int id, int userId)
     {
-        throw new NotImplementedException();
+        PriceClassificationSpecification specification = new PriceClassificationSpecification(id: id, checkStatus: false, getIsChangeStatus: true);
+        PriceClassification priceClassification = await _repository.Get(specification);
+        await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Waiting);
+        return true;
     }
 
     public Task<bool> ChangeToDisable(int id, int userId)
@@ -84,9 +90,20 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
-    public Task<PriceClassificationPagingResult> GetAllByAdmin(PriceClassificationPaging pagingRequest)
+    public async Task<PriceClassificationPagingResult> GetAllByAdmin(PriceClassificationPaging pagingRequest)
     {
-        throw new NotImplementedException();
+        PriceClassificationSpecification specification =
+            new PriceClassificationSpecification(getIsChangeStatus: true, checkStatus: false, paging: pagingRequest);
+        List<PriceClassification> priceClassifications = await _repository.ToList(specification);
+        int count = await _repository.Count(new PriceClassificationSpecification(getIsChangeStatus: true, checkStatus:false));
+
+        var result = AppUtils.ResultPaging<PriceClassificationPagingResult, PriceClassificationResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<PriceClassification, PriceClassificationResponse>(priceClassifications,
+                _mapper));
+        return result;
     }
 
     public Task<PriceClassificationPagingResult> GetAll(PriceClassificationPaging pagingRequest)

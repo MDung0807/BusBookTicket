@@ -48,5 +48,32 @@ public class PriceClassificationController : ControllerBase
         var result = await _service.GetAll(paging, userId);
         return Ok(new Response<PriceClassificationPagingResult>(false,result));
     }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpPut("ChangeIsActive")]
+    public async Task<IActionResult> ChangeIsActive([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.ChangeIsActive(id, userId);
+        return Ok(new Response<string>(!result, AppConstants.SUCCESS));
+    }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpPut("ChangeIsWaiting")]
+    public async Task<IActionResult> ChangeIsWaiting([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.ChangeToWaiting(id, userId);
+        return Ok(new Response<string>(!result, AppConstants.SUCCESS));
+    }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll([FromQuery] PriceClassificationPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.GetAllByAdmin(paging);
+        return Ok(new Response<PriceClassificationPagingResult>(false, result));
+    }
     #endregion -- Controller --
 }
