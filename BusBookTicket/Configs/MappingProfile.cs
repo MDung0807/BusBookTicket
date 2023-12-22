@@ -257,9 +257,9 @@ namespace BusBookTicket.Configs
             CreateMap<TicketItem, TicketItemResponse>();
             
             //Ticket BusStop
-            CreateMap<TicketStationDto, Ticket_BusStop>()
-                .ForPath(dest => dest.BusStop.Id,
-                    opts => opts.MapFrom(x => x.BusStopId));
+            // CreateMap<TicketStationDto, Ticket_BusStop>()
+            //     .ForPath(dest => dest.BusStop.Id,
+            //         opts => opts.MapFrom(x => x.BusStopId));
             #endregion -- Configs Ticket Module --
             
             #region -- Address Module --
@@ -356,7 +356,9 @@ namespace BusBookTicket.Configs
 
             #region -- Price Module --
 
-            CreateMap<PriceCreate, Prices>();
+            CreateMap<PriceCreate, Prices>()
+                .ForPath(x => x.Routes.Id, 
+                    opts => opts.MapFrom(x => x.RouteId));
             CreateMap<Prices, PriceResponse>()
                 .ForPath(dest => dest.CompanyId,
                     opts => opts.MapFrom(x => x.Company.Id))
