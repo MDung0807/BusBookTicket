@@ -8,4 +8,5 @@ public class PriceResponse
     public double Price { get; set; }
     public string CompanyName { get; set; }
     public int Status { get; set; }
+    public int Id { get; set; }
 }
