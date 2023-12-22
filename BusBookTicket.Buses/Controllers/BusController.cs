@@ -125,5 +125,7 @@ public class BusController : ControllerBase
         bool status = await _busService.RegisRoute(id, routeId, userId);
         return Ok(new Response<string>(!status, "AppConstants"));
     }
+    
+    
     #endregion -- Controller --
 }
