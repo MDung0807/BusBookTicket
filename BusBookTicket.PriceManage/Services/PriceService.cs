@@ -45,6 +45,7 @@ public class PriceService : IPriceService
     public async Task<bool> Create(PriceCreate entity, int userId)
     {
         Prices price = _mapper.Map<Prices>(entity);
+        price.Company.Id = userId;
         await _repository.Create(price, userId: userId);
         return true;
     }
