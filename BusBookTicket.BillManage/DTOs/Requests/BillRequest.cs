@@ -7,8 +7,8 @@ namespace BusBookTicket.BillManage.DTOs.Requests;
 public class BillRequest
 {
     public DateTime DateDeparture { get; set; }
-    public int BusStationStartId { get; set; }
-    public int BusStationEndId { get; set; }
+    public int TicketRouteDetailStartId { get; set; }
+    public int TicketRouteDetailEndId { get; set; }
     public int DiscountId { get; set; } 
     public List<BillItemRequest> ItemsRequest { get; set; }
 }

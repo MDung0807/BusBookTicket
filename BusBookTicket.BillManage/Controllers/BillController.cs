@@ -59,7 +59,6 @@ public class BillController : ControllerBase
         BillPagingResult billResponse = await _billService.GetAllBillInUser(paging, userId);
         return Ok(new Response<BillPagingResult>(false, billResponse));
     }
-    #endregion -- Controller --
 
     [HttpPut("changeCompleteStatus")]
     [Authorize(Roles = AppConstants.COMPANY)]
@@ -141,4 +140,5 @@ public class BillController : ControllerBase
         object result = await _billService.GetStatisticsStationByCompany(userId, year, take, desc);
         return Ok(new Response<object>(false, result));
     }
+    #endregion -- Controller --
 }

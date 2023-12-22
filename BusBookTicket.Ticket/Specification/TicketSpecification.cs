@@ -110,7 +110,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     public TicketSpecification(int busId, DateTime departureTime= default)
     {
         Criteria = x => x.Bus.Id == busId &&
-            x.TicketBusStops.Any(p => p.DepartureTime <= departureTime &&
+            x.TicketRouteDetails.Any(p => p.DepartureTime <= departureTime &&
                                       p.ArrivalTime>= departureTime);
         
         AddInclude(x => x.TicketBusStops);

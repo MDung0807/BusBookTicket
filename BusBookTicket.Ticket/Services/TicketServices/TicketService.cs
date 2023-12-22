@@ -382,15 +382,15 @@ public class TicketService : ITicketService
 
     private async Task<bool> CheckTicketIsExist(int busId, TicketFormCreate request)
     {
-        // int stationStartId = request.TicketStations[0].RouteDetailId;
-        // foreach (var item in ticketStationDtos)
-        // {
-        //     if (item.DepartureTime < dePartureTime)
-        //         dePartureTime = item.DepartureTime;
-        // }
-        // TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: dePartureTime);
-        // bool status = await _repository.Contains(ticketSpecification);
-        // return !status;
+        int stationStartId = request.TicketStations[0].RouteDetailId;
+        RouteDetailResponse detailResponse = await _routeDetail.GetById(stationStartId);
+        DateTime departureTime = new DateTime(
+            request.Date.Year, request.Date.Month, request.Date.Day,
+            detailResponse.DepartureTime.Hours, detailResponse.DepartureTime.Minutes,
+            detailResponse.DepartureTime.Microseconds);
+        TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: departureTime);
+        bool status = await _repository.Contains(ticketSpecification);
+        return !status;
         return true;
     }
     
