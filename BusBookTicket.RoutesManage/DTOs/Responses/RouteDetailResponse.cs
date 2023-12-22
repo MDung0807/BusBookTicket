@@ -5,8 +5,8 @@ public class RouteDetailResponse
     public int RouteId { get; set; }
     public int Id { get; set; }
     public int IndexStation { get; set; }
-    public DateTime ArrivalTime { get; set; }
-    public DateTime DepartureTime { get; set; }
+    public TimeSpan ArrivalTime { get; set; }
+    public TimeSpan DepartureTime { get; set; }
     public int AddDay { get; set; }
     public double DiscountPrice { get; set; }
     public int CompanyId { get; set; }

@@ -154,8 +154,8 @@ public class TicketService : ITicketService
             PriceResponse priceResponse = await _priceService.GetInRoute(response.RouteId, userId);
 
             ticket.Date = new DateTime(
-                entity.Date.Year, entity.Date.Month, entity.Date.Day, response.DepartureTime.Hour,
-                response.DepartureTime.Minute, response.DepartureTime.Microsecond);
+                entity.Date.Year, entity.Date.Month, entity.Date.Day, response.DepartureTime.Hours,
+                response.DepartureTime.Minutes, response.DepartureTime.Microseconds);
             ticket.Status = (int)EnumsApp.Active;
             ticket = await _repository.Create(ticket, userId);
 
@@ -183,12 +183,12 @@ public class TicketService : ITicketService
                 date.AddDays(routeDetailResponse.AddDay);
                 
                 ticketRouteDetail.DepartureTime = new DateTime(date.Year, date.Month, date.Day,
-                    routeDetailResponse.DepartureTime.Hour, routeDetailResponse.DepartureTime.Minute,
-                    routeDetailResponse.DepartureTime.Microsecond);
+                    routeDetailResponse.DepartureTime.Hours, routeDetailResponse.DepartureTime.Minutes,
+                    routeDetailResponse.DepartureTime.Microseconds);
                 
                 ticketRouteDetail.ArrivalTime = new DateTime(date.Year, date.Month, date.Day,
-                    routeDetailResponse.DepartureTime.Hour, routeDetailResponse.DepartureTime.Minute,
-                    routeDetailResponse.DepartureTime.Microsecond);
+                    routeDetailResponse.DepartureTime.Hours, routeDetailResponse.DepartureTime.Minutes,
+                    routeDetailResponse.DepartureTime.Microseconds);
 
                 await _ticketRouteDetail.Create(ticketRouteDetail, userId);
             }
