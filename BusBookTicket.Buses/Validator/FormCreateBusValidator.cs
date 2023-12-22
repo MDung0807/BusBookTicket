@@ -20,7 +20,7 @@ public class FormCreateBusValidator : AbstractValidator<FormCreateBus>
             .NotEmpty().WithMessage("is required")
             .GreaterThan(0).WithMessage("is greater than 0");
         
-        RuleForEach(x => x.ListBusStopId)
+        RuleForEach(x => x.ListRouteId)
             .GreaterThan(0).WithMessage("is greater than 0");
 
         RuleFor(x => x.BusNumber);

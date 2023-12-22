@@ -94,16 +94,26 @@ public class BusService : IBusService
             bus.Status = (int)EnumsApp.Active;
             bus = await _repository.Create(bus, userId);
             
-            foreach (int stationID in entity.ListBusStopId)
+            // foreach (int stationID in entity.ListBusStopId)
+            // {
+            //     BusStop busStop = new BusStop();
+            //     busStop.BusStation ??= new BusStation();
+            //     busStop.BusStation.Id = stationID;
+            //     busStop.Bus ??= new Bus();
+            //     busStop.Bus.Id= bus.Id;
+            //     busStop.Bus.Status = (int)EnumsApp.Active;
+            //
+            //     await _busStopRepository.Create(busStop, userId);
+            // }
+            //
+            foreach (int routeId in entity.ListRouteId)
             {
-                BusStop busStop = new BusStop();
-                busStop.BusStation ??= new BusStation();
-                busStop.BusStation.Id = stationID;
-                busStop.Bus ??= new Bus();
-                busStop.Bus.Id= bus.Id;
-                busStop.Bus.Status = (int)EnumsApp.Active;
-
-                await _busStopRepository.Create(busStop, userId);
+                StopStation stopStation = new StopStation();
+                stopStation.Status = (int)EnumsApp.Active;
+                stopStation.Bus.Id = bus.Id;
+                stopStation.Route.Id = routeId;
+            
+                await _stopStationRepository.Create(stopStation, userId: userId);
             }
             
             int totalSeat = busType.TotalSeats == 0? 0: busType.TotalSeats;
