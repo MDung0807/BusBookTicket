@@ -94,9 +94,9 @@ public class PriceService : IPriceService
     public async Task<PricePagingResult> GetAllByAdmin(PricePaging pagingRequest)
     {
         PriceSpecification specification =
-            new PriceSpecification(getIsChange: true, checkStatus: false, paging: pagingRequest);
+            new PriceSpecification(checkStatus: false, paging: pagingRequest);
         List<Prices> prices = await _repository.ToList(specification);
-        int count = await _repository.Count(new PriceSpecification(getIsChange: true, checkStatus:false));
+        int count = await _repository.Count(new PriceSpecification(checkStatus:false));
 
         var result = AppUtils.ResultPaging<PricePagingResult, PriceResponse>(
             pagingRequest.PageIndex,
@@ -114,7 +114,7 @@ public class PriceService : IPriceService
 
     public async Task<PricePagingResult> GetAll(PricePaging pagingRequest, int idMaster)
     {
-        PriceSpecification specification = new PriceSpecification(companyId:idMaster, paging: pagingRequest);
+        PriceSpecification specification = new PriceSpecification(companyId:idMaster, paging: pagingRequest, checkStatus:false);
         int count = await _repository.Count(new PriceSpecification(companyId: idMaster));
         List<Prices> pricesList = await _repository.ToList(specification);
 

@@ -93,9 +93,9 @@ public class PriceClassificationService : IPriceClassificationService
     public async Task<PriceClassificationPagingResult> GetAllByAdmin(PriceClassificationPaging pagingRequest)
     {
         PriceClassificationSpecification specification =
-            new PriceClassificationSpecification(getIsChangeStatus: true, checkStatus: false, paging: pagingRequest);
+            new PriceClassificationSpecification(checkStatus: false, paging: pagingRequest);
         List<PriceClassification> priceClassifications = await _repository.ToList(specification);
-        int count = await _repository.Count(new PriceClassificationSpecification(getIsChangeStatus: true, checkStatus:false));
+        int count = await _repository.Count(new PriceClassificationSpecification(checkStatus:false));
 
         var result = AppUtils.ResultPaging<PriceClassificationPagingResult, PriceClassificationResponse>(
             pagingRequest.PageIndex,
