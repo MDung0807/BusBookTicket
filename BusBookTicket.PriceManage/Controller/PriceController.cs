@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.Auth.Security;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.PriceManage.DTOs.Requests;
 using BusBookTicket.PriceManage.DTOs.Responses;
@@ -76,5 +77,14 @@ public class PriceController: ControllerBase
         var result = await _service.ChangeToWaiting(id, userId);
         return Ok(new Response<string>(!result, AppConstants.SUCCESS));
     }
+
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll([FromQuery] PricePaging paging)
+    {
+        var result = await _service.GetAllByAdmin(paging);
+        return Ok(new Response<PricePagingResult>(false, result));
+    }
+
     #endregion -- Controller --
 }

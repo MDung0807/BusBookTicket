@@ -6,6 +6,8 @@ using BusBookTicket.PriceManage.DTOs.Requests;
 using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Paging;
 using BusBookTicket.PriceManage.Specification;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BusBookTicket.PriceManage.Services;
 
@@ -87,9 +89,21 @@ public class PriceService : IPriceService
         throw new NotImplementedException();
     }
 
-    public Task<PricePagingResult> GetAllByAdmin(PricePaging pagingRequest)
+
+    public async Task<PricePagingResult> GetAllByAdmin(PricePaging pagingRequest)
     {
-        throw new NotImplementedException();
+        PriceSpecification specification =
+            new PriceSpecification(getIsChange: true, checkStatus: false, paging: pagingRequest);
+        List<Prices> prices = await _repository.ToList(specification);
+        int count = await _repository.Count(new PriceSpecification(getIsChange: true, checkStatus:false));
+
+        var result = AppUtils.ResultPaging<PricePagingResult, PriceResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<Prices, PriceResponse>(prices,
+                _mapper));
+        return result;
     }
 
     public Task<PricePagingResult> GetAll(PricePaging pagingRequest)
