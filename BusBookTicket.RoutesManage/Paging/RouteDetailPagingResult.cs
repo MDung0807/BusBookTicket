@@ -1,6 +1,9 @@
-﻿namespace BusBookTicket.RoutesManage.Paging;
+﻿using BusBookTicket.Core.Application.Paging;
+using BusBookTicket.RoutesManage.DTOs.Responses;
 
-public class RouteDetailPagingResult : RoutesPagingResult
+namespace BusBookTicket.RoutesManage.Paging;
+
+public class RouteDetailPagingResult : PagingResult<RouteDetailResponse>
 {
     
 }
