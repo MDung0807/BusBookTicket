@@ -348,7 +348,7 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.StationEndName, 
                     opts=> opts.MapFrom(x => x.BusStationEnd.Name));
 
-            CreateMap<RouteDetailCreate, RouteDetail>();
+            CreateMap<RouteDetailCreateItem, RouteDetail>();
             CreateMap<RouteDetail, RouteDetailResponse>();
 
 
