@@ -21,6 +21,6 @@ public sealed class PriceSpecification : BaseSpecification<Prices>
         {
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
-        
+        AddInclude(x => x.Company);
     }
 }
