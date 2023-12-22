@@ -24,7 +24,7 @@ public sealed class RouteSpecifications : BaseSpecification<Routes>
         AddInclude(x => x.BusStationEnd);
         AddInclude(x => x.RouteDetails);
         AddInclude("RouteDetails.Company");
-        AddInclude("RouteDetails.BusStation");
+        // AddInclude("RouteDetails.BusStation");
 
     }
 }

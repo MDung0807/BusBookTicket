@@ -46,13 +46,17 @@ public class PriceService : IPriceService
     {
         Prices price = _mapper.Map<Prices>(entity);
         price.Company.Id = userId;
+        price.Status = (int)EnumsApp.Waiting;
         await _repository.Create(price, userId: userId);
         return true;
     }
 
-    public Task<bool> ChangeIsActive(int id, int userId)
+    public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        throw new NotImplementedException();
+        PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
+        Prices price = await _repository.Get(specification);
+        await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Active);
+        return true;
     }
 
     public Task<bool> ChangeIsLock(int id, int userId)
@@ -60,9 +64,12 @@ public class PriceService : IPriceService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ChangeToWaiting(int id, int userId)
+    public async Task<bool> ChangeToWaiting(int id, int userId)
     {
-        throw new NotImplementedException();
+        PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
+        Prices price = await _repository.Get(specification);
+        await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Waiting);
+        return true;
     }
 
     public Task<bool> ChangeToDisable(int id, int userId)

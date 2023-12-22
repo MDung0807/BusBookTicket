@@ -59,5 +59,22 @@ public class PriceController: ControllerBase
         return Ok(new Response<PriceResponse>(false, result));
     }
 
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpPut("ChangeIsActive")]
+    public async Task<IActionResult> ChangeIsActive([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.ChangeIsActive(id, userId);
+        return Ok(new Response<string>(!result, AppConstants.SUCCESS));
+    }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpPut("ChangeIsWaiting")]
+    public async Task<IActionResult> ChangeIsWaiting([FromQuery] int id)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.ChangeToWaiting(id, userId);
+        return Ok(new Response<string>(!result, AppConstants.SUCCESS));
+    }
     #endregion -- Controller --
 }
