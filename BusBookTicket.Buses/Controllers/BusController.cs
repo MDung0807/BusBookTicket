@@ -117,9 +117,9 @@ public class BusController : ControllerBase
         return Ok(new Response<string>(!status, "AppConstants"));
     }
     
-    [HttpDelete("registerRoute")]
+    [HttpPost("registerRoute")]
     [Authorize(Roles = AppConstants.COMPANY)]
-    public async Task<IActionResult> RegisterRoute([FromQuery] int id, int routeId)
+    public async Task<IActionResult> RegisterRoute([FromQuery] int id,[FromQuery] int routeId)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busService.RegisRoute(id, routeId, userId);
