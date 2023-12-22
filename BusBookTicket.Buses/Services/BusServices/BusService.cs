@@ -94,16 +94,26 @@ public class BusService : IBusService
             bus.Status = (int)EnumsApp.Active;
             bus = await _repository.Create(bus, userId);
             
-            foreach (int stationID in entity.ListBusStopId)
+            // foreach (int stationID in entity.ListBusStopId)
+            // {
+            //     BusStop busStop = new BusStop();
+            //     busStop.BusStation ??= new BusStation();
+            //     busStop.BusStation.Id = stationID;
+            //     busStop.Bus ??= new Bus();
+            //     busStop.Bus.Id= bus.Id;
+            //     busStop.Bus.Status = (int)EnumsApp.Active;
+            //
+            //     await _busStopRepository.Create(busStop, userId);
+            // }
+            //
+            foreach (int routeId in entity.ListRouteId)
             {
-                BusStop busStop = new BusStop();
-                busStop.BusStation ??= new BusStation();
-                busStop.BusStation.Id = stationID;
-                busStop.Bus ??= new Bus();
-                busStop.Bus.Id= bus.Id;
-                busStop.Bus.Status = (int)EnumsApp.Active;
-
-                await _busStopRepository.Create(busStop, userId);
+                StopStation stopStation = new StopStation();
+                stopStation.Status = (int)EnumsApp.Active;
+                stopStation.Bus.Id = bus.Id;
+                stopStation.Route.Id = routeId;
+            
+                await _stopStationRepository.Create(stopStation, userId: userId);
             }
             
             int totalSeat = busType.TotalSeats == 0? 0: busType.TotalSeats;
@@ -252,5 +262,17 @@ public class BusService : IBusService
         };
         await _stopStationRepository.Create(stopStation, userId: userId);
         return true;
+    }
+
+    public async Task<BusPagingResult> GetInRoute(BusPaging paging, int companyId, int routeId)
+    {
+        BusSpecification specification = new BusSpecification(companyId: companyId, routeId: routeId, paging: paging);
+        int count = await _repository.Count(new BusSpecification(companyId: companyId, routeId: routeId));
+        List<Bus> buses = await _repository.ToList(specification);
+        var result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(
+            paging.PageIndex, paging.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper));
+        return result;
     }
 }

@@ -108,4 +108,11 @@ public class PriceService : IPriceService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<PriceResponse> GetInRoute(int routeId, int companyId)
+    {
+        PriceSpecification specification = new PriceSpecification(routeId: routeId, companyId: companyId);
+        Prices price = await _repository.Get(specification);
+        return _mapper.Map<PriceResponse>(price);
+    }
 }

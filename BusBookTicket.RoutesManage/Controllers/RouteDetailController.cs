@@ -33,13 +33,22 @@ public class RouteDetailController : ControllerBase
     
     [HttpGet("getInCompany")]
     [Authorize(Roles = AppConstants.COMPANY)]
-    public async Task<IActionResult> GetInCompany([FromBody] RouteDetailCreate request, [FromQuery]RouteDetailPaging paging)
+    public async Task<IActionResult> GetInCompany([FromQuery]RouteDetailPaging paging)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
         var result = await _service.GetAll(pagingRequest: paging, idMaster: userId);
         return Ok(new Response<RouteDetailPagingResult>(false, result));
     }
     
+    [HttpGet("getInRoute")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> GetInRoute([FromQuery]RouteDetailPaging paging, [FromQuery] int routeId)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.GetAllInRoute(pagingRequest: paging, idMaster: routeId);
+        return Ok(new Response<RouteDetailPagingResult>(false, result));
+    }
+
     
     #endregion -- Controller --
 }

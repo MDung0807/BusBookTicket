@@ -50,5 +50,22 @@ public class RoutesController : ControllerBase
         var responses = await _service.GetAll(paging);
         return Ok(new Response<RoutesPagingResult>(false, responses));
     }
+    
+    [AllowAnonymous]
+    [HttpGet("getById")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var responses = await _service.GetById(id);
+        return Ok(new Response<RoutesResponse>(false, responses));
+    }
+    
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("getByCompany")]
+    public async Task<IActionResult> GetByCompany([FromQuery ]RoutesPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var responses = await _service.GetAll(paging,idMaster: userId);
+        return Ok(new Response<RoutesPagingResult>(false, responses));
+    }
     #endregion -- Controller --
 } 

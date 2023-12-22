@@ -7,5 +7,5 @@ namespace BusBookTicket.PriceManage.Services;
 
 public interface IPriceService : IService<PriceCreate, PriceUpdate, int,PriceResponse, PricePaging, PricePagingResult>
 {
-    
+    Task<PriceResponse> GetInRoute(int routeId, int companyId);
 }

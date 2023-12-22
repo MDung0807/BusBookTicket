@@ -10,7 +10,7 @@ public class Routes : BaseEntity
 
     public BusStation BusStationStart { get; set; }
     public BusStation BusStationEnd { get; set; }
-    public RouteDetail RouteDetail { get; set; }
+    public List<RouteDetail> RouteDetails { get; set; }
     public HashSet<StopStation> StopStations { get; set; }
     public Prices Prices { get; set; }
 

@@ -125,7 +125,14 @@ public class BusController : ControllerBase
         bool status = await _busService.RegisRoute(id, routeId, userId);
         return Ok(new Response<string>(!status, "AppConstants"));
     }
-    
-    
+
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("GetInRoute")]
+    public async Task<IActionResult> GetInRoute([FromQuery] BusPaging paging, [FromQuery] int routeId)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _busService.GetInRoute(paging, routeId: routeId, companyId: userId);
+        return Ok(new Response<BusPagingResult>(false, result));
+    }
     #endregion -- Controller --
 }
