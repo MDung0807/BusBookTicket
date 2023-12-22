@@ -32,6 +32,8 @@ public class BillService : IBillService
     private readonly IMailService _mailService;
     private readonly IGenericRepository<Customer> _customerRepo;
     private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
+    private readonly IGenericRepository<Ticket_RouteDetail> _ticketRouteDetail;
+
     private readonly IRouteDetailService _routeDetailService;
 
     public BillService(
@@ -52,6 +54,7 @@ public class BillService : IBillService
         _customerRepo = unitOfWork.GenericRepository<Customer>();
         _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
         _routeDetailService = routeDetailService;
+        _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
 
     }
     public async Task<BillResponse> GetById(int id)
@@ -123,8 +126,8 @@ public class BillService : IBillService
             // Create bill
             Bill bill = _mapper.Map<Bill>(entity);
             CustomerSpecification customerSpecification = new CustomerSpecification(userId);
-            RouteDetailResponse detailStart = await _routeDetailService.GetById(entity.RouteDetailStartId);
-            RouteDetailResponse detailEnd = await _routeDetailService.GetById(entity.RouteDetailStartId);
+            Ticket_RouteDetail ticketRouteDetailStart = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailStartId));
+            Ticket_RouteDetail ticketRouteDetailEnd = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailEndId));
 
             // Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
             // Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
@@ -143,7 +146,7 @@ public class BillService : IBillService
                 // Change status in ticket item
                 await _ticketItemService.ChangeStatusToWaitingPayment(item.TicketItemId, userId);
 
-                bill.TotalPrice += ticketItem.Price + (int)detailStart.DiscountPrice + (int)detailEnd.DiscountPrice;
+                bill.TotalPrice += ticketItem.Price + (int)ticketRouteDetailStart.RouteDetail.DiscountPrice + (int)ticketRouteDetailEnd.RouteDetail.DiscountPrice;
                 
             }
 
@@ -156,12 +159,12 @@ public class BillService : IBillService
             Customer customer = await _customerRepo.Get(customerSpecification);
             //Send mail
             await SendMail(customer,
-                $"Bạn vừa có một hóa đơn cho chuyến đi từ: {detailStart.BusStationName} đến {detailEnd.BusStationName}",
+                $"Bạn vừa có một hóa đơn cho chuyến đi từ: {ticketRouteDetailStart.RouteDetail.Station.Name} đến {ticketRouteDetailEnd.RouteDetail.Station.Name}",
                 "Hóa đơn của bạn",
                 $"Giá: {bill.TotalPrice}"
             );
-            await SendMail(detailStart.CompanyId,
-                $"Khách hàng: {customer.FullName} đã đặt hóa đơn cho chuyến đi từ: {detailStart.BusStationName} đến {detailEnd.BusStationName}",
+            await SendMail(ticketRouteDetailStart.RouteDetail.Company,
+                $"Khách hàng: {customer.FullName} đã đặt hóa đơn cho chuyến đi từ: {ticketRouteDetailStart.RouteDetail.Station.Name} đến {ticketRouteDetailEnd.RouteDetail.Station.Name}",
                 "Thần tài đến",
                 $"Giá: {bill.TotalPrice}"
             );
