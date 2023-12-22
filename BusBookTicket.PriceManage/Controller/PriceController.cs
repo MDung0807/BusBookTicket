@@ -3,6 +3,7 @@ using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.PriceManage.DTOs.Requests;
+using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Paging;
 using BusBookTicket.PriceManage.Services;
 using BusBookTicket.PriceManage.Validator;
@@ -47,6 +48,15 @@ public class PriceController: ControllerBase
         int userId = JwtUtils.GetUserID(HttpContext);
         var result = await _service.GetAll(paging, userId);
         return Ok(new Response<PricePagingResult>(false, result));
+    }
+    
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("getInRoute")]
+    public async Task<IActionResult> GetInRoute([FromQuery] int routeId)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.GetInRoute( routeId, userId);
+        return Ok(new Response<PriceResponse>(false, result));
     }
 
     #endregion -- Controller --

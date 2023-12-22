@@ -16,18 +16,22 @@ public class RoutesService : IRoutesService
 
     private IMapper _mapper;
     private readonly IGenericRepository<Routes> _repository;
+    private readonly IRouteDetailService _detailService;
     private readonly IUnitOfWork _unitOfWork;
     #endregion -- Properties --
 
-    public RoutesService(IMapper mapper, IUnitOfWork unitOfWork)
+    public RoutesService(IMapper mapper, IUnitOfWork unitOfWork, IRouteDetailService detailService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _repository = _unitOfWork.GenericRepository<Routes>();
+        _detailService = detailService;
     }
-    public Task<RoutesResponse> GetById(int id)
+    public async Task<RoutesResponse> GetById(int id)
     {
-        throw new NotImplementedException();
+        RouteSpecifications routeSpecifications = new RouteSpecifications(id: id, checkStatus: true);
+        Routes routes = await _repository.Get(routeSpecifications);
+        return _mapper.Map<RoutesResponse>(routes);
     }
 
     public async Task<List<RoutesResponse>> GetAll()
@@ -111,9 +115,17 @@ public class RoutesService : IRoutesService
         return result;
     }
 
-    public Task<RoutesPagingResult> GetAll(RoutesPaging pagingRequest, int idMaster)
+    public async Task<RoutesPagingResult> GetAll(RoutesPaging pagingRequest, int idMaster)
     {
-        throw new NotImplementedException();
+        RouteSpecifications specifications = new RouteSpecifications(companyId:idMaster, paging: pagingRequest);
+        int count = await _repository.Count(new RouteSpecifications(companyId: idMaster));
+        List<Routes> routes = await _repository.ToList(specifications);
+        RoutesPagingResult result = AppUtils.ResultPaging<RoutesPagingResult, RoutesResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<Routes, RoutesResponse>(routes, _mapper));
+        return result;
     }
 
     public Task<bool> DeleteHard(int id)

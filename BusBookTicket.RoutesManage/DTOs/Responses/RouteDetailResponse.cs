@@ -3,6 +3,7 @@
 public class RouteDetailResponse 
 {
     public int RouteId { get; set; }
+    public int Id { get; set; }
     public int IndexStation { get; set; }
     public DateTime ArrivalTime { get; set; }
     public DateTime DepartureTime { get; set; }

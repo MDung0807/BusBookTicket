@@ -110,6 +110,21 @@ public class RouteDetailService : IRouteDetailService
         return result;
     }
 
+    public async Task<RouteDetailPagingResult> GetAllInRoute(RouteDetailPaging pagingRequest, int idMaster)
+    {
+        RouteDetailSpecification specification = new RouteDetailSpecification(routeId: idMaster,paging:pagingRequest);
+        int count = await _repository.Count(new RouteDetailSpecification(routeId: idMaster));
+        List<RouteDetail> routeDetails = await _repository.ToList(specification);
+
+        List<RouteDetailResponse> responses =
+            await AppUtils.MapObject<RouteDetail, RouteDetailResponse>(routeDetails, _mapper);
+        RouteDetailPagingResult result = AppUtils.ResultPaging<RouteDetailPagingResult, RouteDetailResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count, responses
+        );
+        return result;
+    }
     public Task<bool> DeleteHard(int id)
     {
         throw new NotImplementedException();

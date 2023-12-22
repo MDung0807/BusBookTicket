@@ -9,8 +9,8 @@ public class RouteDetailConfigs:  BaseEntityConfigs, IEntityTypeConfiguration<Ro
     public void Configure(EntityTypeBuilder<RouteDetail> builder)
     {
         builder.HasOne(x => x.Routes)
-            .WithOne(x => x.RouteDetail)
-            .HasForeignKey<RouteDetail>("RouteId");
+            .WithMany(x => x.RouteDetails)
+            .HasForeignKey("RouteId");
         
         builder.HasOne(x => x.Station)
             .WithMany(x => x.RouteDetails)

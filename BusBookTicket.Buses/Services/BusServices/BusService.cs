@@ -253,4 +253,16 @@ public class BusService : IBusService
         await _stopStationRepository.Create(stopStation, userId: userId);
         return true;
     }
+
+    public async Task<BusPagingResult> GetInRoute(BusPaging paging, int companyId, int routeId)
+    {
+        BusSpecification specification = new BusSpecification(companyId: companyId, routeId: routeId, paging: paging);
+        int count = await _repository.Count(new BusSpecification(companyId: companyId, routeId: routeId));
+        List<Bus> buses = await _repository.ToList(specification);
+        var result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(
+            paging.PageIndex, paging.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper));
+        return result;
+    }
 }
