@@ -363,7 +363,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.CompanyId,
                     opts => opts.MapFrom(x => x.Company.Id))
                 .ForPath(dest => dest.CompanyName,
-                    opts => opts.MapFrom(x => x.Company.Name));
+                    opts => opts.MapFrom(x => x.Company.Name))
+                .ForPath(x => x.RouteId,
+                    opts => opts.MapFrom(x => x.Routes.Id));
 
 
             CreateMap<PriceClassificationCreate, PriceClassification>();
