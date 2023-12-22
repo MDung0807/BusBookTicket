@@ -5,8 +5,8 @@ public class RouteDetail: BaseEntity
     #region -- Properties --
 
     public int IndexStation { get; set; }
-    public DateTime ArrivalTime { get; set; }
-    public DateTime DepartureTime { get; set; }
+    public TimeSpan ArrivalTime { get; set; }
+    public TimeSpan DepartureTime { get; set; }
     public int AddDay { get; set; }
     public double DiscountPrice { get; set; }
     #endregion -- Properties --
