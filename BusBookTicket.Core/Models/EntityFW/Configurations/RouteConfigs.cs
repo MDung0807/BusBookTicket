@@ -10,13 +10,16 @@ public class RouteConfigs : BaseEntityConfigs, IEntityTypeConfiguration<Routes>
     {
         #region --Relationship --
 
+
         builder.HasOne(x => x.BusStationStart)
             .WithMany(x => x.StationStart)
-            .HasForeignKey("StationStartId");
+            .HasForeignKey("StationStartId")
+            .IsRequired();
 
         builder.HasOne(x => x.BusStationEnd)
             .WithMany(x => x.StationEnd)
-            .HasForeignKey("StationEndId");
+            .HasForeignKey("StationEndId")
+            .IsRequired();
         #endregion --Relationship --
     }
 }

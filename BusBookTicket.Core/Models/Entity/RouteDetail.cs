@@ -12,7 +12,6 @@ public class RouteDetail: BaseEntity
     #endregion -- Properties --
     #region -- Relationship --
 
-    public StopStation StopStation { get; set; }
     public Routes Routes { get; set; }
     public HashSet<Ticket_RouteDetail> TicketRouteDetails { get; set; }
     public Company Company { get; set; }
