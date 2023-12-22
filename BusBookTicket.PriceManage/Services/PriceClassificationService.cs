@@ -46,7 +46,10 @@ public class PriceClassificationService : IPriceClassificationService
     {
         PriceClassification priceClassification = _mapper.Map<PriceClassification>(entity);
         priceClassification.Status = (int)EnumsApp.Waiting;
-
+        priceClassification.Company = new Company
+        {
+            Id = userId
+        };
         await _repository.Create(priceClassification, userId);
         return true;
     }
@@ -99,13 +102,13 @@ public class PriceClassificationService : IPriceClassificationService
         int count = await _repository.Count(
             new PriceClassificationSpecification(companyId: idMaster, checkStatus: false));
         List<PriceClassification> priceClassifications = await _repository.ToList(specification: specification);
-
+        var responses =
+            await AppUtils.MapObject<PriceClassification, PriceClassificationResponse>(priceClassifications, _mapper);
         var result = AppUtils.ResultPaging<PriceClassificationPagingResult, PriceClassificationResponse>(
             pagingRequest.PageIndex,
             pagingRequest.PageSize,
             count,
-            items: await AppUtils.MapObject<PriceClassification, PriceClassificationResponse>(priceClassifications,
-                _mapper));
+            items: responses);
         return result;
     }
     
