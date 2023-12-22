@@ -7,4 +7,5 @@ public class PriceClassificationResponse
     public double Value { get; set; }
     public int CompanyId { get; set; }
     public string CompanyName { get; set; }
+    public int Status { get; set; }
 }
