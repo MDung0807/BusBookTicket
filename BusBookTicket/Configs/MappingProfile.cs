@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BusBookTicket.AddressManagement.DTOs.Requests.District;
 using BusBookTicket.AddressManagement.DTOs.Requests.Province;
@@ -37,6 +38,7 @@ using BusBookTicket.RoutesManage.DTOs.Requests;
 using BusBookTicket.RoutesManage.DTOs.Responses;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
+using Microsoft.AspNetCore.Routing;
 using FormUpdate = BusBookTicket.CustomerManage.DTOs.Requests.FormUpdate;
 
 namespace BusBookTicket.Configs
@@ -346,7 +348,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.StationEndId, 
                     opts=> opts.MapFrom(x => x.BusStationEnd.Id))
                 .ForPath(dest => dest.StationEndName, 
-                    opts=> opts.MapFrom(x => x.BusStationEnd.Name));
+                    opts=> opts.MapFrom(x => x.BusStationEnd.Name))
+                .ForPath(dest => dest.RouteDetailResponses, 
+                    opts => opts.MapFrom(x => x.RouteDetails));
 
             CreateMap<RouteDetailCreateItem, RouteDetail>();
             CreateMap<RouteDetail, RouteDetailResponse>()
