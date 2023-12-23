@@ -8,6 +8,9 @@ public class RouteDetailConfigs:  BaseEntityConfigs, IEntityTypeConfiguration<Ro
 {
     public void Configure(EntityTypeBuilder<RouteDetail> builder)
     {
+        builder.Property(x => x.ArrivalTime).IsRequired(false);
+        builder.Property(x => x.DepartureTime).IsRequired(false);
+
         builder.HasOne(x => x.Routes)
             .WithMany(x => x.RouteDetails)
             .HasForeignKey("RouteId");

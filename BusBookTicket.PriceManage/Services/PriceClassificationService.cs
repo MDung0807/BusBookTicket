@@ -22,9 +22,11 @@ public class PriceClassificationService : IPriceClassificationService
         _repository = _unitOfWork.GenericRepository<PriceClassification>();
         _mapper = mapper;
     }
-    public Task<PriceClassificationResponse> GetById(int id)
+    public async Task<PriceClassificationResponse> GetById(int id)
     {
-        throw new NotImplementedException();
+        PriceClassificationSpecification specification = new PriceClassificationSpecification(id);
+        PriceClassification priceClassification = await _repository.Get(specification);
+        return _mapper.Map<PriceClassificationResponse>(priceClassification);
     }
 
     public Task<List<PriceClassificationResponse>> GetAll()

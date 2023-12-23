@@ -4,6 +4,7 @@ using BusBookTicket.Core.Models.EntityFW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231223040320_data2")]
+    partial class data2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,6 +168,12 @@ namespace BusBookTicket.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BusStationEndId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BusStationStartId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CreateBy")
                         .HasColumnType("int");
 
@@ -199,6 +208,10 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusStationEndId");
+
+                    b.HasIndex("BusStationStartId");
 
                     b.HasIndex("CustomerID");
 
@@ -1376,7 +1389,7 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<DateTime?>("DepartureTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RouteDetailId")
+                    b.Property<int?>("RouteDetail Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -1390,7 +1403,7 @@ namespace BusBookTicket.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RouteDetailId");
+                    b.HasIndex("RouteDetail Id");
 
                     b.HasIndex("TicketId");
 
@@ -1463,6 +1476,18 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Bill", b =>
                 {
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Ticket_BusStop", "BusStationEnd")
+                        .WithMany("BillEnds")
+                        .HasForeignKey("BusStationEndId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Ticket_BusStop", "BusStationStart")
+                        .WithMany("BillStarts")
+                        .HasForeignKey("BusStationStartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BusBookTicket.Core.Models.Entity.Customer", "Customer")
                         .WithMany("Tickets")
                         .HasForeignKey("CustomerID")
@@ -1483,6 +1508,10 @@ namespace BusBookTicket.Core.Migrations
                         .WithMany()
                         .HasForeignKey("TicketRouteDetailStartId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("BusStationEnd");
+
+                    b.Navigation("BusStationStart");
 
                     b.Navigation("Customer");
 
@@ -1842,7 +1871,7 @@ namespace BusBookTicket.Core.Migrations
                 {
                     b.HasOne("BusBookTicket.Core.Models.Entity.RouteDetail", "RouteDetail")
                         .WithMany("TicketRouteDetails")
-                        .HasForeignKey("RouteDetailId")
+                        .HasForeignKey("RouteDetail Id")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.Ticket", "Ticket")
@@ -2024,6 +2053,13 @@ namespace BusBookTicket.Core.Migrations
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.TicketItem", b =>
                 {
                     b.Navigation("BillItem");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_BusStop", b =>
+                {
+                    b.Navigation("BillEnds");
+
+                    b.Navigation("BillStarts");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ward", b =>

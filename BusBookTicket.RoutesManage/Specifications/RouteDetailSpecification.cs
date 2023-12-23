@@ -26,5 +26,6 @@ public sealed class RouteDetailSpecification : BaseSpecification<RouteDetail>
         AddInclude(x => x.Company);
         AddInclude(x => x.Routes);
         AddInclude(x => x.Station);
+        ApplyOrderBy(x => x.IndexStation);
     }
 }

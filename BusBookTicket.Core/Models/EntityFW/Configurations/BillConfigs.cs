@@ -13,14 +13,14 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
             #endregion -- Properties --
 
             #region -- Relationship --
-            builder.HasOne(x => x.BusStationStart)
-                .WithMany(x => x.BillStarts)
-                .HasForeignKey("BusStationStartId")
-                .IsRequired();
-            builder.HasOne(x => x.BusStationEnd)
-                .WithMany(x => x.BillEnds)
-                .HasForeignKey("BusStationEndId")
-                .IsRequired();
+            // builder.HasOne(x => x.BusStationStart)
+            //     .WithMany(x => x.BillStarts)
+            //     .HasForeignKey("BusStationStartId")
+            //     .IsRequired();
+            // builder.HasOne(x => x.BusStationEnd)
+            //     .WithMany(x => x.BillEnds)
+            //     .HasForeignKey("BusStationEndId")
+            //     .IsRequired();
 
             builder.HasOne(x => x.Customer)
                .WithMany(x => x.Tickets)
