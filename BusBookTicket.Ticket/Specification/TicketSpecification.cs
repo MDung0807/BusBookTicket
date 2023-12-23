@@ -48,19 +48,19 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                 Bus.BusNumber,
                 Companies.Name
             FROM
-                Ticket_BusStop t1
+                TicketRouteDetails t1
                 INNER JOIN Tickets T ON T.Id = t1.TicketId
                 LEFT JOIN TicketItems TItem ON TItem.TicketID = T.Id
                 LEFT JOIN Buses Bus ON Bus.Id = T.BusID
                 LEFT JOIN Companies ON Companies.Id = Bus.CompanyID
             WHERE
-                t1.BusStopId IN (
+                t1.RouteDetailId IN (
                     SELECT BS.Id
                     FROM BusStations B
                         LEFT JOIN Wards W ON B.WardId = W.Id
                         LEFT JOIN Districts D ON W.DistrictId = D.Id
                         LEFT JOIN Provinces P ON D.ProvinceId = P.Id
-                        INNER JOIN BusStops BS ON BS.BusStationID = B.Id
+                        INNER JOIN RouteDetails BS ON BS.StationId = B.Id
                     WHERE
                         B.Name LIKE N'%' + @StationStart + N'%'
                         OR W.FullName LIKE N'%' + @StationStart + N'%'
@@ -70,16 +70,16 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                 AND DATEDIFF(day,t1.DepartureTime, @DateTime) = 0
                 AND EXISTS (
                     SELECT 1
-                    FROM Ticket_BusStop t2
+                    FROM TicketRouteDetails t2
                     WHERE
                         t2.TicketId = t1.TicketId
-                        AND t2.BusStopId IN (
+                        AND t2.RouteDetailId IN (
                             SELECT BS.Id
                             FROM BusStations B
                                 LEFT JOIN Wards W ON B.WardId = W.Id
                                 LEFT JOIN Districts D ON W.DistrictId = D.Id
                                 LEFT JOIN Provinces P ON D.ProvinceId = P.Id
-                                INNER JOIN BusStops BS ON BS.BusStationID = B.Id
+                                INNER JOIN RouteDetails BS ON BS.StationId = B.Id
                             WHERE
                                 B.Name LIKE N'%' + @StationEnd + N'%'
                                 OR W.FullName LIKE N'%' + @StationEnd + N'%'
@@ -100,6 +100,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
                 T.Status,
                 Bus.BusNumber,
                 Companies.Name
+
         ");
         
         AddParameter("@StationStart", stationStart);
