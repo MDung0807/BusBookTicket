@@ -8,12 +8,14 @@ public class Ticket_RouteDetailConfigs : BaseEntityConfigs, IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<Ticket_RouteDetail> builder)
     {
+        builder.Property(x => x.DepartureTime).IsRequired(false);
+        builder.Property(x => x.ArrivalTime).IsRequired(false);
         builder.HasOne(x => x.Ticket)
             .WithMany(x => x.TicketRouteDetails)
             .HasForeignKey("TicketId");
         
         builder.HasOne(x => x.RouteDetail)
             .WithMany(x => x.TicketRouteDetails)
-            .HasForeignKey("RouteDetail Id");
+            .HasForeignKey("RouteDetailId");
     }
 }

@@ -20,10 +20,10 @@ public sealed class BillSpecification : BaseSpecification<Bill>
             // AddInclude(x => x.BillItems);
             return;
         }
-        AddInclude(x => x.BusStationEnd);
-        AddInclude(x => x.BusStationEnd.BusStop.BusStation);
-        AddInclude(x => x.BusStationStart.BusStop.BusStation);
-        AddInclude(x => x.BusStationStart);
+        // AddInclude(x => x.BusStationEnd);
+        // AddInclude(x => x.BusStationEnd.BusStop.BusStation);
+        // AddInclude(x => x.BusStationStart.BusStop.BusStation);
+        // AddInclude(x => x.BusStationStart);
         AddInclude(x => x.Customer);
         AddInclude(x => x.BillItems);
         
@@ -40,7 +40,7 @@ public sealed class BillSpecification : BaseSpecification<Bill>
 
     public BillSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, DateTime dateTime = default)
         : base(x => x.Id == id  &&(dateTime == default 
-                                   || x.BusStationStart.DepartureTime >= dateTime.AddHours(2)),
+                                   || x.TicketRouteDetailStart.DepartureTime >= dateTime.AddHours(2)),
             checkStatus)
     {
         if (getIsChangeStatus)
@@ -54,8 +54,9 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         AddInclude("BillItems.TicketItem.Ticket");
         AddInclude("BillItems.TicketItem.Ticket.Bus");
         AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
-        AddInclude(x => x.BusStationStart.BusStop.BusStation);
-        AddInclude(x => x.BusStationStart);
+        AddInclude(x => x.TicketRouteDetailStart.RouteDetail.Station);
+        AddInclude(x => x.TicketRouteDetailStart);
+        AddInclude(x => x.TicketRouteDetailStart.RouteDetail);
 
     }
 

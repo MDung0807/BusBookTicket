@@ -9,8 +9,8 @@ namespace BusBookTicket.Core.Models.Entity
         #endregion -- Properties --
 
         #region -- Relationship -- 
-        public Ticket_BusStop BusStationStart { get; set; }
-        public Ticket_BusStop BusStationEnd { get; set; }
+        // public Ticket_BusStop BusStationStart { get; set; }
+        // public Ticket_BusStop BusStationEnd { get; set; }
         
         public Ticket_RouteDetail TicketRouteDetailStart { get; set; }
         public Ticket_RouteDetail TicketRouteDetailEnd { get; set; }

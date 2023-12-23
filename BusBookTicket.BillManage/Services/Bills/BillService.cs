@@ -243,9 +243,6 @@ public class BillService : IBillService
         BillSpecification specification = new BillSpecification(id, checkStatus:false, getIsChangeStatus:true);
         Bill bill = await _repository.Get(specification);
         bill.Customer = null;
-        bill.BusStationEnd = null;
-        bill.BusStationStart = null;
-
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.AwaitingPayment);
     }
 
@@ -420,8 +417,8 @@ public class BillService : IBillService
         var resultArrival = bills
             .SelectMany(b => b.BillItems.Select(bi => new
             {
-                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
-                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                StationStartId = b.TicketRouteDetailStart.RouteDetail.Station.Id,
+                StationEndId = b.TicketRouteDetailEnd.RouteDetail.Station.Id,
                 PassengerCountArrival = b.BillItems.Count
             }))
             .Where(x => x.StationStartId != null)
@@ -436,8 +433,8 @@ public class BillService : IBillService
         var resultDeparture = bills
             .SelectMany(b => b.BillItems.Select(bi => new
             {
-                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
-                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                StationStartId = b.TicketRouteDetailStart.RouteDetail.Station.Id,
+                StationEndId = b.TicketRouteDetailEnd.RouteDetail.Station.Id,
                 PassengerCountDeparture = b.BillItems.Count
             }))
             .Where(x => x.StationEndId != null)
@@ -472,8 +469,8 @@ public class BillService : IBillService
         var resultArrival = bills
             .SelectMany(b => b.BillItems.Select(bi => new
             {
-                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
-                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                StationStartId = b.TicketRouteDetailStart.RouteDetail.Station.Id,
+                StationEndId = b.TicketRouteDetailEnd.RouteDetail.Station.Id,
                 CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
                 CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
                 PassengerCountArrival = b.BillItems.Count
@@ -497,8 +494,8 @@ public class BillService : IBillService
         var resultDeparture = bills
             .SelectMany(b => b.BillItems.Select(bi => new
             {
-                StationStartId = b.BusStationStart?.BusStop?.BusStation?.Id,
-                StationEndId = b.BusStationEnd?.BusStop?.BusStation?.Id,
+                StationStartId = b.TicketRouteDetailStart.RouteDetail.Station.Id,
+                StationEndId = b.TicketRouteDetailEnd.RouteDetail.Station.Id,
                 CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
                 CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
                 PassengerCountDeparture = b.BillItems.Count

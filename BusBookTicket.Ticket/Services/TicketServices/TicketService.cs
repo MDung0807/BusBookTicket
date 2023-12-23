@@ -91,7 +91,7 @@ public class TicketService : ITicketService
         response.ItemResponses = new List<TicketItemResponse>();
         response.ItemResponses = itemResponses;
         response.ListStation = new List<StationResponse>();
-            response.ListStation= await GetAllBusStopInTicket(id);
+        response.ListStation= await GetAllBusStopInTicket(id);
         return response;
     }
 
@@ -154,9 +154,13 @@ public class TicketService : ITicketService
             PriceResponse priceResponse = await _priceService.GetInRoute(response.RouteId, userId);
 
             ticket.Date = new DateTime(
-                entity.Date.Year, entity.Date.Month, entity.Date.Day, response.DepartureTime.Hours,
+                entity.DateOnly.Year, entity.DateOnly.Month, entity.DateOnly.Day, response.DepartureTime.Hours,
                 response.DepartureTime.Minutes, response.DepartureTime.Microseconds);
             ticket.Status = (int)EnumsApp.Active;
+            ticket.PriceClassification = new PriceClassification
+            {
+                Id = entity.PriceClassificationId
+            };
             ticket = await _repository.Create(ticket, userId);
 
             // Ticket_BusStop ticketBusStop = new Ticket_BusStop();
@@ -170,16 +174,22 @@ public class TicketService : ITicketService
             //     };
             //     await _ticketBusStop.Create(ticketBusStop, userId);
             // }
-
+            int count = 0;
             foreach (var ticketStation in entity.TicketStations)
             {
                 Ticket_RouteDetail ticketRouteDetail = new Ticket_RouteDetail();
-                ticketRouteDetail.RouteDetail.Id = ticketStation.RouteDetailId;
-                ticketRouteDetail.Ticket.Id = ticket.Id;
+                ticketRouteDetail.RouteDetail = new RouteDetail
+                {
+                    Id = ticketStation.RouteDetailId
+                };
+                ticketRouteDetail.Ticket = new Core.Models.Entity.Ticket
+                {
+                    Id = ticket.Id
+                };
                 ticketRouteDetail.Status = (int)EnumsApp.Active;
                 
                 RouteDetailResponse routeDetailResponse = await _routeDetail.GetById(ticketStation.RouteDetailId);
-                DateOnly date = entity.Date;
+                DateOnly date = entity.DateOnly;
                 date.AddDays(routeDetailResponse.AddDay);
                 
                 ticketRouteDetail.DepartureTime = new DateTime(date.Year, date.Month, date.Day,
@@ -187,9 +197,20 @@ public class TicketService : ITicketService
                     routeDetailResponse.DepartureTime.Microseconds);
                 
                 ticketRouteDetail.ArrivalTime = new DateTime(date.Year, date.Month, date.Day,
-                    routeDetailResponse.DepartureTime.Hours, routeDetailResponse.DepartureTime.Minutes,
-                    routeDetailResponse.DepartureTime.Microseconds);
+                    routeDetailResponse.ArrivalTime.Hours, routeDetailResponse.ArrivalTime.Minutes,
+                    routeDetailResponse.ArrivalTime.Microseconds);
 
+                if (count == 0)
+                {
+                    ticketRouteDetail.ArrivalTime = default;
+                }
+
+                if (count == entity.TicketStations.Count -1)
+                {
+                    ticketRouteDetail.DepartureTime = default;
+                }
+
+                count++;
                 await _ticketRouteDetail.Create(ticketRouteDetail, userId);
             }
 
@@ -365,15 +386,15 @@ public class TicketService : ITicketService
 
     private async Task<List<StationResponse>> GetAllBusStopInTicket(int ticketId)
     {
-        TicketBusStopSpecification ticketBusStopSpecification = new TicketBusStopSpecification(ticketId);
-        List<Ticket_BusStop> ticketBusStop = await _ticketBusStop.ToList(ticketBusStopSpecification);
+        TicketRouteDetailSpec ticketBusStopSpecification = new TicketRouteDetailSpec(ticketId: ticketId);
+        List<Ticket_RouteDetail> ticketRouteDetails = await _ticketRouteDetail.ToList(ticketBusStopSpecification);
 
         List<StationResponse> stationResponses = new List<StationResponse>();
         StationResponse stationResponse = new StationResponse();
-        foreach (var item in ticketBusStop)
+        foreach (var item in ticketRouteDetails)
         {
             stationResponse = _mapper.Map<StationResponse>(item);
-            stationResponse.Address = item.BusStop.BusStation.Address+ " "+  await AddressUtils.GetAddressDb(item.BusStop.BusStation.Ward.Id, _wardService);
+            stationResponse.Address = item.RouteDetail.Station.Address + " "+  await AddressUtils.GetAddressDb(item.RouteDetail.Station.Ward.Id, _wardService);
             stationResponses.Add(stationResponse);
         }
 
@@ -385,7 +406,7 @@ public class TicketService : ITicketService
         int stationStartId = request.TicketStations[0].RouteDetailId;
         RouteDetailResponse detailResponse = await _routeDetail.GetById(stationStartId);
         DateTime departureTime = new DateTime(
-            request.Date.Year, request.Date.Month, request.Date.Day,
+            request.DateOnly.Year, request.DateOnly.Month, request.DateOnly.Day,
             detailResponse.DepartureTime.Hours, detailResponse.DepartureTime.Minutes,
             detailResponse.DepartureTime.Microseconds);
         TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: departureTime);

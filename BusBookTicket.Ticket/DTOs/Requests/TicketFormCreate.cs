@@ -6,7 +6,7 @@ namespace BusBookTicket.Ticket.DTOs.Requests;
 public class TicketFormCreate
 {
     public int BusId { get; set; }
-    public DateOnly Date { get; set; }
+    public DateOnly DateOnly { get; set; }
     public int PriceClassificationId { get; set; }
     public List<TicketStationDto> TicketStations { get; set; }
 }

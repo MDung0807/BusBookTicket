@@ -10,7 +10,6 @@ public class Ticket : BaseEntity
     public Bus Bus { get; set; }
     public HashSet<TicketItem> TicketItems { get; set; }
     public HashSet<Ticket_BusStop> TicketBusStops { get; set; }
-    public StopStation StopStation { get; set; }
     public PriceClassification PriceClassification { get; set; }
     public HashSet<Ticket_RouteDetail> TicketRouteDetails { get; set; }
 

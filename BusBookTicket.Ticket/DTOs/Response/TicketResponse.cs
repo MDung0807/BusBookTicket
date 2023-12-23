@@ -18,7 +18,7 @@ public class TicketResponse
 
 public class StationResponse
 {
-    public int TicketStopId { get; set; }
+    public int TicketRouteDetailId { get; set; }
     public string Station { get; set; }
     public int IndexStation { get; set; }
     public int DiscountPrice { get; set; }

@@ -152,11 +152,11 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.NameCustomer,
                     opts => opts.MapFrom(x => x.Customer.FullName))
                 .ForPath(dest => dest.BusStationStart,
-                    opts => opts.MapFrom(x => x.BusStationStart.BusStop.BusStation.Name))
+                    opts => opts.MapFrom(x => x.TicketRouteDetailStart.RouteDetail.Station.Name))
                 .ForPath(dest => dest.BusStationEnd,
-                    opts => opts.MapFrom(x => x.BusStationEnd.BusStop.BusStation.Name))
+                    opts => opts.MapFrom(x => x.TicketRouteDetailEnd.RouteDetail.Station.Name))
                 .ForPath(dest => dest.DateDeparture,
-                    opts => opts.MapFrom(x => x.BusStationStart.DepartureTime))
+                    opts => opts.MapFrom(x => x.TicketRouteDetailStart.DepartureTime))
                 .ForPath(dest => dest.Discount,
                     opts => opts.MapFrom(x => x.Discount.Name))
                 .ForPath( dest => dest.Items, 
@@ -244,13 +244,25 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Bus.Company.Name))
                 .ForPath(dest => dest.BusType,
-                    opts => opts.MapFrom(x => x.Bus.BusType.Name));
+                    opts => opts.MapFrom(x => x.Bus.BusType.Name))
+                .ForPath(dest => dest.ListStation,
+                    opts => opts.MapFrom(x => x.TicketRouteDetails));
 
             CreateMap<Ticket_BusStop, StationResponse>()
-                .ForPath(dest => dest.TicketStopId,
+                .ForPath(dest => dest.TicketRouteDetailId,
                     opts => opts.MapFrom(x => x.Id))
                 .ForPath(dest => dest.Station,
                     opts => opts.MapFrom(x => x.BusStop.BusStation.Name));
+            
+            CreateMap<Ticket_RouteDetail, StationResponse>()
+                .ForPath(dest => dest.TicketRouteDetailId,
+                    opts => opts.MapFrom(x => x.Id))
+                .ForPath(dest => dest.Station,
+                    opts => opts.MapFrom(x => x.RouteDetail.Station.Name))
+                .ForPath(dest => dest.IndexStation,
+                    opts => opts.MapFrom(x => x.RouteDetail.IndexStation))
+                .ForPath(dest => dest.DiscountPrice,
+                    opts => opts.MapFrom(x => x.RouteDetail.DiscountPrice));
 
             //TicketItem
             CreateMap<TicketItemForm, TicketItem>()
