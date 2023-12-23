@@ -110,8 +110,14 @@ public class BusService : IBusService
             {
                 StopStation stopStation = new StopStation();
                 stopStation.Status = (int)EnumsApp.Active;
-                stopStation.Bus.Id = bus.Id;
-                stopStation.Route.Id = routeId;
+                stopStation.Bus = new Bus
+                {
+                    Id = bus.Id
+                };
+                stopStation.Route = new Routes
+                {
+                    Id = routeId
+                };
             
                 await _stopStationRepository.Create(stopStation, userId: userId);
             }
