@@ -21,6 +21,9 @@ public sealed class PriceSpecification : BaseSpecification<Prices>
         {
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
+        AddInclude(x => x.Routes);
+        AddInclude(x => x.Routes.BusStationStart);
+        AddInclude(x => x.Routes.BusStationEnd);
         AddInclude(x => x.Company);
     }
 }

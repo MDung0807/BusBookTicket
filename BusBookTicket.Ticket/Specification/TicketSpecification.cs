@@ -15,7 +15,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// <param name="getIsChangeStatus"></param>
     /// <param name="checkStatus"></param>
     /// <param name="userId"></param>
-    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, int userId = default) : base(x => x.Id == id, checkStatus)
+    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, int userId = default, bool isAsc = true) : base(x => x.Id == id, checkStatus)
     {
         if (getIsChangeStatus)
         {
