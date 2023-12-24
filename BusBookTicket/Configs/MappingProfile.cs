@@ -183,8 +183,6 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.Company.Id,
                     opts => opts.MapFrom(x => x.CompanyId));
             CreateMap<FormUpdateBus, Bus>()
-                .ForPath(dest => dest.BusType.Id,
-                        opts => opts.MapFrom(x => x.BusTypeId))
                 .ForPath(dest => dest.Company.Id, 
                     opts => opts.MapFrom(x => x.CompanyId));;
             CreateMap<Bus, BusResponse>()
@@ -195,7 +193,9 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.BusStops,
                     opts => opts.MapFrom(x => x.BusStops))
                 .ForPath(dest => dest.TotalSeat,
-                    opts => opts.MapFrom(x => x.BusType.TotalSeats));
+                    opts => opts.MapFrom(x => x.BusType.TotalSeats))
+                .ForPath(dest => dest.Routes, 
+                    opts => opts.MapFrom( x=> x.StopStations));
 
             //BusType
             CreateMap<BusTypeForm, BusType>();

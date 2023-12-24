@@ -117,28 +117,28 @@ public class BusStationService : IBusStationService
 
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Active);
     }
 
     public async Task<bool> ChangeIsLock(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Lock);
     }
 
     public async Task<bool> ChangeToWaiting(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Waiting);
     }
 
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
-        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false);
+        BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
         BusStation busStation = await _repository.Get(busStationSpecification);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Disable);
     }
@@ -165,11 +165,12 @@ public class BusStationService : IBusStationService
         }
 
         int count = await _repository.Count(new BusStationSpecification(false));
-        StationPagingResult result = new StationPagingResult();
-        result.PageIndex = pagingRequest.PageIndex;
-        result.PageSize = pagingRequest.PageSize;
-        result.PageTotal = (int)Math.Round((decimal)count / pagingRequest.PageSize);
-        result.Items = responses;
+        StationPagingResult result = AppUtils.ResultPaging<StationPagingResult, BusStationResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count,
+            responses);
+        
         return result;
     }
 

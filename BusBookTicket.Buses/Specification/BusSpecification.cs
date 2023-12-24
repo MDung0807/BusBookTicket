@@ -23,12 +23,13 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         {
             AddInclude(x => x.Company);
             AddInclude(x => x.BusType);
-            return;
         }
         AddInclude(x => x.Company);
         AddInclude(x => x.BusStops);
         AddInclude(x => x.BusType);
         AddInclude(x => x.Seats);
+        AddInclude(x => x.StopStations);
+        AddInclude("StopStations.Route.RouteDetails");
     }
 
 
