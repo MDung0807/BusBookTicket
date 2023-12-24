@@ -1,4 +1,6 @@
-﻿namespace BusBookTicket.Buses.DTOs.Responses;
+﻿using BusBookTicket.RoutesManage.DTOs.Responses;
+
+namespace BusBookTicket.Buses.DTOs.Responses;
 
 public class BusResponse
 {
@@ -10,4 +12,6 @@ public class BusResponse
     public List<string> BusStops { get; set; }
     public int Status { get; set; }
     public string Company { get; set; }
+    
+    public List<RoutesResponse> Routes { get; set; }
 }

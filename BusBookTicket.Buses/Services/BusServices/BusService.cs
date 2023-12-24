@@ -6,9 +6,13 @@ using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Buses.Specification;
+using BusBookTicket.Buses.Utils;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
+using BusBookTicket.RoutesManage.DTOs.Responses;
+using BusBookTicket.RoutesManage.Service;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BusBookTicket.Buses.Services.BusServices;
 
@@ -24,6 +28,7 @@ public class BusService : IBusService
     private readonly IGenericRepository<Bus> _repository;
     private readonly IGenericRepository<BusStop> _busStopRepository;
     private readonly IGenericRepository<StopStation> _stopStationRepository;
+    private readonly IRoutesService _routesService;
     #endregion -- Properties --
 
     public BusService(
@@ -31,7 +36,8 @@ public class BusService : IBusService
         IBusTypeService busTypeService
         ,ISeatTypeService seatTypeService
         ,ISeatService seatService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IRoutesService routesService)
     {
         this._mapper = mapper;
         this._seatTypeService = seatTypeService;
@@ -41,11 +47,12 @@ public class BusService : IBusService
         this._repository = unitOfWork.GenericRepository<Bus>();
         this._busStopRepository = unitOfWork.GenericRepository<BusStop>();
         _stopStationRepository = unitOfWork.GenericRepository<StopStation>();
+        _routesService = routesService;
     }
     public async Task<BusResponse> GetById(int id)
     {
         BusSpecification busSpecification = new BusSpecification(id);
-        Bus bus = await _repository.Get(busSpecification);
+        Bus bus = await _repository.Get(busSpecification) ?? throw new Exception(BusConstants.Bus_NotAction);
         BusResponse response = _mapper.Map<BusResponse>(bus);
         response.BusStops.RemoveRange(0, response.BusStops.Count);
         return response;
@@ -63,6 +70,7 @@ public class BusService : IBusService
     {
         Bus bus = _mapper.Map<Bus>(entity);
         bus.Id = id;
+        bus.Status = (int)EnumsApp.Active;
         await _repository.Update(bus, userId);
         return true;
     }
@@ -211,7 +219,19 @@ public class BusService : IBusService
         BusSpecification busSpecification = new BusSpecification(idMaster:idMaster,checkStatus:false);
         List<Bus> buses = await _repository.ToList(busSpecification);
         int count = await _repository.Count(new BusSpecification(idMaster, checkStatus:false));
-        List<BusResponse> responses = await AppUtils.MapObject<Bus, BusResponse>(buses, _mapper);
+        List<BusResponse> responses = new List<BusResponse>();
+        foreach (var bus in buses)
+        {
+            List<RoutesResponse> routesResponses = new List<RoutesResponse>();
+            foreach (var stopStation in bus.StopStations)
+            {
+                routesResponses.Add(await _routesService.GetById(stopStation.Route.Id));
+            }
+
+            BusResponse busResponse = _mapper.Map<BusResponse>(bus);
+            busResponse.Routes = routesResponses;
+            responses.Add(busResponse);
+        }
         BusPagingResult result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(pagingRequest.PageIndex,
             pagingRequest.PageSize, count, responses);
         return result;

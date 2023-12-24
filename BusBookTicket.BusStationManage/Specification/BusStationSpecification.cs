@@ -39,8 +39,15 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
 
     }
     
-    public BusStationSpecification(int id, bool checkStatus) : base(x => x.Id == id, false)
+    public BusStationSpecification(int id, bool checkStatus, bool getIsChangeStatus = false) : base(x => x.Id == id, false)
     {
+        if (getIsChangeStatus)
+        {
+            AddInclude(x => x.RouteDetails);
+            AddInclude(x => x.StationStart);
+            AddInclude(x => x.StationEnd);
+            return;
+        }
         AddInclude(x => x.Ward);
         AddInclude(x => x.BusStops);
 

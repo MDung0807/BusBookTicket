@@ -6,4 +6,5 @@ public class BusConstants
     public const string ERROR = "Error";
     public const string DELETE_ERROR = "Delete error";
     public const string CHANGE_SUCCESS = "Change data is success";
+    public const string Bus_NotAction = "Bus Is Not Action";
 }
