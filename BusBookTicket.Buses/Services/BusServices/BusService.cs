@@ -218,7 +218,7 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(idMaster:idMaster,checkStatus:false);
         List<Bus> buses = await _repository.ToList(busSpecification);
-        int count = await _repository.Count(new BusSpecification(idMaster, checkStatus:false));
+        int count = await _repository.Count(new BusSpecification(idMaster:idMaster, checkStatus:false));
         List<BusResponse> responses = new List<BusResponse>();
         foreach (var bus in buses)
         {
