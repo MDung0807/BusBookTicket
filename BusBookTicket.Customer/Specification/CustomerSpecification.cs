@@ -7,7 +7,7 @@ namespace BusBookTicket.CustomerManage.Specification;
 
 public sealed class CustomerSpecification : BaseSpecification<Customer>
 {
-    public CustomerSpecification(CustomerPaging paging = null, bool checkStatus = true) : base(null, checkStatus)
+    public CustomerSpecification(CustomerPaging paging = null, bool checkStatus = true) : base(x => x.Account.Role.RoleName == AppConstants.CUSTOMER, checkStatus)
     {
         AddInclude(x => x.Account);
         AddInclude(x => x.Account.Role);

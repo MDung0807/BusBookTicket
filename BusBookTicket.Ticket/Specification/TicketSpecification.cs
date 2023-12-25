@@ -32,7 +32,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     }
 
     public TicketSpecification(string stationStart, string stationEnd, DateTime dateTime,TicketPaging paging = null, List<int> companyIds = default,
-        bool priceIsDesc = false, bool timeIsDesc = false, List<int> timeInDays = default)
+        bool priceIsDesc = false, List<int> timeInDays = default)
     :base(x => (companyIds.Count == 0 || companyIds.Contains(x.Bus.Company.Id))
                && (timeInDays.Count == 0 || 
                    (timeInDays.Contains((int)EnumsApp.Morning) && x.Date.TimeOfDay.Hours >= 4 && x.Date.TimeOfDay.Hours <= 12) ||
@@ -55,16 +55,6 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         if (!priceIsDesc)
         {
             ApplyOrderBy(x => x.TicketItems.First().Price);
-        }
-
-        if (timeIsDesc)
-        {
-            ApplyOrderByDescending(x => x.Date);
-        }
-
-        if (!timeIsDesc)
-        {
-            ApplyOrderBy(x => x.Date);
         }
         AddSqlQuery(@"
             SELECT
@@ -155,9 +145,9 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.TicketBusStops);
     }
 
-    public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null, int month = default)
+    public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null, DateOnly month = default)
         : base(x => x.Bus.Company.Id == companyId
-            && (month == default || x.Date.Month == month), checkStatus: false)
+            && (month == default || x.Date.Month == month.Month && x.Date.Year == month.Year), checkStatus: false)
     {
         if (paging != null)
         {

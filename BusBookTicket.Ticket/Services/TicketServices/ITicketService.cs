@@ -39,5 +39,5 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="companyId">id for company</param>
     /// <param name="paging">paging</param>
     /// <returns></returns>
-    Task<TicketPagingResult> GetAll(int month, int companyId, TicketPaging paging);
+    Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging);
 }
