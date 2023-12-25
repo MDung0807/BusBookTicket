@@ -93,10 +93,10 @@ public class TicketController : ControllerBase
 
     [HttpGet("getAll")]
     [Authorize(Roles = "COMPANY")]
-    public async Task<IActionResult> GetAll([FromQuery] TicketPaging paging)
+    public async Task<IActionResult> GetAll([FromQuery] TicketPaging paging, [FromQuery] int month)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        TicketPagingResult result = await _ticketService.GetAll(paging, userId);
+        TicketPagingResult result = await _ticketService.GetAll(month, userId, paging);
         return Ok(new Response<TicketPagingResult>(false, result));
     }
     

@@ -155,8 +155,9 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude(x => x.TicketBusStops);
     }
 
-    public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null)
-        : base(x => x.Bus.Company.Id == companyId, checkStatus: false)
+    public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null, int month = default)
+        : base(x => x.Bus.Company.Id == companyId
+            && (month == default || x.Date.Month == month), checkStatus: false)
     {
         if (paging != null)
         {
