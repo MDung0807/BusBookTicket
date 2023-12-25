@@ -31,4 +31,13 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="date"></param>
     /// <returns></returns>
     Task<TicketPagingResult> GetAllTicketOnDate(int idMaster, DateOnly date, TicketPaging paging);
+
+    /// <summary>
+    /// Get all ticket in month
+    /// </summary>
+    /// <param name="month">month</param>
+    /// <param name="companyId">id for company</param>
+    /// <param name="paging">paging</param>
+    /// <returns></returns>
+    Task<TicketPagingResult> GetAll(int month, int companyId, TicketPaging paging);
 }

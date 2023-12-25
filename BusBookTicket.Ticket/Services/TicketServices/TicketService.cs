@@ -384,6 +384,25 @@ public class TicketService : ITicketService
         return result;
     }
 
+    public async Task<TicketPagingResult> GetAll(int month, int companyId, TicketPaging paging)
+    {
+        TicketSpecification ticketSpecification = 
+            new TicketSpecification(companyId:companyId, checkStatus:false, paging: paging, month: month);
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
+        int count = await _repository.Count(new TicketSpecification(companyId:companyId, checkStatus:false));
+        // Find
+        List<TicketResponse> responses = new List<TicketResponse>();
+        
+        foreach (var item in tickets)
+        {
+            responses.Add(await GetById(item.Id));
+        }
+
+        TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
+            paging.PageIndex, paging.PageSize, count: count, responses);
+        return result;
+    }
+
     #region -- Private Method --
 
     private async Task<bool> CreateItem(Seat seat, int ticketID, int userId, int price)
