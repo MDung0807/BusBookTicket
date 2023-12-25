@@ -324,10 +324,10 @@ public class TicketService : ITicketService
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
     {
         TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging:paging,
-            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeIsDesc: searchForm.TimeIsDesc, timeInDays:searchForm.TimeInDays);
+            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeInDays:searchForm.TimeInDays);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         int count = await _repository.Count(new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,
-            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeIsDesc: searchForm.TimeIsDesc, timeInDays:searchForm.TimeInDays));
+            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeInDays:searchForm.TimeInDays));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
         
@@ -384,7 +384,7 @@ public class TicketService : ITicketService
         return result;
     }
 
-    public async Task<TicketPagingResult> GetAll(int month, int companyId, TicketPaging paging)
+    public async Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging)
     {
         TicketSpecification ticketSpecification = 
             new TicketSpecification(companyId:companyId, checkStatus:false, paging: paging, month: month);

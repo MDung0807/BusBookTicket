@@ -85,6 +85,5 @@ public class PriceController: ControllerBase
         var result = await _service.GetAllByAdmin(paging);
         return Ok(new Response<PricePagingResult>(false, result));
     }
-
     #endregion -- Controller --
 }
