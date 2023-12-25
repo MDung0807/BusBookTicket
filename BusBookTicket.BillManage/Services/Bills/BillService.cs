@@ -87,7 +87,7 @@ public class BillService : IBillService
             await _unitOfWork.BeginTransaction();
             BillSpecification billSpecification =
                 new BillSpecification(id, checkStatus: false, getIsChangeStatus: true);
-            Bill bill = await _repository.Get(billSpecification);
+            Bill bill = await _repository.Get(billSpecification, checkStatus: false);
             foreach (var item in bill.BillItems)
             {
                 await _ticketItemService.ChangeIsActive(item.Id, userId);
@@ -241,7 +241,7 @@ public class BillService : IBillService
     public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
     {
         BillSpecification specification = new BillSpecification(id, checkStatus:false, getIsChangeStatus:true);
-        Bill bill = await _repository.Get(specification);
+        Bill bill = await _repository.Get(specification, checkStatus: false);
         bill.Customer = null;
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.AwaitingPayment);
     }
@@ -249,7 +249,7 @@ public class BillService : IBillService
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
     {
         BillSpecification specification = new BillSpecification(id, checkStatus:false, getIsChangeStatus:true);
-        Bill bill = await _repository.Get(specification);
+        Bill bill = await _repository.Get(specification, checkStatus: false);
 
         return await _repository.ChangeStatus(bill, userId, (int)EnumsApp.PaymentComplete);
     }
@@ -279,7 +279,7 @@ public class BillService : IBillService
     public async Task<bool> ChangeCompleteStatus(int billId, int userId)
     {
         BillSpecification specification = new BillSpecification(billId, checkStatus:false, getIsChangeStatus: true);
-        Bill bill = await _repository.Get(specification);
+        Bill bill = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Active);
         return true;
     }

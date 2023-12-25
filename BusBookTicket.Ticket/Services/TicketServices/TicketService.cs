@@ -117,7 +117,7 @@ public class TicketService : ITicketService
         {
             await _unitOfWork.BeginTransaction();
             TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true, userId:userId);
-            Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+            Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification, checkStatus: false);
             TicketItemSpecification ticketItemSpecification =
                 new TicketItemSpecification(0, id, true, checkStatus: false);
             List<TicketItem> items = await _ticketItemRepository.ToList(ticketItemSpecification);
@@ -347,7 +347,7 @@ public class TicketService : ITicketService
         {
             await _unitOfWork.BeginTransaction();
             TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true, userId:userId);
-            Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+            Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification, checkStatus: false);
             TicketItemSpecification ticketItemSpecification =
                 new TicketItemSpecification(0, id, true, checkStatus: false);
             List<TicketItem> items = await _ticketItemRepository.ToList(ticketItemSpecification);

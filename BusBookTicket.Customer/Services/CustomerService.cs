@@ -121,14 +121,14 @@ namespace BusBookTicket.CustomerManage.Services
         public async Task<bool> ChangeIsActive(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
-            Customer customer = await _repository.Get(customerSpecification);
+            Customer customer = await _repository.Get(customerSpecification, checkStatus: false);
             return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Active);
         }
 
         public async Task<bool> ChangeIsLock(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
-            Customer customer = await _repository.Get(customerSpecification);
+            Customer customer = await _repository.Get(customerSpecification, checkStatus: false);
             return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Lock);
         }
 
@@ -203,7 +203,7 @@ namespace BusBookTicket.CustomerManage.Services
         public async Task<bool> AuthOtp(OtpRequest request)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(request.Email, checkStatus:false);
-            Customer customer = await _repository.Get(customerSpecification);
+            Customer customer = await _repository.Get(customerSpecification, checkStatus: false);
             if (! await _otpService.AuthenticationOtp(request, customer.Id))
             {
                 throw new ExceptionDetail(CusConstants.OTP_NOT_AUTH);
@@ -214,7 +214,7 @@ namespace BusBookTicket.CustomerManage.Services
         public async Task<bool> Delete(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
-            Customer customer = await _repository.Get(customerSpecification);
+            Customer customer = await _repository.Get(customerSpecification, checkStatus: false);
             return await _repository.ChangeStatus(customer, userId: userId, (int)EnumsApp.Delete);
         }
 

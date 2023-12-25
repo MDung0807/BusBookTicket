@@ -47,7 +47,7 @@ public class SeatService : ISeatService
     public async Task<bool> Delete(int id, int userId)
     {
         SeatSpecification seatSpecification = new SeatSpecification(id);
-        Seat seat = await _repository.Get(seatSpecification);
+        Seat seat = await _repository.Get(seatSpecification, checkStatus: false);
         seat.Status = (int)EnumsApp.Delete;
         await _repository.Delete(seat, userId);
         return true;

@@ -59,7 +59,7 @@ public class PriceClassificationService : IPriceClassificationService
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         PriceClassificationSpecification specification = new PriceClassificationSpecification(id: id, checkStatus: false, getIsChangeStatus: true);
-        PriceClassification priceClassification = await _repository.Get(specification);
+        PriceClassification priceClassification = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Active);
         return true;
     }
@@ -72,7 +72,7 @@ public class PriceClassificationService : IPriceClassificationService
     public async Task<bool> ChangeToWaiting(int id, int userId)
     {
         PriceClassificationSpecification specification = new PriceClassificationSpecification(id: id, checkStatus: false, getIsChangeStatus: true);
-        PriceClassification priceClassification = await _repository.Get(specification);
+        PriceClassification priceClassification = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Waiting);
         return true;
     }

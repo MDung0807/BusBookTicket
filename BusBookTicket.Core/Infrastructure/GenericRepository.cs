@@ -65,8 +65,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         try
         {
             var ob = await ApplySpecification(specification).FirstOrDefaultAsync();
-                     // ?? throw new NotFoundException(AppConstants.NOT_FOUND);
-            CheckStatus(ob, checkStatus: checkStatus);
+            // ?? throw new NotFoundException(AppConstants.NOT_FOUND);
+            
+            if (ob != null)
+                CheckStatus(ob, checkStatus: checkStatus);
             return ob;
         }
         catch (LockedResource ex)
@@ -77,6 +79,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         {
             Console.WriteLine(ex.ToString());
             throw new NotFoundException(AppConstants.NOT_FOUND);
+        }
+        catch (StatusException e)
+        {
+            Console.WriteLine(e.ToString());
+            throw new StatusException(e.message);
         }
         catch (Exception e)
         {

@@ -26,7 +26,7 @@ public class ProvinceService : IProvinceService
     public async Task<ProvinceResponse> GetById(int id)
     {
         ProvinceSpecification provinceSpecification = new ProvinceSpecification(id);
-        Province province = await _repository.Get(provinceSpecification);
+        Province province = await _repository.Get(provinceSpecification, checkStatus: false);
         ProvinceResponse response = new ProvinceResponse();
         response = _mapper.Map<ProvinceResponse>(province);
         return response;
