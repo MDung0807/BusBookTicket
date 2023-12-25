@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusBookTicket.Application.MailKet.Settings;
+using BusBookTicket.Application.PayPalPayment.Services;
 using BusBookTicket.Configs;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.CustomerManage.DTOs.Requests;
@@ -77,6 +78,11 @@ internal class Program
         services.AddScoped<FormRegister>();
         services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+        services.AddSingleton(
+            x => new PaypalClient(
+                builder.Configuration["PayPalOptions:ClientId"],
+                builder.Configuration["PayPalOptions:ClientSecret"],
+                builder.Configuration["PayPalOptions:Mode"]));
         services.AddLogging(loggingBuilder =>
         {
             loggingBuilder.AddConsole();

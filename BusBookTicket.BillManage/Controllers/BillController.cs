@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Auth.Security;
+﻿using BusBookTicket.Application.PayPalPayment.Services;
+using BusBookTicket.Auth.Security;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
@@ -20,11 +21,14 @@ public class BillController : ControllerBase
 {
     private readonly IBillService _billService;
     private readonly IBillItemService _billItemService;
+    private readonly PaypalClient _paypalClient;
 
-    public BillController(IBillService billService, IBillItemService billItemService)
+    public BillController(IBillService billService, IBillItemService billItemService, PaypalClient paypalClient)
     {
+        
         this._billService = billService;
         this._billItemService = billItemService;
+        _paypalClient = paypalClient;
     }
 
     #region -- Controller --
@@ -139,6 +143,60 @@ public class BillController : ControllerBase
         int userId = JwtUtils.GetUserID(HttpContext);
         object result = await _billService.GetStatisticsStationByCompany(userId, year, take, desc);
         return Ok(new Response<object>(false, result));
+    }
+
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    [HttpPost("book")]
+    public async Task<IActionResult> Book(CancellationToken cancellationToken )
+    {
+        try
+        {
+            // set the transaction price and currency
+            var price = "5.00";
+            var currency = "USD";
+
+            // "reference" is the transaction key
+            var reference = "INV001";
+
+            var response = await _paypalClient.CreateOrder(price, currency, reference);
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var error = new
+            {
+                e.GetBaseException().Message
+            };
+
+            return BadRequest(error);
+        }
+    }
+    
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    [HttpPost("Capture")]
+    public async Task<IActionResult> Capture(string orderId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _paypalClient.CaptureOrder(orderId);
+
+            var reference = response.purchase_units[0].reference_id;
+
+            // Put your logic to save the transaction here
+            // You can use the "reference" variable as a transaction key
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            var error = new
+            {
+                e.GetBaseException().Message
+            };
+
+            return BadRequest(error);
+        }
     }
     #endregion -- Controller --
 }

@@ -60,12 +60,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _context.Set<T>().Where(predicate).CountAsync();
     }
 
-    public async Task<T> Get(ISpecification<T> specification)
+    public async Task<T> Get(ISpecification<T> specification, bool checkStatus = true)
     {
         try
         {
             var ob = await ApplySpecification(specification).FirstOrDefaultAsync();
                      // ?? throw new NotFoundException(AppConstants.NOT_FOUND);
+            CheckStatus(ob, checkStatus: checkStatus);
             return ob;
         }
         catch (LockedResource ex)
@@ -208,22 +209,26 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return SpecificationEvaluator<T>.GetQuery(_dbSet.AsQueryable(), specifications, _dbSet);
     }
 
-    private void CheckStatus(T data)
+    private void CheckStatus(T data, bool checkStatus = true)
     {
         if (data.Status == (int) EnumsApp.Delete)
         {
             throw new StatusException(AppConstants.NOT_EXIST);
         }
-                
-        else if (data.Status == (int)EnumsApp.Waiting)
-        {
-            throw new StatusException(AppConstants.WAITING);
-        }
 
-        else if (data.Status == (int)EnumsApp.Disable)
+        if (checkStatus)
         {
-            throw new StatusException(AppConstants.NOT_USED);
-        }
+            if (data.Status == (int)EnumsApp.Waiting)
+            {
+                throw new StatusException(AppConstants.WAITING);
+            }
+
+            else if (data.Status == (int)EnumsApp.Disable)
+            {
+                throw new StatusException(AppConstants.NOT_USED);
+            }
+        }        
+        
     }
 
     private async Task<bool> ChangeStatusImpl(object entity, int userId, int status, List<Dictionary<string, int>> checkedObject)

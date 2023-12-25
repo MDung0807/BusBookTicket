@@ -236,7 +236,7 @@ namespace BusBookTicket.Auth.Services.AuthService
                 }
             }
 
-            throw new AuthException(AuthConstants.LOGIN_FAIL);
+            throw new ExceptionDetail(AuthConstants.LOGIN_FAIL);
         }
         // public async Task<AccResponse> getAccByUsername(string Username, string roleName)
         // {

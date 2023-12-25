@@ -242,6 +242,8 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.Bus.Id))
                 .ForPath(dest => dest.Company,
                     opts => opts.MapFrom(x => x.Bus.Company.Name))
+                .ForPath(dest => dest.CompanyId,
+                    opts => opts.MapFrom(x => x.Bus.Company.Id))
                 .ForPath(dest => dest.BusType,
                     opts => opts.MapFrom(x => x.Bus.BusType.Name))
                 .ForPath(dest => dest.ListStation,
