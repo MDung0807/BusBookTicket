@@ -21,7 +21,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     {
         if (getIsChangeStatus)
         {
-            Criteria = x => x.CreateBy == userId;
+            Criteria = x => x.CreateBy == userId && x.Id == id;
             return;
         }
         AddInclude(x => x.Bus);

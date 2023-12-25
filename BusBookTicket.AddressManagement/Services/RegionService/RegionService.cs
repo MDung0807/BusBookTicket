@@ -29,7 +29,7 @@ public class RegionService : IRegionService
     public async Task<RegionResponse> GetById(int id)
     {
         RegionSpecification regionSpecification = new RegionSpecification(id);
-        AdministrativeRegion region = await _repository.Get(regionSpecification);
+        AdministrativeRegion region = await _repository.Get(regionSpecification, checkStatus: false);
         RegionResponse response = new RegionResponse();
         response = _mapper.Map<RegionResponse>(region);
         return response;

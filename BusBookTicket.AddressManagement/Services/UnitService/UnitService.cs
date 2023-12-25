@@ -30,7 +30,7 @@ public class UnitService : IUnitService
     public async Task<UnitResponse> GetById(int id)
     {
         UnitSpecification unitSpecification = new UnitSpecification(id);
-        AdministrativeUnit unit = await _repository.Get(unitSpecification);
+        AdministrativeUnit unit = await _repository.Get(unitSpecification, checkStatus: false);
         UnitResponse response = new UnitResponse();
         response = _mapper.Map<UnitResponse>(unit);
         return response;

@@ -46,7 +46,7 @@ public class WardService : IWardService
     public async Task<bool> Delete(int id, int userId)
     {
         WardSpecification wardSpecification = new WardSpecification(id);
-        Ward ward = await _repository.Get(wardSpecification);
+        Ward ward = await _repository.Get(wardSpecification, checkStatus: false);
         ward = ChangeStatus(ward, (int)EnumsApp.Delete);
         await _repository.Update(ward, userId);
         return true;

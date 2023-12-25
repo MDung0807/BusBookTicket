@@ -98,7 +98,7 @@ public class BusStationService : IBusStationService
     public async Task<bool> Delete(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification, checkStatus: false);
         busStation.Status = (int)EnumsApp.Delete;
         await _repository.Update(busStation, userId);
         return true;
@@ -118,28 +118,28 @@ public class BusStationService : IBusStationService
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Active);
     }
 
     public async Task<bool> ChangeIsLock(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Lock);
     }
 
     public async Task<bool> ChangeToWaiting(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Waiting);
     }
 
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);
-        BusStation busStation = await _repository.Get(busStationSpecification);
+        BusStation busStation = await _repository.Get(busStationSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Disable);
     }
 

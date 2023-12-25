@@ -99,7 +99,7 @@ public class CompanyService : ICompanyServices
     public async Task<bool> Delete(int id, int userId)
     {
         CompanySpecification companySpecification = new CompanySpecification(id, checkStatus:false, getAll:false);
-        Company company = await _repository.Get(companySpecification);
+        Company company = await _repository.Get(companySpecification, checkStatus: false);
         company = changeStatus(company, (int)EnumsApp.Delete);
         await _repository.Update(company, userId);
         return true;
@@ -136,7 +136,7 @@ public class CompanyService : ICompanyServices
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         CompanySpecification companySpecification = new CompanySpecification(id, checkStatus: false, getAll:false);
-        Company company = await _repository.Get(companySpecification);
+        Company company = await _repository.Get(companySpecification, checkStatus: false);
 
         return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Active);
     }
@@ -144,7 +144,7 @@ public class CompanyService : ICompanyServices
     public async Task<bool> ChangeIsLock(int id, int userId)
     {
         CompanySpecification companySpecification = new CompanySpecification(id, checkStatus: false, getAll:false);
-        Company company = await _repository.Get(companySpecification);
+        Company company = await _repository.Get(companySpecification, checkStatus: false);
 
         return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Lock);
     }

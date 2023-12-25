@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -57,7 +58,7 @@ public class PriceService : IPriceService
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
-        Prices price = await _repository.Get(specification);
+        Prices price = await _repository.Get(specification, checkStatus: false) ?? throw new ExceptionDetail(AppConstants.NOT_FOUND);
         await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Active);
         return true;
     }
@@ -70,7 +71,7 @@ public class PriceService : IPriceService
     public async Task<bool> ChangeToWaiting(int id, int userId)
     {
         PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
-        Prices price = await _repository.Get(specification);
+        Prices price = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Waiting);
         return true;
     }

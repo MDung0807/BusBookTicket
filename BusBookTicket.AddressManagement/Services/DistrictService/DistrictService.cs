@@ -28,7 +28,7 @@ public class DistrictService : IDistrictService
     public async Task<DistrictResponse> GetById(int id)
     {
         DistrictSpecification districtSpecification = new DistrictSpecification(id);
-        District district = await _repository.Get(districtSpecification);
+        District district = await _repository.Get(districtSpecification, checkStatus: false);
         DistrictResponse response = new DistrictResponse();
 
         response = _mapper.Map<DistrictResponse>(district);

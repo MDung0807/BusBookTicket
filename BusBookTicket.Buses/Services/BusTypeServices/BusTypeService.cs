@@ -50,7 +50,7 @@ public class BusTypeService : IBusTypeService
     public async Task<bool> Delete(int id, int userId)
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id);
-        BusType busType = await _repository.Get(busTypeSpecification);
+        BusType busType = await _repository.Get(busTypeSpecification, checkStatus: false);
         busType.Status = (int)EnumsApp.Delete;
         await _repository.Delete(busType, userId);
         return true;
@@ -66,28 +66,28 @@ public class BusTypeService : IBusTypeService
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
-        BusType busType = await _repository.Get(busTypeSpecification);
+        BusType busType = await _repository.Get(busTypeSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Active);
     }
 
     public async Task<bool> ChangeIsLock(int id, int userId)
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
-        BusType busType = await _repository.Get(busTypeSpecification);
+        BusType busType = await _repository.Get(busTypeSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Lock);
     }
 
     public async Task<bool> ChangeToWaiting(int id, int userId)
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
-        BusType busType = await _repository.Get(busTypeSpecification);
+        BusType busType = await _repository.Get(busTypeSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Waiting);
     }
 
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
         BusTypeSpecification busTypeSpecification = new BusTypeSpecification(id, false);
-        BusType busType = await _repository.Get(busTypeSpecification);
+        BusType busType = await _repository.Get(busTypeSpecification, checkStatus: false);
         return await _repository.ChangeStatus(busType, userId, (int)EnumsApp.Disable);
     }
 

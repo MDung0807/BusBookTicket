@@ -47,7 +47,7 @@ public class SeatTypeService : ISeatTypeService
     {
         SeatTypeSpecification seatTypeSpecification = 
             new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
-        SeatType seatType = await _repository.Get(seatTypeSpecification);
+        SeatType seatType = await _repository.Get(seatTypeSpecification, checkStatus: false);
         seatType.Status = (int)EnumsApp.Delete;
         await _repository.Delete(seatType, userId);
         return true;
@@ -65,7 +65,7 @@ public class SeatTypeService : ISeatTypeService
     {
         SeatTypeSpecification seatTypeSpecification = 
             new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
-        SeatType seatType = await _repository.Get(seatTypeSpecification);
+        SeatType seatType = await _repository.Get(seatTypeSpecification, checkStatus: false);
         await _repository.ChangeStatus(seatType, userId: userId, (int)EnumsApp.Active);
         return true;
     }
@@ -84,7 +84,7 @@ public class SeatTypeService : ISeatTypeService
     {
         SeatTypeSpecification seatTypeSpecification = 
             new SeatTypeSpecification(id, userId: userId, false, getIsChangeStatus:true);
-        SeatType seatType = await _repository.Get(seatTypeSpecification);
+        SeatType seatType = await _repository.Get(seatTypeSpecification, checkStatus: false);
         await _repository.ChangeStatus(seatType, userId: userId, (int)EnumsApp.Disable);
         return true;
     }

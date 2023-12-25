@@ -60,7 +60,7 @@ public class TicketItemService : ITicketItemService
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
         TicketItemSpecification specification = new TicketItemSpecification(id, checkStatus:false, isGetChangeStatus:true, action:"BillItem");
-        TicketItem item = await _repository.Get(specification);
+        TicketItem item = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(item, userId, (int)EnumsApp.Active);
         return true;
     }
@@ -121,7 +121,7 @@ public class TicketItemService : ITicketItemService
     public async Task<bool> ChangeStatusToWaitingPayment(int id, int userId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
-        TicketItem item = await _repository.Get(ticketItemSpecification);
+        TicketItem item = await _repository.Get(ticketItemSpecification, checkStatus: false);
         List<Dictionary<string, int>> listCheckObject = 
             new List<Dictionary<string, int>> { new Dictionary<string, int> { { "Ticket", 0 } } };
         return await _repository.ChangeStatus(item, userId, (int)EnumsApp.AwaitingPayment, listCheckObject);
@@ -130,7 +130,7 @@ public class TicketItemService : ITicketItemService
     public async Task<bool> ChangeStatusToPaymentComplete(int id, int userId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(id);
-        TicketItem item = await _repository.Get(ticketItemSpecification);
+        TicketItem item = await _repository.Get(ticketItemSpecification, checkStatus: false);
         return await _repository.ChangeStatus(item, userId, (int)EnumsApp.PaymentComplete);
     }
 }
