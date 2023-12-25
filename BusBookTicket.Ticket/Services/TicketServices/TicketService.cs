@@ -75,6 +75,10 @@ public class TicketService : ITicketService
     {
         TicketSpecification ticketSpecification = new TicketSpecification(id,checkStatus:true, getIsChangeStatus:false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
+        if (ticket == null)
+        {
+            return null;
+        }
         List<TicketItemResponse> itemResponses = await _itemService.GetAllInTicket(id);
         int totalEmptySeat = 0;
         foreach (var item in itemResponses)
@@ -297,9 +301,18 @@ public class TicketService : ITicketService
         List<TicketResponse> responses = new List<TicketResponse>();
         foreach (var item in tickets)
         {
-            responses.Add( await GetById(item.Id));
+            TicketResponse ticketResponse = await GetById(item.Id);
+            if (ticketResponse == null)
+            {
+                continue;
+            }
+            responses.Add( ticketResponse);
         }
-        TicketPagingResult result = new TicketPagingResult(pagingRequest.PageIndex, pagingRequest.PageSize, count, responses);
+        TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count,
+            responses);
         return result;
     }
 
@@ -310,10 +323,11 @@ public class TicketService : ITicketService
 
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging);
+        TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging:paging,
+            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeIsDesc: searchForm.TimeIsDesc, timeInDays:searchForm.TimeInDays);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
-        int count = await _repository.Count(new TicketSpecification(searchForm.StationStart, searchForm.StationEnd,
-            searchForm.DateTime));
+        int count = await _repository.Count(new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,
+            companyIds:searchForm.CompanyIds, priceIsDesc: searchForm.PriceIsDesc, timeIsDesc: searchForm.TimeIsDesc, timeInDays:searchForm.TimeInDays));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
         
@@ -332,7 +346,7 @@ public class TicketService : ITicketService
         try
         {
             await _unitOfWork.BeginTransaction();
-            TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true);
+            TicketSpecification ticketSpecification = new TicketSpecification(id: id, checkStatus: false, getIsChangeStatus:true, userId:userId);
             Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
             TicketItemSpecification ticketItemSpecification =
                 new TicketItemSpecification(0, id, true, checkStatus: false);

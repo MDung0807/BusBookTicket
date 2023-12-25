@@ -53,7 +53,13 @@ public class BusService : IBusService
     {
         BusSpecification busSpecification = new BusSpecification(id);
         Bus bus = await _repository.Get(busSpecification) ?? throw new Exception(BusConstants.Bus_NotAction);
+        List<RoutesResponse> routesResponses = new List<RoutesResponse>();
+        foreach (var stopStation in bus.StopStations)
+        {
+            routesResponses.Add(await _routesService.GetById(stopStation.Route.Id));
+        }
         BusResponse response = _mapper.Map<BusResponse>(bus);
+        response.Routes = routesResponses;
         response.BusStops.RemoveRange(0, response.BusStops.Count);
         return response;
     }

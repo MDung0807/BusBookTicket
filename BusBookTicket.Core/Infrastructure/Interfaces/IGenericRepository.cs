@@ -14,8 +14,9 @@ public interface IGenericRepository<T>: IRepository<T> where T : BaseEntity
     /// Get data from database use specification
     /// </summary>
     /// <param name="specification">specification</param>
+    /// <param name="checkStatus">check status is data. If status false then response mess and error</param>
     /// <returns></returns>
-    Task<T> Get(ISpecification<T> specification);
+    Task<T> Get(ISpecification<T> specification, bool checkStatus = true);
     
     /// <summary>
     /// Get list data from database use specification

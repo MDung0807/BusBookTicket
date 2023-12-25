@@ -1,4 +1,5 @@
 ﻿using BusBookTicket.Core.Application.Specification;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.Paging;
 
 namespace BusBookTicket.Ticket.Specification;
@@ -15,7 +16,8 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     /// <param name="getIsChangeStatus"></param>
     /// <param name="checkStatus"></param>
     /// <param name="userId"></param>
-    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, int userId = default, bool isAsc = true) : base(x => x.Id == id, checkStatus)
+    public TicketSpecification(int id, bool getIsChangeStatus = false, bool checkStatus = true, int userId = default, bool isAsc = true) 
+        : base(x => x.Id == id, checkStatus)
     {
         if (getIsChangeStatus)
         {
@@ -29,11 +31,40 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
         AddInclude("TicketItems.BillItem.Bill.Customer");
     }
 
-    public TicketSpecification(string stationStart, string stationEnd, DateTime dateTime,TicketPaging paging = null)
+    public TicketSpecification(string stationStart, string stationEnd, DateTime dateTime,TicketPaging paging = null, List<int> companyIds = default,
+        bool priceIsDesc = false, bool timeIsDesc = false, List<int> timeInDays = default)
+    :base(x => (companyIds.Count == 0 || companyIds.Contains(x.Bus.Company.Id))
+               && (timeInDays.Count == 0 || 
+                   (timeInDays.Contains((int)EnumsApp.Morning) && x.Date.TimeOfDay.Hours >= 4 && x.Date.TimeOfDay.Hours <= 12) ||
+                   (timeInDays.Contains((int)EnumsApp.Afternoon) && x.Date.TimeOfDay.Hours >= 12 && x.Date.TimeOfDay.Hours <= 17) ||
+                   (timeInDays.Contains((int)EnumsApp.Evening) && x.Date.TimeOfDay.Hours >= 17 && x.Date.TimeOfDay.Hours <= 21) ||
+                   (timeInDays.Contains((int)EnumsApp.Night) && (x.Date.TimeOfDay.Hours >= 21 || x.Date.TimeOfDay.Hours <= 4))
+               )
+               && x.Date > DateTime.Now)
     {
         if (paging!= null)
         {
             ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        if (priceIsDesc)
+        {
+            ApplyOrderByDescending(x => x.TicketItems.FirstOrDefault().Price);
+        }
+
+        if (!priceIsDesc)
+        {
+            ApplyOrderBy(x => x.TicketItems.First().Price);
+        }
+
+        if (timeIsDesc)
+        {
+            ApplyOrderByDescending(x => x.Date);
+        }
+
+        if (!timeIsDesc)
+        {
+            ApplyOrderBy(x => x.Date);
         }
         AddSqlQuery(@"
             SELECT

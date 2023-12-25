@@ -10,4 +10,9 @@ public enum EnumsApp
     AwaitingPayment = 5,
     PaymentComplete = 6,
     Complete = 7,
+    
+    Morning = 1,
+    Afternoon = 2,
+    Evening = 3,
+    Night = 4,
 }

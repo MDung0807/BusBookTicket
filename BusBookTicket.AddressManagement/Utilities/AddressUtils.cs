@@ -9,6 +9,8 @@ public abstract class AddressUtils
     public static async Task<string> GetAddressDb(int wardId, IWardService wardService)
     {
         WardResponse response = await wardService.GetById(wardId);
+        if (response == null)
+            return null;
         return response.FullName + ", " + response.District + ", "+ response.Province;
     }
     
