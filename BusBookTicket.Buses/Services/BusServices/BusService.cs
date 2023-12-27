@@ -26,7 +26,6 @@ public class BusService : IBusService
     private readonly ISeatService _seatService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Bus> _repository;
-    private readonly IGenericRepository<BusStop> _busStopRepository;
     private readonly IGenericRepository<StopStation> _stopStationRepository;
     private readonly IRoutesService _routesService;
     #endregion -- Properties --
@@ -45,7 +44,6 @@ public class BusService : IBusService
         this._seatService = seatService;
         this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Bus>();
-        this._busStopRepository = unitOfWork.GenericRepository<BusStop>();
         _stopStationRepository = unitOfWork.GenericRepository<StopStation>();
         _routesService = routesService;
     }
@@ -60,7 +58,6 @@ public class BusService : IBusService
         }
         BusResponse response = _mapper.Map<BusResponse>(bus);
         response.Routes = routesResponses;
-        response.BusStops.RemoveRange(0, response.BusStops.Count);
         return response;
     }
 
@@ -254,18 +251,6 @@ public class BusService : IBusService
         {
             await _unitOfWork.BeginTransaction();
             
-            
-            foreach (int stationID in request.BusStopIds)
-            {
-                BusStop busStop = new BusStop();
-                busStop.BusStation ??= new BusStation();
-                busStop.BusStation.Id = stationID;
-                busStop.Bus ??= new Bus();
-                busStop.Bus.Id= request.Id;
-
-                await _busStopRepository.Create(busStop, userId);
-
-            }
             await _unitOfWork.SaveChangesAsync();
         }
         catch (Exception e)

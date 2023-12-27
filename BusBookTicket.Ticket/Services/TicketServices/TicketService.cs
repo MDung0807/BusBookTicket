@@ -32,7 +32,6 @@ public class TicketService : ITicketService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
     private readonly IGenericRepository<Bus> _busRepository;
-    private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
     private readonly IGenericRepository<TicketItem> _ticketItemRepository;
     private readonly IImageService _imageService;
     private readonly IWardService _wardService;
@@ -60,7 +59,6 @@ public class TicketService : ITicketService
         this._unitOfWork = unitOfWork;
         this._repository = unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
         _busRepository = unitOfWork.GenericRepository<Bus>();
-        _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
         _ticketItemRepository = unitOfWork.GenericRepository<TicketItem>();
         _imageService = imageService;
         _wardService = wardService;

@@ -142,7 +142,6 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
             x.TicketRouteDetails.Any(p => p.DepartureTime <= departureTime &&
                                       p.ArrivalTime>= departureTime);
         
-        AddInclude(x => x.TicketBusStops);
     }
 
     public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null, DateOnly month = default)
@@ -151,6 +150,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     {
         if (paging != null)
         {
+            ApplyOrderByDescending(x => x.Date);
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
     }

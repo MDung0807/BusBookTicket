@@ -8,6 +8,5 @@ public class BusStationResponse
     public string Description { get; set; }
     public int Status { get; set; }
     public int WardId { get; set; }
-    public int BusStopId { get; set; }
     public string AddressDb { get; set; }
 }

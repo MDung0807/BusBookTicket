@@ -341,44 +341,6 @@ namespace BusBookTicket.Core.Migrations
                     b.ToTable("BusStations");
                 });
 
-            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStop", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BusID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BusStationID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreateBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UpdateBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusID");
-
-                    b.HasIndex("BusStationID");
-
-                    b.ToTable("BusStops");
-                });
-
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusType", b =>
                 {
                     b.Property<int>("Id")
@@ -416,7 +378,7 @@ namespace BusBookTicket.Core.Migrations
 
                     b.HasAlternateKey("Name");
 
-                    b.ToTable("BusesType");
+                    b.ToTable("BusTypes");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Company", b =>
@@ -1303,56 +1265,6 @@ namespace BusBookTicket.Core.Migrations
                     b.ToTable("TicketItems");
                 });
 
-            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_BusStop", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("BusStopId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreateBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DiscountPrice")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IndexStation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TicketId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UpdateBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusStopId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("Ticket_BusStop");
-                });
-
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_RouteDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -1539,25 +1451,6 @@ namespace BusBookTicket.Core.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Ward");
-                });
-
-            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStop", b =>
-                {
-                    b.HasOne("BusBookTicket.Core.Models.Entity.Bus", "Bus")
-                        .WithMany("BusStops")
-                        .HasForeignKey("BusID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BusBookTicket.Core.Models.Entity.BusStation", "BusStation")
-                        .WithMany("BusStops")
-                        .HasForeignKey("BusStationID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-
-                    b.Navigation("BusStation");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Company", b =>
@@ -1821,23 +1714,6 @@ namespace BusBookTicket.Core.Migrations
                     b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_BusStop", b =>
-                {
-                    b.HasOne("BusBookTicket.Core.Models.Entity.BusStop", "BusStop")
-                        .WithMany("TicketBusStops")
-                        .HasForeignKey("BusStopId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BusBookTicket.Core.Models.Entity.Ticket", "Ticket")
-                        .WithMany("TicketBusStops")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("BusStop");
-
-                    b.Navigation("Ticket");
-                });
-
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket_RouteDetail", b =>
                 {
                     b.HasOne("BusBookTicket.Core.Models.Entity.RouteDetail", "RouteDetail")
@@ -1902,8 +1778,6 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Bus", b =>
                 {
-                    b.Navigation("BusStops");
-
                     b.Navigation("Reviews");
 
                     b.Navigation("Seats");
@@ -1915,18 +1789,11 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStation", b =>
                 {
-                    b.Navigation("BusStops");
-
                     b.Navigation("RouteDetails");
 
                     b.Navigation("StationEnd");
 
                     b.Navigation("StationStart");
-                });
-
-            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusStop", b =>
-                {
-                    b.Navigation("TicketBusStops");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.BusType", b =>
@@ -2014,8 +1881,6 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Ticket", b =>
                 {
-                    b.Navigation("TicketBusStops");
-
                     b.Navigation("TicketItems");
 
                     b.Navigation("TicketRouteDetails");

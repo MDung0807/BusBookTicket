@@ -64,7 +64,7 @@ public sealed class BillSpecification : BaseSpecification<Bill>
     {
         Criteria = x => x.Status == (int)EnumsApp.Complete
                         && (companyId == default || x.BillItems.Any(bi => bi.TicketItem.Ticket.Bus.Company.Id == companyId))
-                        && (year == default || x.BillItems.Any(bi => bi.TicketItem.Ticket.TicketBusStops.Any(tbs => tbs.DepartureTime.Year == year)));
+                        && (year == default || x.BillItems.Any(bi => bi.TicketItem.Ticket.Date.Year == year));
 
         CheckStatus = false;
         AddInclude(b => b.BillItems);
@@ -73,16 +73,4 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
     }
     
-    
-    public void GetStatisticsStation(int year)
-    {
-        Criteria = x => x.Status == (int)EnumsApp.Complete
-                        && x.BillItems.Any()
-            ? x.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Year == year : year == default;
-        CheckStatus = false;
-        AddInclude(b => b.BillItems);
-        AddInclude("BillItems.TicketItem.Ticket.TicketBusStops");
-        // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
-    }
-
 }
