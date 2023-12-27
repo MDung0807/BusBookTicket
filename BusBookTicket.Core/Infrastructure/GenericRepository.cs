@@ -68,7 +68,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             // ?? throw new NotFoundException(AppConstants.NOT_FOUND);
             
             if (ob != null)
-                CheckStatus(ob, checkStatus: checkStatus);
+                CheckStatus(ob, checkStatus: false);
             return ob;
         }
         catch (LockedResource ex)

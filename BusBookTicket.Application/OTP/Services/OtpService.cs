@@ -20,7 +20,7 @@ public class OtpService : IOtpService
     public async Task<OtpResponse> CreateOtp(OtpRequest request, int userId)
     {
         OtpSpecification specification = new OtpSpecification(userId:userId, request.Email);
-        OtpCode otp = await _repository.Get(specification);
+        OtpCode otp = await _repository.Get(specification, checkStatus: false);
         if (otp == null)
             otp = new OtpCode();
         otp.Email = request.Email;
@@ -40,7 +40,7 @@ public class OtpService : IOtpService
         DateTime dateTimeNow = DateTime.Now;
         int expired = 10; // expired 10 minute
         OtpSpecification specification = new OtpSpecification(userId, request.Email, dateTime:dateTimeNow, minute:expired, false);
-        OtpCode otp = await _repository.Get(specification);
+        OtpCode otp = await _repository.Get(specification, checkStatus: false);
         if (otp != null && otp.Code == request.Code)
             return true;
         return false;

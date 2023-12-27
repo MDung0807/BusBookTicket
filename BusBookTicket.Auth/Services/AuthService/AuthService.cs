@@ -255,14 +255,14 @@ namespace BusBookTicket.Auth.Services.AuthService
         public async Task<Account> GetAccountByUsername(string username, string roleName, bool checkStatus = true)
         {
             AccountSpecification accountSpecification = new AccountSpecification(username, roleName, checkStatus);
-            Account account = await _repository.Get(accountSpecification);
+            Account account = await _repository.Get(accountSpecification, checkStatus: false);
             return account;
         }
         
         public async Task<Account> GetAccountByUsername(string username, bool checkStatus = true)
         {
             AccountSpecification specification = new AccountSpecification(username:username);
-            Account account = await _repository.Get(specification);
+            Account account = await _repository.Get(specification, checkStatus: false);
             return account;
         }
         #endregion -- Public Method --

@@ -58,7 +58,7 @@ public class BillService : IBillService
     public async Task<BillResponse> GetById(int id)
     {
         BillSpecification specification = new BillSpecification(id: id, checkStatus: false, getIsChangeStatus:false);
-        Bill bill = await _repository.Get(specification);
+        Bill bill = await _repository.Get(specification, checkStatus: false);
         BillResponse response = _mapper.Map<BillResponse>(bill);
         response.Items = await _billItemService.GetItemInBill(bill.Id);
         return response;
@@ -124,8 +124,8 @@ public class BillService : IBillService
             // Create bill
             Bill bill = _mapper.Map<Bill>(entity);
             CustomerSpecification customerSpecification = new CustomerSpecification(userId);
-            Ticket_RouteDetail ticketRouteDetailStart = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailStartId));
-            Ticket_RouteDetail ticketRouteDetailEnd = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailEndId));
+            Ticket_RouteDetail ticketRouteDetailStart = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailStartId), checkStatus: false);
+            Ticket_RouteDetail ticketRouteDetailEnd = await _ticketRouteDetail.Get(new TicketRouteDetailSpec(id: entity.TicketRouteDetailEndId), checkStatus: false);
 
             // Ticket_BusStop ticketBusStopEnd = await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationEndId, "Get"));
             // Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
