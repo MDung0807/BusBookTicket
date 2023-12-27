@@ -31,7 +31,6 @@ public class BillService : IBillService
     private readonly ITicketItemService _ticketItemService;
     private readonly IMailService _mailService;
     private readonly IGenericRepository<Customer> _customerRepo;
-    private readonly IGenericRepository<Ticket_BusStop> _ticketBusStop;
     private readonly IGenericRepository<Ticket_RouteDetail> _ticketRouteDetail;
 
     private readonly IRouteDetailService _routeDetailService;
@@ -52,7 +51,6 @@ public class BillService : IBillService
         _ticketItemService = itemService;
         _mailService = mailService;
         _customerRepo = unitOfWork.GenericRepository<Customer>();
-        _ticketBusStop = unitOfWork.GenericRepository<Ticket_BusStop>();
         _routeDetailService = routeDetailService;
         _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
 
@@ -369,7 +367,7 @@ public class BillService : IBillService
                 Revenue = b.TotalPrice,
                 CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0,
                 CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "",
-                Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month : 0 : 0
+                Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Date.Month : 0
             })
             .GroupBy(x => new { x.CompanyId, x.CompanyName, x.Month})
             .Select(group => new
@@ -570,8 +568,8 @@ public class BillService : IBillService
     private int GetQuarter(Bill b, bool isQuarter = false)
     {
         int month =  b.BillItems.Any()
-            ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any()
-                ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month
+            ? b.BillItems.First().TicketItem.Ticket.TicketRouteDetails.Any()
+                ? b.BillItems.First().TicketItem.Ticket.Date.Month
                 : 0
             : 0;
         if (!isQuarter)

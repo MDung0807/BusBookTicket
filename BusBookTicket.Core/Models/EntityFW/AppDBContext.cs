@@ -18,7 +18,6 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration<AdministrativeUnit>(new AdministrativeUnitConfigs());
             modelBuilder.ApplyConfiguration<Bus>(new BusConfigs());
             modelBuilder.ApplyConfiguration<BusStation>(new BusStationConfigs());
-            modelBuilder.ApplyConfiguration<BusStop>(new BusStopConfigs());
             modelBuilder.ApplyConfiguration<BusType>(new BusTypeConfigs());
             modelBuilder.ApplyConfiguration<District>(new DistrictConfigs());
             modelBuilder.ApplyConfiguration<Company>(new CompanyConfigs());
@@ -52,12 +51,11 @@ namespace BusBookTicket.Core.Models.EntityFW
         }
 
         public DbSet<Bus> Buses { get; set; }
-        public DbSet<BusType> BusesType { get; set; }
+        public DbSet<BusType> BusTypes { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<BusStation> BusStations { get; set; }
-        public DbSet<BusStop> BusStops { get; set; }
         public DbSet<TicketItem> TicketItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Rank> Ranks { get; set; }

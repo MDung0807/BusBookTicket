@@ -15,7 +15,6 @@ public sealed class BusSpecification : BaseSpecification<Bus>
             AddInclude("BusStops.TicketBusStops");
             AddInclude("BusStops.TicketBusStops.Ticket");
             AddInclude(x => x.Seats);
-            AddInclude(x => x.BusStops);
             return;
         }
 
@@ -25,7 +24,6 @@ public sealed class BusSpecification : BaseSpecification<Bus>
             AddInclude(x => x.BusType);
         }
         AddInclude(x => x.Company);
-        AddInclude(x => x.BusStops);
         AddInclude(x => x.BusType);
         AddInclude(x => x.Seats);
         AddInclude(x => x.StopStations);
@@ -40,16 +38,13 @@ public sealed class BusSpecification : BaseSpecification<Bus>
     {
         if (getIsChangeStatus)
         {
-            AddInclude(x => x.BusStops);
             if (dateTime != default)
             {
-                Criteria = x => x.BusStops.Any(bs => bs.TicketBusStops.Any(tbs => (tbs.DepartureTime >= dateTime))); 
                 AddInclude("BusStops.TicketBusStops.Ticket");
             }
             return;
         }
         AddInclude(x => x.Company);
-        AddInclude(x => x.BusStops);
         AddInclude(x => x.BusType);
         AddInclude(x => x.Seats);
     }

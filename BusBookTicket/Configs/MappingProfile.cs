@@ -93,9 +93,7 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.WardId));
             CreateMap<BusStation, BusStationResponse>()
                 .ForPath(dest => dest.WardId,
-                    opts => opts.MapFrom(x => x.Ward.Id))
-                .ForPath(dest => dest.BusStopId,
-                    opts => opts.MapFrom(x => x.BusStops.FirstOrDefault().Id));
+                    opts => opts.MapFrom(x => x.Ward.Id));
             #endregion -- Configs BusStation Module --
 
             #region -- Configs Company Module --
@@ -190,8 +188,6 @@ namespace BusBookTicket.Configs
                     opts => opts.MapFrom(x => x.Company.Name))
                 .ForPath(dest => dest.BusType,
                     opts => opts.MapFrom(x => x.BusType.Name))
-                .ForPath(dest => dest.BusStops,
-                    opts => opts.MapFrom(x => x.BusStops))
                 .ForPath(dest => dest.TotalSeat,
                     opts => opts.MapFrom(x => x.BusType.TotalSeats));
 
@@ -249,12 +245,6 @@ namespace BusBookTicket.Configs
                 .ForPath(dest => dest.ListStation,
                     opts => opts.MapFrom(x => x.TicketRouteDetails));
 
-            CreateMap<Ticket_BusStop, StationResponse>()
-                .ForPath(dest => dest.TicketRouteDetailId,
-                    opts => opts.MapFrom(x => x.Id))
-                .ForPath(dest => dest.Station,
-                    opts => opts.MapFrom(x => x.BusStop.BusStation.Name));
-            
             CreateMap<Ticket_RouteDetail, StationResponse>()
                 .ForPath(dest => dest.TicketRouteDetailId,
                     opts => opts.MapFrom(x => x.Id))
