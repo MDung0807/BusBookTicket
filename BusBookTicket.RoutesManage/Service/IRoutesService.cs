@@ -7,5 +7,5 @@ namespace BusBookTicket.RoutesManage.Service;
 
 public interface IRoutesService : IService<RoutesCreate, RoutesCreate, int, RoutesResponse, RoutesPaging, RoutesPagingResult>
 {
-    
+    Task<RoutesResponse> GetById(int id, int companyId);
 }

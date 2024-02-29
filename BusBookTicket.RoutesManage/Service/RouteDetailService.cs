@@ -124,9 +124,9 @@ public class RouteDetailService : IRouteDetailService
         return result;
     }
 
-    public async Task<RouteDetailPagingResult> GetAllInRoute(RouteDetailPaging pagingRequest, int idMaster)
+    public async Task<RouteDetailPagingResult> GetAllInRoute(RouteDetailPaging pagingRequest, int idMaster, int userId)
     {
-        RouteDetailSpecification specification = new RouteDetailSpecification(routeId: idMaster,paging:pagingRequest);
+        RouteDetailSpecification specification = new RouteDetailSpecification(routeId: idMaster,paging:pagingRequest, companyId: userId);
         int count = await _repository.Count(new RouteDetailSpecification(routeId: idMaster));
         List<RouteDetail> routeDetails = await _repository.ToList(specification);
 

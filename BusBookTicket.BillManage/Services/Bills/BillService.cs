@@ -98,12 +98,12 @@ public class BillService : IBillService
                 }
             };
             await _repository.ChangeStatus(bill, userId: userId, (int)EnumsApp.Delete, listObjectNotChange);
-            await SendMail(
-                bill.Id,
-                $"Đơn hàng {bill.Id} từ vé {bill.BillItems.ToList()[0].TicketItem.Ticket.Id} vừa bị hủy, ghế ngồi vừa được khôi phục",
-                $"Ôii, mất đơn rồi!!",
-                ""
-            );
+            // await SendMail(
+            //     bill.Id,
+            //     $"Đơn hàng {bill.Id} từ vé {bill.BillItems.ToList()[0].TicketItem.Ticket.Id} vừa bị hủy, ghế ngồi vừa được khôi phục",
+            //     $"Ôii, mất đơn rồi!!",
+            //     ""
+            // );
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

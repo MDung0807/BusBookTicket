@@ -26,7 +26,8 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         // AddInclude(x => x.BusStationStart);
         AddInclude(x => x.Customer);
         AddInclude(x => x.BillItems);
-        
+        AddInclude("BillItems.TicketItem.Ticket");
+        AddInclude("BillItems.TicketItem.Ticket.TicketRouteDetails");
         
         if (paging != null)
             ApplyPaging(paging.PageIndex, paging.PageSize);
@@ -68,7 +69,6 @@ public sealed class BillSpecification : BaseSpecification<Bill>
 
         CheckStatus = false;
         AddInclude(b => b.BillItems);
-        AddInclude("BillItems.TicketItem.Ticket.TicketBusStops");
         AddInclude("BillItems.TicketItem.Ticket.Bus.Company");
         // ApplyGroupBy(b => new { CompanyId = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Id : 0, CompanyName = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.Bus.Company.Name : "", Month = b.BillItems.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.Any() ? b.BillItems.First().TicketItem.Ticket.TicketBusStops.First().DepartureTime.Month:0 : 0});
     }

@@ -142,7 +142,7 @@ public class TicketService : ITicketService
 
     public async Task<bool> Create(TicketFormCreate entity, int userId)
     {
-        if (!await CheckTicketIsExist(entity.BusId, entity))
+        if (await CheckTicketIsExist(entity.BusId, entity))
             throw new ExceptionDetail(TicketConstants.TICKET_EXIST);
         await _unitOfWork.BeginTransaction();
         try
@@ -230,7 +230,7 @@ public class TicketService : ITicketService
                 if (seat.Status != (int)EnumsApp.Active && seat.Status != (int)EnumsApp.AwaitingPayment)
                     throw new ExceptionDetail();
                 double price = seat.Price;
-                price += (priceResponse.Price + priceResponse.Price * priceClassificationResponse.Value);
+                price += (priceResponse.Price + priceResponse.Price * priceClassificationResponse.Value/100);
                 await CreateItem(seat, ticket.Id, userId, (int)price);
             }
 
@@ -442,8 +442,7 @@ public class TicketService : ITicketService
             detailResponse.DepartureTime.Microseconds);
         TicketSpecification ticketSpecification = new TicketSpecification(busId: busId, departureTime: departureTime);
         bool status = await _repository.Contains(ticketSpecification);
-        return !status;
-        return true;
+        return status;
     }
     
     private async Task<bool> SendMail(Core.Models.Entity.Ticket ticket, string message, string subject, string content)

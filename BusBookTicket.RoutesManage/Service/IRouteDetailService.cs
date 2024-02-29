@@ -12,6 +12,7 @@ public interface IRouteDetailService : IService<RouteDetailCreate, RouteDetailCr
     /// </summary>
     /// <param name="pagingRequest"></param>
     /// <param name="idMaster">id master</param>
+    /// <param name="userId"></param>
     /// <returns></returns>
-    Task<RouteDetailPagingResult> GetAllInRoute(RouteDetailPaging pagingRequest, int idMaster);
+    Task<RouteDetailPagingResult> GetAllInRoute(RouteDetailPaging pagingRequest, int idMaster, int userId);
 }

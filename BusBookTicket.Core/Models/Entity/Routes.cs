@@ -12,7 +12,7 @@ public class Routes : BaseEntity
     public BusStation BusStationEnd { get; set; }
     public List<RouteDetail> RouteDetails { get; set; }
     public HashSet<StopStation> StopStations { get; set; }
-    public Prices Prices { get; set; }
+    public HashSet<Prices> Prices { get; set; }
 
     #endregion -- Relationships --
 }

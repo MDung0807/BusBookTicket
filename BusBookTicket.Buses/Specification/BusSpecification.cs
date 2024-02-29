@@ -12,8 +12,6 @@ public sealed class BusSpecification : BaseSpecification<Bus>
     {
         if (getChangeStatus)
         {   
-            AddInclude("BusStops.TicketBusStops");
-            AddInclude("BusStops.TicketBusStops.Ticket");
             AddInclude(x => x.Seats);
             return;
         }
@@ -26,8 +24,9 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         AddInclude(x => x.Company);
         AddInclude(x => x.BusType);
         AddInclude(x => x.Seats);
-        AddInclude(x => x.StopStations);
+        AddInclude(x => x.StopStations.Where(s => s.Bus.Id == id));
         AddInclude("StopStations.Route.RouteDetails");
+        AddInclude("StopStations.Route.RouteDetails.Station");
     }
 
 
@@ -40,7 +39,6 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         {
             if (dateTime != default)
             {
-                AddInclude("BusStops.TicketBusStops.Ticket");
             }
             return;
         }

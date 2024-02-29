@@ -9,8 +9,8 @@ public class PricesConfigs: BaseEntityConfigs, IEntityTypeConfiguration<Prices>
     public void Configure(EntityTypeBuilder<Prices> builder)
     {
         builder.HasOne(x => x.Routes)
-            .WithOne(x => x.Prices)
-            .HasForeignKey<Prices>("RouteId");
+            .WithMany(x => x.Prices)
+            .HasForeignKey("RouteId");
 
         builder.HasOne(x => x.Company)
             .WithMany(x => x.Prices)
