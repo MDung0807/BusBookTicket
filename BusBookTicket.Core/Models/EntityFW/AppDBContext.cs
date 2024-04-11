@@ -43,6 +43,10 @@ namespace BusBookTicket.Core.Models.EntityFW
             modelBuilder.ApplyConfiguration<StopStation>(new StopStationConfigs());
             modelBuilder.ApplyConfiguration<Prices>(new PricesConfigs());
             modelBuilder.ApplyConfiguration<Ticket_RouteDetail>(new Ticket_RouteDetailConfigs());
+            modelBuilder.ApplyConfiguration<Event>(new EventConfigs());
+            modelBuilder.ApplyConfiguration<Notification>(new NotificationConfigs());
+            modelBuilder.ApplyConfiguration<NotificationChange>(new NotificationChangeConfigs());
+            modelBuilder.ApplyConfiguration<NotificationObject>(new NotificationObjectConfigs());
             
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -79,6 +83,9 @@ namespace BusBookTicket.Core.Models.EntityFW
         public DbSet<StopStation>StopStations { get; set; }
         public DbSet<Ticket_RouteDetail> TicketRouteDetails { get; set; }
         public DbSet<Prices>Prices { get; set; }
-        
-}
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotificationObject> NotificationObjects { get; set; }
+        public DbSet<NotificationChange> NotificationChanges { get; set; }
+    }
 }
