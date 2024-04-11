@@ -61,6 +61,8 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
             query = query.Skip(specification.Skip)
                 .Take(specification.Take);
         }
+
+        query = query.OrderByDescending(x => x.DateUpdate);
         return query;
     }
 }
