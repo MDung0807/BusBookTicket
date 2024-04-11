@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusBookTicket.Application.MailKet.Settings;
+using BusBookTicket.Application.Notification;
 using BusBookTicket.Application.PayPalPayment.Services;
 using BusBookTicket.Configs;
 using BusBookTicket.Core.Models.EntityFW;
@@ -119,6 +120,7 @@ internal class Program
             options.RoutePrefix = string.Empty;
         });
         app.MapHub<ReservePlace>("ReservePlace");
+        app.MapHub<NotificationHub>("Notification");
         app.Run();
     }
 }
