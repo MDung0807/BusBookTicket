@@ -5,6 +5,7 @@ using BusBookTicket.Configs;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.Exceptions;
+using BusBookTicket.Ticket.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,7 @@ internal class Program
         
         services.AddAuthorization();
         services.AddControllers();
+        services.AddSignalR();
         services.AddEndpointsApiExplorer();
 
         services.AddDbContext<AppDBContext>(
@@ -105,15 +107,18 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
         app.UseEndpoints(endpoints =>
-            endpoints.MapControllers()) ;
+        {
+            endpoints.MapControllers();
+        });
         
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             options.RoutePrefix = string.Empty;
         });
-
+        app.MapHub<ReservePlace>("ReservePlace");
         app.Run();
     }
 }

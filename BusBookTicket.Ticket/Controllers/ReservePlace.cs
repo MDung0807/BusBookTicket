@@ -1,6 +1,16 @@
-﻿namespace BusBookTicket.Ticket.Controllers;
+﻿using BusBookTicket.Ticket.Services.TicketServices;
+using Microsoft.AspNetCore.SignalR;
 
-public class ReservePlace
+namespace BusBookTicket.Ticket.Controllers;
+
+public class ReservePlace : Hub
 {
-    
+    #region -- Properties --
+
+    #endregion -- Properties --
+
+    public override async Task OnConnectedAsync()
+    {
+        await Clients.All.SendAsync("");
+    }
 }
