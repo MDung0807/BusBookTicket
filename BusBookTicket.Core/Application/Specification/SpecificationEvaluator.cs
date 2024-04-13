@@ -62,7 +62,8 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
                 .Take(specification.Take);
         }
 
-        query = query.OrderByDescending(x => x.DateUpdate);
+        if (specification.OrderBy == null && specification.OrderByDescending == null)
+            query = query.OrderByDescending(x => x.DateUpdate);
         return query;
     }
 }
