@@ -96,7 +96,8 @@ internal class Program
         app.UseRouting();
         app.UseCors(options =>
         {
-            options.AllowAnyOrigin();
+            options.WithOrigins("http://localhost:3000");
+            options.AllowCredentials();
             options.AllowAnyMethod();
             options.AllowAnyHeader();
         });
@@ -119,7 +120,6 @@ internal class Program
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             options.RoutePrefix = string.Empty;
         });
-        app.MapHub<ReservePlace>("ReservePlace");
         app.MapHub<NotificationHub>("Notification");
         app.Run();
     }
