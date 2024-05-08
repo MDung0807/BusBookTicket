@@ -12,6 +12,7 @@ using BusBookTicket.AddressManagement.DTOs.Responses.Province;
 using BusBookTicket.AddressManagement.DTOs.Responses.Region;
 using BusBookTicket.AddressManagement.DTOs.Responses.Unit;
 using BusBookTicket.AddressManagement.DTOs.Responses.Ward;
+using BusBookTicket.Application.Notification.Modal;
 using BusBookTicket.Application.OTP.Models;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
@@ -316,6 +317,9 @@ namespace BusBookTicket.Configs
             #region -- Application Module --
 
             CreateMap<OtpCode, OtpResponse>();
+            CreateMap<AddNewNotification, NotificationChange>();
+            CreateMap<AddNewNotification, NotificationObject>();
+            CreateMap<AddNewNotification, Notification>();
 
             #endregion -- Application Module --
 

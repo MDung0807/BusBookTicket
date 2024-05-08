@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.Notification.Modal;
 using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -56,7 +57,14 @@ public class PriceClassificationService : IPriceClassificationService
             Id = userId
         };
         await _repository.Create(priceClassification, userId);
-        await _notification.InsertNotification();
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = $"{priceClassification.Company.Name} Created new Price",
+            Actor = "ADMIN_1",
+            Href = "",
+            Sender = $"COMPANY_{userId}"
+        };
+        await _notification.InsertNotification(newNotification, userId);
         return true;
     }
 
