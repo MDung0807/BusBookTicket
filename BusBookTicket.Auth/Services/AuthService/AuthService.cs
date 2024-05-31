@@ -254,7 +254,7 @@ namespace BusBookTicket.Auth.Services.AuthService
 
         public async Task<Account> GetAccountByUsername(string username, string roleName, bool checkStatus = true)
         {
-            AccountSpecification accountSpecification = new AccountSpecification(username, roleName, checkStatus);
+            AccountSpecification accountSpecification = new AccountSpecification(username:username, roleName:roleName, checkStatus:checkStatus);
             Account account = await _repository.Get(accountSpecification, checkStatus: false);
             return account;
         }
@@ -265,6 +265,40 @@ namespace BusBookTicket.Auth.Services.AuthService
             Account account = await _repository.Get(specification, checkStatus: false);
             return account;
         }
+
+        public async Task<Account> GetAccountByMail(string mail, bool checkStatus = true)
+        {
+            AccountSpecification specification = new AccountSpecification(mail:mail, checkStatus: checkStatus );
+            Account account = await _repository.Get(specification, checkStatus: checkStatus);
+            return account;
+        }
+
+        public async Task<AuthResponse> GoogleLogin(string mail)
+        {
+            AuthResponse response = new AuthResponse();
+            Account account = await GetAccountByMail(mail:mail) ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
+            account.RefreshToken = JwtUtils.GenerateRefreshToken();
+            if (true)
+            {
+                response.Username = account.Username;
+                response.RoleName = account.Role.RoleName;
+                if (account.Company!= null)
+                {
+                    response.Id = account.Company.Id;
+                }
+                else
+                {
+                    response.Id = account.Customer.Id;
+                }
+
+                if (!await SaveRefreshToken(account, response.Id))
+                    throw new ExceptionDetail(AuthConstants.ERROR);
+                response.Token = JwtUtils.GenerateToken(response);
+                response.RefreshToken = account.RefreshToken;
+                return response;
+            }
+        }
+
         #endregion -- Public Method --
 
         #region -- Private Method --

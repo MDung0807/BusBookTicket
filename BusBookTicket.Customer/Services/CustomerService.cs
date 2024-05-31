@@ -211,6 +211,52 @@ namespace BusBookTicket.CustomerManage.Services
             return await ChangeIsActive(customer.Id, customer.Id);
         }
 
+        public async Task<bool> CreateByGoogle(FormRegister register)
+        {
+            await _unitOfWork.BeginTransaction();
+            try
+            {
+                CustomerSpecification specification = new CustomerSpecification(register.Email, checkStatus:false, isDelete:true);
+                Customer customer = new Customer();
+                customer = await _repository.Get(specification);
+                if (customer != null)
+                {
+                    await _repository.DeleteHard(customer);
+                    await _authService.DeleteHard(customer.Account.Id);
+                }
+                customer = _mapper.Map<Customer>(register);
+
+                // Set Full data in form regisger
+                customer.DateCreate = DateTime.Now;
+                customer.DateCreate = DateTime.Now;
+
+                // Get account
+                AuthRequest authRequest = _mapper.Map<AuthRequest>(register);
+                await _authService.Create(authRequest, -1);
+                customer.Account = await _authService.GetAccountByUsername(register.Username, register.RoleName, checkStatus:false);
+                customer.Status = (int)EnumsApp.Waiting;
+                customer.Ward = null;
+                await _repository.Create(customer, -1);
+
+                // Save Image
+                
+                // Send mail with OTP code
+                MailRequest mailRequest = new MailRequest();
+                mailRequest.ToMail = customer.Email;
+                mailRequest.Content = "Bây giờ bạn đã là thành viên của chúng tôi, yêu bạn nhiều lắm";
+                mailRequest.FullName = customer.FullName;
+                mailRequest.Subject = "Chào mừng quý khách";
+                await _mailService.SendEmailAsync(mailRequest);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                return false;
+            }
+        }
+
         public async Task<bool> Delete(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);

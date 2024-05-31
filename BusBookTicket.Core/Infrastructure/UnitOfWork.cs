@@ -30,7 +30,7 @@ public class UnitOfWork : IUnitOfWork, IAsyncDisposable
     public async Task RollbackTransactionAsync()
     {
         await _transaction.RollbackAsync();
-        await DisposeAsync();
+        // await DisposeAsync();
     }
 
     public IGenericRepository<T> GenericRepository<T>() where T : BaseEntity

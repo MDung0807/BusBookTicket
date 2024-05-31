@@ -1,5 +1,7 @@
 using AutoMapper;
 using BusBookTicket.Application.CloudImage.Services;
+using BusBookTicket.Application.Notification.Modal;
+using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Core.Models.Entity;
@@ -22,20 +24,21 @@ public class CompanyService : ICompanyServices
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Company> _repository;
     private readonly IImageService _imageService;
+    private readonly INotificationService _notificationService;
     #endregion
 
     public CompanyService(
         IMapper mapper, 
         IAuthService authService,
         IUnitOfWork unitOfWork,
-        IImageService imageService
-        )
+        IImageService imageService, INotificationService notificationService)
     {
         this._mapper = mapper;
         this._authService = authService;
         this._unitOfWork = unitOfWork;
         _repository = unitOfWork.GenericRepository<Company>();
         _imageService = imageService;
+        _notificationService = notificationService;
     }
 
     #region -- Public Method --
@@ -100,7 +103,7 @@ public class CompanyService : ICompanyServices
     {
         CompanySpecification companySpecification = new CompanySpecification(id, checkStatus:false, getAll:false);
         Company company = await _repository.Get(companySpecification, checkStatus: false);
-        company = changeStatus(company, (int)EnumsApp.Delete);
+        company = ChangeStatus(company, (int)EnumsApp.Delete);
         await _repository.Update(company, userId);
         return true;
     }
@@ -122,6 +125,7 @@ public class CompanyService : ICompanyServices
             await _imageService.saveImage(entity.Logo, typeof(Company).ToString(), company.Id);
             await _unitOfWork.SaveChangesAsync();
             _unitOfWork.Dispose();
+            await SendNotification(company);
             return true;
         }
         catch (Exception e)
@@ -130,7 +134,6 @@ public class CompanyService : ICompanyServices
             Console.WriteLine(e);
             throw new ExceptionDetail(CompanyConstants.ERROR_CREATE);
         }
-       
     }
 
     public async Task<bool> ChangeIsActive(int id, int userId)
@@ -173,7 +176,7 @@ public class CompanyService : ICompanyServices
 
     #region -- Private Method --
 
-    private Company changeStatus(Company entity, int status)
+    private Company ChangeStatus(Company entity, int status)
     {
         entity.Status = status;
         foreach (Bus bus in entity.Buses)
@@ -185,7 +188,18 @@ public class CompanyService : ICompanyServices
 
         return entity;
     }
-    
+
+    private async Task SendNotification(Company company)
+    {
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = $"{company.Name} Registered",
+            Actor = "ADMIN_1",
+            Href = "",
+            Sender = $"COMPANY_{company.Id}"
+        };
+        await _notificationService.InsertNotification(newNotification, company.Id);
+    }
 
     #endregion
 }

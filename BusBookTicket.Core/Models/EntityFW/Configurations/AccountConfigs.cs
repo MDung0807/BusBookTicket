@@ -13,7 +13,7 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
                 .HasMaxLength(50);
             builder.HasIndex(x => x.Username);
             builder.Property(x => x.Password)
-                .IsRequired();
+                .IsRequired(false);
             builder.HasAlternateKey(x => x.Username);
 
             #region -- Relationship --

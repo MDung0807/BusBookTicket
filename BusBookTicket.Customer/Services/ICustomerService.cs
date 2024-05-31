@@ -10,5 +10,6 @@ namespace BusBookTicket.CustomerManage.Services
     {
         Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging);
         Task<bool> AuthOtp(OtpRequest request);
+        Task<bool> CreateByGoogle(FormRegister register);
     }
 }
