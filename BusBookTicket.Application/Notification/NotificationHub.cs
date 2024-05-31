@@ -1,4 +1,6 @@
-﻿using BusBookTicket.Application.Notification.Specification;
+﻿using BusBookTicket.Application.Notification.Paging;
+using BusBookTicket.Application.Notification.Services;
+using BusBookTicket.Application.Notification.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -11,12 +13,14 @@ public class NotificationHub : Hub
     private static Dictionary<string, int> _clientsNotification = new();
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IGenericRepository<NotificationChange> _generic;
+    private readonly IGenericRepository<NotificationObject> _repository;
+    private readonly INotificationService _notificationService;
 
-    public NotificationHub(IUnitOfWork unitOfWork)
+    public NotificationHub(IUnitOfWork unitOfWork, INotificationService notificationService)
     {
         _unitOfWork = unitOfWork;
-        _generic = unitOfWork.GenericRepository<NotificationChange>();
+        _notificationService = notificationService;
+        _repository = unitOfWork.GenericRepository<NotificationObject>();
     }
     public override async Task OnConnectedAsync()
     {
@@ -30,8 +34,9 @@ public class NotificationHub : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, role);
 
         //Add client into group with role
-        NotificationChangSpecification specification = new NotificationChangSpecification($"{role}_{userId}");
-        int countNotificationNotSeen = await _generic.Count(specification);
+        NotificationObjectSpecification specification = new NotificationObjectSpecification(actor:$"{role}_{userId}");
+        int countNotificationNotSeen = await _repository.Count(specification);
+        var notifications = await _notificationService.GetNotification(actor:$"{role}_{userId}");
         await Clients.Group($"{role}_{userId}").SendAsync("ReceiveCountUnReadingNotification",countNotificationNotSeen );
         await base.OnConnectedAsync();
     }

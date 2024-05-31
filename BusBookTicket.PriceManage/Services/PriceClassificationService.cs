@@ -56,15 +56,9 @@ public class PriceClassificationService : IPriceClassificationService
         {
             Id = userId
         };
-        await _repository.Create(priceClassification, userId);
-        AddNewNotification newNotification = new AddNewNotification
-        {
-            Content = $"{priceClassification.Company.Name} Created new Price",
-            Actor = "ADMIN_1",
-            Href = "",
-            Sender = $"COMPANY_{userId}"
-        };
-        await _notification.InsertNotification(newNotification, userId);
+        await Task.WhenAll(
+            _repository.Create(priceClassification, userId),
+            SendNotification(priceClassification, userId: userId));
         return true;
     }
 
@@ -147,5 +141,17 @@ public class PriceClassificationService : IPriceClassificationService
     public Task<bool> DeleteHard(int id)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task SendNotification(PriceClassification priceClassification, int userId)
+    {
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = $"{priceClassification.Company.Name} Created new Price",
+            Actor = "ADMIN_1",
+            Href = "",
+            Sender = $"COMPANY_{userId}"
+        };
+        await _notification.InsertNotification(newNotification, userId);
     }
 }

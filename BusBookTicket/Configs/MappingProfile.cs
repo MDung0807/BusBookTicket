@@ -320,7 +320,9 @@ namespace BusBookTicket.Configs
             CreateMap<AddNewNotification, NotificationChange>();
             CreateMap<AddNewNotification, NotificationObject>();
             CreateMap<AddNewNotification, Notification>();
-
+            CreateMap<NotificationChange, NotificationResponse>();
+            CreateMap<NotificationObject, NotificationResponse>();
+            CreateMap<Notification, NotificationResponse>();
             #endregion -- Application Module --
 
             #region -- Review Module --

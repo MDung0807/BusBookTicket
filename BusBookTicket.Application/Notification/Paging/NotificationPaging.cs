@@ -1,6 +1,8 @@
-﻿namespace BusBookTicket.Application.Notification.Paging;
+﻿using BusBookTicket.Core.Application.Paging;
 
-public class NotificationPaging
+namespace BusBookTicket.Application.Notification.Paging;
+
+public class NotificationPaging : PagingRequest
 {
     
 }
