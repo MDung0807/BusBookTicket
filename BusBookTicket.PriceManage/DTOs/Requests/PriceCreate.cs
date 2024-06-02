@@ -6,4 +6,5 @@ public class PriceCreate
     public int RouteId { get; set; }
     public double Surcharges { get; set; }
     public double Price { get; set; }
+    public string CompanyName { get; set; }
 }

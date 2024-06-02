@@ -13,4 +13,8 @@ public class AppConstants
     public const string WAITING = "Wating";
     public const string LOCKED_RESOURCE = "Resource has been locked";
     public const string SUCCESS = "SUCCESS";
+    public const string PRICECLASSTYPE = "/priceclassification";
+    public const string REGISTERTYPE = "/manage-company";
+    public const string PRICETYPE = "/prices";
+
 }

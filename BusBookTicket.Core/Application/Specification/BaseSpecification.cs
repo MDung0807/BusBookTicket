@@ -77,7 +77,7 @@ public class BaseSpecification<T> : ISpecification<T>
         OrderBy = orderByExpression;
     }
 
-    protected virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
+        protected virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
     {
         OrderByDescending = orderByDescendingExpression;
     }

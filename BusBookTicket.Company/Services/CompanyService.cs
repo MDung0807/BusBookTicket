@@ -123,9 +123,9 @@ public class CompanyService : ICompanyServices
             
             // Save Image
             await _imageService.saveImage(entity.Logo, typeof(Company).ToString(), company.Id);
+            await SendNotification(company);
             await _unitOfWork.SaveChangesAsync();
             _unitOfWork.Dispose();
-            await SendNotification(company);
             return true;
         }
         catch (Exception e)
@@ -193,10 +193,10 @@ public class CompanyService : ICompanyServices
     {
         AddNewNotification newNotification = new AddNewNotification
         {
-            Content = $"{company.Name} Registered",
+            Content = $"{company.Name} Đã đăng ký tài khoản",
             Actor = "ADMIN_1",
-            Href = "",
-            Sender = $"COMPANY_{company.Id}"
+            Href = AppConstants.REGISTERTYPE,
+            Sender = $"{company.Name}"
         };
         await _notificationService.InsertNotification(newNotification, company.Id);
     }

@@ -123,6 +123,13 @@ namespace BusBookTicket.Auth.Security
             string id = principal.Claims.ElementAt(0).Value;
             return int.Parse(id);
         }
+        public static string GetUserName(HttpContext context)
+        {
+            string token = GetToken(context);
+            var principal = GetPrincipal(token);
+            string username = principal.Claims.ElementAt(1).Value;
+            return username;  
+        }
         
         public static string GenerateRefreshToken()
         {

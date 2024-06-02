@@ -40,16 +40,17 @@ public class NotificationService : INotificationService
         NotificationObject notificationObject = _mapper.Map<NotificationObject>(request);
         Core.Models.Entity.Notification notification = _mapper.Map<Core.Models.Entity.Notification>(request);
         notificationObject.Status = (int)EnumsApp.NotSeen;
+        
+        notification = await _repositoryNotification.Create(notification, userId);
         notificationObject.Notifications = new HashSet<Core.Models.Entity.Notification> { notification };
+
+        notificationChange = await _repositoryNotificationChange.Create(notificationChange, userId);
         notificationObject.NotificationChanges = new HashSet<NotificationChange> { notificationChange };
         
-        
-        await _repositoryNotificationChange.Create(_mapper.Map<NotificationChange>(request), userId);
         await _repositoryNotificationObject.Create(notificationObject, userId);
-        await _repositoryNotification.Create(notification, userId);
 
         int countNotificationNotSeen =
-            await _repositoryNotificationChange.Count(new NotificationChangSpecification($"{AppConstants.ADMIN}_1"));
+            await _repositoryNotificationObject.Count(new NotificationObjectSpecification(actor: $"{AppConstants.ADMIN}_1", query: "COUNT_NOTIFICATION_NOT_SEEN"));
 
         await _hubContext.Clients.Group($"{AppConstants.ADMIN}_1")
             .SendAsync("ReceiveNotification", $"{request.Sender} {request.Content}", countNotificationNotSeen, request.Href);
@@ -64,13 +65,15 @@ public class NotificationService : INotificationService
     {
         NotificationObjectSpecification notificationObjectSpecification = new NotificationObjectSpecification(id:id);
         NotificationObject notificationObject = await _repositoryNotificationObject.Get(notificationObjectSpecification);
+        notificationObject.Status = (int)EnumsApp.Seen;
+        await _repositoryNotificationObject.Update(notificationObject, userId: userId);
         return _mapper.Map<NotificationResponse>(notificationObject);
     }
 
     public async Task<NotificationPagingResult> GetNotification(string actor)
     {
         NotificationPaging paging = new NotificationPaging();
-        NotificationObjectSpecification notificationObjectSpecification = new NotificationObjectSpecification(paging: paging, actor: actor);
+        NotificationObjectSpecification notificationObjectSpecification = new NotificationObjectSpecification(paging: paging, actor: actor, checkStatus:false);
         int count = await _repositoryNotificationObject.Count(notificationObjectSpecification);
         List<NotificationObject> notificationObjects = await _repositoryNotificationObject.ToList(notificationObjectSpecification);
         

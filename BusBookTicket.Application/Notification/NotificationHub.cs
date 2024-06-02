@@ -10,7 +10,7 @@ namespace BusBookTicket.Application.Notification;
 
 public class NotificationHub : Hub
 {
-    private static Dictionary<string, int> _clientsNotification = new();
+    private static readonly Dictionary<string, int> ClientsNotification = new();
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<NotificationObject> _repository;
@@ -29,15 +29,8 @@ public class NotificationHub : Hub
         var claims = JWTUtils.GetPrincipal(token);
         string role = claims.Claims.ElementAt(2).Value;
         string userId = claims.Claims.ElementAt(0).Value;
-        
-        await Groups.AddToGroupAsync(Context.ConnectionId, $"{role}_{userId}");
-        await Groups.AddToGroupAsync(Context.ConnectionId, role);
 
-        //Add client into group with role
-        NotificationObjectSpecification specification = new NotificationObjectSpecification(actor:$"{role}_{userId}");
-        int countNotificationNotSeen = await _repository.Count(specification);
-        var notifications = await _notificationService.GetNotification(actor:$"{role}_{userId}");
-        await Clients.Group($"{role}_{userId}").SendAsync("ReceiveCountUnReadingNotification",countNotificationNotSeen );
+        await SendCountNotification(role: role, userId: userId);
         await base.OnConnectedAsync();
     }
 
@@ -45,8 +38,42 @@ public class NotificationHub : Hub
     {
         string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
         string username = JWTUtils.GetUserName(token);
-        _clientsNotification.Remove(username);
+        ClientsNotification.Remove(username);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, username);
         await base.OnDisconnectedAsync(exception);
     }
+
+    public async Task GetNotifications()
+    {
+        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+        var claims = JWTUtils.GetPrincipal(token);
+        string role = claims.Claims.ElementAt(2).Value;
+        string userId = claims.Claims.ElementAt(0).Value;
+        var notifications = await _notificationService.GetNotification(actor:$"{role}_{userId}");
+        await Clients.Group($"{role}_{userId}").SendAsync("ReceiveNotifications",notifications.Items );
+
+    }
+
+    public async Task ReadNotification(int id)
+    {
+        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+        var claims = JWTUtils.GetPrincipal(token);
+        string role = claims.Claims.ElementAt(2).Value;
+        string userId = claims.Claims.ElementAt(0).Value;
+        
+        await _notificationService.SeenNotification(id, int.Parse(userId));
+
+        await SendCountNotification(role, userId);
+    }
+
+    private async Task SendCountNotification(string role, string userId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"{role}_{userId}");
+        await Groups.AddToGroupAsync(Context.ConnectionId, role);
+
+        //Add client into group with role
+        NotificationObjectSpecification specification = new NotificationObjectSpecification(actor:$"{role}_{userId}",query: "COUNT_NOTIFICATION_NOT_SEEN");
+        int countNotificationNotSeen = await _repository.Count(specification);
+        await Clients.Group($"{role}_{userId}").SendAsync("ReceiveCountUnReadingNotification",countNotificationNotSeen );
+    } 
 }

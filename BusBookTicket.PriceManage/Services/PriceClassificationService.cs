@@ -56,9 +56,8 @@ public class PriceClassificationService : IPriceClassificationService
         {
             Id = userId
         };
-        await Task.WhenAll(
-            _repository.Create(priceClassification, userId),
-            SendNotification(priceClassification, userId: userId));
+        await _repository.Create(priceClassification, userId);
+        await SendNotification(priceClassification, entity.CompanyName);
         return true;
     }
 
@@ -143,15 +142,15 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
-    private async Task SendNotification(PriceClassification priceClassification, int userId)
+    private async Task SendNotification(PriceClassification priceClassification, string companyName)
     {
         AddNewNotification newNotification = new AddNewNotification
         {
-            Content = $"{priceClassification.Company.Name} Created new Price",
+            Content = $"{priceClassification.Company.Name} Đã tạo bảng loại giá",
             Actor = "ADMIN_1",
-            Href = "",
-            Sender = $"COMPANY_{userId}"
+            Href = AppConstants.PRICECLASSTYPE,
+            Sender = $"{companyName}"
         };
-        await _notification.InsertNotification(newNotification, userId);
+        await _notification.InsertNotification(newNotification, priceClassification.Company.Id);
     }
 }
