@@ -31,7 +31,7 @@ public class BaseSpecification<T> : ISpecification<T>
     public int Skip { get; private set; }
     public bool IsPagingEnabled { get; private set; } = false;
 
-    protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
+    protected virtual void  AddInclude(Expression<Func<T, object>> includeExpression)
     {
         Includes.Add(includeExpression);
     }
@@ -77,7 +77,7 @@ public class BaseSpecification<T> : ISpecification<T>
         OrderBy = orderByExpression;
     }
 
-    protected virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
+        protected virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
     {
         OrderByDescending = orderByDescendingExpression;
     }

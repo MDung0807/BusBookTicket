@@ -7,6 +7,7 @@ using BusBookTicket.Application.CloudImage;
 using BusBookTicket.Application.CloudImage.Repositories;
 using BusBookTicket.Application.CloudImage.Services;
 using BusBookTicket.Application.MailKet.Service;
+using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Application.OTP.Services;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Services.RoleService;
@@ -71,6 +72,8 @@ namespace BusBookTicket.Configs
             #region -- Add Scoped Application Service --
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<IOtpService, OtpService>();
+
+            services.AddScoped<INotificationService, NotificationService>();
             #endregion -- Add Scoped Application Service --
 
             #region -- Add Scroped Buses Module --

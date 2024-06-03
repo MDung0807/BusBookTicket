@@ -1,5 +1,7 @@
 ﻿using BusBookTicket.Application.OTP.Models;
+using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Security;
+using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Utils;
@@ -9,6 +11,7 @@ using BusBookTicket.CustomerManage.Paging;
 using BusBookTicket.CustomerManage.Services;
 using BusBookTicket.CustomerManage.Utilities;
 using BusBookTicket.CustomerManage.Validator;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +22,11 @@ namespace BusBookTicket.CustomerManage.Controller
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        public CustomerController(ICustomerService customerService)
+        private readonly IAuthService _authService;
+        public CustomerController(ICustomerService customerService, IAuthService authService)
         {
             _customerService = customerService;
+            _authService = authService;
         }
 
         [HttpPost("register")]
@@ -106,6 +111,41 @@ namespace BusBookTicket.CustomerManage.Controller
             int userId = JwtUtils.GetUserID(HttpContext);
             bool status =  await _customerService.ChangeIsLock(customerId, userId);
             return Ok(new Response<string>(!status, "responses"));
+        }
+        
+        [HttpPost("loginOnGoogle")]
+        public async Task<IActionResult> GoogleLogin([FromBody] TokenGoogle token)
+        {
+            try
+            {
+                // Validate the token received from the frontend
+                var payload = await GoogleJsonWebSignature.ValidateAsync(token.Token);
+
+                var account = await _authService.GetAccountByMail(payload.Email);
+                if (account == null)
+                {
+                    FormRegister register = new FormRegister
+                    {
+                        Email = payload.Email,
+                        FullName = payload.Name,
+                        RoleName = AppConstants.CUSTOMER,
+                        Username = payload.Email
+                    };
+                    await _customerService.CreateByGoogle(register);
+                    account= await _authService.GetAccountByMail(payload.Email, checkStatus:false);
+
+                    await _customerService.ChangeIsActive(account.Customer.Id, account.Customer.Id);
+                }
+                var response = await _authService.GoogleLogin(mail: payload.Email);
+                response.Avatar = payload.Picture;
+                // Here you can create your own JWT token or handle user authentication
+                // For demonstration, we'll just return the user info
+                return Ok(new Response<AuthResponse>(false, response));
+            }
+            catch (InvalidJwtException)
+            {
+                return Unauthorized();
+            }
         }
     }
 }

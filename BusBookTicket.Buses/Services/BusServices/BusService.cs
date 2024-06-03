@@ -54,7 +54,7 @@ public class BusService : IBusService
         List<RoutesResponse> routesResponses = new List<RoutesResponse>();
         foreach (var stopStation in bus.StopStations)
         {
-            routesResponses.Add(await _routesService.GetById(stopStation.Route.Id));
+            routesResponses.Add(await _routesService.GetById(stopStation.Route.Id, companyId:bus.Company.Id));
         }
         BusResponse response = _mapper.Map<BusResponse>(bus);
         response.Routes = routesResponses;

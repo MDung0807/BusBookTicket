@@ -45,7 +45,7 @@ public sealed class TicketItemSpecification : BaseSpecification<TicketItem>
             AddInclude(x => x.BillItem.Bill);
             return;
         }
-        
+        ApplyOrderByDescending(x => x.DateCreate);
         AddInclude(x => x.Ticket.Bus.Seats);
         AddInclude(x => ((TicketItem)x).Ticket.Bus.Seats); 
 

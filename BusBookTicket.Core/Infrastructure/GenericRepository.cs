@@ -156,6 +156,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         try
         {
             listObjectNotChange ??= new List<Dictionary<string, int>>();
+            listObjectNotChange.Add(new Dictionary<string, int>
+            {
+                {"Ward", 0}
+            });
             await ChangeStatusImpl(entity, userId, status, listObjectNotChange);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();

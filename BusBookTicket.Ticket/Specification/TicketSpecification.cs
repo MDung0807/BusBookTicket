@@ -139,9 +139,13 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
     public TicketSpecification(int busId, DateTime departureTime= default)
     {
         Criteria = x => x.Bus.Id == busId &&
-            x.TicketRouteDetails.Any(p => p.DepartureTime <= departureTime &&
-                                      p.ArrivalTime>= departureTime);
-        
+            x.TicketRouteDetails.Any(p => p.DepartureTime <= departureTime)
+            && x.TicketRouteDetails.Any(p => p.ArrivalTime >= departureTime);
+        // Criteria = x => x.Bus.Id == busId 
+        //                 && x.TicketRouteDetails.First().DepartureTime <= departureTime
+        //                 && x.TicketRouteDetails.Last().ArrivalTime >= departureTime;
+        //
+        // ApplyOrderBy(x => x.TicketRouteDetails.OrderBy(dt => dt.Id).Where(x => x.Ticket.Bus.Id == busId));
     }
 
     public  TicketSpecification(int companyId, bool checkStatus = true, TicketPaging paging = null, DateOnly month = default)

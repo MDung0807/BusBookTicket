@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.Notification.Modal;
+using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -17,10 +19,13 @@ public class PriceService : IPriceService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Prices> _repository;
+    private readonly INotificationService _notification;
 
-    public PriceService(IMapper mapper, IUnitOfWork unitOfWork)
+
+    public PriceService(IMapper mapper, IUnitOfWork unitOfWork, INotificationService notification)
     {
         _unitOfWork = unitOfWork;
+        _notification = notification;
         _mapper = mapper;
         _repository = _unitOfWork.GenericRepository<Prices>();
     }
@@ -52,6 +57,7 @@ public class PriceService : IPriceService
         price.Company.Id = userId;
         price.Status = (int)EnumsApp.Waiting;
         await _repository.Create(price, userId: userId);
+        await SendNotification(price, entity.CompanyName);
         return true;
     }
 
@@ -138,4 +144,20 @@ public class PriceService : IPriceService
         Prices price = await _repository.Get(specification);
         return _mapper.Map<PriceResponse>(price);
     }
+
+    #region --Private Method --
+
+    private async Task SendNotification( Prices prices, string companyName)
+    {
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = $"{companyName} Đã tạo bảng giá",
+            Actor = "ADMIN_1",
+            Href = AppConstants.PRICETYPE,
+            Sender = $"{companyName}"
+        };
+        await _notification.InsertNotification(newNotification, prices.Company.Id);
+    }
+
+    #endregion --Private Method --
 }

@@ -9,6 +9,8 @@
         /// <returns></returns>
         public static string hashPassword(string password)
         {
+            if (password == null)
+                return null;
             string salt = BCrypt.Net.BCrypt.GenerateSalt(12);
             string hashPass = BCrypt.Net.BCrypt.HashPassword(password, salt);
             return hashPass;

@@ -20,7 +20,7 @@ namespace BusBookTicket.Core.Models.EntityFW.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.PhoneNumber)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(50); 
             builder.Property(x => x.Gender)
                 .HasMaxLength(50); 

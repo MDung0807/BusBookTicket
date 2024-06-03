@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusBookTicket.Application.Notification.Modal;
+using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -15,12 +17,14 @@ public class PriceClassificationService : IPriceClassificationService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<PriceClassification> _repository;
+    private readonly INotificationService _notification;
 
-    public PriceClassificationService(IUnitOfWork unitOfWork, IMapper mapper)
+    public PriceClassificationService(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notification)
     {
         _unitOfWork = unitOfWork;
         _repository = _unitOfWork.GenericRepository<PriceClassification>();
         _mapper = mapper;
+        _notification = notification;
     }
     public async Task<PriceClassificationResponse> GetById(int id)
     {
@@ -53,6 +57,7 @@ public class PriceClassificationService : IPriceClassificationService
             Id = userId
         };
         await _repository.Create(priceClassification, userId);
+        await SendNotification(priceClassification, entity.CompanyName);
         return true;
     }
 
@@ -135,5 +140,17 @@ public class PriceClassificationService : IPriceClassificationService
     public Task<bool> DeleteHard(int id)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task SendNotification(PriceClassification priceClassification, string companyName)
+    {
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = $"{priceClassification.Company.Name} Đã tạo bảng loại giá",
+            Actor = "ADMIN_1",
+            Href = AppConstants.PRICECLASSTYPE,
+            Sender = $"{companyName}"
+        };
+        await _notification.InsertNotification(newNotification, priceClassification.Company.Id);
     }
 }

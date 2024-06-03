@@ -20,6 +20,8 @@
         public HashSet<RouteDetail> RouteDetails { get; set; }
         public HashSet<Prices> Prices { get; set; }
 
+        public HashSet<Notification> Notifications { get; set; }
+            public HashSet<NotificationChange> NotificationChanges { get; set; }
         #endregion -- Relationship --
 
     }

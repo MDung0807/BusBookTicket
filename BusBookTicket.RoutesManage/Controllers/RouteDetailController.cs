@@ -45,7 +45,7 @@ public class RouteDetailController : ControllerBase
     public async Task<IActionResult> GetInRoute([FromQuery]RouteDetailPaging paging, [FromQuery] int routeId)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        var result = await _service.GetAllInRoute(pagingRequest: paging, idMaster: routeId);
+        var result = await _service.GetAllInRoute(pagingRequest: paging, idMaster: routeId, userId: userId);
         return Ok(new Response<RouteDetailPagingResult>(false, result));
     }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231227014910_data")]
-    partial class data
+    [Migration("20240531054544_fixNullData")]
+    partial class fixNullData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,6 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefreshToken")
@@ -482,7 +481,6 @@ namespace BusBookTicket.Core.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -614,6 +612,40 @@ namespace BusBookTicket.Core.Migrations
                     b.ToTable("Districts");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Images", b =>
                 {
                     b.Property<int>("Id")
@@ -651,6 +683,137 @@ namespace BusBookTicket.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NotifierCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NotifierCustomerIds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("NotifierCompanyId");
+
+                    b.HasIndex("NotifierCustomerIds");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.NotificationChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Actor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ActorCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ActorCustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("NotificationObjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActorCompanyId");
+
+                    b.HasIndex("ActorCustomerId");
+
+                    b.HasIndex("NotificationObjectId");
+
+                    b.ToTable("NotificationChanges");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.NotificationObject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Href")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("NotificationObjects");
                 });
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.OtpCode", b =>
@@ -774,9 +937,7 @@ namespace BusBookTicket.Core.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("RouteId")
-                        .IsUnique()
-                        .HasFilter("[RouteId] IS NOT NULL");
+                    b.HasIndex("RouteId");
 
                     b.ToTable("Prices");
                 });
@@ -987,9 +1148,6 @@ namespace BusBookTicket.Core.Migrations
                     b.Property<int>("IndexStation")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PriceClassificationId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RouteId")
                         .HasColumnType("int");
 
@@ -1005,8 +1163,6 @@ namespace BusBookTicket.Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("PriceClassificationId");
 
                     b.HasIndex("RouteId");
 
@@ -1526,6 +1682,64 @@ namespace BusBookTicket.Core.Migrations
                     b.Navigation("Province");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Notification", b =>
+                {
+                    b.HasOne("BusBookTicket.Core.Models.Entity.NotificationObject", "NotificationObject")
+                        .WithMany("Notifications")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Company", "NotifierCompany")
+                        .WithMany("Notifications")
+                        .HasForeignKey("NotifierCompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Customer", "NotifierCustomer")
+                        .WithMany("Notifications")
+                        .HasForeignKey("NotifierCustomerIds")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("NotificationObject");
+
+                    b.Navigation("NotifierCompany");
+
+                    b.Navigation("NotifierCustomer");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.NotificationChange", b =>
+                {
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Company", "ActorCompany")
+                        .WithMany("NotificationChanges")
+                        .HasForeignKey("ActorCompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Customer", "ActorCustomer")
+                        .WithMany("NotificationChanges")
+                        .HasForeignKey("ActorCustomerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BusBookTicket.Core.Models.Entity.NotificationObject", "NotificationObject")
+                        .WithMany("NotificationChanges")
+                        .HasForeignKey("NotificationObjectId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ActorCompany");
+
+                    b.Navigation("ActorCustomer");
+
+                    b.Navigation("NotificationObject");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.NotificationObject", b =>
+                {
+                    b.HasOne("BusBookTicket.Core.Models.Entity.Event", "Event")
+                        .WithMany("NotificationObject")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Event");
+                });
+
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.PriceClassification", b =>
                 {
                     b.HasOne("BusBookTicket.Core.Models.Entity.Company", "Company")
@@ -1544,8 +1758,8 @@ namespace BusBookTicket.Core.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.Routes", "Routes")
-                        .WithOne("Prices")
-                        .HasForeignKey("BusBookTicket.Core.Models.Entity.Prices", "RouteId")
+                        .WithMany("Prices")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Company");
@@ -1594,11 +1808,6 @@ namespace BusBookTicket.Core.Migrations
                     b.HasOne("BusBookTicket.Core.Models.Entity.Company", "Company")
                         .WithMany("RouteDetails")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BusBookTicket.Core.Models.Entity.PriceClassification", null)
-                        .WithMany("StopStationDetails")
-                        .HasForeignKey("PriceClassificationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BusBookTicket.Core.Models.Entity.Routes", "Routes")
@@ -1808,6 +2017,10 @@ namespace BusBookTicket.Core.Migrations
                 {
                     b.Navigation("Buses");
 
+                    b.Navigation("NotificationChanges");
+
+                    b.Navigation("Notifications");
+
                     b.Navigation("PriceClassifications");
 
                     b.Navigation("Prices");
@@ -1819,6 +2032,10 @@ namespace BusBookTicket.Core.Migrations
 
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Customer", b =>
                 {
+                    b.Navigation("NotificationChanges");
+
+                    b.Navigation("Notifications");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("Tickets");
@@ -1834,10 +2051,20 @@ namespace BusBookTicket.Core.Migrations
                     b.Navigation("Wards");
                 });
 
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.Event", b =>
+                {
+                    b.Navigation("NotificationObject");
+                });
+
+            modelBuilder.Entity("BusBookTicket.Core.Models.Entity.NotificationObject", b =>
+                {
+                    b.Navigation("NotificationChanges");
+
+                    b.Navigation("Notifications");
+                });
+
             modelBuilder.Entity("BusBookTicket.Core.Models.Entity.PriceClassification", b =>
                 {
-                    b.Navigation("StopStationDetails");
-
                     b.Navigation("Tickets");
                 });
 

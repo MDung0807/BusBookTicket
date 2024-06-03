@@ -132,4 +132,11 @@ public class RoutesService : IRoutesService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<RoutesResponse> GetById(int id, int companyId)
+    {
+        RouteSpecifications routeSpecifications = new RouteSpecifications(id: id, checkStatus: true, companyId: companyId);
+        Routes routes = await _repository.Get(routeSpecifications);
+        return _mapper.Map<RoutesResponse>(routes);
+    }
 }

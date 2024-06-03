@@ -15,4 +15,7 @@ public enum EnumsApp
     Afternoon = 2,
     Evening = 3,
     Night = 4,
+    
+    Seen = 1,
+    NotSeen = 2
 }

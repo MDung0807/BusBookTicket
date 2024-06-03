@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BusBookTicket.Application.MailKet.Settings;
+using BusBookTicket.Application.Notification;
 using BusBookTicket.Application.PayPalPayment.Services;
 using BusBookTicket.Configs;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.Exceptions;
+using BusBookTicket.Ticket.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,7 @@ internal class Program
         
         services.AddAuthorization();
         services.AddControllers();
+        services.AddSignalR();
         services.AddEndpointsApiExplorer();
 
         services.AddDbContext<AppDBContext>(
@@ -93,7 +96,8 @@ internal class Program
         app.UseRouting();
         app.UseCors(options =>
         {
-            options.AllowAnyOrigin();
+            options.WithOrigins("http://localhost:3000");
+            options.AllowCredentials();
             options.AllowAnyMethod();
             options.AllowAnyHeader();
         });
@@ -105,15 +109,18 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
         app.UseEndpoints(endpoints =>
-            endpoints.MapControllers()) ;
+        {
+            endpoints.MapControllers();
+        });
         
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             options.RoutePrefix = string.Empty;
         });
-
+        app.MapHub<NotificationHub>("Notification");
         app.Run();
     }
 }

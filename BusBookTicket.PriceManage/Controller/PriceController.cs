@@ -38,6 +38,7 @@ public class PriceController: ControllerBase
         }
 
         int userId = JwtUtils.GetUserID(HttpContext);
+        request.CompanyName = JwtUtils.GetUserName(HttpContext);
         var status = await _service.Create(request, userId);
         return Ok(new Response<string>(!status, AppConstants.SUCCESS));
     }

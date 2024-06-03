@@ -583,6 +583,49 @@ namespace BusBookTicket.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RouteDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IndexStation = table.Column<int>(type: "int", nullable: false),
+                    ArrivalTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    DepartureTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    AddDay = table.Column<int>(type: "int", nullable: false),
+                    DiscountPrice = table.Column<double>(type: "float", nullable: false),
+                    RouteId = table.Column<int>(type: "int", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: true),
+                    StationId = table.Column<int>(type: "int", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RouteDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RouteDetails_BusStations_StationId",
+                        column: x => x.StationId,
+                        principalTable: "BusStations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RouteDetails_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RouteDetails_Routes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -641,56 +684,6 @@ namespace BusBookTicket.Core.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_StopStations_Routes_RouteId",
-                        column: x => x.RouteId,
-                        principalTable: "Routes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RouteDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IndexStation = table.Column<int>(type: "int", nullable: false),
-                    ArrivalTime = table.Column<TimeSpan>(type: "time", nullable: true),
-                    DepartureTime = table.Column<TimeSpan>(type: "time", nullable: true),
-                    AddDay = table.Column<int>(type: "int", nullable: false),
-                    DiscountPrice = table.Column<double>(type: "float", nullable: false),
-                    RouteId = table.Column<int>(type: "int", nullable: true),
-                    CompanyId = table.Column<int>(type: "int", nullable: true),
-                    StationId = table.Column<int>(type: "int", nullable: true),
-                    PriceClassificationId = table.Column<int>(type: "int", nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<int>(type: "int", nullable: false),
-                    CreateBy = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RouteDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RouteDetails_BusStations_StationId",
-                        column: x => x.StationId,
-                        principalTable: "BusStations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RouteDetails_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RouteDetails_PriceClassifications_PriceClassificationId",
-                        column: x => x.PriceClassificationId,
-                        principalTable: "PriceClassifications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RouteDetails_Routes_RouteId",
                         column: x => x.RouteId,
                         principalTable: "Routes",
                         principalColumn: "Id",
@@ -1018,9 +1011,7 @@ namespace BusBookTicket.Core.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Prices_RouteId",
                 table: "Prices",
-                column: "RouteId",
-                unique: true,
-                filter: "[RouteId] IS NOT NULL");
+                column: "RouteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Provinces_AdministrativeRegionId",
@@ -1046,11 +1037,6 @@ namespace BusBookTicket.Core.Migrations
                 name: "IX_RouteDetails_CompanyId",
                 table: "RouteDetails",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RouteDetails_PriceClassificationId",
-                table: "RouteDetails",
-                column: "PriceClassificationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RouteDetails_RouteId",
