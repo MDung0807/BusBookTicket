@@ -1,4 +1,5 @@
-﻿using BusBookTicket.Auth.DTOs.Requests;
+﻿using BusBookTicket.Application.SMS;
+using BusBookTicket.Auth.DTOs.Requests;
 using BusBookTicket.Auth.DTOs.Responses;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Validator;
@@ -28,6 +29,8 @@ namespace BusBookTicket.Auth.Controllers
         public async Task<IActionResult> Login([FromBody] AuthRequest request)
         {
             var validator = new AuthRequestValidator();
+            SMSService smsService = new SMSService();
+            smsService.SendSms("+84376177512", "Hello mày");
             var result = await validator.ValidateAsync(request);
             if (!result.IsValid)
             {
