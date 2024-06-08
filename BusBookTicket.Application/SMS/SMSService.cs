@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
@@ -9,7 +10,7 @@ namespace BusBookTicket.Application.SMS
     {
         private readonly string accountSid;
         private readonly string authToken;
-
+        private readonly IConfiguration _configuration;
         public SMSService()
         {
             // Lấy thông tin từ biến môi trường
