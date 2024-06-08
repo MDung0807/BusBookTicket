@@ -25,4 +25,8 @@
       <ProjectReference Include="..\BusBookTicket.Core\BusBookTicket.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="SMS\" />
+    </ItemGroup>
+
 </Project>
