@@ -13,10 +13,6 @@ namespace BusBookTicket.Application.SMS
         private readonly IConfiguration _configuration;
         public SMSService()
         {
-            // Lấy thông tin từ biến môi trường
-            accountSid = ("ACe7f20f4ee2ff039eefaa915a01ef35ce");
-            authToken = ("17984da0af2adcb57e2fe677861a7649");
-
             if (string.IsNullOrEmpty(accountSid) || string.IsNullOrEmpty(authToken))
             {
                 throw new InvalidOperationException("Twilio credentials are not set in the environment variables.");
