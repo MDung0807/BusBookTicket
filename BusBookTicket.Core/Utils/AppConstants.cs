@@ -16,5 +16,6 @@ public class AppConstants
     public const string PRICECLASSTYPE = "/priceclassification";
     public const string REGISTERTYPE = "/manage-company";
     public const string PRICETYPE = "/prices";
+    public const string ERROR_IN_PAYPAL_REFUND = "Error in paypal refund";
 
 }

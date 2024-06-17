@@ -20,6 +20,7 @@ using BusBookTicket.Ticket.Paging;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 using BusBookTicket.Ticket.Utils;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BusBookTicket.Ticket.Services.TicketServices;
 
@@ -40,6 +41,7 @@ public class TicketService : ITicketService
     private readonly IRouteDetailService _routeDetail;
     private readonly IPriceService _priceService;
     private readonly IPriceClassificationService _priceClassification;
+    private readonly IMemoryCache _cache;
 
     #endregion -- Properties --
 
@@ -52,7 +54,7 @@ public class TicketService : ITicketService
         IMailService mailService,
         IRouteDetailService routeDetailService,
         IPriceService priceService,
-        IPriceClassificationService priceClassificationService)
+        IPriceClassificationService priceClassificationService, IMemoryCache cache)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -66,6 +68,7 @@ public class TicketService : ITicketService
         _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
         _routeDetail = routeDetailService;
         _priceClassification = priceClassificationService;
+        _cache = cache;
         _priceService = priceService;
     }
     
@@ -81,6 +84,8 @@ public class TicketService : ITicketService
         int totalEmptySeat = 0;
         foreach (var item in itemResponses)
         {
+            if (_cache.Get($"{item.Id}") != null)
+                item.Status = (int)EnumsApp.AwaitingPayment;
             if (item.Status == 1)
             {
                 totalEmptySeat++;

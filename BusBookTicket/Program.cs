@@ -90,6 +90,9 @@ internal class Program
         {
             loggingBuilder.AddConsole();
         });
+        
+        //Add service cache in memory
+        services.AddMemoryCache();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

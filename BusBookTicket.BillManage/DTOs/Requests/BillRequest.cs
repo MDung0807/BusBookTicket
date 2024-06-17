@@ -11,4 +11,5 @@ public class BillRequest
     public int TicketRouteDetailEndId { get; set; }
     public int DiscountId { get; set; } 
     public List<BillItemRequest> ItemsRequest { get; set; }
+    public string PaypalTransactionId { get; set; }
 }

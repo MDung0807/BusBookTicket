@@ -33,8 +33,8 @@ public class BillController : ControllerBase
 
     #region -- Controller --
     [Authorize(Roles = AppConstants.CUSTOMER)]
-    [HttpPost("create")]
-    public async Task<IActionResult> CreateBill([FromBody] BillRequest billRequest)
+    [HttpPost("reserve")]
+    public async Task<IActionResult> Reserve([FromBody] BillRequest billRequest)
     {
         var validator = new BillRequestValidator();
         var result = await validator.ValidateAsync(billRequest);
@@ -43,7 +43,9 @@ public class BillController : ControllerBase
             throw new ValidatorException(result.Errors);
         }
         int userId = JwtUtils.GetUserID(HttpContext);
-        await _billService.Create(billRequest, userId);
+        // await _billService.Create(billRequest, userId);
+        // Reserve
+        await _billService.Reserve(billRequest, userId);
         return Ok(new Response<string>(false, "Response"));
     }
 
@@ -198,5 +200,43 @@ public class BillController : ControllerBase
             return BadRequest(error);
         }
     }
+    
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    [HttpPost("paymentPaypal")]
+    public async Task<IActionResult> PaypalPayment([FromBody] BillRequest billRequest)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        // Check Reserve is
+        var reserve = await _billService.CheckReserve(request: billRequest, userId);
+        if (!reserve)
+            return NotFound(new Response<string>(true, "Not found your reserve"));
+        var result = await _billService.PaymentPaypal(billRequest, userId);
+        return Ok(new Response<object>(false, result));
+    }
+    
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    [HttpPost("paymentDirect")]
+    public async Task<IActionResult> PaymentDirect([FromBody] BillRequest billRequest)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        
+        // Check Reserve is
+        var reserve = await _billService.CheckReserve(request: billRequest, userId);
+        if (!reserve)
+            return Ok(new Response<string>(true, "Not found your reserve"));
+        
+        await _billService.Create(billRequest, userId);
+        return Ok(new Response<string>(false, "Response"));
+    }
+
+    [Authorize(Roles = AppConstants.CUSTOMER)]
+    [HttpGet("CheckReserve")]
+    public async Task<IActionResult> CheckReserve(BillRequest request)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _billService.CheckReserve(request, userId);
+        return Ok(new Response<bool>(false, result));
+    }
+    
     #endregion -- Controller --
 }

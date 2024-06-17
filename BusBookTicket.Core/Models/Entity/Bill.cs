@@ -6,6 +6,7 @@ namespace BusBookTicket.Core.Models.Entity
         #region -- Properties --
         public DateTime DateDeparture { get; set; }
         public long TotalPrice { get; set; }
+        public string PaypalTransactionId { get; set; }
         #endregion -- Properties --
 
         #region -- Relationship -- 

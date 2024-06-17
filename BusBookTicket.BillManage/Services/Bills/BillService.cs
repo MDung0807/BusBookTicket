@@ -19,8 +19,10 @@ using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 using MailKit.Search;
-
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 namespace BusBookTicket.BillManage.Services.Bills;
+using PayPal.Api;
 
 public class BillService : IBillService
 {
@@ -32,8 +34,11 @@ public class BillService : IBillService
     private readonly IMailService _mailService;
     private readonly IGenericRepository<Customer> _customerRepo;
     private readonly IGenericRepository<Ticket_RouteDetail> _ticketRouteDetail;
+    private readonly IConfiguration _configuration;
+    private bool _billIsPaymented = false;
 
     private readonly IRouteDetailService _routeDetailService;
+    private readonly IMemoryCache _cache;
 
     public BillService(
         IMapper mapper,
@@ -41,8 +46,7 @@ public class BillService : IBillService
         IBillItemService billItemService,
         IUnitOfWork unitOfWork,
         IMailService mailService,
-        IRouteDetailService routeDetailService
-        )
+        IRouteDetailService routeDetailService, IMemoryCache cache, IConfiguration configuration)
     {
         _billItemService = billItemService;
         _unitOfWork = unitOfWork;
@@ -52,6 +56,8 @@ public class BillService : IBillService
         _mailService = mailService;
         _customerRepo = unitOfWork.GenericRepository<Customer>();
         _routeDetailService = routeDetailService;
+        _cache = cache;
+        _configuration = configuration;
         _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
 
     }
@@ -74,6 +80,7 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
+    [Obsolete("Obsolete")]
     public async Task<bool> Delete(int id, int userId)
     {
         if (! await ChangeBillCanDelete(id))
@@ -86,6 +93,9 @@ public class BillService : IBillService
             BillSpecification billSpecification =
                 new BillSpecification(id, checkStatus: false, getIsChangeStatus: true);
             Bill bill = await _repository.Get(billSpecification, checkStatus: false);
+
+            if (!PayPalRefund(bill.PaypalTransactionId)) 
+                return false;
             foreach (var item in bill.BillItems)
             {
                 await _ticketItemService.ChangeIsActive(item.Id, userId);
@@ -149,7 +159,10 @@ public class BillService : IBillService
             }
 
             // Update total price in bill
-            bill.Status = (int)EnumsApp.AwaitingPayment;
+            if (_billIsPaymented)
+                bill.Status = (int)EnumsApp.PaymentComplete;
+            else
+                bill.Status = (int)EnumsApp.AwaitingPayment;
             await _repository.Update(bill, userId);
             
             // Change status in Bill
@@ -170,6 +183,7 @@ public class BillService : IBillService
             await _unitOfWork.SaveChangesAsync();
             
             _unitOfWork.Dispose();
+            RemoveItemInCache(entity);
         }
         catch
         {
@@ -528,6 +542,41 @@ public class BillService : IBillService
         return new { Arrival = resultArrival, Departure = resultDeparture };
     }
 
+    public Task Reserve(BillRequest request, int userId)
+    {
+        var cacheEntryOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(5))
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(30))
+            .SetPriority(CacheItemPriority.Normal);
+
+        foreach (var item in request.ItemsRequest)
+        {
+            _cache.Set($"{item.TicketItemId}", request, cacheEntryOptions);
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task<bool> CheckReserve(BillRequest request, int userId)
+    {
+        foreach (var item in request.ItemsRequest)
+        {
+            if (_cache.Get($"{item.TicketItemId}") == null)
+            {
+                return Task.FromResult(false);
+            }
+        }
+        return Task.FromResult(true);
+    }
+
+    public async Task<bool> PaymentPaypal(BillRequest request, int userId)
+    {
+        if (request.PaypalTransactionId != null)
+        {
+            _billIsPaymented = true;
+        }
+        return await Create(request, userId);
+    }
+
     #region  -- Private Method --
 
     private async Task<bool> ChangeBillCanDelete(int id)
@@ -589,6 +638,68 @@ public class BillService : IBillService
         else
         {
             return 4; // Quý 4: Tháng 10, 11, 12
+        }
+    }
+
+    [Obsolete("Obsolete")]
+    private bool PayPalRefund(string transactionId)
+    {
+        string clientId = _configuration["PayPalOptions:ClientId"];
+        string clientSecret = _configuration["PayPalOptions:ClientSecret"];
+        string mode = _configuration["PayPalOptions:Mode"];
+        var config = new Dictionary<string, string>
+        {
+            {"mode", mode},
+            {"clientId", clientId},
+            {"clientSecret", clientSecret}
+        };
+        try
+        {
+            var accessToken = new OAuthTokenCredential(clientId, clientSecret, config).GetAccessToken();
+            var apiContext = new APIContext(accessToken);
+
+            // Retrieve the sale transaction by ID
+            var sale = new Sale
+            {
+                id = transactionId
+            };
+
+            // Create a refund object
+            var refund = new Refund
+            {
+                amount = new Amount
+                {
+                    currency = "USD",
+                    total = "29.00"// Amount to be refunded
+                }
+            };
+
+            // Refund the sale
+            var response = sale.Refund(apiContext, refund);
+
+            // Check the refund status
+            if (response.state == "completed")
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Refund failed: {response.state}");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception(AppConstants.ERROR_IN_PAYPAL_REFUND);
+        }
+    }
+
+    private void RemoveItemInCache(BillRequest request)
+    {
+        foreach (var item in request.ItemsRequest)
+        {
+            _cache.Remove($"{item.TicketItemId}");
         }
     }
 

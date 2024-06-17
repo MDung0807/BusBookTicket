@@ -105,4 +105,28 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// <param name="desc"></param>
     /// <returns></returns>
     Task<object> GetStatisticsStationByCompany(int companyId, int year, int take, bool desc = true);
+
+    /// <summary>
+    /// Reserve for customer
+    /// </summary>
+    /// <param name="request">tickets</param>
+    /// <param name="userId">userId for customer</param>
+    /// <returns></returns>
+    Task Reserve(BillRequest request, int userId);
+    
+    /// <summary>
+    /// Check reserve cached. If cached return true, else return false
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="userId"></param>
+    /// <returns>bool</returns>
+    Task<bool> CheckReserve(BillRequest request, int userId);
+
+    /// <summary>
+    /// Payment Paypal
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="userId"></param>
+    /// <returns>bool</returns>
+    Task<bool> PaymentPaypal(BillRequest request, int userId);
 }
