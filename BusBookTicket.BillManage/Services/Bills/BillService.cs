@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using BusBookTicket.Application.MailKet.DTO.Request;
 using BusBookTicket.Application.MailKet.Service;
 using BusBookTicket.BillManage.DTOs.Requests;
@@ -94,7 +95,7 @@ public class BillService : IBillService
                 new BillSpecification(id, checkStatus: false, getIsChangeStatus: true);
             Bill bill = await _repository.Get(billSpecification, checkStatus: false);
 
-            if (!PayPalRefund(bill.PaypalTransactionId)) 
+            if (!PayPalRefund(bill.PaypalTransactionId, bill.TotalPrice)) 
                 return false;
             foreach (var item in bill.BillItems)
             {
@@ -642,7 +643,7 @@ public class BillService : IBillService
     }
 
     [Obsolete("Obsolete")]
-    private bool PayPalRefund(string transactionId)
+    private bool PayPalRefund(string transactionId, long totalPrice)
     {
         string clientId = _configuration["PayPalOptions:ClientId"];
         string clientSecret = _configuration["PayPalOptions:ClientSecret"];
@@ -670,7 +671,7 @@ public class BillService : IBillService
                 amount = new Amount
                 {
                     currency = "USD",
-                    total = "29.00"// Amount to be refunded
+                    total = Math.Ceiling((decimal)totalPrice/24000).ToString(CultureInfo.InvariantCulture)// Amount to be refunded
                 }
             };
 
