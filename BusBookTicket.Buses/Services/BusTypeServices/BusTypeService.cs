@@ -120,7 +120,7 @@ public class BusTypeService : IBusTypeService
         return result;
     }
 
-    public Task<BusTypePagingResult> GetAll(BusTypePaging pagingRequest, int idMaster)
+    public Task<BusTypePagingResult> GetAll(BusTypePaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         throw new NotImplementedException();
     }

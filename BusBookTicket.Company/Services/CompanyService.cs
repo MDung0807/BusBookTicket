@@ -80,7 +80,7 @@ public class CompanyService : ICompanyServices
         throw new NotImplementedException();
     }
 
-    public Task<CompanyPagingResult> GetAll(CompanyPaging pagingRequest, int idMaster)
+    public Task<CompanyPagingResult> GetAll(CompanyPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         throw new NotImplementedException();
     }

@@ -95,7 +95,7 @@ public class DistrictService : IDistrictService
         throw new NotImplementedException();
     }
 
-    public Task<PagingResult<DistrictResponse>> GetAll(PagingRequest pagingRequest, int idMaster)
+    public Task<PagingResult<DistrictResponse>> GetAll(PagingRequest pagingRequest, int idMaster, bool checkStatus = false)
     {
         throw new NotImplementedException();
     }

@@ -50,6 +50,14 @@ public class PriceClassificationController : ControllerBase
         return Ok(new Response<PriceClassificationPagingResult>(false,result));
     }
     
+    [HttpGet("getActiveInCompany")]
+    public async Task<IActionResult> GetActiveInCompany([FromQuery] PriceClassificationPaging paging)
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _service.GetAll(paging, userId, checkStatus: true);
+        return Ok(new Response<PriceClassificationPagingResult>(false,result));
+    }
+    
     [Authorize(Roles = AppConstants.ADMIN)]
     [HttpPut("ChangeIsActive")]
     public async Task<IActionResult> ChangeIsActive([FromQuery] int id)

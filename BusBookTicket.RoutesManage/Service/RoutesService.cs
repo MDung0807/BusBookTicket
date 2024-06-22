@@ -115,7 +115,7 @@ public class RoutesService : IRoutesService
         return result;
     }
 
-    public async Task<RoutesPagingResult> GetAll(RoutesPaging pagingRequest, int idMaster)
+    public async Task<RoutesPagingResult> GetAll(RoutesPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         RouteSpecifications specifications = new RouteSpecifications(companyId:idMaster, paging: pagingRequest);
         int count = await _repository.Count(new RouteSpecifications(companyId: idMaster));

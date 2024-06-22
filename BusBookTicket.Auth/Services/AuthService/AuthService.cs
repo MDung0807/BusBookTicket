@@ -92,7 +92,7 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
-        public Task<object> GetAll(object pagingRequest, int idMaster)
+        public Task<object> GetAll(object pagingRequest, int idMaster, bool checkStatus = false)
         {
             throw new NotImplementedException();
         }

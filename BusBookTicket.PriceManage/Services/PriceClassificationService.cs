@@ -118,13 +118,13 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
-    public async Task<PriceClassificationPagingResult> GetAll(PriceClassificationPaging pagingRequest, int idMaster)
+    public async Task<PriceClassificationPagingResult> GetAll(PriceClassificationPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         PriceClassificationSpecification specification =
-            new PriceClassificationSpecification(companyId: idMaster, checkStatus: false, paging: pagingRequest);
+            new PriceClassificationSpecification(companyId: idMaster, checkStatus: checkStatus, paging: pagingRequest);
 
         int count = await _repository.Count(
-            new PriceClassificationSpecification(companyId: idMaster, checkStatus: false));
+            new PriceClassificationSpecification(companyId: idMaster, checkStatus: checkStatus));
         List<PriceClassification> priceClassifications = await _repository.ToList(specification: specification);
         var responses =
             await AppUtils.MapObject<PriceClassification, PriceClassificationResponse>(priceClassifications, _mapper);

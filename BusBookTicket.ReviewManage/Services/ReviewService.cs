@@ -104,7 +104,7 @@ namespace BusBookTicket.ReviewManage.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ReviewPagingResult> GetAll(ReviewPaging pagingRequest, int idMaster)
+        public async Task<ReviewPagingResult> GetAll(ReviewPaging pagingRequest, int idMaster, bool checkStatus = false)
         {
             ReviewSpecification specification = new ReviewSpecification(idMaster, paging: pagingRequest);
             int count = await _repository.Count(new ReviewSpecification(idMaster));

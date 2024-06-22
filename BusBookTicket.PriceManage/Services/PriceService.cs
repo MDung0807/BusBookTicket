@@ -119,10 +119,10 @@ public class PriceService : IPriceService
         throw new NotImplementedException();
     }
 
-    public async Task<PricePagingResult> GetAll(PricePaging pagingRequest, int idMaster)
+    public async Task<PricePagingResult> GetAll(PricePaging pagingRequest, int idMaster, bool checkStatus = false)
     {
-        PriceSpecification specification = new PriceSpecification(companyId:idMaster, paging: pagingRequest, checkStatus:false);
-        int count = await _repository.Count(new PriceSpecification(companyId: idMaster, checkStatus:false));
+        PriceSpecification specification = new PriceSpecification(companyId:idMaster, paging: pagingRequest, checkStatus:checkStatus);
+        int count = await _repository.Count(new PriceSpecification(companyId: idMaster, checkStatus:checkStatus));
         List<Prices> pricesList = await _repository.ToList(specification);
 
         var result = AppUtils.ResultPaging<PricePagingResult, PriceResponse>(

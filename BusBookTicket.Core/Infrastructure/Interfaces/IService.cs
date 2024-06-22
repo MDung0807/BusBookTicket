@@ -107,14 +107,15 @@
         /// <param name="pagingRequest"></param>
         /// <returns></returns>
         Task<TPagingResult> GetAll(TPaging pagingRequest);
-        
+
         /// <summary>
         /// Get all item in master
         /// </summary>
         /// <param name="pagingRequest"></param>
         /// <param name="idMaster">id master</param>
+        /// <param name="checkStatus"></param>
         /// <returns></returns>
-        Task<TPagingResult> GetAll(TPaging pagingRequest, TId idMaster);
+        Task<TPagingResult> GetAll(TPaging pagingRequest, TId idMaster, bool checkStatus = false);
 
         /// <summary>
         /// Permanently deleted in database

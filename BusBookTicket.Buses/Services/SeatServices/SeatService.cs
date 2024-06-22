@@ -103,7 +103,7 @@ public class SeatService : ISeatService
         throw new NotImplementedException();
     }
 
-    public async Task<SeatPagingResult> GetAll(SeatPaging pagingRequest, int idMaster)
+    public async Task<SeatPagingResult> GetAll(SeatPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         SeatSpecification seatSpecification = new SeatSpecification(busId:idMaster, paging: pagingRequest);
         List<Seat> seats = await _repository.ToList(seatSpecification);

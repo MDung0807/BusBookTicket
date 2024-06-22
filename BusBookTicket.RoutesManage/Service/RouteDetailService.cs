@@ -108,7 +108,7 @@ public class RouteDetailService : IRouteDetailService
         throw new NotImplementedException();
     }
 
-    public async Task<RouteDetailPagingResult> GetAll(RouteDetailPaging pagingRequest, int idMaster)
+    public async Task<RouteDetailPagingResult> GetAll(RouteDetailPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         RouteDetailSpecification specification = new RouteDetailSpecification(companyId: idMaster,paging:pagingRequest);
         int count = await _repository.Count(new RouteDetailSpecification(companyId: idMaster));

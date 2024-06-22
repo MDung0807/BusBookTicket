@@ -295,10 +295,10 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
-    public async Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster)
+    public async Task<TicketPagingResult> GetAll(TicketPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         TicketSpecification ticketSpecification = 
-            new TicketSpecification(companyId:idMaster, checkStatus:false, paging: pagingRequest);
+            new TicketSpecification(companyId:idMaster, checkStatus:checkStatus, paging: pagingRequest);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         int count = await _repository.Count(new TicketSpecification(idMaster, paging:null));
         List<TicketResponse> responses = new List<TicketResponse>();

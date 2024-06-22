@@ -217,11 +217,11 @@ public class BusService : IBusService
 
     }
 
-    public async Task<BusPagingResult> GetAll(BusPaging pagingRequest, int idMaster)
+    public async Task<BusPagingResult> GetAll(BusPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
-        BusSpecification busSpecification = new BusSpecification(idMaster:idMaster,checkStatus:false);
+        BusSpecification busSpecification = new BusSpecification(idMaster:idMaster,checkStatus:checkStatus);
         List<Bus> buses = await _repository.ToList(busSpecification);
-        int count = await _repository.Count(new BusSpecification(idMaster:idMaster, checkStatus:false));
+        int count = await _repository.Count(new BusSpecification(idMaster:idMaster, checkStatus:checkStatus));
         List<BusResponse> responses = new List<BusResponse>();
         foreach (var bus in buses)
         {

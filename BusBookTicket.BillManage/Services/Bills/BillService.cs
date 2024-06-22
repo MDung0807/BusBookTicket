@@ -236,7 +236,7 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
-    public Task<BillPagingResult> GetAll(BillPaging pagingRequest, int idMaster)
+    public Task<BillPagingResult> GetAll(BillPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         throw new NotImplementedException();
     }

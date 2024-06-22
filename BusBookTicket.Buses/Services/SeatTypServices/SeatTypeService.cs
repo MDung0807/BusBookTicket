@@ -109,9 +109,9 @@ public class SeatTypeService : ISeatTypeService
         throw new NotImplementedException();
     }
 
-    public async Task<SeatTypePagingResult> GetAll(SeatTypePaging pagingRequest, int idMaster)
+    public async Task<SeatTypePagingResult> GetAll(SeatTypePaging pagingRequest, int idMaster, bool checkStatus = false)
     {
-        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, idMaster, paging: pagingRequest, checkStatus: false);   
+        SeatTypeSpecification seatTypeSpecification = new SeatTypeSpecification(0, idMaster, paging: pagingRequest, checkStatus: checkStatus);   
         List<SeatType> seatTypes = await _repository.ToList(seatTypeSpecification);
         int count = await _repository.Count(new SeatTypeSpecification(0, idMaster));
         List<SeatTypeResponse> responses = await AppUtils.MapObject<SeatType, SeatTypeResponse>(seatTypes, _mapper);

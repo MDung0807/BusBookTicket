@@ -77,7 +77,7 @@ public class BusStationService : IBusStationService
         return response;
     }
 
-    public Task<StationPagingResult> GetAll(StationPaging pagingRequest, int idMaster)
+    public Task<StationPagingResult> GetAll(StationPaging pagingRequest, int idMaster, bool checkStatus = false)
     {
         throw new NotImplementedException();
     }

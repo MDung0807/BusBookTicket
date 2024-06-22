@@ -179,7 +179,7 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
-        public Task<CustomerPagingResult> GetAll(CustomerPaging pagingRequest, int idMaster)
+        public Task<CustomerPagingResult> GetAll(CustomerPaging pagingRequest, int idMaster, bool checkStatus = false)
         {
             throw new NotImplementedException();
         }
