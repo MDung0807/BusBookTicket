@@ -13,6 +13,7 @@ public sealed class PriceClassificationSpecification : BaseSpecification<PriceCl
     {
         if (getIsChangeStatus)
         {
+            AddInclude(x => x.Company);
             return;
         }
 

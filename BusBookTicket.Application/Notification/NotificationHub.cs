@@ -24,56 +24,122 @@ public class NotificationHub : Hub
     }
     public override async Task OnConnectedAsync()
     {
-        
-        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
-        var claims = JWTUtils.GetPrincipal(token);
-        string role = claims.Claims.ElementAt(2).Value;
-        string userId = claims.Claims.ElementAt(0).Value;
+        try
+        {
+            string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+            var claims = JWTUtils.GetPrincipal(token);
+            string role = claims.Claims.ElementAt(2).Value;
+            string userId = claims.Claims.ElementAt(0).Value;
 
-        await SendCountNotification(role: role, userId: userId);
-        await base.OnConnectedAsync();
+            await AddGroup(Context.ConnectionId, role, userId);
+            await SendCountNotification(role: role, userId: userId);
+            await base.OnConnectedAsync();
+        }
+        catch (Exception e)
+        {
+            await SendCountNotification("", "");
+            throw;
+        }
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
-        string username = JWTUtils.GetUserName(token);
-        ClientsNotification.Remove(username);
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, username);
-        await base.OnDisconnectedAsync(exception);
+        try
+        {
+            string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+            var claims = JWTUtils.GetPrincipal(token);
+            string role = claims.Claims.ElementAt(2).Value;
+            string userId = claims.Claims.ElementAt(0).Value;
+            await RemoveGroup(Context.ConnectionId, role, userId);
+            await base.OnDisconnectedAsync(exception);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task GetNotifications()
     {
-        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
-        var claims = JWTUtils.GetPrincipal(token);
-        string role = claims.Claims.ElementAt(2).Value;
-        string userId = claims.Claims.ElementAt(0).Value;
-        var notifications = await _notificationService.GetNotification(actor:$"{role}_{userId}");
-        await Clients.Group($"{role}_{userId}").SendAsync("ReceiveNotifications",notifications.Items );
+        try
+        {
+            string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+            var claims = JWTUtils.GetPrincipal(token);
+            string role = claims.Claims.ElementAt(2).Value;
+            string userId = claims.Claims.ElementAt(0).Value;
+            var notifications = await _notificationService.GetNotification(actor: $"{role}_{userId}");
+            await Clients.Group($"{role}_{userId}").SendAsync("ReceiveNotifications", notifications.Items);
+        }
+        catch (Exception e)
+        {
+            await Clients.Group("").SendAsync("ReceiveNotifications", 0);
+        }
 
     }
 
     public async Task ReadNotification(int id)
     {
-        string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
-        var claims = JWTUtils.GetPrincipal(token);
-        string role = claims.Claims.ElementAt(2).Value;
-        string userId = claims.Claims.ElementAt(0).Value;
-        
-        await _notificationService.SeenNotification(id, int.Parse(userId));
+        try
+        {
+            string token = Context.GetHttpContext()?.Request.Query["access_token"].ToString() ?? throw new Exception();
+            var claims = JWTUtils.GetPrincipal(token);
+            string role = claims.Claims.ElementAt(2).Value;
+            string userId = claims.Claims.ElementAt(0).Value;
 
-        await SendCountNotification(role, userId);
+            await _notificationService.SeenNotification(id, int.Parse(userId));
+
+            await SendCountNotification(role, userId);
+        }
+        catch (Exception e)
+        {
+            await SendCountNotification("", "");
+        }
     }
 
     private async Task SendCountNotification(string role, string userId)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, $"{role}_{userId}");
-        await Groups.AddToGroupAsync(Context.ConnectionId, role);
-
         //Add client into group with role
         NotificationObjectSpecification specification = new NotificationObjectSpecification(actor:$"{role}_{userId}",query: "COUNT_NOTIFICATION_NOT_SEEN");
         int countNotificationNotSeen = await _repository.Count(specification);
         await Clients.Group($"{role}_{userId}").SendAsync("ReceiveCountUnReadingNotification",countNotificationNotSeen );
-    } 
+    }
+
+    private async Task AddGroup(string connectionId, string role, string userId)
+    {
+        switch (role)
+        {
+            case AppConstants.ADMIN:
+                await _notificationService.AddGroup(connectionId, AppConstants.ADMIN);
+                await _notificationService.AddGroup(connectionId, $"{AppConstants.ADMIN}_{userId}");
+                break;
+            case AppConstants.COMPANY:
+                await _notificationService.AddGroup(connectionId, AppConstants.COMPANY);
+                await _notificationService.AddGroup(connectionId, $"{AppConstants.COMPANY}_{userId}");
+                break;
+            case AppConstants.CUSTOMER:
+                await _notificationService.AddGroup(connectionId, AppConstants.CUSTOMER);
+                await _notificationService.AddGroup(connectionId, $"{AppConstants.CUSTOMER}_{userId}");
+                break;
+        }
+    }
+    
+    private async Task RemoveGroup(string connectionId, string role, string userId)
+    {
+        switch (role)
+        {
+            case AppConstants.ADMIN:
+                await _notificationService.RemoveGroup(connectionId, AppConstants.ADMIN);
+                await _notificationService.RemoveGroup(connectionId, $"{AppConstants.ADMIN}_{userId}");
+                break;
+            case AppConstants.COMPANY:
+                await _notificationService.RemoveGroup(connectionId, AppConstants.COMPANY);
+                await _notificationService.RemoveGroup(connectionId, $"{AppConstants.COMPANY}_{userId}");
+                break;
+            case AppConstants.CUSTOMER:
+                await _notificationService.RemoveGroup(connectionId, AppConstants.CUSTOMER);
+                await _notificationService.RemoveGroup(connectionId, $"{AppConstants.CUSTOMER}_{userId}");
+                break;
+        }
+    }
 }

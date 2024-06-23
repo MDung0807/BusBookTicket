@@ -9,6 +9,7 @@ using BusBookTicket.PriceManage.DTOs.Requests;
 using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Paging;
 using BusBookTicket.PriceManage.Specification;
+using ElasticEmailClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,15 +58,24 @@ public class PriceService : IPriceService
         price.Company.Id = userId;
         price.Status = (int)EnumsApp.Waiting;
         await _repository.Create(price, userId: userId);
-        await SendNotification(price, entity.CompanyName);
+        string notificationContent = $"{entity.CompanyName} Đã tạo bảng giá";
+        await SendNotification(notificationContent, $"{AppConstants.ADMIN}_1", AppConstants.PRICETYPE, entity.CompanyName, price.Company.Id);
         return true;
     }
 
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
+        string notificationContent = $"{AppConstants.ADMIN} Đã xác nhận";
+        System.Collections.Generic.List<int> a = new List<int>();
+        List<Dictionary<string, int>> listObjectNotChange = new List<Dictionary<string, int>>
+        {
+            new Dictionary<string, int>{{"Company",0}}
+        };
         PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
         Prices price = await _repository.Get(specification, checkStatus: false) ?? throw new ExceptionDetail(AppConstants.NOT_FOUND);
-        await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Active);
+        await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Active, listObjectNotChange: listObjectNotChange);
+        await SendNotification(notificationContent, $"{AppConstants.COMPANY}_{price.Company.Id}",
+            AppConstants.PRICETYPE, $"{AppConstants.ADMIN}_{userId}", userId);
         return true;
     }
 
@@ -79,6 +89,9 @@ public class PriceService : IPriceService
         PriceSpecification specification = new PriceSpecification(id: id, checkStatus: false, getIsChange: true);
         Prices price = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(price, userId: userId, (int)EnumsApp.Waiting);
+        string notificationContent = $"{AppConstants.ADMIN} Đã thay đổi bảng giá";
+        await SendNotification(notificationContent, $"{AppConstants.COMPANY}_{price.Company.Id}",
+            AppConstants.PRICETYPE, $"{AppConstants.ADMIN}_{userId}", userId);
         return true;
     }
 
@@ -147,16 +160,16 @@ public class PriceService : IPriceService
 
     #region --Private Method --
 
-    private async Task SendNotification( Prices prices, string companyName)
+    private async Task SendNotification( string content, string actor, string href, string sender, int senderId)
     {
         AddNewNotification newNotification = new AddNewNotification
         {
-            Content = $"{companyName} Đã tạo bảng giá",
-            Actor = "ADMIN_1",
-            Href = AppConstants.PRICETYPE,
-            Sender = $"{companyName}"
+            Content = content,
+            Actor = actor,
+            Href = href,
+            Sender = sender
         };
-        await _notification.InsertNotification(newNotification, prices.Company.Id);
+        await _notification.InsertNotification(newNotification, senderId);
     }
 
     #endregion --Private Method --

@@ -47,13 +47,13 @@ public class NotificationService : INotificationService
         notificationChange = await _repositoryNotificationChange.Create(notificationChange, userId);
         notificationObject.NotificationChanges = new HashSet<NotificationChange> { notificationChange };
         
-        await _repositoryNotificationObject.Create(notificationObject, userId);
+        notificationObject = await _repositoryNotificationObject.Create(notificationObject, userId);
 
         int countNotificationNotSeen =
-            await _repositoryNotificationObject.Count(new NotificationObjectSpecification(actor: $"{AppConstants.ADMIN}_1", query: "COUNT_NOTIFICATION_NOT_SEEN"));
+            await _repositoryNotificationObject.Count(new NotificationObjectSpecification(actor: request.Actor, query: "COUNT_NOTIFICATION_NOT_SEEN"));
 
-        await _hubContext.Clients.Group($"{AppConstants.ADMIN}_1")
-            .SendAsync("ReceiveNotification", $"{request.Sender} {request.Content}", countNotificationNotSeen, request.Href);
+        await _hubContext.Clients.Group(request.Actor)
+            .SendAsync("ReceiveNotification", $" {request.Content}", countNotificationNotSeen, request.Href, notificationObject.Id);
     }
 
     public Task UpdateNotification(int id, int userId)  
@@ -82,5 +82,15 @@ public class NotificationService : INotificationService
             items: await AppUtils.MapObject<NotificationObject, NotificationResponse>(notificationObjects, _mapper), 
             count: count);
         return result;
+    }
+
+    public async Task AddGroup(string connectionId, string group)
+    {
+        await _hubContext.Groups.AddToGroupAsync(connectionId, group);
+    }
+    
+    public async Task RemoveGroup(string connectionId, string group)
+    {
+        await _hubContext.Groups.RemoveFromGroupAsync(connectionId, group);
     }
 }

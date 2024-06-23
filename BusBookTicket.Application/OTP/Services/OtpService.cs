@@ -27,7 +27,7 @@ public class OtpService : IOtpService
         otp.UserId = userId;
         string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };  
   
-        string sRandomOtp = GenerateRandomOtp(8, saAllowedCharacters);
+        string sRandomOtp = GenerateRandomOtp(4, saAllowedCharacters);
         otp.Code = sRandomOtp;
         otp.Status = (int)EnumsApp.Active;
 

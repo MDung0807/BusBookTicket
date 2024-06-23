@@ -57,15 +57,22 @@ public class PriceClassificationService : IPriceClassificationService
             Id = userId
         };
         await _repository.Create(priceClassification, userId);
-        await SendNotification(priceClassification, entity.CompanyName);
+        string content = $"{entity.CompanyName} Created new Price";
+        await SendNotification(content, AppConstants.ADMIN+"_1",  AppConstants.PRICECLASSTYPE, entity.CompanyName, userId);
         return true;
     }
 
     public async Task<bool> ChangeIsActive(int id, int userId)
     {
+        List<Dictionary<string, int>> listObjectNotChange = new List<Dictionary<string, int>>
+        {
+            new Dictionary<string, int>{{"Company", 0}}
+        };
         PriceClassificationSpecification specification = new PriceClassificationSpecification(id: id, checkStatus: false, getIsChangeStatus: true);
         PriceClassification priceClassification = await _repository.Get(specification, checkStatus: false);
-        await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Active);
+        await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Active, listObjectNotChange: listObjectNotChange);
+        string content = $"{AppConstants.ADMIN} đã thay đổi";
+        await SendNotification(content, $"{priceClassification.Company.Id}",  AppConstants.PRICECLASSTYPE, priceClassification.Company.Name, userId);
         return true;
     }
 
@@ -142,15 +149,15 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
-    private async Task SendNotification(PriceClassification priceClassification, string companyName)
+    private async Task SendNotification( string content, string actor, string href, string sender, int senderId)
     {
         AddNewNotification newNotification = new AddNewNotification
         {
-            Content = $"{priceClassification.Company.Name} Đã tạo bảng loại giá",
-            Actor = "ADMIN_1",
-            Href = AppConstants.PRICECLASSTYPE,
-            Sender = $"{companyName}"
+            Content = content,
+            Actor = actor,
+            Href = href,
+            Sender = sender
         };
-        await _notification.InsertNotification(newNotification, priceClassification.Company.Id);
+        await _notification.InsertNotification(newNotification, senderId);
     }
 }

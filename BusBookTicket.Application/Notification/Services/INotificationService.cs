@@ -9,4 +9,7 @@ public interface INotificationService
     Task UpdateNotification(int id, int userId);
     Task<NotificationResponse> SeenNotification(int id, int userId);
     Task<NotificationPagingResult> GetNotification(string actor);
+    Task AddGroup(string connectionId, string group);
+    Task RemoveGroup(string connectionId, string group);
+
 }

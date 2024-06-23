@@ -1,7 +1,10 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using AutoMapper;
 using BusBookTicket.Application.MailKet.DTO.Request;
 using BusBookTicket.Application.MailKet.Service;
+using BusBookTicket.Application.Notification.Modal;
+using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
@@ -40,6 +43,7 @@ public class BillService : IBillService
 
     private readonly IRouteDetailService _routeDetailService;
     private readonly IMemoryCache _cache;
+    private readonly INotificationService _notificationService;
 
     public BillService(
         IMapper mapper,
@@ -47,7 +51,7 @@ public class BillService : IBillService
         IBillItemService billItemService,
         IUnitOfWork unitOfWork,
         IMailService mailService,
-        IRouteDetailService routeDetailService, IMemoryCache cache, IConfiguration configuration)
+        IRouteDetailService routeDetailService, IMemoryCache cache, IConfiguration configuration, INotificationService notificationService)
     {
         _billItemService = billItemService;
         _unitOfWork = unitOfWork;
@@ -59,6 +63,7 @@ public class BillService : IBillService
         _routeDetailService = routeDetailService;
         _cache = cache;
         _configuration = configuration;
+        _notificationService = notificationService;
         _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
 
     }
@@ -182,7 +187,9 @@ public class BillService : IBillService
             );
             
             await _unitOfWork.SaveChangesAsync();
-            
+            string content = $"{customer.FullName} đã đặt vé xe ";
+            await SendNotification(content, $"{AppConstants.COMPANY}_{ticketRouteDetailEnd.RouteDetail.Company.Id}",
+                $"${customer.FullName}", "", customer.Id);
             _unitOfWork.Dispose();
             RemoveItemInCache(entity);
         }
@@ -704,5 +711,16 @@ public class BillService : IBillService
         }
     }
 
+    private async Task SendNotification(string content, string actor, string sender, string href, int userId)
+    {
+        AddNewNotification newNotification = new AddNewNotification
+        {
+            Content = content,
+            Actor = actor,
+            Href = href,
+            Sender = sender
+        };
+        await _notificationService.InsertNotification(newNotification, userId);
+    }
     #endregion -- Private Method --
 }

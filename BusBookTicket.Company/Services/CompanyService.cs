@@ -1,5 +1,7 @@
 using AutoMapper;
 using BusBookTicket.Application.CloudImage.Services;
+using BusBookTicket.Application.MailKet.DTO.Request;
+using BusBookTicket.Application.MailKet.Service;
 using BusBookTicket.Application.Notification.Modal;
 using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Auth.DTOs.Requests;
@@ -25,13 +27,15 @@ public class CompanyService : ICompanyServices
     private readonly IGenericRepository<Company> _repository;
     private readonly IImageService _imageService;
     private readonly INotificationService _notificationService;
+    private readonly IMailService _mailService;
+
     #endregion
 
     public CompanyService(
         IMapper mapper, 
         IAuthService authService,
         IUnitOfWork unitOfWork,
-        IImageService imageService, INotificationService notificationService)
+        IImageService imageService, INotificationService notificationService, IMailService mailService)
     {
         this._mapper = mapper;
         this._authService = authService;
@@ -39,6 +43,7 @@ public class CompanyService : ICompanyServices
         _repository = unitOfWork.GenericRepository<Company>();
         _imageService = imageService;
         _notificationService = notificationService;
+        _mailService = mailService;
     }
 
     #region -- Public Method --
@@ -123,9 +128,9 @@ public class CompanyService : ICompanyServices
             
             // Save Image
             await _imageService.saveImage(entity.Logo, typeof(Company).ToString(), company.Id);
-            await SendNotification(company);
+            string content = $"{company.Name} đã tạo tài khoản";
+            await SendNotification(content, $"{AppConstants.ADMIN}_1", company.Name, AppConstants.REGISTERTYPE, company.Id );
             await _unitOfWork.SaveChangesAsync();
-            _unitOfWork.Dispose();
             return true;
         }
         catch (Exception e)
@@ -140,8 +145,27 @@ public class CompanyService : ICompanyServices
     {
         CompanySpecification companySpecification = new CompanySpecification(id, checkStatus: false, getAll:false);
         Company company = await _repository.Get(companySpecification, checkStatus: false);
-
-        return await _repository.ChangeStatus(company, userId, (int)EnumsApp.Active);
+        await _unitOfWork.BeginTransaction();
+        try
+        {
+            await _repository.ChangeStatus(company, userId, (int)EnumsApp.Active);
+            // Send mail with OTP code
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.ToMail = company.Email;
+            mailRequest.Content = "Your Account has been verified";
+            mailRequest.FullName = company.Name;
+            mailRequest.Subject = "Account has been verified";
+            mailRequest.Message = "Your Account has been verified";
+            await _mailService.SendEmailAsync(mailRequest);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> ChangeIsLock(int id, int userId)
@@ -189,16 +213,16 @@ public class CompanyService : ICompanyServices
         return entity;
     }
 
-    private async Task SendNotification(Company company)
+    private async Task SendNotification(string content, string actor, string sender, string href, int userId)
     {
         AddNewNotification newNotification = new AddNewNotification
         {
-            Content = $"{company.Name} Đã đăng ký tài khoản",
-            Actor = "ADMIN_1",
-            Href = AppConstants.REGISTERTYPE,
-            Sender = $"{company.Name}"
+            Content = content,
+            Actor = actor,
+            Href = href,
+            Sender = sender
         };
-        await _notificationService.InsertNotification(newNotification, company.Id);
+        await _notificationService.InsertNotification(newNotification, userId);
     }
 
     #endregion

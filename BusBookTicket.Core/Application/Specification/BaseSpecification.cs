@@ -16,7 +16,7 @@ public class BaseSpecification<T> : ISpecification<T>
         Criteria = criteria;
         CheckStatus = checkStatus;
     }
-    public Expression<Func<T, bool>> Criteria { get; set; }
+    public Expression<Func<T, bool>> Criteria { get; protected set; }
     public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
     public List<Func<IQueryable<T>, IQueryable<T>>> IncludeConditions { get; } = new List<Func<IQueryable<T>, IQueryable<T>>>();
     public bool CheckStatus { get; set; }
@@ -58,6 +58,14 @@ public class BaseSpecification<T> : ISpecification<T>
     public virtual void AddSqlQuery (string sqlQuery)
     {
         SqlQuery = sqlQuery;
+    }
+
+    public void AddCriteria(Expression<Func<T, bool>> additionalCriteria)
+    {
+        var invokedCriteria = Expression.Invoke(additionalCriteria, Criteria.Parameters);
+        Criteria = Expression.Lambda<Func<T, bool>>(
+            Expression.AndAlso(Criteria.Body, invokedCriteria),
+            Criteria.Parameters);
     }
 
     public virtual IEnumerable<SqlParameter> GetParameters()

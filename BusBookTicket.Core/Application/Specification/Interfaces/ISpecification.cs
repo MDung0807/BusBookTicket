@@ -20,5 +20,6 @@ public interface ISpecification<T>
     int Skip { get; }
     bool IsPagingEnabled { get; }
     void AddSqlQuery(string sqlQuery);
+    void AddCriteria(Expression<Func<T, bool>> additionalCriteria);
     IEnumerable<SqlParameter> GetParameters();
 }

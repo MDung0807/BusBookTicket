@@ -14,6 +14,7 @@ public sealed class PriceSpecification : BaseSpecification<Prices>
     {
         if (getIsChange)
         {
+            AddInclude(x => x.Company);
             return;
         }
 
@@ -25,5 +26,7 @@ public sealed class PriceSpecification : BaseSpecification<Prices>
         AddInclude(x => x.Routes.BusStationStart);
         AddInclude(x => x.Routes.BusStationEnd);
         AddInclude(x => x.Company);
+        
+        ApplyOrderByDescending(x => x.DateUpdate);
     }
 }
