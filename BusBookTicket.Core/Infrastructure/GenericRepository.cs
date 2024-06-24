@@ -174,6 +174,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<bool> ChangeStatus(List<object> entity, int userId, int status, List<Dictionary<string, int>> listObjectNotChange = null)
     {
+        if (entity.Count == 0) return false;
         try
         {
             listObjectNotChange ??= new List<Dictionary<string, int>>();
@@ -184,8 +185,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             foreach (T item in entity)
             {
                 await ChangeStatusImpl(item, userId, status, listObjectNotChange);
+                _context.Entry(item).State = EntityState.Modified;
+
             }
-            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
         }

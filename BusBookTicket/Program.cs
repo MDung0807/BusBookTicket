@@ -79,7 +79,6 @@ internal class Program
 
         #endregion -- Scoped --
 
-        services.AddScoped<FormRegister>();
         services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
         #region --Background Service --
 

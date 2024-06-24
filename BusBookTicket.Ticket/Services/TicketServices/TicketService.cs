@@ -71,6 +71,7 @@ public class TicketService : ITicketService
         _cache = cache;
         _priceService = priceService;
     }
+    public TicketService(){}
     
     public async Task<TicketResponse> GetById(int id)
     {

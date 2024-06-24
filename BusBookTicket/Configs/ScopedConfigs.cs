@@ -94,9 +94,16 @@ namespace BusBookTicket.Configs
             services.AddScoped<ITicketService, TicketService>();
 
             services.AddScoped<ITicketItemService, TicketItemService>();
-            services.AddScoped<ITicketBackgroundService, TicketBackgroundService>();
-            // services.AddHostedService<TicketBackgroundService>();
+            // Register the generic repository
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<TicketBackgroundService>(); // Register the background service itself as scoped
 
+            services.AddHostedService(provider =>
+            {
+                // Manually resolve the scoped service
+                var scope = provider.CreateScope();
+                return scope.ServiceProvider.GetRequiredService<TicketBackgroundService>();
+            });
             #endregion -- Add Scoped Ticket Module --
 
             #region -- Add Scoped ImageCloudDianary --

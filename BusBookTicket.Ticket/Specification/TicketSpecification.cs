@@ -163,7 +163,7 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
 
     public void DepartureBeforeMinute(int minute, bool checkStatus = false)
     {
-        Criteria = x => (x.Date - DateTime.Now).Minutes == minute 
+        Criteria = x => x.Date == DateTime.Now.AddMinutes(minute)
                         && x.TicketRouteDetails.FirstOrDefault().ArrivalTime == null
                         && x.Status != (int)EnumsApp.Delete;
         AddInclude(x => x.Bus.Company);
@@ -172,8 +172,8 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
 
     public void CompleteTicket()
     {
-        Criteria = x => (x.TicketRouteDetails.Last().ArrivalTime).Value.Minute == 0
-                        && !(x.TicketRouteDetails.Last().DepartureTime == null);
+        Criteria = x => (x.TicketRouteDetails.OrderBy(tr=> tr.RouteDetail.IndexStation).Last().ArrivalTime) == DateTime.Now
+                        && (x.TicketRouteDetails.OrderBy(tr=> tr.RouteDetail.IndexStation).Last().DepartureTime == null);
     }
 
     public void GetTickets(List<int> ticketIds, bool checkStatus)
