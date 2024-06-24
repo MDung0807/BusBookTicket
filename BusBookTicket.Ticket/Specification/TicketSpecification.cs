@@ -158,4 +158,27 @@ public sealed class TicketSpecification : BaseSpecification<Core.Models.Entity.T
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
     }
+    
+    public TicketSpecification(){}
+
+    public void DepartureBeforeMinute(int minute, bool checkStatus = false)
+    {
+        Criteria = x => (x.Date - DateTime.Now).Minutes == minute 
+                        && x.TicketRouteDetails.FirstOrDefault().ArrivalTime == null
+                        && x.Status != (int)EnumsApp.Delete;
+        AddInclude(x => x.Bus.Company);
+        AddInclude(x => x.TicketRouteDetails);
+    }
+
+    public void CompleteTicket()
+    {
+        Criteria = x => (x.TicketRouteDetails.Last().ArrivalTime).Value.Minute == 0
+                        && !(x.TicketRouteDetails.Last().DepartureTime == null);
+    }
+
+    public void GetTickets(List<int> ticketIds, bool checkStatus)
+    {
+        Criteria = x => ticketIds.Contains(x.Id)
+                        && x.Status != (int)EnumsApp.Delete;
+    }
 }

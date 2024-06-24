@@ -67,6 +67,16 @@ namespace BusBookTicket.Auth.Services.AuthService
             throw new NotImplementedException();
         }
 
+        public Task<bool> ChangeToWaiting(List<int> ids, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangeStatus(List<int> ids, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> ChangeToDisable(int id, int userId)
         {
             throw new NotImplementedException();
