@@ -7,6 +7,7 @@ using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.Exceptions;
 using BusBookTicket.Ticket.Controllers;
+using BusBookTicket.Ticket.Services.BackgroundService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -80,7 +81,11 @@ internal class Program
 
         services.AddScoped<FormRegister>();
         services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+        #region --Background Service --
 
+        // services.AddHostedService<TicketBackgroundService>();
+
+        #endregion --Background Service --
         services.AddSingleton(
             x => new PaypalClient(
                 builder.Configuration["PayPalOptions:ClientId"],

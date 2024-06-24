@@ -110,16 +110,16 @@ public class NotificationHub : Hub
         switch (role)
         {
             case AppConstants.ADMIN:
-                await _notificationService.AddGroup(connectionId, AppConstants.ADMIN);
-                await _notificationService.AddGroup(connectionId, $"{AppConstants.ADMIN}_{userId}");
+                await Task.WhenAll( _notificationService.AddGroup(connectionId, AppConstants.ADMIN), 
+                    _notificationService.AddGroup(connectionId, $"{AppConstants.ADMIN}_{userId}"));
                 break;
             case AppConstants.COMPANY:
-                await _notificationService.AddGroup(connectionId, AppConstants.COMPANY);
-                await _notificationService.AddGroup(connectionId, $"{AppConstants.COMPANY}_{userId}");
+                await Task.WhenAll(_notificationService.AddGroup(connectionId, AppConstants.COMPANY),
+                    _notificationService.AddGroup(connectionId, $"{AppConstants.COMPANY}_{userId}"));
                 break;
             case AppConstants.CUSTOMER:
-                await _notificationService.AddGroup(connectionId, AppConstants.CUSTOMER);
-                await _notificationService.AddGroup(connectionId, $"{AppConstants.CUSTOMER}_{userId}");
+                await Task.WhenAll(_notificationService.AddGroup(connectionId, AppConstants.CUSTOMER), 
+                    _notificationService.AddGroup(connectionId, $"{AppConstants.CUSTOMER}_{userId}"));
                 break;
         }
     }

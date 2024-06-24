@@ -239,7 +239,7 @@ public class TicketService : ITicketService
                 await CreateItem(seat, ticket.Id, userId, (int)price);
             }
 
-            SendMail(
+            await SendMail(
                 ticket,
                 $"Bạn vừa tạo một vé cho ngày: {ticket.Date} cho xe: {ticket.Bus.BusNumber}",
                 $"Vé vừa tạo",
@@ -266,6 +266,16 @@ public class TicketService : ITicketService
     }
 
     public Task<bool> ChangeToWaiting(int id, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> ChangeToWaiting(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> ChangeStatus(List<int> ids, int userId)
     {
         throw new NotImplementedException();
     }
@@ -404,6 +414,24 @@ public class TicketService : ITicketService
         TicketPagingResult result = AppUtils.ResultPaging<TicketPagingResult, TicketResponse>(
             paging.PageIndex, paging.PageSize, count: count, responses);
         return result;
+    }
+
+    public async Task<List<Core.Models.Entity.Ticket>> DepartureBeforeMinute(int minute, bool checkStatus = false)
+    {
+        TicketSpecification ticketSpecification = 
+            new TicketSpecification();
+        ticketSpecification.DepartureBeforeMinute(minute, false);
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
+        return tickets;
+    }
+
+    public async Task<List<Core.Models.Entity.Ticket>> TicketComplete(bool checkStatus = false)
+    {
+        TicketSpecification ticketSpecification = 
+            new TicketSpecification();
+        ticketSpecification.CompleteTicket();
+        List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
+        return tickets;
     }
 
     #region -- Private Method --

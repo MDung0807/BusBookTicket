@@ -78,6 +78,16 @@ public class SeatService : ISeatService
         throw new NotImplementedException();
     }
 
+    public async Task<bool> ChangeToWaiting(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> ChangeStatus(List<int> ids, int userId)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> ChangeToDisable(int id, int userId)
     {
         throw new NotImplementedException();

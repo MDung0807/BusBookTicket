@@ -9,7 +9,7 @@
     /// <typeparam name="TResponse">response to view</typeparam>
     /// <typeparam name="TPaging"></typeparam>
     /// <typeparam name="TPagingResult"></typeparam>
-    public interface IService<in TCreate, in TUpdate, in TId, TResponse, in TPaging, TPagingResult>
+    public interface IService<in TCreate, in TUpdate, TId, TResponse, in TPaging, TPagingResult>
     {
         /// <summary>
         /// Get data by id
@@ -71,6 +71,10 @@
         /// <param name="userId">userId</param>
         /// <returns></returns>
         Task<bool> ChangeToWaiting(TId id, int userId);
+        
+        Task<bool> ChangeToWaiting(List<TId> ids, int userId);
+        
+        Task<bool> ChangeStatus(List<TId> ids, int userId);
         
         /// <summary>
         /// Change status is diable

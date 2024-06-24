@@ -11,5 +11,5 @@ public interface INotificationService
     Task<NotificationPagingResult> GetNotification(string actor);
     Task AddGroup(string connectionId, string group);
     Task RemoveGroup(string connectionId, string group);
-
+    Task LoadGroup(int userId, bool checkStatus);
 }
