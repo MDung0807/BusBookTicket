@@ -28,7 +28,6 @@ using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Services;
 using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.RoutesManage.Service;
-using BusBookTicket.Ticket.Services.BackgroundService;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,8 +93,6 @@ namespace BusBookTicket.Configs
             services.AddScoped<ITicketService, TicketService>();
 
             services.AddScoped<ITicketItemService, TicketItemService>();
-            services.AddScoped<ITicketBackgroundService, TicketBackgroundService>();
-            // services.AddHostedService<TicketBackgroundService>();
 
             #endregion -- Add Scoped Ticket Module --
 

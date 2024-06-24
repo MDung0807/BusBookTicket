@@ -183,16 +183,6 @@ public class BusService : IBusService
         throw new NotImplementedException();
     }
 
-    public async Task<bool> ChangeToWaiting(List<int> ids, int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> ChangeStatus(List<int> ids, int userId)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
         BusSpecification busSpecification = new BusSpecification(id, userId, false, getIsChangeStatus: true, dateTime:DateTime.Now);

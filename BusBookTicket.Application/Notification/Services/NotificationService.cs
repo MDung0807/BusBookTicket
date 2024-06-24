@@ -93,10 +93,4 @@ public class NotificationService : INotificationService
     {
         await _hubContext.Groups.RemoveFromGroupAsync(connectionId, group);
     }
-
-    public async Task LoadGroup(int userId, bool checkStatus)
-    {
-        NotificationObjectSpecification notificationObjectSpecification = new NotificationObjectSpecification();
-        notificationObjectSpecification.LoadGroup(userId);
-    }
 }

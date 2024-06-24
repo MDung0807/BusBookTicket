@@ -15,7 +15,5 @@ public sealed class TicketRouteDetailSpec : BaseSpecification<Ticket_RouteDetail
         AddInclude(x => x.RouteDetail.Station);
         AddInclude(x => x.RouteDetail.Station.Ward);
         AddInclude(x => x.RouteDetail.Company);
-        
-        ApplyOrderBy(x => x.RouteDetail.IndexStation);
     }
 }

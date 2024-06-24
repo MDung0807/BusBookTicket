@@ -172,30 +172,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
-    public async Task<bool> ChangeStatus(List<object> entity, int userId, int status, List<Dictionary<string, int>> listObjectNotChange = null)
-    {
-        try
-        {
-            listObjectNotChange ??= new List<Dictionary<string, int>>();
-            listObjectNotChange.Add(new Dictionary<string, int>
-            {
-                {"Ward", 0}
-            });
-            foreach (T item in entity)
-            {
-                await ChangeStatusImpl(item, userId, status, listObjectNotChange);
-            }
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.ToString());
-            throw;
-        }
-    }
-
     public async Task<bool> CheckIsExist(ISpecification<T> specification)
     {
         var ob = await ApplySpecification(specification).FirstOrDefaultAsync();

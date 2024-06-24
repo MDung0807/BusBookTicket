@@ -9,8 +9,7 @@ namespace BusBookTicket.BillManage.Specification;
 public sealed class BillSpecification : BaseSpecification<Bill>
 {
 
-    public BillSpecification(int id = default, int userId = default, bool checkStatus = true, 
-        BillPaging paging = null, int status = default, bool delete = false)
+    public BillSpecification(int id = default, int userId = default, bool checkStatus = true, BillPaging paging = null, int status = default, bool delete = false)
         : base(x => (userId == default || x.Customer.Id == userId) && 
                     (id == default|| x.Id == id ) &&
             ((delete == true && x.Status == status) || (status == default || x.Status == status) && delete == false ),

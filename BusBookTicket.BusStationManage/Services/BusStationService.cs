@@ -136,16 +136,6 @@ public class BusStationService : IBusStationService
         return await _repository.ChangeStatus(busStation, userId, (int)EnumsApp.Waiting);
     }
 
-    public async Task<bool> ChangeToWaiting(List<int> ids, int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> ChangeStatus(List<int> ids, int userId)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<bool> ChangeToDisable(int id, int userId)
     {
         BusStationSpecification busStationSpecification = new BusStationSpecification(id, false, getIsChangeStatus: true);

@@ -41,16 +41,6 @@ namespace BusBookTicket.Core.Infrastructure.Interfaces
         /// <param name="listObjectNotChange">List object not change status</param>
         /// <returns></returns>
         Task<bool> ChangeStatus(object entity, int userId, int status, List<Dictionary<string, int>> listObjectNotChange = null);
-        
-        /// <summary>
-        /// Change status in entity and reference entity
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="userId"></param>
-        /// <param name="status"></param>
-        /// <param name="listObjectNotChange"></param>
-        /// <returns></returns>
-        Task<bool> ChangeStatus(List<object> entity, int userId, int status, List<Dictionary<string, int>> listObjectNotChange = null);
 
         /// <summary>
         /// Check data is exist in database

@@ -40,20 +40,4 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="paging">paging</param>
     /// <returns></returns>
     Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging);
-
-    /// <summary>
-    /// Minutes Before Ticket Have Departure
-    /// </summary>
-    /// <param name="minute"></param>
-    /// <param name="checkStatus"></param>
-    /// <returns></returns>
-    Task<List<Core.Models.Entity.Ticket>> DepartureBeforeMinute(int minute, bool checkStatus = false);
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="checkStatus"></param>
-    /// <returns></returns>
-    Task<List<Core.Models.Entity.Ticket>> TicketComplete(bool checkStatus = false);
-    
 }
