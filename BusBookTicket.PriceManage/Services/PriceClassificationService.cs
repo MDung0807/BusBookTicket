@@ -72,7 +72,7 @@ public class PriceClassificationService : IPriceClassificationService
         PriceClassification priceClassification = await _repository.Get(specification, checkStatus: false);
         await _repository.ChangeStatus(priceClassification, userId: userId, (int)EnumsApp.Active, listObjectNotChange: listObjectNotChange);
         string content = $"{AppConstants.ADMIN} đã thay đổi";
-        await SendNotification(content, $"{priceClassification.Company.Id}",  AppConstants.PRICECLASSTYPE, priceClassification.Company.Name, userId);
+        await SendNotification(content, $"{AppConstants.COMPANY}_{priceClassification.Company.Id}",  AppConstants.PRICECLASSTYPE, priceClassification.Company.Name, userId);
         return true;
     }
 
