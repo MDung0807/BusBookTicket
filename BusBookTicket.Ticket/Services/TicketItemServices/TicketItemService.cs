@@ -120,6 +120,12 @@ public class TicketItemService : ITicketItemService
         throw new NotImplementedException();
     }
 
+    public async Task<object> FindByParam(string param, object pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
+
     public async Task<List<TicketItemResponse>> GetAllInTicket(int ticketId)
     {
         TicketItemSpecification ticketItemSpecification = new TicketItemSpecification(0, ticketId, checkStatus:false);

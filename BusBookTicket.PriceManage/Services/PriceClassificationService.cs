@@ -159,6 +159,23 @@ public class PriceClassificationService : IPriceClassificationService
         throw new NotImplementedException();
     }
 
+    public async Task<PriceClassificationPagingResult> FindByParam(string param, PriceClassificationPaging pagingRequest = default, bool checkStatus = true)
+    {
+        PriceClassificationSpecification priceClassificationSpecification = new PriceClassificationSpecification();
+        priceClassificationSpecification.FindByParam(param: param, paging: pagingRequest, checkStatus: checkStatus);
+        
+        PriceClassificationSpecification priceClassNotPaging = new PriceClassificationSpecification();
+        priceClassificationSpecification.FindByParam(param: param, checkStatus: checkStatus);
+
+        int count = await _repository.Count(priceClassNotPaging);
+        var result = await _repository.ToList(priceClassificationSpecification);
+
+        return AppUtils.ResultPaging<PriceClassificationPagingResult, PriceClassificationResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize, count,
+            await AppUtils.MapObject<PriceClassification, PriceClassificationResponse>(result, _mapper)
+        );
+    }
+
     private async Task SendNotification( string content, string actor, string href, string sender, int senderId)
     {
         AddNewNotification newNotification = new AddNewNotification

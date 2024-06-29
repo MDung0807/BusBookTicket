@@ -118,6 +118,11 @@ public class DiscountService : IDiscountService
         throw new NotImplementedException();
     }
 
+    public async Task<object> FindByParam(string param, object pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<DiscountResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

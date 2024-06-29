@@ -95,6 +95,22 @@ public class CompanyService : ICompanyServices
         throw new NotImplementedException();
     }
 
+    public async Task<CompanyPagingResult> FindByParam(string param, CompanyPaging pagingRequest = default, bool checkStatus = true)
+    {
+        CompanySpecification specification = new CompanySpecification(),
+            specificationNotPaging = new CompanySpecification();
+        
+        specificationNotPaging.FindByParam(param, checkStatus: checkStatus);
+        specification.FindByParam(param: param, paging: pagingRequest, checkStatus: checkStatus);
+
+        var result = await _repository.ToList(specification);
+        int count = await _repository.Count(specificationNotPaging);
+
+        return AppUtils.ResultPaging<CompanyPagingResult, ProfileCompany>(
+            pagingRequest.PageIndex, pagingRequest.PageSize, count,
+            await AppUtils.MapObject<Company, ProfileCompany>(result, _mapper));
+    }
+
 
     public async Task<bool> Update(FormUpdateCompany entity, int id, int userId)
     {

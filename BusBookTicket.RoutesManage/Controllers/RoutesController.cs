@@ -52,6 +52,14 @@ public class RoutesController : ControllerBase
     }
     
     [AllowAnonymous]
+    [HttpGet("find")]
+    public async Task<IActionResult> Find([FromQuery] string param, [FromQuery] RoutesPaging paging)
+    {
+        var responses = await _service.FindByParam(param,paging);
+        return Ok(new Response<RoutesPagingResult>(false, responses));
+    }
+    
+    [AllowAnonymous]
     [HttpGet("getById")]
     public async Task<IActionResult> GetById(int id)
     {

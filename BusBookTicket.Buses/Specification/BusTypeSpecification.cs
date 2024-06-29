@@ -23,4 +23,15 @@ public sealed class BusTypeSpecification : BaseSpecification<BusType>
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
     }
+
+    public void FindByParam(string param, BusTypePaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x => x.Name.Contains(param);
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        CheckStatus = checkStatus;
+    }
 }

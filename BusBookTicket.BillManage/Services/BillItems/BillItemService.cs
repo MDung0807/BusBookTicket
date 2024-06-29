@@ -130,6 +130,11 @@ public class BillItemService : IBillItemService
         throw new NotImplementedException();
     }
 
+    public async Task<object> FindByParam(string param, object pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<BillItemResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

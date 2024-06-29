@@ -132,6 +132,11 @@ public class SeatService : ISeatService
         throw new NotImplementedException();
     }
 
+    public async Task<SeatPagingResult> FindByParam(string param, SeatPaging pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<SeatResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

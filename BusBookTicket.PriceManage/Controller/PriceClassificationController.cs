@@ -40,7 +40,14 @@ public class PriceClassificationController : ControllerBase
         var status = await _service.Create(request, userId);
         return Ok(new Response<string>(!status, AppConstants.SUCCESS));
     }
-    
+
+    [HttpGet("find")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> FindByParam([FromQuery] string param, [FromQuery] PriceClassificationPaging paging)
+    {
+        var result = await _service.FindByParam(param: param, paging);
+        return Ok(new Response<PriceClassificationPagingResult>(false, result));
+    }
     [Authorize(Roles = AppConstants.COMPANY)]
     [HttpGet("getInCompany")]
     public async Task<IActionResult> GetInCompany([FromQuery] PriceClassificationPaging paging)

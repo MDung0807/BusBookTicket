@@ -128,5 +128,14 @@
         /// <returns></returns>
         Task<bool> DeleteHard(TId id);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pagingRequest"></param>
+        /// <param name="checkStatus"></param>
+        /// <returns></returns>
+        Task<TPagingResult> FindByParam(string param, TPaging pagingRequest = default, bool checkStatus = true);
+
     }
 }

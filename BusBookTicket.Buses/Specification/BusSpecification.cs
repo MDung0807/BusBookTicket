@@ -64,4 +64,26 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         AddInclude(x => x.Company);
         AddInclude(x => x.BusType);
     }
+    
+    public BusSpecification(){}
+
+    public void FindByParam(string param, BusPaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x =>
+            x.Company.Name.Contains(param) || x.StopStations.Any(s => s.Bus.BusNumber.Contains(param))
+                || x.StopStations.Any(s => x.BusType.Name.Contains(param) || s.Route.BusStationStart.Name.Contains(param) || s.Route.BusStationEnd.Name.Contains(param)
+                || s.Route.BusStationEnd.Ward.Name.Contains(param) || s.Route.BusStationEnd.Ward.District.Name.Contains(param) || s.Route.BusStationEnd.Ward.District.Province.Name.Contains(param));
+        CheckStatus = checkStatus;
+
+        if (paging != default)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+        AddInclude(x => x.Company);
+        AddInclude(x => x.BusType);
+        AddInclude(x => x.Seats);
+        AddInclude(x => x.StopStations);
+        AddInclude("StopStations.Route.RouteDetails");
+        AddInclude("StopStations.Route.RouteDetails.Station");
+    }
 }

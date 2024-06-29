@@ -153,4 +153,10 @@ public class RouteDetailService : IRouteDetailService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<RouteDetailPagingResult> FindByParam(string param, RouteDetailPaging pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
 }

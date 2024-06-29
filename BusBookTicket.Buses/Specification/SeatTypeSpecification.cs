@@ -29,4 +29,15 @@ public sealed class SeatTypeSpecification : BaseSpecification<SeatType>
         if (paging!= null)
             ApplyPaging(paging.PageIndex,paging.PageSize);
     }
+
+    public void FindByParam(string param, SeatTypePaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x => x.Type.Contains(param);
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        CheckStatus = checkStatus;
+    }
 }

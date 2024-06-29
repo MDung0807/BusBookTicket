@@ -29,4 +29,21 @@ public sealed class PriceSpecification : BaseSpecification<Prices>
         
         ApplyOrderByDescending(x => x.DateUpdate);
     }
+
+    public void FindByParam(string param, PricePaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x =>
+            x.Company.Name.Contains(param) ||
+            x.Routes.BusStationStart.Name.Contains(param) || x.Routes.BusStationEnd.Name.Contains(param) ||
+            x.Id.ToString() == param;
+
+        if (paging != default)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+            
+        }
+
+        CheckStatus = checkStatus;
+
+    }
 }

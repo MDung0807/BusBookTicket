@@ -115,6 +115,11 @@ public class ProvinceService : IProvinceService
         throw new NotImplementedException();
     }
 
+    public async Task<object> FindByParam(string param, object pagingRequest, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<ProvinceResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

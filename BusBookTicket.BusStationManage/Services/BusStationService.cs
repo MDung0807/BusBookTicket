@@ -87,6 +87,19 @@ public class BusStationService : IBusStationService
         throw new NotImplementedException();
     }
 
+    public async Task<StationPagingResult> FindByParam(string param, StationPaging pagingRequest = default, bool checkStatus = true)
+    {
+        BusStationSpecification specification = new BusStationSpecification(),
+            specificationNotPagin = new BusStationSpecification();
+        specification.FindByParam(param, paging:pagingRequest, checkStatus);
+        specificationNotPagin.FindByParam(param: param, checkStatus: checkStatus);
+        var result = await _repository.ToList(specification: specification);
+        int count = await _repository.Count(specificationNotPagin);
+        return AppUtils.ResultPaging<StationPagingResult, BusStationResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize, count,
+            await AppUtils.MapObject<BusStation, BusStationResponse>(result, _mapper));
+    }
+
     public async Task<bool> Update(BST_FormUpdate entity, int id, int userId)
     {
         BusStation busStation = _mapper.Map<BusStation>(entity);

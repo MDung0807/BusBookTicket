@@ -115,6 +115,11 @@ public class DistrictService : IDistrictService
         throw new NotImplementedException();
     }
 
+    public async Task<PagingResult<DistrictResponse>> FindByParam(string param, PagingRequest pagingRequest, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<DistrictResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

@@ -90,6 +90,14 @@ public class BusController : ControllerBase
         return Ok(new Response<BusPagingResult>(false, responses));
     }
 
+    [HttpGet("find")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> Find([FromQuery] string param, [FromQuery] BusPaging paging)
+    {
+        var result = await _busService.FindByParam(param, paging);
+        return Ok(new Response<BusPagingResult>(false, result));
+    }
+
     [HttpGet("changeIsDisable")]
     [Authorize(Roles = AppConstants.COMPANY)]
     public async Task<IActionResult> ChangeIsDisable([FromQuery] int id)

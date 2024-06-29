@@ -43,6 +43,14 @@ public class PriceController: ControllerBase
         return Ok(new Response<string>(!status, AppConstants.SUCCESS));
     }
 
+    [HttpGet("find")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> FindByParam([FromQuery] string param, [FromQuery] PricePaging paging)
+    {
+        var result = await _service.FindByParam(param: param, paging);
+        return Ok(new Response<PricePagingResult>(false, result));
+    }
+    
     [Authorize(Roles = AppConstants.COMPANY)]
     [HttpGet("getInCompany")]
     public async Task<IActionResult> GetInCompany([FromQuery] PricePaging paging)

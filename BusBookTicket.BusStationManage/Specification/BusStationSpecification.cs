@@ -70,4 +70,17 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
     }
+
+    public void FindByParam(string param, StationPaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x
+            => x.Name.Contains(param);
+
+        if (paging != default)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        CheckStatus = checkStatus;
+    } 
 }

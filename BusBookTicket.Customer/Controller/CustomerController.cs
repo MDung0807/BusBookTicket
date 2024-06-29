@@ -63,6 +63,13 @@ namespace BusBookTicket.CustomerManage.Controller
             return Ok(new Response<CustomerPagingResult>(false, responses));
         }
 
+        [HttpGet("find")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Find([FromQuery] string param,[FromQuery] CustomerPaging paging)
+        {
+            CustomerPagingResult responses =  await _customerService.FindByParam(param, paging);
+            return Ok(new Response<CustomerPagingResult>(false, responses));
+        }
         [HttpPut("updateProfile")]
         [Authorize(Roles = "CUSTOMER")]
         public async Task<IActionResult> UpdateProfile([FromBody] FormUpdate request)

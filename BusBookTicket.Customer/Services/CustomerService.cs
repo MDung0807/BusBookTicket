@@ -199,6 +199,20 @@ namespace BusBookTicket.CustomerManage.Services
             throw new NotImplementedException();
         }
 
+        public async Task<CustomerPagingResult> FindByParam(string param, CustomerPaging pagingRequest = default, bool checkStatus = true)
+        {
+            CustomerSpecification specification = new CustomerSpecification(),
+                specificationNotPaging = new CustomerSpecification();
+            specification.FindByParam(param, pagingRequest, checkStatus);
+            specificationNotPaging.FindByParam(param, checkStatus: checkStatus);
+            List<Customer> customers = await _repository.ToList(specification);
+            int count = await _repository.Count(specificationNotPaging);
+            CustomerPagingResult result = AppUtils.ResultPaging<CustomerPagingResult, CustomerResponse>(
+                pagingRequest.PageIndex, pagingRequest.PageSize, count,
+                await AppUtils.MapObject<Customer, CustomerResponse>(customers, _mapper));
+            return result;
+        }
+
         public async Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging)
         {
             CustomerSpecification specification = new CustomerSpecification(paging, false);

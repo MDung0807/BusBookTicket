@@ -263,6 +263,11 @@ public class BillService : IBillService
         throw new NotImplementedException();
     }
 
+    public async Task<BillPagingResult> FindByParam(string param, BillPaging pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<PagingResult<BillResponse>> GetAllByAdmin(PagingRequest pagingRequest)
     {
         throw new NotImplementedException();

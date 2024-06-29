@@ -335,6 +335,11 @@ public class TicketService : ITicketService
         throw new NotImplementedException();
     }
 
+    public async Task<TicketPagingResult> FindByParam(string param, TicketPaging pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<TicketPagingResult> GetAllTicket(SearchForm searchForm, TicketPaging paging)
     {
         TicketSpecification ticketSpecification = new TicketSpecification(searchForm.StationStart, searchForm.StationEnd, searchForm.DateTime,paging:paging,

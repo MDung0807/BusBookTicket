@@ -140,6 +140,21 @@ public class BusTypeService : IBusTypeService
         throw new NotImplementedException();
     }
 
+    public async Task<BusTypePagingResult> FindByParam(string param, BusTypePaging pagingRequest = default, bool checkStatus = true)
+    {
+        BusTypeSpecification specification = new BusTypeSpecification(),
+            specificationNotPaging = new BusTypeSpecification();
+        specification.FindByParam(param, pagingRequest, checkStatus);
+        specificationNotPaging.FindByParam(param,checkStatus: checkStatus);
+        var result = await _repository.ToList(specification);
+        int count = await _repository.Count(specificationNotPaging);
+        return AppUtils.ResultPaging<BusTypePagingResult, BusTypeResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count,
+            await AppUtils.MapObject<BusType, BusTypeResponse>(result, _mapper));
+    }
+
     public Task<List<BusTypeResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

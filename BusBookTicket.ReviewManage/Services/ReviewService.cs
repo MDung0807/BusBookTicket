@@ -130,6 +130,16 @@ namespace BusBookTicket.ReviewManage.Services
             throw new NotImplementedException();
         }
 
+        public async Task<ReviewPagingResult> FindByParam(string param, ReviewPaging pagingRequest = default, bool checkStatus = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ReviewPagingResult> FindByParam(string param, bool checkStatus = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<float> GetRateAverage(int busId)
         {
             ReviewSpecification specification = new ReviewSpecification(busId:busId);

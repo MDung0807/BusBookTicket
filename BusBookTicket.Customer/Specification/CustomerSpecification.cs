@@ -43,4 +43,18 @@ public sealed class CustomerSpecification : BaseSpecification<Customer>
         AddInclude(x => x.Account.Role);
         AddInclude(x => x.Rank);
     }
+
+    public void FindByParam(string param, CustomerPaging paging = default, bool checkStatus = true)
+    {
+        Criteria = x =>
+            x.FullName.Contains(param) || x.Ward.FullName.Contains(param) || x.Ward.District.FullName.Contains(param) ||
+            x.Ward.District.Province.FullName.Contains(param);
+
+        if (paging != default)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        CheckStatus = checkStatus;
+    }
 }

@@ -119,6 +119,11 @@ public class WardService : IWardService
         throw new NotImplementedException();
     }
 
+    public async Task<object> FindByParam(string param, object pagingRequest = default, bool checkStatus = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<WardResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

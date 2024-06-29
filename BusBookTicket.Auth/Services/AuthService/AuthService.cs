@@ -114,6 +114,16 @@ namespace BusBookTicket.Auth.Services.AuthService
             return await _repository.DeleteHard(account);
         }
 
+        public async Task<object> FindByParam(string param, object pagingRequest = default, bool checkStatus = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<object> FindByParam(string param, bool checkStatus = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<AuthResponse>> GetAllByAdmin()
         {
             throw new NotImplementedException();

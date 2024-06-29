@@ -96,6 +96,14 @@ public class CompanyController : ControllerBase
     }
     
     [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("admin/find")]
+    public async Task<IActionResult> Find([FromQuery] string param, [FromQuery] CompanyPaging paging)
+    {
+        CompanyPagingResult responses = await _companyServices.FindByParam(param,paging);
+        return Ok(new Response<CompanyPagingResult>(false, responses));
+    }
+    
+    [Authorize(Roles = AppConstants.ADMIN)]
     [HttpPut("admin/ChangeIsLock")]
     public async Task<IActionResult> ChangeIsLock([FromQuery] int id)
     {

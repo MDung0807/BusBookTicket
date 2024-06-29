@@ -37,6 +37,14 @@ public class SeatTypeController : ControllerBase
         SeatTypePagingResult responses = await _seatTypeService.GetAll(paging, companyID);
         return Ok(new Response<SeatTypePagingResult>(false, responses));
     }
+    
+    [HttpGet("find")]
+    [Authorize(Roles = $"{AppConstants.COMPANY}, {AppConstants.ADMIN}")]
+    public async Task<IActionResult>Find([FromQuery] string param, [FromQuery]SeatTypePaging paging)
+    {
+        SeatTypePagingResult responses = await _seatTypeService.FindByParam(param, paging);
+        return Ok(new Response<SeatTypePagingResult>(false, responses));
+    }
 
     [HttpGet("getByID")]
     [AllowAnonymous]

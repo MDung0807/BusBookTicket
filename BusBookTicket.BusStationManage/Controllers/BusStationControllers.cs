@@ -41,6 +41,13 @@ namespace BusBookTicket.BusStationManage.Controllers
             StationPagingResult responses = await _busStationService.GetAllByAdmin(paging);
             return Ok(new Response<StationPagingResult>(false, responses));
         }
+        [HttpGet("admin/find")]
+        [Authorize(Roles = AppConstants.ADMIN)]
+        public async Task<IActionResult> Find([FromQuery] string param ,[FromQuery] StationPaging paging)
+        {
+            StationPagingResult responses = await _busStationService.FindByParam(param, paging);
+            return Ok(new Response<StationPagingResult>(false, responses));
+        }
         
         [HttpGet("getAllInBus")]
         [AllowAnonymous]        

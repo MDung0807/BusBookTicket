@@ -29,4 +29,23 @@ public sealed class RouteSpecifications : BaseSpecification<Routes>
         // ApplyOrderBy(x => x.RouteDetails.OrderBy(x => x.IndexStation));
 
     }
+
+    public void FindByParam(string param, RoutesPaging paging = default, bool checkStation = true)
+    {
+        Criteria = x => x.Id.ToString() == param ||
+                        x.BusStationStart.Name.Contains(param) || x.BusStationStart.Ward.FullName.Contains(param) ||
+                        x.BusStationStart.Ward.District.FullName.Contains(param) ||
+                        x.BusStationStart.Ward.District.Province.FullName.Contains(param) ||
+                        x.BusStationEnd.Name.Contains(param) || x.BusStationEnd.Ward.FullName.Contains(param) ||
+                        x.BusStationEnd.Ward.District.FullName.Contains(param) ||
+                        x.BusStationEnd.Ward.District.Province.FullName.Contains(param);
+        if (paging != null)
+        {
+            ApplyPaging(paging.PageIndex, paging.PageSize);
+        }
+
+        CheckStatus = checkStation;
+
+
+    }
 }

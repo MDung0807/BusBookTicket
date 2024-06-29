@@ -255,6 +255,19 @@ public class BusService : IBusService
         throw new NotImplementedException();
     }
 
+    public async Task<BusPagingResult> FindByParam(string param, BusPaging paging, bool checkStatus = true)
+    {
+        BusSpecification busSpecification = new BusSpecification();
+        busSpecification.FindByParam(param, paging, true);
+        var results = await _repository.ToList(busSpecification);
+        BusSpecification busNotPaging = new BusSpecification();
+        busNotPaging.FindByParam(param);
+        int count = await _repository.Count(busNotPaging);
+
+        return AppUtils.ResultPaging<BusPagingResult, BusResponse>(paging.PageIndex, paging.PageSize, count,
+            await AppUtils.MapObject<Bus, BusResponse>(results, _mapper));
+    }
+
     public async Task<BusResponse> AddBusStops(FormAddBusStop request, int userId)
     {
         try

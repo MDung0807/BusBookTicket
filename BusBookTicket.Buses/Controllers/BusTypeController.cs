@@ -59,6 +59,14 @@ public class BusTypeController : ControllerBase
         return Ok(new Response<BusTypePagingResult>(false, responses));
     }
     
+    [HttpGet("find")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Find([FromQuery] string param, [FromQuery] BusTypePaging paging)
+    {
+        BusTypePagingResult responses = await _busTypeService.FindByParam(param, paging);
+        return Ok(new Response<BusTypePagingResult>(false, responses));
+    }
+    
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> GetById(int id)

@@ -143,6 +143,23 @@ public class RoutesService : IRoutesService
         throw new NotImplementedException();
     }
 
+    public async Task<RoutesPagingResult> FindByParam(string param, RoutesPaging pagingRequest = default, bool checkStatus = true)
+    {
+        RouteSpecifications specifications = new RouteSpecifications(),
+            specificationsNotPaging = new RouteSpecifications();
+        specifications.FindByParam(param, paging:pagingRequest, checkStatus);
+        specificationsNotPaging.FindByParam(param, checkStation: checkStatus);
+
+        var result = await _repository.ToList(specifications);
+        int count = await _repository.Count(specificationsNotPaging);
+        
+        return AppUtils.ResultPaging<RoutesPagingResult, RoutesResponse>(
+            pagingRequest.PageIndex,
+            pagingRequest.PageSize,
+            count: count,
+            items: await AppUtils.MapObject<Routes, RoutesResponse>(result, _mapper));
+    }
+
     public async Task<RoutesResponse> GetById(int id, int companyId)
     {
         RouteSpecifications routeSpecifications = new RouteSpecifications(id: id, checkStatus: true, companyId: companyId);

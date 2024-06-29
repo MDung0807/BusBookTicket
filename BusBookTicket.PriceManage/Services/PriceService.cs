@@ -161,6 +161,23 @@ public class PriceService : IPriceService
         throw new NotImplementedException();
     }
 
+    public async Task<PricePagingResult> FindByParam(string param, PricePaging pagingRequest = default, bool checkStatus = true)
+    {
+        PriceSpecification priceSpecification = new PriceSpecification();
+        priceSpecification.FindByParam(param: param, paging: pagingRequest, checkStatus:checkStatus);
+        
+        PriceSpecification priceNotPaging = new PriceSpecification();
+        priceSpecification.FindByParam(param: param, checkStatus:checkStatus);
+
+        var result = await _repository.ToList(priceSpecification);
+        int count = await _repository.Count(priceNotPaging);
+
+        return AppUtils.ResultPaging<PricePagingResult, PriceResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize, count,
+            await AppUtils.MapObject<Prices, PriceResponse>(result, _mapper)
+        );
+    }
+
     public async Task<PriceResponse> GetInRoute(int routeId, int companyId)
     {
         PriceSpecification specification = new PriceSpecification(routeId: routeId, companyId: companyId);

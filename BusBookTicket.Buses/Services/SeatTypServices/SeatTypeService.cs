@@ -136,6 +136,21 @@ public class SeatTypeService : ISeatTypeService
         throw new NotImplementedException();
     }
 
+    public async Task<SeatTypePagingResult> FindByParam(string param, SeatTypePaging pagingRequest = default, bool checkStatus = true)
+    {
+        SeatTypeSpecification specification = new SeatTypeSpecification(),
+            specificationNotPaging = new SeatTypeSpecification();
+        specification.FindByParam(param, pagingRequest, checkStatus);
+        specificationNotPaging.FindByParam(param, checkStatus:checkStatus);
+        var result = await _repository.ToList(specification);
+        int count = await _repository.Count(specificationNotPaging);
+        
+        return AppUtils.ResultPaging<SeatTypePagingResult, SeatTypeResponse>(
+            pagingRequest.PageIndex, pagingRequest.PageSize,
+            count:count, await AppUtils.MapObject<SeatType, SeatTypeResponse>(result, _mapper));
+    }
+
+
     public Task<List<SeatTypeResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();
