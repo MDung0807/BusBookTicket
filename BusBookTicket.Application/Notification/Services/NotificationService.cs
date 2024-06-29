@@ -5,7 +5,10 @@ using BusBookTicket.Application.Notification.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
+using Dapper;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace BusBookTicket.Application.Notification.Services;
 
@@ -18,12 +21,14 @@ public class NotificationService : INotificationService
     private readonly IGenericRepository<NotificationChange> _repositoryNotificationChange;
     private readonly IGenericRepository<NotificationObject> _repositoryNotificationObject;
     private readonly IGenericRepository<Core.Models.Entity.Notification> _repositoryNotification;
+    private readonly IConfiguration _configuration;
+
 
     #endregion -- Properties --
     
     private readonly IMapper _mapper;
 
-    public NotificationService(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext, IMapper mapper)
+    public NotificationService(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext, IMapper mapper, IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
         _repositoryNotificationChange = _unitOfWork.GenericRepository<NotificationChange>();
@@ -31,6 +36,7 @@ public class NotificationService : INotificationService
         _repositoryNotificationObject = unitOfWork.GenericRepository<NotificationObject>();
         _hubContext = hubContext;
         _mapper = mapper;
+        _configuration = configuration;
     }
     
     public async Task InsertNotification(AddNewNotification request, int userId)
@@ -94,9 +100,18 @@ public class NotificationService : INotificationService
         await _hubContext.Groups.RemoveFromGroupAsync(connectionId, group);
     }
 
-    public async Task LoadGroup(int userId, bool checkStatus)
+    public async Task<List<int>> LoadGroup(int userId, bool checkStatus = true)
     {
-        NotificationObjectSpecification notificationObjectSpecification = new NotificationObjectSpecification();
-        notificationObjectSpecification.LoadGroup(userId);
+        string connectionString = _configuration["ConnectionStrings:DefaultDB"];
+        string query = @"
+            SELECT Distinct(T.TicketId) FROM TicketRouteDetails T RIGHT JOIN Bills B on T.Id = B.TicketRouteDetailStartId
+            WHERE B.CustomerID = @customerId and T.arrivalTime>= GetDate()";
+        using (var connection = new SqlConnection(connectionString))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QueryAsync<int>(query, 
+                new {customerId= userId });
+            return result.ToList();
+        }
     }
 }

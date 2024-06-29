@@ -33,6 +33,11 @@ public class NotificationHub : Hub
 
             await AddGroup(Context.ConnectionId, role, userId);
             await SendCountNotification(role: role, userId: userId);
+            if (role == AppConstants.CUSTOMER)
+            {
+                await LoadGroup(Context.ConnectionId, userId);
+
+            }
             await base.OnConnectedAsync();
         }
         catch (Exception e)
@@ -140,6 +145,15 @@ public class NotificationHub : Hub
                 await _notificationService.RemoveGroup(connectionId, AppConstants.CUSTOMER);
                 await _notificationService.RemoveGroup(connectionId, $"{AppConstants.CUSTOMER}_{userId}");
                 break;
+        }
+    }
+
+    private async Task LoadGroup(string connectionId, string userId)
+    {
+        var result = await _notificationService.LoadGroup(userId: int.Parse(userId));
+        foreach (var item in result)
+        {
+            await _notificationService.AddGroup(connectionId: connectionId, $"{AppConstants.TICKET_GROUP}_{item}");
         }
     }
 }

@@ -25,13 +25,4 @@ public sealed class NotificationObjectSpecification : BaseSpecification<Notifica
             ApplyPaging(paging.PageIndex, paging.PageSize);
         }
     }
-
-    public void LoadGroup(int userId)
-    {
-        Criteria = null;
-        AddSqlQuery(@"
-        SELECT Distinct(T.TicketId) FROM TicketRouteDetails T RIGHT JOIN Bills B on T.Id = B.TicketRouteDetailStartId
-        WHERE B.CustomerID = @customerId and T.DepartureTime>= CURRENT_DATE");
-        AddParameter("@customerId", userId);
-    }
 }

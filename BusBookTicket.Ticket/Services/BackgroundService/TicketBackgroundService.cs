@@ -75,7 +75,7 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
             foreach (var ticket in tickets)
             {
                 string content = $"Còn 6h nữa chuyến từ .. tới .. sẽ khởi hành";
-                await SendNotification(content, $"TICKET_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
+                await SendNotification(content, $"{AppConstants.TICKET_GROUP}_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
             }
             await _unitOfWork.SaveChangesAsync();
         }
@@ -97,7 +97,7 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
             foreach (var ticket in tickets)
             {
                 string content = $"Còn 24h nữa chuyến từ .. tới .. sẽ khởi hành";
-                await SendNotification(content, $"TICKET_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
+                await SendNotification(content, $"{AppConstants.TICKET_GROUP}_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
             }
             await _unitOfWork.SaveChangesAsync();
         }
