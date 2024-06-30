@@ -147,6 +147,8 @@ public class BillService : IBillService
             // Ticket_BusStop ticketBusStopStart= await _ticketBusStop.Get(new TicketBusStopSpecification(entity.BusStationStartId, "Get"));
             bill.Customer = new Customer();
             bill.Customer.Id = userId;
+            if (ticketRouteDetailStart.DepartureTime != null)
+                bill.DateDeparture = (DateTime)ticketRouteDetailStart.DepartureTime;
             bill = await _repository.Create(bill, userId);
 
             bool isFirst = true;

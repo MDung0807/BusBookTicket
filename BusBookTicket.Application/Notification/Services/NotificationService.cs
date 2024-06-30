@@ -2,6 +2,7 @@
 using BusBookTicket.Application.Notification.Modal;
 using BusBookTicket.Application.Notification.Paging;
 using BusBookTicket.Application.Notification.Specification;
+using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -22,13 +23,14 @@ public class NotificationService : INotificationService
     private readonly IGenericRepository<NotificationObject> _repositoryNotificationObject;
     private readonly IGenericRepository<Core.Models.Entity.Notification> _repositoryNotification;
     private readonly IConfiguration _configuration;
+    private readonly IDapperContext<int> _dapper;
 
 
     #endregion -- Properties --
     
     private readonly IMapper _mapper;
 
-    public NotificationService(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext, IMapper mapper, IConfiguration configuration)
+    public NotificationService(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext, IMapper mapper, IConfiguration configuration, IDapperContext<int> dapper)
     {
         _unitOfWork = unitOfWork;
         _repositoryNotificationChange = _unitOfWork.GenericRepository<NotificationChange>();
@@ -37,6 +39,7 @@ public class NotificationService : INotificationService
         _hubContext = hubContext;
         _mapper = mapper;
         _configuration = configuration;
+        _dapper = dapper;
     }
     
     public async Task InsertNotification(AddNewNotification request, int userId)
@@ -106,12 +109,8 @@ public class NotificationService : INotificationService
         string query = @"
             SELECT Distinct(T.TicketId) FROM TicketRouteDetails T RIGHT JOIN Bills B on T.Id = B.TicketRouteDetailStartId
             WHERE B.CustomerID = @customerId and T.arrivalTime>= GetDate()";
-        using (var connection = new SqlConnection(connectionString))
-        {
-            await connection.OpenAsync();
-            var result = await connection.QueryAsync<int>(query, 
-                new {customerId= userId });
-            return result.ToList();
-        }
+
+        var result = await _dapper.ExecuteQueryAsync(query, new { customerId = userId });
+        return result;
     }
 }

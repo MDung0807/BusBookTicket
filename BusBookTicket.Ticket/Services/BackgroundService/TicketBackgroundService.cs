@@ -1,6 +1,10 @@
-﻿using BusBookTicket.Application.Notification.Modal;
+﻿using BusBookTicket.Application.MailKet.DTO.Request;
+using BusBookTicket.Application.MailKet.Service;
+using BusBookTicket.Application.Notification.Modal;
 using BusBookTicket.Application.Notification.Services;
+using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.Ticket.Services.TicketServices;
 using Microsoft.Extensions.Logging;
@@ -14,19 +18,23 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Core.Models.Entity.Ticket> _repository;
     private readonly ILogger<TicketBackgroundService> _logger;
+    private readonly IMailService _mailService;
+    private readonly IDapperContext<Customer> _dapperContext;
 
     public TicketBackgroundService(
-        ITicketService service, 
-        INotificationService notificationService, 
-        IGenericRepository<Core.Models.Entity.Ticket> repository, 
+        ITicketService service,
+        INotificationService notificationService,
+        IGenericRepository<Core.Models.Entity.Ticket> repository,
         IUnitOfWork unitOfWork,
-        ILogger<TicketBackgroundService> logger)
+        ILogger<TicketBackgroundService> logger, IMailService mailService, IDapperContext<Customer> dapperContext)
     {
         _service = service;
         _notificationService = notificationService;
         _unitOfWork = unitOfWork;
         _repository = _unitOfWork.GenericRepository<Core.Models.Entity.Ticket>();
         _logger = logger;
+        _mailService = mailService;
+        _dapperContext = dapperContext;
     }
 
     public async Task ChangeIsWaitingTicket()
@@ -72,11 +80,13 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
         {
             int minute = 6 * 60; // Convert from Hour to Minute
             List<Core.Models.Entity.Ticket> tickets = await _service.DepartureBeforeMinute(minute);
+            await SendMailToListCustomer(tickets);
             foreach (var ticket in tickets)
             {
                 string content = $"Còn 6h nữa chuyến từ .. tới .. sẽ khởi hành";
                 await SendNotification(content, $"{AppConstants.TICKET_GROUP}_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
             }
+
             await _unitOfWork.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -94,11 +104,14 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
         {
             int minute = 24 * 60; // Convert from Hour to Minute
             List<Core.Models.Entity.Ticket> tickets = await _service.DepartureBeforeMinute(minute);
+            await SendMailToListCustomer(tickets);
             foreach (var ticket in tickets)
             {
                 string content = $"Còn 24h nữa chuyến từ .. tới .. sẽ khởi hành";
-                await SendNotification(content, $"{AppConstants.TICKET_GROUP}_{ticket.Id}", ticket.Bus.Company.Name, "", 0);
+                await SendNotification(content, $"{AppConstants.TICKET_GROUP}_{ticket.Id}", ticket.Bus.Company.Name, "",
+                    0);
             }
+
             await _unitOfWork.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -115,14 +128,14 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
         {
             try
             {
-                
-                
+
+
                 await NotificationBefore6Hour();
                 await NotificationBefore24Hour();
                 await ChangeIsWaitingTicket();
                 await ChangeIsCompleteTicket();
-                
-                
+
+
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
             catch (Exception ex)
@@ -154,5 +167,48 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
             _logger.LogError(ex, "Error in SendNotification");
             throw;
         }
+    }
+
+    private async Task SendMailToListCustomer(List<Core.Models.Entity.Ticket> tickets)
+    {
+        List<Task<List<Customer>>> tasks = new List<Task<List<Customer>>>();
+        foreach (var ticket in tickets)
+        {
+            tasks.Add(GetAllCustomerInTicket(ticket.Id));
+        }
+
+        List<MailRequest> mailRequests = new List<MailRequest>();
+        var result = await Task.WhenAll(tasks);
+        foreach (var customers in result)    
+        {
+            foreach (var customer in customers)
+            {
+                mailRequests.Add(new MailRequest
+                {
+                    Content = "Xe sắp xuất bến",
+                    FullName = customer.FullName,
+                    Message = "Xe xắp xuất bến, quý khách thắt dây an toàn nhá",
+                    LinkImage = null,
+                    Subject = "Thông báo lịch ",
+                    ToMail = customer.Email
+                });
+            }
+        }
+
+        await _mailService.SendEmailsAsync(mailRequests);
+    }
+
+    private async Task<List<Customer>> GetAllCustomerInTicket(int ticketId)
+    {
+        string query = @"
+                SELECT DISTINCT C.*
+                FROM Tickets T
+                    LEFT JOIN TicketItems TI ON T.Id = TI.TicketID
+                    LEFT JOIN BillItems BI ON BI.TicketItemID = TI.Id
+                    LEFT JOIN Bills B ON B.Id = BI.BillID
+                    RIGHT JOIN Customers C ON C.Id = B.CustomerID
+                WHERE T.Id = @ticketId";
+        var result = await _dapperContext.ExecuteQueryAsync(query, new { ticketId = ticketId });
+        return result;
     }
 }
