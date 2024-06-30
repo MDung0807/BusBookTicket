@@ -23,6 +23,7 @@ using BusBookTicket.Buses.Services.BusServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
 using BusBookTicket.Core.Infrastructure;
+using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Services;
@@ -123,6 +124,7 @@ namespace BusBookTicket.Configs
 
             #region -- Add Scoped Core --
 
+            services.AddScoped(typeof(IDapperContext<>), typeof(DapperContext<>)); 
 
             #endregion -- Add Scoped Core --
 
