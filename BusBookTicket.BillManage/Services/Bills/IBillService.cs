@@ -129,4 +129,13 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// <param name="userId"></param>
     /// <returns>bool</returns>
     Task<bool> PaymentPaypal(BillRequest request, int userId);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    Task<object> GetOverview(int companyId);
+
+    Task<List<object>> Statistical(int idMaster, int month, int year);
 }

@@ -27,7 +27,7 @@ public sealed class CompanySpecification : BaseSpecification<Company>
         AddInclude(x => x.Ward);
     }
 
-    public CompanySpecification(bool checkStatus = true, CompanyPaging paging = null) : base(null, checkStatus)
+    public CompanySpecification(bool checkStatus = true, CompanyPaging paging = default) : base(null, checkStatus)
     {
 
     }

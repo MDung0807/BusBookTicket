@@ -27,7 +27,7 @@ public abstract class SpecificationEvaluator<T> where T : BaseEntity
         }
         if (specification.CheckStatus)
         {
-            query = query.Where(x => x.Status == (int)EnumsApp.Active || x.Status == (int)EnumsApp.Complete);
+            query = query.Where(x => x.Status != (int)EnumsApp.Delete);
         }
         
         // Includes all expression-based includes

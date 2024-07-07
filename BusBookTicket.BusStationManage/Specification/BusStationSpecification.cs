@@ -20,7 +20,9 @@ public sealed class BusStationSpecification : BaseSpecification<BusStation>
             ApplyPaging(paging.PageIndex, paging.PageSize);
             ApplyOrderBy(x => x.DateCreate);
             ApplyOrderBy(x => x.DateUpdate);
-        }    
+        }
+        
+        ApplyOrderByDescending(x => x.DateCreate);
     }
 
     public BusStationSpecification(string name) : base(x => x.Name.Contains(name))

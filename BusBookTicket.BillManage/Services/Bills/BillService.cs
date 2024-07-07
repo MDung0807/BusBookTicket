@@ -8,11 +8,13 @@ using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.BillManage.DTOs.Requests;
 using BusBookTicket.BillManage.DTOs.Responses;
 using BusBookTicket.BillManage.Paging;
+using BusBookTicket.BillManage.Repository;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Specification;
 using BusBookTicket.BillManage.Utilities;
 using BusBookTicket.Core.Application.Paging;
 using BusBookTicket.Core.Common.Exceptions;
+using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
@@ -39,7 +41,9 @@ public class BillService : IBillService
     private readonly IGenericRepository<Customer> _customerRepo;
     private readonly IGenericRepository<Ticket_RouteDetail> _ticketRouteDetail;
     private readonly IConfiguration _configuration;
+    private readonly IDapperContext<object> _dapperContext;
     private bool _billIsPaymented = false;
+    private readonly IBillRepository _billRepository;
 
     private readonly IRouteDetailService _routeDetailService;
     private readonly IMemoryCache _cache;
@@ -51,7 +55,7 @@ public class BillService : IBillService
         IBillItemService billItemService,
         IUnitOfWork unitOfWork,
         IMailService mailService,
-        IRouteDetailService routeDetailService, IMemoryCache cache, IConfiguration configuration, INotificationService notificationService)
+        IRouteDetailService routeDetailService, IMemoryCache cache, IConfiguration configuration, INotificationService notificationService, IDapperContext<object> dapperContext, IBillRepository billRepository)
     {
         _billItemService = billItemService;
         _unitOfWork = unitOfWork;
@@ -64,6 +68,8 @@ public class BillService : IBillService
         _cache = cache;
         _configuration = configuration;
         _notificationService = notificationService;
+        _dapperContext = dapperContext;
+        _billRepository = billRepository;
         _ticketRouteDetail = unitOfWork.GenericRepository<Ticket_RouteDetail>();
 
     }
@@ -311,7 +317,7 @@ public class BillService : IBillService
             items: billResponses
             );
         return result;
-    }
+        }
 
     public async Task<bool> ChangeCompleteStatus(int billId, int userId)
     {
@@ -602,6 +608,22 @@ public class BillService : IBillService
         return await Create(request, userId);
     }
 
+    public async Task<object> GetOverview(int companyId)
+    {
+        var renvenue = await RevenueLastMonth(companyId);
+        var rate = await CancellationRate(companyId);
+        return  new
+        {
+            renvenue,
+            rate
+        };
+    }
+
+    public async Task<List<object>> Statistical(int idMaster, int math, int year)
+    {
+        return await _billRepository.Statistical(idMaster, math, year);
+    }
+
     #region  -- Private Method --
 
     private async Task<bool> ChangeBillCanDelete(int id)
@@ -739,5 +761,76 @@ public class BillService : IBillService
         };
         await _notificationService.InsertNotification(newNotification, userId);
     }
+
+    private async Task<Decimal> RevenueLastMonth(int companyId)
+    {
+        string query = @"SELECT SUM(TotalPrice) as Number FROM Bills B 
+                            LEFT JOIN BillItems BI on B.Id = BI.BillID
+			                LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
+			                LEFT JOIN Tickets T on T.Id = TI.TicketID
+			                LEFT JOIN Buses BU on BU.Id = T.BusID
+			                LEFT JOIN Companies C on C.Id = BU.CompanyID
+                        WHERE MONTH(DateDeparture) = @month
+                            AND C.Id = @company";
+        var result = await _dapperContext.ExecuteQueryAsync(query, 
+            new
+            {
+                month = DateTime.Now.AddMonths(-1).Month,
+                company = companyId,
+            });
+
+        if (result == null || result.Count == 0)
+            return 0;
+        return (decimal)result[0];
+    }
+    
+    private async Task<float> CancellationRate(int companyId)
+    {
+        string query = @"SELECT COUNT(*) AS number FROM BillItems BI
+            LEFT JOIN Bills B on B.Id = BI.BillID
+			LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
+			LEFT JOIN Tickets T on T.Id = TI.TicketID
+			LEFT JOIN Buses BU on BU.Id = T.BusID
+			LEFT JOIN Companies C on C.Id = BU.CompanyID
+            WHERE BI.Status = @status
+	            AND MONTH(B.DateDeparture) = @month
+				AND C.Id = @company
+            GROUP BY BI.Status";
+        
+        string queryTotal = @"			SELECT COUNT(*) as number FROM BillItems BI
+            LEFT JOIN Bills B on B.Id = BI.BillID
+			LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
+			LEFT JOIN Tickets T on T.Id = TI.TicketID
+			LEFT JOIN Buses BU on BU.Id = T.BusID
+			LEFT JOIN Companies C on C.Id = BU.CompanyID
+            WHERE  MONTH(B.DateDeparture) = @month)
+                AND C.Id = @company";
+        
+        var results = await Task.WhenAll(
+            _dapperContext.ExecuteQueryAsync(query,
+                new
+                {
+                    month = DateTime.Now.AddMonths(-1).Month,
+                    status = (int)EnumsApp.Delete,
+                    company = companyId
+                }),
+            _dapperContext.ExecuteQueryAsync(queryTotal,
+                new
+                {
+                    month = DateTime.Now.AddMonths(-1).Month,
+                    company = companyId
+                }));
+        var result = results.SelectMany(i => i).Distinct().ToList();
+        if (result.Count >= 2)
+        {
+            if (result[1] != (object)0)
+            {
+                return (float)result[0] / (float)result[1];
+            }
+        }
+
+        return 0;
+    }
+    
     #endregion -- Private Method --
 }

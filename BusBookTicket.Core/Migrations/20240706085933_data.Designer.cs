@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusBookTicket.Core.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240531054544_fixNullData")]
-    partial class fixNullData
+    [Migration("20240706085933_data")]
+    partial class data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,9 @@ namespace BusBookTicket.Core.Migrations
 
                     b.Property<int?>("DiscountID")
                         .HasColumnType("int");
+
+                    b.Property<string>("PaypalTransactionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

@@ -12,7 +12,7 @@ public class DapperContext<T> : IDapperContext<T>
         _connectionString = configuration["ConnectionStrings:DefaultDB"];
     }
 
-    public async Task<List<T>> ExecuteQueryAsync(string query, object parameters)
+    public async Task<List<T>> ExecuteQueryAsync(string query, object parameters = null)
     {
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();

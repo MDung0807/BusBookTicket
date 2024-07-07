@@ -77,6 +77,25 @@ namespace BusBookTicket.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
@@ -193,6 +212,32 @@ namespace BusBookTicket.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NotificationObjects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Href = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventId = table.Column<int>(type: "int", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationObjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NotificationObjects_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Discounts",
                 columns: table => new
                 {
@@ -229,7 +274,7 @@ namespace BusBookTicket.Core.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleID = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -395,7 +440,7 @@ namespace BusBookTicket.Core.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     AccountID = table.Column<int>(type: "int", nullable: false),
                     RankID = table.Column<int>(type: "int", nullable: true),
@@ -545,6 +590,84 @@ namespace BusBookTicket.Core.Migrations
                         name: "FK_SeatTypes_Companies_CompanyID",
                         column: x => x.CompanyID,
                         principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NotificationChanges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Actor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActorCustomerId = table.Column<int>(type: "int", nullable: true),
+                    ActorCompanyId = table.Column<int>(type: "int", nullable: true),
+                    NotificationObjectId = table.Column<int>(type: "int", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationChanges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NotificationChanges_Companies_ActorCompanyId",
+                        column: x => x.ActorCompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NotificationChanges_Customers_ActorCustomerId",
+                        column: x => x.ActorCustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NotificationChanges_NotificationObjects_NotificationObjectId",
+                        column: x => x.NotificationObjectId,
+                        principalTable: "NotificationObjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notifier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NotifierCompanyId = table.Column<int>(type: "int", nullable: true),
+                    NotifierCustomerIds = table.Column<int>(type: "int", nullable: true),
+                    NotificationId = table.Column<int>(type: "int", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Companies_NotifierCompanyId",
+                        column: x => x.NotifierCompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Customers_NotifierCustomerIds",
+                        column: x => x.NotifierCustomerIds,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_NotificationObjects_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "NotificationObjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -830,6 +953,7 @@ namespace BusBookTicket.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateDeparture = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<long>(type: "bigint", nullable: false),
+                    PaypalTransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TicketRouteDetailStartId = table.Column<int>(type: "int", nullable: true),
                     TicketRouteDetailEndId = table.Column<int>(type: "int", nullable: true),
                     CustomerID = table.Column<int>(type: "int", nullable: false),
@@ -999,6 +1123,41 @@ namespace BusBookTicket.Core.Migrations
                 column: "ProvinceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NotificationChanges_ActorCompanyId",
+                table: "NotificationChanges",
+                column: "ActorCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationChanges_ActorCustomerId",
+                table: "NotificationChanges",
+                column: "ActorCustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationChanges_NotificationObjectId",
+                table: "NotificationChanges",
+                column: "NotificationObjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationObjects_EventId",
+                table: "NotificationObjects",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotificationId",
+                table: "Notifications",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotifierCompanyId",
+                table: "Notifications",
+                column: "NotifierCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotifierCustomerIds",
+                table: "Notifications",
+                column: "NotifierCustomerIds");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PriceClassifications_CompanyId",
                 table: "PriceClassifications",
                 column: "CompanyId");
@@ -1134,6 +1293,12 @@ namespace BusBookTicket.Core.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "NotificationChanges");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "OtpCodes");
 
             migrationBuilder.DropTable(
@@ -1152,6 +1317,9 @@ namespace BusBookTicket.Core.Migrations
                 name: "TicketItems");
 
             migrationBuilder.DropTable(
+                name: "NotificationObjects");
+
+            migrationBuilder.DropTable(
                 name: "SeatTypes");
 
             migrationBuilder.DropTable(
@@ -1162,6 +1330,9 @@ namespace BusBookTicket.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "TicketRouteDetails");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Ranks");

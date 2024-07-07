@@ -7,4 +7,5 @@ public class BusTypeResponse
     public string Description { get; set; }
     public int TotalSeats { get; set; }
     public int Status { get; set; }
+    public int TotalBus { get; set; }
 }

@@ -128,14 +128,11 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
         {
             try
             {
-
-
                 await NotificationBefore6Hour();
                 await NotificationBefore24Hour();
                 await ChangeIsWaitingTicket();
                 await ChangeIsCompleteTicket();
-
-
+                
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
             catch (Exception ex)
@@ -171,6 +168,10 @@ public class TicketBackgroundService : Microsoft.Extensions.Hosting.BackgroundSe
 
     private async Task SendMailToListCustomer(List<Core.Models.Entity.Ticket> tickets)
     {
+        if (tickets.Count == 0)
+        {
+            return;
+        }
         List<Task<List<Customer>>> tasks = new List<Task<List<Customer>>>();
         foreach (var ticket in tickets)
         {

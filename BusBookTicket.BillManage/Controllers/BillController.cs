@@ -237,6 +237,24 @@ public class BillController : ControllerBase
         var result = await _billService.CheckReserve(request, userId);
         return Ok(new Response<bool>(false, result));
     }
+
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("overview")]
+    public async Task<IActionResult> GetOverview()
+    {
+        int companyId = JwtUtils.GetUserID(HttpContext);
+        var result = await _billService.GetOverview(companyId);
+        return Ok(new Response<object>(false, result));
+    }
+    
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("company/statistical")]
+    public async Task<IActionResult> GetStatistical([FromQuery]DateOnly dateOnly)
+    {
+        int companyId = JwtUtils.GetUserID(HttpContext);
+        var result = await _billService.Statistical(companyId, dateOnly.Month, dateOnly.Year);
+        return Ok(new Response<object>(false, result));
+    }
     
     #endregion -- Controller --
 }

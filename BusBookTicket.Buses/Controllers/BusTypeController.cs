@@ -7,6 +7,8 @@ using BusBookTicket.Buses.Utils;
 using BusBookTicket.Buses.Validator;
 using BusBookTicket.Core.Common;
 using BusBookTicket.Core.Common.Exceptions;
+using BusBookTicket.Core.Utils;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -101,6 +103,7 @@ public class BusTypeController : ControllerBase
             throw new ValidatorException(result.Errors);
         }
         int userId = JwtUtils.GetUserID(HttpContext);
+        request.Status = (int)EnumsApp.Active;
         bool status = await _busTypeService.Create(request, userId);
         return Ok(new Response<string>(!status, "Response"));
     }
@@ -128,6 +131,15 @@ public class BusTypeController : ControllerBase
         int userId = JwtUtils.GetUserID(HttpContext);
         bool status = await _busTypeService.Create(request, userId);
         return Ok(new Response<string>(!status, "Response"));
+    }
+
+    [HttpGet("companies/statistical")]
+    [Authorize(Roles = AppConstants.COMPANY)]
+    public async Task<IActionResult> Statistical()
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _busTypeService.Statistical(idMaster: userId);
+        return Ok(new Response<Object>(false, result));
     }
     #endregion -- Controllers --
 }

@@ -11,6 +11,7 @@ using BusBookTicket.Application.Notification.Services;
 using BusBookTicket.Application.OTP.Services;
 using BusBookTicket.Auth.Services.AuthService;
 using BusBookTicket.Auth.Services.RoleService;
+using BusBookTicket.BillManage.Repository;
 using BusBookTicket.Buses.Services.BusTypeServices;
 using BusBookTicket.BusStationManage.Services;
 using BusBookTicket.CompanyManage.Services;
@@ -68,6 +69,7 @@ namespace BusBookTicket.Configs
             #region  -- Add Scoped Bill Module --
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IBillItemService, BillItemService>();
+            services.AddScoped<IBillRepository, BillRepository>();
 
             #endregion -- Add Scoped Bill Module --
 

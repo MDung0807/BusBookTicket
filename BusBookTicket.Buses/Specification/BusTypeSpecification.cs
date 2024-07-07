@@ -34,4 +34,11 @@ public sealed class BusTypeSpecification : BaseSpecification<BusType>
 
         CheckStatus = checkStatus;
     }
+
+    public void Statistical(int idMaster, bool checksStatus)
+    {
+        CheckStatus = checksStatus;
+        
+        AddInclude(x => x.Buses.Where(b => b.Company.Id == idMaster));
+    }
 }

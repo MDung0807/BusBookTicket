@@ -9,6 +9,7 @@ using BusBookTicket.Exceptions;
 using BusBookTicket.Ticket.Controllers;
 using BusBookTicket.Ticket.Services.BackgroundService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,15 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        //
+        // builder.WebHost.ConfigureKestrel(options =>
+        // {
+        //     options.Listen(System.Net.IPAddress.Any, 5107, listenOptions =>
+        //     {
+        //         listenOptions.UseHttps();
+        //     });
+        // });
+
         var services = builder.Services;
 
         #region -- Config auto mapping --

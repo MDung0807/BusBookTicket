@@ -7,5 +7,5 @@ namespace BusBookTicket.Buses.Services.BusTypeServices;
 
 public interface IBusTypeService : IService<BusTypeForm, BusTypeFormUpdate, int, BusTypeResponse, BusTypePaging, BusTypePagingResult>
 {
-    
+    Task<List<BusTypeResponse>> Statistical(int idMaster, bool checkStatus = true);
 }

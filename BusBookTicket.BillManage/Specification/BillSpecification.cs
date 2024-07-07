@@ -32,6 +32,7 @@ public sealed class BillSpecification : BaseSpecification<Bill>
         
         if (paging != null)
             ApplyPaging(paging.PageIndex, paging.PageSize);
+        ApplyOrderByDescending(x =>  x.DateUpdate);
     }
 
     public BillSpecification(int busId, int userId) : base(x =>

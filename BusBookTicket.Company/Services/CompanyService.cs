@@ -68,16 +68,12 @@ public class CompanyService : ICompanyServices
     
     public async Task<CompanyPagingResult> GetAllByAdmin(CompanyPaging paging)
     {
-        CompanySpecification companySpecification = new CompanySpecification(false);
+        CompanySpecification companySpecification = new CompanySpecification( checkStatus: false, paging: paging);
         List<Company> companies = await _repository.ToList(companySpecification);
         List<ProfileCompany> profileCompanies = await AppUtils.MapObject<Company, ProfileCompany>(companies, _mapper);
         int count = await _repository.Count(companySpecification);
-        CompanyPagingResult result = new CompanyPagingResult();
-        result.PageIndex = paging.PageIndex;
-        result.PageSize = paging.PageSize;
-        result.PageTotal = (int)Math.Round((decimal)count / paging.PageSize);
-        result.Items = profileCompanies;
-        return result;
+        return AppUtils.ResultPaging<CompanyPagingResult, ProfileCompany>(
+            index: paging.PageIndex, size: paging.PageSize, count: count, items: profileCompanies);
     }
 
     public Task<CompanyPagingResult> GetAll(CompanyPaging pagingRequest)

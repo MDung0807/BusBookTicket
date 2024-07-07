@@ -155,6 +155,24 @@ public class BusTypeService : IBusTypeService
             await AppUtils.MapObject<BusType, BusTypeResponse>(result, _mapper));
     }
 
+    public async Task<List<BusTypeResponse>> Statistical(int idMaster, bool checkStatus)
+    {
+        BusTypeSpecification specification = new BusTypeSpecification();
+        specification.Statistical(idMaster: idMaster, checksStatus: true);
+        List<BusType> busTypes = await _repository.ToList(specification: specification);
+
+        List<BusTypeResponse> responses = new List<BusTypeResponse>();
+        BusTypeResponse busTypeResponse = new BusTypeResponse();
+        foreach (var busType in busTypes)
+        {
+            busTypeResponse = _mapper.Map<BusTypeResponse>(busType);
+            if (busType.Buses != null) busTypeResponse.TotalBus = busType.Buses.Count();
+            responses.Add(busTypeResponse);
+        }
+
+        return responses;
+    }
+
     public Task<List<BusTypeResponse>> GetAllByAdmin()
     {
         throw new NotImplementedException();

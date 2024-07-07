@@ -8,5 +8,5 @@ public interface IDapperContext <T>
     /// <param name="query"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<List<T>> ExecuteQueryAsync(string query, object parameters);
+    Task<List<T>> ExecuteQueryAsync(string query, object parameters = null);
 }

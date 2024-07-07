@@ -198,7 +198,7 @@ public class TicketService : ITicketService
                 
                 RouteDetailResponse routeDetailResponse = await _routeDetail.GetById(ticketStation.RouteDetailId);
                 DateOnly date = entity.DateOnly;
-                date.AddDays(routeDetailResponse.AddDay);
+                date = date.AddDays(routeDetailResponse.AddDay);
                 
                 ticketRouteDetail.DepartureTime = new DateTime(date.Year, date.Month, date.Day,
                     routeDetailResponse.DepartureTime.Hours, routeDetailResponse.DepartureTime.Minutes,
@@ -408,7 +408,7 @@ public class TicketService : ITicketService
         TicketSpecification ticketSpecification = 
             new TicketSpecification(companyId:companyId, checkStatus:false, paging: paging, month: month);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
-        int count = await _repository.Count(new TicketSpecification(companyId:companyId, checkStatus:false));
+        int count = await _repository.Count(new TicketSpecification(companyId:companyId, checkStatus:false, month: month));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
         
