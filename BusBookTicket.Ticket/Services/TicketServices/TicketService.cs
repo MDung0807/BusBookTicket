@@ -17,6 +17,7 @@ using BusBookTicket.RoutesManage.Service;
 using BusBookTicket.Ticket.DTOs.Requests;
 using BusBookTicket.Ticket.DTOs.Response;
 using BusBookTicket.Ticket.Paging;
+using BusBookTicket.Ticket.Repositories;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Specification;
 using BusBookTicket.Ticket.Utils;
@@ -42,6 +43,7 @@ public class TicketService : ITicketService
     private readonly IPriceService _priceService;
     private readonly IPriceClassificationService _priceClassification;
     private readonly IMemoryCache _cache;
+    private readonly ITicketRepository _ticketRepository;
 
     #endregion -- Properties --
 
@@ -54,7 +56,7 @@ public class TicketService : ITicketService
         IMailService mailService,
         IRouteDetailService routeDetailService,
         IPriceService priceService,
-        IPriceClassificationService priceClassificationService, IMemoryCache cache)
+        IPriceClassificationService priceClassificationService, IMemoryCache cache, ITicketRepository ticketRepository)
     {
         this._itemService = itemService;
         this._mapper = mapper;
@@ -69,9 +71,13 @@ public class TicketService : ITicketService
         _routeDetail = routeDetailService;
         _priceClassification = priceClassificationService;
         _cache = cache;
+        _ticketRepository = ticketRepository;
         _priceService = priceService;
     }
-    public TicketService(){}
+    public TicketService(ITicketRepository ticketRepository)
+    {
+        _ticketRepository = ticketRepository;
+    }
     
     public async Task<TicketResponse> GetById(int id)
     {
@@ -438,6 +444,24 @@ public class TicketService : ITicketService
         ticketSpecification.CompleteTicket();
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
         return tickets;
+    }
+
+    public async Task<object> GetTotalTicket(int companyId)
+    {
+        int month = DateTime.Now.AddMonths(-1).Month, year = DateTime.Now.AddYears(-1).Year;
+
+        var result = await Task.WhenAll(
+            _ticketRepository.TotalTicketInMonth(companyId, month, year + 1),
+            _ticketRepository.TotalTicketInMonth(companyId, month, year));
+
+        return new
+        {
+            totalTicket = new
+            {
+                value = result[0],
+                rate = result[1] != 0 ? result[0] * 100 / result[1] - 100 : 0
+            }
+        };
     }
 
     #region -- Private Method --

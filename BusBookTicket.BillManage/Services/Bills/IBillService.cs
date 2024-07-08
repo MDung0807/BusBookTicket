@@ -135,7 +135,23 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     /// </summary>
     /// <param name="companyId"></param>
     /// <returns></returns>
-    Task<object> GetOverview(int companyId);
+    Task<object> TotalBill(int companyId);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    Task<object> Sales(int companyId);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="idMaster"></param>
+    /// <param name="month"></param>
+    /// <param name="year"></param>
+    /// <returns></returns>
     Task<List<object>> Statistical(int idMaster, int month, int year);
+
+    Task<List<object>> TopRouteInBill(int companyId, int top);
 }

@@ -23,6 +23,7 @@ using BusBookTicket.BillManage.Services.Bills;
 using BusBookTicket.Buses.Services.BusServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
+using BusBookTicket.Core.Common.GetConfigs;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
@@ -30,6 +31,7 @@ using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Services;
 using BusBookTicket.ReviewManage.Services;
 using BusBookTicket.RoutesManage.Service;
+using BusBookTicket.Ticket.Repositories;
 using BusBookTicket.Ticket.Services.BackgroundService;
 using BusBookTicket.Ticket.Services.TicketItemServices;
 using BusBookTicket.Ticket.Services.TicketServices;
@@ -107,6 +109,8 @@ namespace BusBookTicket.Configs
                 var scope = provider.CreateScope();
                 return scope.ServiceProvider.GetRequiredService<TicketBackgroundService>();
             });
+
+            services.AddScoped<ITicketRepository, TicketRepository>();
             #endregion -- Add Scoped Ticket Module --
 
             #region -- Add Scoped ImageCloudDianary --
@@ -126,7 +130,8 @@ namespace BusBookTicket.Configs
 
             #region -- Add Scoped Core --
 
-            services.AddScoped(typeof(IDapperContext<>), typeof(DapperContext<>)); 
+            services.AddScoped(typeof(IDapperContext<>), typeof(DapperContext<>));
+            services.AddSingleton<IConfigApp, ConfigApp>();
 
             #endregion -- Add Scoped Core --
 

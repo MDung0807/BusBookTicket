@@ -239,11 +239,20 @@ public class BillController : ControllerBase
     }
 
     [Authorize(Roles = AppConstants.COMPANY)]
-    [HttpGet("overview")]
-    public async Task<IActionResult> GetOverview()
+    [HttpGet("totalBill")]
+    public async Task<IActionResult> GetTotalBill()
     {
         int companyId = JwtUtils.GetUserID(HttpContext);
-        var result = await _billService.GetOverview(companyId);
+        var result = await _billService.TotalBill(companyId);
+        return Ok(new Response<object>(false, result));
+    }
+    
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("Sales")]
+    public async Task<IActionResult> Sales()
+    {
+        int companyId = JwtUtils.GetUserID(HttpContext);
+        var result = await _billService.Sales(companyId);
         return Ok(new Response<object>(false, result));
     }
     
@@ -253,6 +262,17 @@ public class BillController : ControllerBase
     {
         int companyId = JwtUtils.GetUserID(HttpContext);
         var result = await _billService.Statistical(companyId, dateOnly.Month, dateOnly.Year);
+        return Ok(new Response<object>(false, result));
+    }
+    
+    [Authorize(Roles = AppConstants.COMPANY)]
+    [HttpGet("topRoute")]
+    public async Task<IActionResult> GetTopRouteInBill([FromQuery] int top)
+    {
+        if (top == default)
+            top = 5;
+        int companyId = JwtUtils.GetUserID(HttpContext);
+        var result = await _billService.TopRouteInBill(companyId, top);
         return Ok(new Response<object>(false, result));
     }
     

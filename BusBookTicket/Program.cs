@@ -3,6 +3,7 @@ using BusBookTicket.Application.MailKet.Settings;
 using BusBookTicket.Application.Notification;
 using BusBookTicket.Application.PayPalPayment.Services;
 using BusBookTicket.Configs;
+using BusBookTicket.Core.Common.GetConfigs;
 using BusBookTicket.Core.Models.EntityFW;
 using BusBookTicket.CustomerManage.DTOs.Requests;
 using BusBookTicket.Exceptions;
@@ -109,6 +110,7 @@ internal class Program
         services.AddMemoryCache();
         var app = builder.Build();
 
+        ConfigApp.Initialize(app.Configuration);
         // Configure the HTTP request pipeline.
         app.UseRouting();
         app.UseCors(options =>

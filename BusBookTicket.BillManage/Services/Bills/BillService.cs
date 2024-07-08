@@ -608,20 +608,48 @@ public class BillService : IBillService
         return await Create(request, userId);
     }
 
-    public async Task<object> GetOverview(int companyId)
+    public async Task<object> TotalBill(int companyId)
     {
-        var renvenue = await RevenueLastMonth(companyId);
-        var rate = await CancellationRate(companyId);
+        int lastMonth = DateTime.Now.AddMonths(-1).Month, lastYear = DateTime.Now.AddYears(-1).Year;
+        var totalBill = await Task.WhenAll(
+            TotalBillInMonth(companyId, lastMonth, lastYear + 1),
+            TotalBillInMonth(companyId, lastMonth, lastYear));
+        
         return  new
         {
-            renvenue,
-            rate
+            totalBill = new
+            {
+                value = totalBill[0],
+                rate = totalBill[1] !=0? totalBill[0]*100/totalBill[1] - 100: 0
+            }
+        };
+    }
+    public async Task<object> Sales(int companyId)
+    {
+        int lastMonth = DateTime.Now.AddMonths(-1).Month, lastYear = DateTime.Now.AddYears(-1).Year;
+        var revenue = await Task.WhenAll(
+            RevenueMonth(companyId, lastMonth, lastYear + 1),
+            RevenueMonth(companyId, lastMonth, lastYear));
+
+        return  new
+        {
+            revenue = new
+            {
+                value = revenue[0],
+                rate = revenue[1] != 0? revenue[0]*100/revenue[1] -100 : 0
+            },
         };
     }
 
+
     public async Task<List<object>> Statistical(int idMaster, int math, int year)
     {
-        return await _billRepository.Statistical(idMaster, math, year);
+        return await _billRepository.StatisticalInMonth(idMaster, math, year);
+    }
+
+    public async Task<List<object>> TopRouteInBill(int companyId, int top)
+    {
+        return await _billRepository.TopRouteInBill(companyId: companyId, top: top);
     }
 
     #region  -- Private Method --
@@ -762,40 +790,32 @@ public class BillService : IBillService
         await _notificationService.InsertNotification(newNotification, userId);
     }
 
-    private async Task<Decimal> RevenueLastMonth(int companyId)
+    private async Task<decimal> RevenueMonth(int companyId, int month, int year)
     {
-        string query = @"SELECT SUM(TotalPrice) as Number FROM Bills B 
-                            LEFT JOIN BillItems BI on B.Id = BI.BillID
-			                LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
-			                LEFT JOIN Tickets T on T.Id = TI.TicketID
-			                LEFT JOIN Buses BU on BU.Id = T.BusID
-			                LEFT JOIN Companies C on C.Id = BU.CompanyID
-                        WHERE MONTH(DateDeparture) = @month
-                            AND C.Id = @company";
-        var result = await _dapperContext.ExecuteQueryAsync(query, 
-            new
-            {
-                month = DateTime.Now.AddMonths(-1).Month,
-                company = companyId,
-            });
-
-        if (result == null || result.Count == 0)
-            return 0;
-        return (decimal)result[0];
+        var result = await _billRepository.Sales(idMaster: companyId, month: month, year: year);
+        return result;
+    }
+    
+    private async Task<decimal> TotalBillInMonth(int companyId, int month, int year)
+    {
+        var result = await _billRepository.TotalBillInMonth(idMaster: companyId, month: month, year: year);
+        return result;
     }
     
     private async Task<float> CancellationRate(int companyId)
     {
-        string query = @"SELECT COUNT(*) AS number FROM BillItems BI
-            LEFT JOIN Bills B on B.Id = BI.BillID
-			LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
-			LEFT JOIN Tickets T on T.Id = TI.TicketID
-			LEFT JOIN Buses BU on BU.Id = T.BusID
-			LEFT JOIN Companies C on C.Id = BU.CompanyID
-            WHERE BI.Status = @status
-	            AND MONTH(B.DateDeparture) = @month
-				AND C.Id = @company
-            GROUP BY BI.Status";
+        string query = """
+                       SELECT COUNT(*) AS number FROM BillItems BI
+                                   LEFT JOIN Bills B on B.Id = BI.BillID
+                       			LEFT JOIN TicketItems TI on TI.Id = BI.TicketItemID
+                       			LEFT JOIN Tickets T on T.Id = TI.TicketID
+                       			LEFT JOIN Buses BU on BU.Id = T.BusID
+                       			LEFT JOIN Companies C on C.Id = BU.CompanyID
+                                   WHERE BI.Status = @status
+                       	            AND MONTH(B.DateDeparture) = @month
+                       				AND C.Id = @company
+                                   GROUP BY BI.Status
+                       """;
         
         string queryTotal = @"			SELECT COUNT(*) as number FROM BillItems BI
             LEFT JOIN Bills B on B.Id = BI.BillID

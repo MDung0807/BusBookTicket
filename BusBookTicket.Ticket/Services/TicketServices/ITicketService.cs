@@ -55,5 +55,11 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="checkStatus"></param>
     /// <returns></returns>
     Task<List<Core.Models.Entity.Ticket>> TicketComplete(bool checkStatus = false);
-    
+
+    /// <summary>
+    /// Get total ticket in last month
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    Task<object> GetTotalTicket(int companyId);
 }

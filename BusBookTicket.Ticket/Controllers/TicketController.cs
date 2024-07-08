@@ -108,5 +108,14 @@ public class TicketController : ControllerBase
         TicketPagingResult result = await _ticketService.GetAllTicketOnDate(userId, date, paging);
         return Ok(new Response<TicketPagingResult>(false, result));
     }
+    
+    [HttpGet("totalTicket")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> GetTotalTicket()
+    {
+        int userId = JwtUtils.GetUserID(HttpContext);
+        var result = await _ticketService.GetTotalTicket(userId);
+        return Ok(new Response<object>(false, result));
+    }
     #endregion -- Controller --
 }
