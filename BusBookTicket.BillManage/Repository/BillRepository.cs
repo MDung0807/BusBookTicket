@@ -122,14 +122,14 @@ public class BillRepository : IBillRepository
     {
 	    int year = DateTime.Now.Year;
 	    string query = @"
-			SELECT TOP (@top) COUNT(*) AS TOTAL ,BSStart.Name, BSEnd.Name FROM (
+			SELECT TOP (@top) COUNT(*) AS TOTAL ,BSStart.Name AS StationStart, BSEnd.Name AS StationEnd FROM (
 			SELECT TicketRouteDetailStartId, id FROM Bills) AS B
 			INNER JOIN BillItems BI ON BI.BillID = B.Id
 			INNER JOIN TicketRouteDetails TR ON TR.Id = b.TicketRouteDetailStartId
-			INNER JOIN Tickets T ON T.Id = TR.TicketId
+			INNER JOIN Tickets T ON T.Id = TR.TicketId AND YEAR(T.Date) = @year
 			INNER JOIN Buses BUS ON BUS.Id = T.BusID
 			INNER JOIN (
-				SELECT TOP 1 Id FROM Companies WHERE Id = 1
+				SELECT TOP 1 Id FROM Companies WHERE Id = @companyId
 			) AS CO ON CO.Id = BUS.CompanyID
 			INNER JOIN RouteDetails RD ON RD.Id = TR.RouteDetailId
 			INNER JOIN Routes R ON R.Id = RD.RouteId
