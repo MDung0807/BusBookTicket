@@ -38,8 +38,9 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="month">month</param>
     /// <param name="companyId">id for company</param>
     /// <param name="paging">paging</param>
+    /// <param name="checkStatus"></param>
     /// <returns></returns>
-    Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging);
+    Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging, bool checkStatus = true);
 
     /// <summary>
     /// Minutes Before Ticket Have Departure

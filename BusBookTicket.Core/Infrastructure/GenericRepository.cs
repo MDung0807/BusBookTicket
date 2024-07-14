@@ -248,13 +248,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     private void CheckStatus(T data, bool checkStatus = true)
     {
-        if (data.Status == (int) EnumsApp.Delete)
-        {
-            throw new StatusException(AppConstants.NOT_EXIST);
-        }
+       
 
         if (checkStatus)
         {
+            if (data.Status == (int) EnumsApp.Delete)
+            {
+                throw new StatusException(AppConstants.NOT_EXIST);
+            }
+            
             if (data.Status == (int)EnumsApp.Waiting)
             {
                 throw new StatusException(AppConstants.WAITING);

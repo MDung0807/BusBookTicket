@@ -81,7 +81,7 @@ public class TicketService : ITicketService
     
     public async Task<TicketResponse> GetById(int id)
     {
-        TicketSpecification ticketSpecification = new TicketSpecification(id,checkStatus:true, getIsChangeStatus:false);
+        TicketSpecification ticketSpecification = new TicketSpecification(id,checkStatus:false, getIsChangeStatus:false);
         Core.Models.Entity.Ticket ticket = await _repository.Get(ticketSpecification);
         if (ticket == null)
         {
@@ -409,12 +409,12 @@ public class TicketService : ITicketService
         return result;
     }
 
-    public async Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging)
+    public async Task<TicketPagingResult> GetAll(DateOnly month, int companyId, TicketPaging paging, bool checkStatus =true)
     {
         TicketSpecification ticketSpecification = 
-            new TicketSpecification(companyId:companyId, checkStatus:false, paging: paging, month: month);
+            new TicketSpecification(companyId:companyId, checkStatus:checkStatus, paging: paging, month: month);
         List<Core.Models.Entity.Ticket> tickets = await _repository.ToList(ticketSpecification);
-        int count = await _repository.Count(new TicketSpecification(companyId:companyId, checkStatus:false, month: month));
+        int count = await _repository.Count(new TicketSpecification(companyId:companyId, checkStatus:checkStatus, month: month));
         // Find
         List<TicketResponse> responses = new List<TicketResponse>();
         

@@ -54,6 +54,19 @@ namespace BusBookTicket.Core.Models.EntityFW
             }
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("YourConnectionString", options =>
+                    options.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(60),
+                        errorNumbersToAdd: null));
+            }
+            base.OnConfiguring(optionsBuilder);
+        }
+
         public DbSet<Bus> Buses { get; set; }
         public DbSet<BusType> BusTypes { get; set; }
         public DbSet<Customer> Customers { get; set; }
