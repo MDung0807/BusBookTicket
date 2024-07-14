@@ -136,10 +136,10 @@ public class BusController : ControllerBase
 
     [Authorize(Roles = AppConstants.COMPANY)]
     [HttpGet("GetInRoute")]
-    public async Task<IActionResult> GetInRoute([FromQuery] BusPaging paging, [FromQuery] int routeId)
+    public async Task<IActionResult> GetInRoute([FromQuery] BusPaging paging, [FromQuery] int routeId, [FromQuery]DateTime dateTime)
     {
         int userId = JwtUtils.GetUserID(HttpContext);
-        var result = await _busService.GetInRoute(paging, routeId: routeId, companyId: userId);
+        var result = await _busService.GetInRoute(paging, routeId: routeId, companyId: userId, dateTime: dateTime);
         return Ok(new Response<BusPagingResult>(false, result));
     }
     #endregion -- Controller --

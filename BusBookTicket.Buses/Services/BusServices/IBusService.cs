@@ -11,5 +11,5 @@ public interface IBusService : IService<FormCreateBus, FormUpdateBus, int, BusRe
 
     Task<bool> RegisRoute(int id, int routeId, int userId);
 
-    Task<BusPagingResult> GetInRoute(BusPaging paging, int companyId, int routeId);
+    Task<BusPagingResult> GetInRoute(BusPaging paging, int companyId, int routeId, DateTime dateTime);
 }

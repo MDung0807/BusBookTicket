@@ -464,6 +464,23 @@ public class TicketService : ITicketService
         };
     }
 
+    public async Task<bool> CreateWithManyBuses(TicketFormCreateManyBus request, int userId)
+    {
+        foreach (int busId in request.BusIds)
+        {
+            TicketFormCreate formCreate = new TicketFormCreate
+            {
+                BusId = busId,
+                DateOnly = request.DateOnly,
+                PriceClassificationId = request.PriceClassificationId,
+                TicketStations = request.TicketStations
+            };
+            await Create(formCreate, userId);
+        }
+
+        return true;
+    }
+
     #region -- Private Method --
 
     private async Task<bool> CreateItem(Seat seat, int ticketID, int userId, int price)

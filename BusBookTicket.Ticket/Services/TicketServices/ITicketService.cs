@@ -63,4 +63,6 @@ public interface ITicketService : IService<TicketFormCreate, TicketFormUpdate, i
     /// <param name="companyId"></param>
     /// <returns></returns>
     Task<object> GetTotalTicket(int companyId);
+
+    Task<bool> CreateWithManyBuses(TicketFormCreateManyBus request, int userId);
 }

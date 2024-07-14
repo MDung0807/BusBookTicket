@@ -65,6 +65,21 @@ public class TicketController : ControllerBase
         return Ok(new Response<string>(false, "Response"));
     }
     
+    [HttpPost("createWithManyBuses")]
+    [Authorize(Roles = "COMPANY")]
+    public async Task<IActionResult> CreateWithManyBuses([FromBody] TicketFormCreateManyBus request)
+    {
+        var validator = new TicketCreateValidate();
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            throw new ValidatorException(result.Errors);
+        }
+        int userId = JwtUtils.GetUserID(HttpContext);
+        await _ticketService.CreateWithManyBuses(request, userId);
+        return Ok(new Response<string>(false, "Response"));
+    }
+    
     [HttpDelete("delete")]
     [Authorize(Roles = "COMPANY")]
     public async Task<IActionResult> Delete([FromQuery] int id)

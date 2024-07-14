@@ -64,6 +64,16 @@ public sealed class BusSpecification : BaseSpecification<Bus>
         AddInclude(x => x.Company);
         AddInclude(x => x.BusType);
     }
+
+    public void BusIsNotBusy(DateTime dateTime)
+    {
+        AddCriteria(x => x.Tickets.All(t => t.TicketRouteDetails.Any(
+            tr => 
+                (tr.ArrivalTime < dateTime && tr.DepartureTime < dateTime)
+                 || (tr.DepartureTime > dateTime && tr.ArrivalTime > dateTime)
+                )));
+    }
+
     
     public BusSpecification(){}
 
