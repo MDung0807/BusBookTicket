@@ -8,6 +8,9 @@ public sealed class RegionSpecification : BaseSpecification<AdministrativeRegion
     public RegionSpecification(int id) : base(x => x.Id == id)
     {
         AddInclude(x => x.Provinces);
+        
+        ApplyOrderBy(x => x.Name);
+
     }
 
     public RegionSpecification()

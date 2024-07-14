@@ -11,5 +11,12 @@ namespace BusBookTicket.CustomerManage.Services
         Task<CustomerPagingResult> GetAllCustomer(CustomerPaging paging);
         Task<bool> AuthOtp(OtpRequest request);
         Task<bool> CreateByGoogle(FormRegister register);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        Task<object> StatisticalCustomer(DateTime dateTime);
     }
 }

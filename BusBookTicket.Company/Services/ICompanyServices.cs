@@ -7,4 +7,5 @@ namespace BusBookTicket.CompanyManage.Services;
 
 public interface ICompanyServices : IService<FormRegisterCompany, FormUpdateCompany, int, ProfileCompany, CompanyPaging, CompanyPagingResult>
 {
+    Task<object> StatisticalCompany(DateTime dateTime);
 }

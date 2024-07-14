@@ -154,4 +154,11 @@ public interface IBillService: IService<BillRequest, BillRequest, int, BillRespo
     Task<List<object>> Statistical(int idMaster, int month, int year);
 
     Task<List<object>> TopRouteInBill(int companyId, int top);
+    
+    /// <summary>
+    /// Get Route By Admin
+    /// </summary>
+    /// <param name="top"></param>
+    /// <returns></returns>
+    Task<List<object>> TopRouteInBill(int top);
 }

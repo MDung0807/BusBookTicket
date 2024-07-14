@@ -2,6 +2,7 @@
 using BusBookTicket.Buses.DTOs.Requests;
 using BusBookTicket.Buses.DTOs.Responses;
 using BusBookTicket.Buses.Paging.BusType;
+using BusBookTicket.Buses.Repository;
 using BusBookTicket.Buses.Specification;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Models.Entity;
@@ -16,12 +17,14 @@ public class BusTypeService : IBusTypeService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<BusType> _repository;
+    private readonly IBusTypeRepository _busTypeRepository;
     #endregion -- Properties --
 
-    public BusTypeService(IMapper mapper, IUnitOfWork unitOfWork)
+    public BusTypeService(IMapper mapper, IUnitOfWork unitOfWork, IBusTypeRepository busTypeRepository)
     {
         this._mapper = mapper;
         this._unitOfWork = unitOfWork;
+        _busTypeRepository = busTypeRepository;
         this._repository = unitOfWork.GenericRepository<BusType>();
     }
     public async Task<BusTypeResponse> GetById(int id)
@@ -171,6 +174,11 @@ public class BusTypeService : IBusTypeService
         }
 
         return responses;
+    }
+
+    public async Task<List<object>> Statistical()
+    {
+        return await _busTypeRepository.TotalBusInType();
     }
 
     public Task<List<BusTypeResponse>> GetAllByAdmin()

@@ -111,5 +111,15 @@ public class CompanyController : ControllerBase
         bool status =  await _companyServices.ChangeIsLock(id, userId:userId);
         return Ok(new Response<string>(false, "responses"));
     }
+
+    [HttpGet("StatisticalCompany")]
+    [Authorize(Roles = AppConstants.ADMIN)]
+    public async Task<IActionResult> StatisticalCompany([FromQuery] DateTime dateTime = default)
+    {
+        if (dateTime == default)
+            dateTime = DateTime.Now;
+        var result = await _companyServices.StatisticalCompany(dateTime);
+        return Ok(new Response<object>(false, result));
+    }
     #endregion
 }

@@ -11,6 +11,7 @@ using BusBookTicket.Core.Utils;
 using BusBookTicket.CompanyManage.DTOs.Requests;
 using BusBookTicket.CompanyManage.DTOs.Responses;
 using BusBookTicket.CompanyManage.Paging;
+using BusBookTicket.CompanyManage.Repository;
 using BusBookTicket.CompanyManage.Specification;
 using BusBookTicket.CompanyManage.Utils;
 using BusBookTicket.Core.Common.Exceptions;
@@ -28,6 +29,7 @@ public class CompanyService : ICompanyServices
     private readonly IImageService _imageService;
     private readonly INotificationService _notificationService;
     private readonly IMailService _mailService;
+    private readonly ICompanyRepository _companyRepository;
 
     #endregion
 
@@ -35,7 +37,7 @@ public class CompanyService : ICompanyServices
         IMapper mapper, 
         IAuthService authService,
         IUnitOfWork unitOfWork,
-        IImageService imageService, INotificationService notificationService, IMailService mailService)
+        IImageService imageService, INotificationService notificationService, IMailService mailService, ICompanyRepository companyRepository)
     {
         this._mapper = mapper;
         this._authService = authService;
@@ -44,6 +46,7 @@ public class CompanyService : ICompanyServices
         _imageService = imageService;
         _notificationService = notificationService;
         _mailService = mailService;
+        _companyRepository = companyRepository;
     }
 
     #region -- Public Method --
@@ -105,6 +108,17 @@ public class CompanyService : ICompanyServices
         return AppUtils.ResultPaging<CompanyPagingResult, ProfileCompany>(
             pagingRequest.PageIndex, pagingRequest.PageSize, count,
             await AppUtils.MapObject<Company, ProfileCompany>(result, _mapper));
+    }
+
+    public async Task<object> StatisticalCompany(DateTime dateTime)
+    {
+        var totalCompany = await TotalCompany(dateTime);
+        var rate = await RateCompany(dateTime);
+
+        return new
+        {
+            totalCompany, rate
+        };
     }
 
 
@@ -221,6 +235,16 @@ public class CompanyService : ICompanyServices
     #endregion
 
     #region -- Private Method --
+
+    private async Task<int> TotalCompany(DateTime dateTime)
+    {
+        return await _companyRepository.TotalCompany(dateTime);
+    }
+
+    private async Task<decimal> RateCompany(DateTime dateTime)
+    {
+        return await _companyRepository.Rate(dateTime);
+    }
 
     private Company ChangeStatus(Company entity, int status)
     {

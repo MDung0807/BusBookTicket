@@ -11,6 +11,8 @@ public sealed class DistrictSpecification : BaseSpecification<District>
         AddInclude(x => x.Province);
         AddInclude(x => x.Province.AdministrativeUnit);
         AddInclude(x => x.Province.AdministrativeRegion);
+        
+        ApplyOrderBy(x => x.FullName);
 
     }
     
@@ -18,5 +20,7 @@ public sealed class DistrictSpecification : BaseSpecification<District>
     {
         AddInclude(x => x.Province);
         AddInclude(x => x.AdministrativeUnit);
+        
+        ApplyOrderBy(x => x.FullName);
     }
 }

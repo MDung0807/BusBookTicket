@@ -11,5 +11,7 @@ public sealed class WardSpecification : BaseSpecification<Ward>
         AddInclude(x => x.AdministrativeUnit);
         AddInclude(x => x.District.Province);
         AddInclude(x => x.District.Province.AdministrativeRegion);
+        
+        ApplyOrderBy(x => x.FullName);
     }
 }

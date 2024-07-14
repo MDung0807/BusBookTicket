@@ -275,6 +275,15 @@ public class BillController : ControllerBase
         var result = await _billService.TopRouteInBill(companyId, top);
         return Ok(new Response<object>(false, result));
     }
-    
+
+    [Authorize(Roles = AppConstants.ADMIN)]
+    [HttpGet("admin/TopRoute")]
+    public async Task<IActionResult> GetTopRoute([FromQuery] int top)
+    {
+        if (top == default)
+            top = 5;
+        var result = await _billService.TopRouteInBill( top);
+        return Ok(new Response<object>(false, result));
+    }
     #endregion -- Controller --
 }

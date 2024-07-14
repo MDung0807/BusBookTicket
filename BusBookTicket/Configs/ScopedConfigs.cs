@@ -20,13 +20,16 @@ using BusBookTicket.DiscountManage.Services;
 using BusBookTicket.Ranks.Services;
 using BusBookTicket.BillManage.Services.BillItems;
 using BusBookTicket.BillManage.Services.Bills;
+using BusBookTicket.Buses.Repository;
 using BusBookTicket.Buses.Services.BusServices;
 using BusBookTicket.Buses.Services.SeatServices;
 using BusBookTicket.Buses.Services.SeatTypServices;
+using BusBookTicket.CompanyManage.Repository;
 using BusBookTicket.Core.Common.GetConfigs;
 using BusBookTicket.Core.Infrastructure;
 using BusBookTicket.Core.Infrastructure.Dapper;
 using BusBookTicket.Core.Infrastructure.Interfaces;
+using BusBookTicket.CustomerManage.Repository;
 using BusBookTicket.PriceManage.DTOs.Responses;
 using BusBookTicket.PriceManage.Services;
 using BusBookTicket.ReviewManage.Services;
@@ -45,6 +48,7 @@ namespace BusBookTicket.Configs
         {
             #region -- Add Scoped Customer Module --
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             #endregion -- Add Scoped Customer Module --
             
             #region -- Add Scoped Auth Module --
@@ -58,6 +62,7 @@ namespace BusBookTicket.Configs
             
             #region -- Add Scoped Company Module --
             services.AddScoped<ICompanyServices, CompanyService>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             #endregion -- Add Scoped Company Module --
 
             #region -- Add Scoped Ranks Module --
@@ -91,6 +96,8 @@ namespace BusBookTicket.Configs
             services.AddScoped<ISeatService, SeatService>();
 
             services.AddScoped<ISeatTypeService, SeatTypeService>();
+
+            services.AddScoped<IBusTypeRepository, BusTypeRepository>();
 
             #endregion -- Add Scroped Buses Module --
 

@@ -8,6 +8,7 @@ public sealed class UnitSpecification : BaseSpecification<AdministrativeUnit>
     public UnitSpecification(int id) : base(x => x.Id == id)
     {
         AddInclude(x => x.Provinces);
+        ApplyOrderBy(x => x.FullName);
     }
 
     public UnitSpecification()

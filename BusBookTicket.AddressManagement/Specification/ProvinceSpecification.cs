@@ -10,11 +10,15 @@ public sealed class ProvinceSpecification : BaseSpecification<Province>
         AddInclude(x => x.Districts);
         AddInclude(x => x.AdministrativeUnit);
         AddInclude(x => x.AdministrativeRegion);
+        
+        ApplyOrderBy(x => x.FullName);
     }
     
     public ProvinceSpecification() : base()
     {
         AddInclude(x => x.AdministrativeUnit);
         AddInclude(x => x.AdministrativeRegion);
+        
+        ApplyOrderBy(x => x.FullName);
     }
 }

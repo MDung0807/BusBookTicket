@@ -148,5 +148,31 @@ public class BillRepository : IBillRepository
 		    });
 	    return result;
     }
-    
+
+    public async Task<List<object>> TopRouteInBill(int top)
+    {
+	    int year = DateTime.Now.Year;
+	    string query = @"
+			SELECT TOP (@top) COUNT(*) AS TOTAL ,BSStart.Name AS StationStart, BSEnd.Name AS StationEnd FROM (
+			SELECT TicketRouteDetailStartId, id FROM Bills) AS B
+			INNER JOIN BillItems BI ON BI.BillID = B.Id
+			INNER JOIN TicketRouteDetails TR ON TR.Id = b.TicketRouteDetailStartId
+			INNER JOIN Tickets T ON T.Id = TR.TicketId AND YEAR(T.Date) = @year
+			INNER JOIN Buses BUS ON BUS.Id = T.BusID
+			INNER JOIN RouteDetails RD ON RD.Id = TR.RouteDetailId
+			INNER JOIN Routes R ON R.Id = RD.RouteId
+			INNER JOIN BusStations BSStart ON BSStart.Id = R.StationStartId
+			INNER JOIN BusStations BSEnd ON BSEnd.Id = R.StationEndId
+
+			GROUP BY R.Id, BSStart.Name, BSEnd.Name
+			ORDER BY TOTAL DESC";
+	    IDapperContext<object> dapperContext = new DapperContext<object>();
+	    var result = await dapperContext.ExecuteQueryAsync(query: query, 
+		    new
+		    {
+			    top = top, 
+			    year = year,
+		    });
+	    return result;
+    }
 }

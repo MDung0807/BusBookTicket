@@ -652,6 +652,11 @@ public class BillService : IBillService
         return await _billRepository.TopRouteInBill(companyId: companyId, top: top);
     }
 
+    public async Task<List<object>> TopRouteInBill(int top)
+    {
+        return await _billRepository.TopRouteInBill(top: top);
+    }
+
     #region  -- Private Method --
 
     private async Task<bool> ChangeBillCanDelete(int id)

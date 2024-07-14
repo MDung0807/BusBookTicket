@@ -141,5 +141,13 @@ public class BusTypeController : ControllerBase
         var result = await _busTypeService.Statistical(idMaster: userId);
         return Ok(new Response<Object>(false, result));
     }
+    
+    [HttpGet("admin/statistical")]
+    [Authorize(Roles = AppConstants.ADMIN)]
+    public async Task<IActionResult> AdminStatistical()
+    {
+        var result = await _busTypeService.Statistical();
+        return Ok(new Response<Object>(false, result));
+    }
     #endregion -- Controllers --
 }

@@ -18,6 +18,7 @@ using BusBookTicket.Core.Common.Exceptions;
 using BusBookTicket.Core.Infrastructure.Interfaces;
 using BusBookTicket.Core.Utils;
 using BusBookTicket.CustomerManage.Paging;
+using BusBookTicket.CustomerManage.Repository;
 using BusBookTicket.CustomerManage.Specification;
 using BusBookTicket.CustomerManage.Utilities;
 
@@ -35,6 +36,7 @@ namespace BusBookTicket.CustomerManage.Services
         private readonly IOtpService _otpService;
         private readonly IMailService _mailService;
         private readonly IGenericRepository<Ward> _wardRepo;
+        private readonly ICustomerRepository _customerRepository;
 
         #endregion --  Properties --
 
@@ -45,7 +47,7 @@ namespace BusBookTicket.CustomerManage.Services
             IUnitOfWork unitOfWork,
             IWardService wardService,
             IOtpService opOtpService,
-            IMailService mailService)
+            IMailService mailService, ICustomerRepository customerRepository)
         {
             _mapper = mapper;
             _authService = authService;
@@ -55,6 +57,7 @@ namespace BusBookTicket.CustomerManage.Services
             _wardService = wardService;
             _otpService = opOtpService;
             _mailService = mailService;
+            _customerRepository = customerRepository;
             _wardRepo = unitOfWork.GenericRepository<Ward>();
         }
         #endregion -- Contructor --
@@ -281,6 +284,17 @@ namespace BusBookTicket.CustomerManage.Services
             }
         }
 
+        public async Task<object> StatisticalCustomer(DateTime dateTime)
+        {
+            var totalCustomer = await TotalCustomer(dateTime);
+            var rateCustomer = await RateCustomer(dateTime);
+
+            return new
+            {
+                totalCustomer, rateCustomer
+            };
+        }
+
         public async Task<bool> Delete(int id, int userId)
         {
             CustomerSpecification customerSpecification = new CustomerSpecification(id, false, getAll:false);
@@ -329,6 +343,17 @@ namespace BusBookTicket.CustomerManage.Services
             customer.Account.Status = customer.Account.Status != null ? status: customer.Account.Status;
             return customer;
         }
+
+        private async Task<int> TotalCustomer(DateTime dateTime)
+        {
+            return await _customerRepository.TotalCustomer(dateTime);
+        }
+        
+        private async Task<decimal> RateCustomer(DateTime dateTime)
+        {
+            return await _customerRepository.RateCustomer(dateTime);
+        }
+
         #endregion
     }
 }

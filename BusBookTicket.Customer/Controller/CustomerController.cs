@@ -154,5 +154,15 @@ namespace BusBookTicket.CustomerManage.Controller
                 return Unauthorized();
             }
         }
+
+        [HttpGet("StatisticalCustomer")]
+        [Authorize(Roles = AppConstants.ADMIN)]
+        public async Task<IActionResult> StatisticalCustomer([FromQuery] DateTime dateTime=default)
+        {
+            if (dateTime == default)
+                dateTime = DateTime.Now;
+            var result = await _customerService.StatisticalCustomer(dateTime);
+            return Ok(new Response<object>(false, result));
+        }
     }
 }

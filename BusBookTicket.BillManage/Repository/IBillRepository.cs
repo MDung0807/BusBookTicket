@@ -8,4 +8,7 @@ public interface IBillRepository
     Task<int> TotalBillInMonth(int idMaster, int month, int year);
 
     Task<List<object>> TopRouteInBill(int companyId, int top);
+    
+    
+    Task<List<object>> TopRouteInBill( int top);
 }
