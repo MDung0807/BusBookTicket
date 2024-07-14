@@ -1,5 +1,6 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
+using BusBookTicket.Core.Utils;
 using BusBookTicket.PriceManage.Paging;
 
 namespace BusBookTicket.PriceManage.Specification;
@@ -17,6 +18,10 @@ public sealed class PriceClassificationSpecification : BaseSpecification<PriceCl
             return;
         }
 
+        if (checkStatus)
+        {
+            AddCriteria(x => x.Status == (int)EnumsApp.Active);
+        }
         if (paging != null)
         {
             ApplyPaging(paging.PageIndex, paging.PageSize);
