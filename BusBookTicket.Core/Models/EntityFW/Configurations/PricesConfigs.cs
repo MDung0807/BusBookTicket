@@ -15,5 +15,8 @@ public class PricesConfigs: BaseEntityConfigs, IEntityTypeConfiguration<Prices>
         builder.HasOne(x => x.Company)
             .WithMany(x => x.Prices)
             .HasForeignKey("CompanyId");
+        
+        builder.HasIndex("RouteId", "CompanyId").IsUnique();
+
     }
 }

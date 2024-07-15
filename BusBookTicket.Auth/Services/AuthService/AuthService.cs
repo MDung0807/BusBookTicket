@@ -228,6 +228,8 @@ namespace BusBookTicket.Auth.Services.AuthService
             Account accountRequest = _mapper.Map<Account>(request);
             Account account = await GetAccountByUsername(request.Username) ?? throw new NotFoundException(AuthConstants.NOT_FOUND);
             account.RefreshToken = JwtUtils.GenerateRefreshToken();
+            if (account.Role.RoleName !=  request.RoleName)
+                throw new ExceptionDetail(AuthConstants.LOGIN_FAIL);
             if (PassEncrypt.VerifyPassword(accountRequest.Password, account.Password))
             {
                 if (true)

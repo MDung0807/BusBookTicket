@@ -1,6 +1,7 @@
 ﻿using BusBookTicket.Core.Application.Specification;
 using BusBookTicket.Core.Models.Entity;
 using BusBookTicket.Core.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusBookTicket.Auth.Specification;
 
@@ -13,7 +14,7 @@ public sealed class AccountSpecification : BaseSpecification<Account>
     /// <param name="roleName">Role name</param>
     /// <param name="checkStatus"></param>
     public AccountSpecification(string username=default, string roleName= default, string mail = default, bool checkStatus = true) 
-        : base(x => (username == default || x.Username == username),checkStatus)
+        : base(x => (username == default || EF.Functions.Collate(x.Username, "SQL_Latin1_General_CP1_CS_AS") == username),checkStatus)
     {
         if (roleName == AppConstants.COMPANY)
         {

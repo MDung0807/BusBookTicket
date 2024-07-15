@@ -307,7 +307,7 @@ public class BusService : IBusService
     public async Task<BusPagingResult> GetInRoute(BusPaging paging, int companyId, int routeId, DateTime dateTime)
     {
         BusSpecification specification = new BusSpecification(companyId: companyId, routeId: routeId, paging: paging);
-        specification.BusIsNotBusy(dateTime: dateTime);
+        //specification.BusIsNotBusy(dateTime: dateTime);
         int count = await _repository.Count(new BusSpecification(companyId: companyId, routeId: routeId));
         List<Bus> buses = await _repository.ToList(specification);
         var result = AppUtils.ResultPaging<BusPagingResult, BusResponse>(
